@@ -14,7 +14,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-desktop"></i>Clients<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-user"></i>Clients<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ route('clients') }}">Clients list</a>
@@ -26,7 +26,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-table"></i> Tasks<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-tasks"></i> Tasks<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ route('tasks') }}">Tasks list</a>
@@ -35,7 +35,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-desktop"></i>Marketing<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-money"></i>Marketing<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ route('finances') }}">Finances</a>
@@ -54,7 +54,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-bar-chart-o"></i>Products<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-pencil-square-o"></i>Products<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ route('products') }}">Product list</a>
@@ -62,7 +62,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-qrcode"></i> Sales<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-shopping-cart"></i> Sales<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ route('sales') }}">Sales list</a>
@@ -70,13 +70,13 @@
                 </ul>
             </li>
             <li>
-                <a href="{{ route('reports') }}"><i class="fa fa-desktop"></i>Reports</a>
+                <a href="{{ route('reports') }}"><i class="fa fa-file-text"></i>Reports</a>
             </li>
             <li>
-                <a href="{{ route('calendar') }}"><i class="fa fa-desktop"></i>Calendar</a>
+                <a href="{{ route('calendar') }}"><i class="fa fa-calendar"></i>Calendar</a>
             </li>
             <li>
-                <a href="{{ route('files') }}"><i class="fa fa-desktop"></i>Files</a>
+                <a href="{{ route('files') }}"><i class="fa fa-folder-open"></i>Files</a>
             </li>
         </ul>
 
