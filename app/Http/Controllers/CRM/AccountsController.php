@@ -24,6 +24,6 @@ class AccountsController extends Controller
      */
     public function index()
     {
-        return view('index');
+        return view('crm.accounts.index');
     }
 }

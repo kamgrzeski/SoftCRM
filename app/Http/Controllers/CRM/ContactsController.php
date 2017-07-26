@@ -24,6 +24,6 @@ class ContactsController extends Controller
      */
     public function index()
     {
-        return view('index');
+        return view('crm.contacts.index');
     }
 }

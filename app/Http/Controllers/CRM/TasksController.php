@@ -24,6 +24,6 @@ class TasksController extends Controller
      */
     public function index()
     {
-        return view('index');
+        return view('crm.tasks.index');
     }
 }

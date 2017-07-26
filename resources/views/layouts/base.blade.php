@@ -6,13 +6,7 @@
 
 @include('layouts.template.title')
 
-@include('layouts.template.panels')
-
-@include('layouts.template.charts')
-
-@include('layouts.template.taskspanel')
-
-@include('layouts.template.clientlist')
+@yield('content')
 
 @include('layouts.template.footer')
 

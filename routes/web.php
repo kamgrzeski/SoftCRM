@@ -11,13 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-
 Auth::routes();
 
 Route::get('/home', 'DashboardController@index')->name('home');
+Route::get('/', 'DashboardController@index');
 Route::get('/accounts', 'CRM\AccountsController@index')->name('accounts');
 Route::get('/calendar', 'CRM\CalendarController@index')->name('calendar');
 Route::get('/projects', 'CRM\ProjectsController@index')->name('projects');
