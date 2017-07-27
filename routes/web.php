@@ -19,6 +19,8 @@ Route::get('/accounts', 'CRM\AccountsController@index')->name('accounts');
 Route::get('/calendar', 'CRM\CalendarController@index')->name('calendar');
 Route::get('/projects', 'CRM\ProjectsController@index')->name('projects');
 Route::get('/products', 'CRM\ProductsController@index')->name('products');
+Route::get('/category', 'CRM\CategoryController@index')->name('category');
+Route::get('/job', 'CRM\JobController@index')->name('job');
 Route::get('/contacts', 'CRM\ContactsController@index')->name('contacts');
 Route::get('/deals', 'CRM\DealsController@index')->name('deals');
 Route::get('/mailing', 'CRM\MailingController@index')->name('mailing');
