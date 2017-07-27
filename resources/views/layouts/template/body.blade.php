@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-            </button><a class="navbar-brand" href="{{ route('home') }}">SoftCRM</a>
+            </button><a class="navbar-brand" href="{{ route('home') }}"><i class="fa fa-comments"></i> SoftCRM</a>
         </div>
 
         <ul class="nav navbar-top-links navbar-right">
