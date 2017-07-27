@@ -13,6 +13,8 @@
 
 Auth::routes();
 
+Route::resource('companies', 'CRM\CompaniesController');
+
 Route::get('/home', 'DashboardController@index')->name('home');
 Route::get('/', 'DashboardController@index');
 Route::get('/accounts', 'CRM\AccountsController@index')->name('accounts');

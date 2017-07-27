@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Companies;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use View;
+use Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 class CompaniesController extends Controller
 {
@@ -24,7 +30,9 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        return view('crm.companies.index');
+        $companies = Companies::all();
+
+        return View::make('crm.companies.index')->with('companies', $companies);
     }
 
     /**
@@ -34,7 +42,7 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        //
+        return View::make('crm.companies.create');
     }
 
     /**
@@ -44,7 +52,31 @@ class CompaniesController extends Controller
      */
     public function store()
     {
-        //
+        // validate
+        // read more on validation at http://laravel.com/docs/validation
+        $rules = array(
+            'name'       => 'required',
+            'tags'       => 'required',
+            'tax_number'       => 'required',
+        );
+        $validator = Validator::make(Input::all(), $rules);
+
+        // process the login
+        if ($validator->fails()) {
+            return Redirect::to('companies/index')
+                ->withErrors($validator);
+        } else {
+            // store
+            $nerd = new Companies;
+            $nerd->name       = Input::get('name');
+            $nerd->tags      = Input::get('tags');
+            $nerd->tax_number = Input::get('tax_number');
+            $nerd->save();
+
+            // redirect
+            Session::flash('message', 'Successfully created companies!');
+            return Redirect::to('companies');
+        }
     }
 
     /**
