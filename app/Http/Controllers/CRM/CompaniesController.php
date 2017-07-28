@@ -52,8 +52,6 @@ class CompaniesController extends Controller
      */
     public function store()
     {
-        // validate
-        // read more on validation at http://laravel.com/docs/validation
         $rules = array(
             'name'       => 'required',
             'tags'       => 'required',
@@ -61,7 +59,6 @@ class CompaniesController extends Controller
         );
         $validator = Validator::make(Input::all(), $rules);
 
-        // process the login
         if ($validator->fails()) {
             return Redirect::to('companies/index')
                 ->withErrors($validator);
@@ -87,7 +84,10 @@ class CompaniesController extends Controller
      */
     public function show($id)
     {
-        //
+        $companies = Companies::find($id);
+
+        return View::make('crm.companies.show')
+            ->with('companies', $companies);
     }
 
     /**
@@ -98,7 +98,10 @@ class CompaniesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $companies = Companies::find($id);
+
+        return View::make('crm.companies.edit')
+            ->with('companies', $companies);
     }
 
     /**
@@ -109,7 +112,26 @@ class CompaniesController extends Controller
      */
     public function update($id)
     {
-        //
+        $rules = array(
+            'name'       => 'required',
+            'tax_number' => 'required',
+            'tags' => 'required',
+
+        );
+        $validator = Validator::make(Input::all(), $rules);
+        if ($validator->fails()) {
+            Session::flash('message', 'Error!');
+            return Redirect::to('companies/' . $id . '/edit')
+                ->withErrors($validator);
+        } else {
+            $companies = Companies::find($id);
+            $companies->name       = Input::get('name');
+            $companies->tax_number      = Input::get('tax_number');
+            $companies->tags      = Input::get('tags');
+            $companies->save();
+            Session::flash('message', 'Successfully updated companies!');
+            return Redirect::to('companies');
+        }
     }
 
     /**
@@ -120,6 +142,10 @@ class CompaniesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $companies = Companies::find($id);
+        $companies->delete();
+
+        Session::flash('message', 'Successfully deleted the companies!');
+        return Redirect::to('companies');
     }
 }

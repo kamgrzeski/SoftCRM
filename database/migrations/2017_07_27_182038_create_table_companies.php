@@ -11,9 +11,9 @@ class CreateTableCompanies extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 255);
-            $table->integer('tax_number');
+            $table->string('tax_number');
             $table->string('tags', 255);
-            $table->boolean('is_active')->null()->default(1);
+            $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
         });
     }

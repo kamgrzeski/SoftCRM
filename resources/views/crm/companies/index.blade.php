@@ -10,7 +10,7 @@
 
     <!-- will be used to show any messages -->
     @if (Session::has('message'))
-        <div class="alert alert-info">{{ Session::get('message') }}</div>
+        <div class="alert alert-success">{{ Session::get('message') }}</div>
     @endif
     <div class="row">
         <div class="col-md-12">
@@ -27,32 +27,33 @@
                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Tax numer</th>
-                                <th>Tags</th>
-                                <th>Active</th>
-                                <th>Actions</th>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Tax numer</th>
+                                <th class="text-center">Tags</th>
+                                <th class="text-center">Active</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($companies as $key => $value)
-                                <tr class="odd gradeX">
+                                <tr class="odd gradeX" >
 
                                 <td>{{ $value->id }}</td>
-                                    <td>{{ $value->name }}</td>
-                                    <td>{{ $value->tax_number }}</td>
-                                    <td>{{ $value->tags }}</td>
-                                    <td>{{ $value->is_active ? 'Yes' : 'No' }}</td>
+                                    <td class="text-center">{{ $value->name }}</td>
+                                    <td class="text-center">{{ $value->tax_number }}</td>
+                                    <td class="text-center"><a class="btn btn-default btn-sm">{{ $value->tags }}</a></td>
+                                    <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>
 
-                                    <!-- we will also add show, edit, and delete buttons -->
-                                    <td>
-                                        <!-- show the nerd (uses the show method found at GET /nerds/{id} -->
-                                        <a class="btn btn-small btn-success" href="{{ URL::to('companies/' . $value->id) }}">Show this companies</a>
+                                    <td class="text-center">
+                                        <a class="btn btn-small btn-success" href="{{ URL::to('companies/' . $value->id) }}">Show</a>
 
-                                        <!-- edit this nerd (uses the edit method found at GET /nerds/{id}/edit -->
-                                        <a class="btn btn-small btn-info" href="{{ URL::to('companies/' . $value->id . '/edit') }}">Edit this companies</a>
+                                        <a class="btn btn-small btn-info" href="{{ URL::to('companies/' . $value->id . '/edit') }}">Edit</a>
 
+                                        {{ Form::open(array('url' => 'companies/' . $value->id, 'class' => 'pull-right')) }}
+                                        {{ Form::hidden('_method', 'DELETE') }}
+                                        {{ Form::submit('delete', array('class' => 'btn btn-small btn-danger')) }}
+                                        {{ Form::close() }}
                                     </td>
                                 </tr>
                             @endforeach
