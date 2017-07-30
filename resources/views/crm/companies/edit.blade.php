@@ -44,13 +44,12 @@
                         </div>
 
                         <div class="col-lg-12">
-                            {{ Form::submit('Submit Button', array('class' => 'btn btn-default')) }}
-                            {{ Form::reset('Reset Button', array('class' => 'btn btn-default')) }}
+                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                            {{ Form::reset('Reset Button', array('class' => 'btn btn-warning')) }}
                         </div>
 
                     {{ Form::close() }}
 
-                    <!-- /.row (nested) -->
                     </div>
                     <!-- /.panel-body -->
                 </div>
