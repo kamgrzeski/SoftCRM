@@ -30,29 +30,70 @@
                                     {{ Form::text('name', null, array('class' => 'form-control')) }}
                                 </div>
 
-                                <div class="form-group">
-                                    {{ Form::label('tags', 'Tags') }}
-                                    {{ Form::text('tags', null, array('class' => 'form-control')) }}
-                                </div>
+                            <div class="form-group">
+                                {{ Form::label('tax_number', 'Tax Number') }}
+                                {{ Form::text('tax_number', null, array('class' => 'form-control')) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('tags', 'Tags') }}
+                                {{ Form::text('tags', null, array('class' => 'form-control')) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('city', 'City') }}
+                                {{ Form::text('city', null, array('class' => 'form-control')) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('billing_address', 'Billing Address') }}
+                                {{ Form::text('billing_address', null, array('class' => 'form-control')) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('state', 'State') }}
+                                {{ Form::text('state', null, array('class' => 'form-control')) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('country', 'country') }}
+                                {{ Form::text('country', null, array('class' => 'form-control')) }}
+                            </div>
 
                         </div>
-                                <div class="col-lg-6">
+                                    <div class="col-lg-6">
                                     <div class="form-group">
-                                        {{ Form::label('tax_number', 'Tax number') }}
-                                        {{ Form::text('tax_number', null, array('class' => 'form-control')) }}
+                                        {{ Form::label('postal_code', 'Postal Code') }}
+                                        {{ Form::text('postal_code', null, array('class' => 'form-control')) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ Form::label('employees', 'Employees') }}
+                                        {{ Form::text('employees', null, array('class' => 'form-control')) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ Form::label('fax', 'Fax') }}
+                                        {{ Form::text('fax', null, array('class' => 'form-control')) }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ Form::label('description', 'Description') }}
+                                        {{ Form::textarea('description', null, array('class' => 'form-control')) }}
                                     </div>
 
                                     <div class="form-group">
                                         {{ Form::label('is_active', 'Active') }}
                                         {{ Form::checkbox('is_active', null, array('class' => 'form-control')) }}
                                     </div>
-
                                 </div>
 
                                 <div class="col-lg-12">
                                     {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                                     {{ Form::reset('Reset Button', array('class' => 'btn btn-warning')) }}
                                 </div>
+
+
 
                     {{ Form::close() }}
 

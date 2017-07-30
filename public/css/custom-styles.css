@@ -253,7 +253,7 @@ display: inline-block;
 position: relative;
 display: block;
 padding: 19px 15px;
-color: #77C0FD;
+color: white;
 }
 .top-navbar .nav > li > a:hover, .top-navbar .nav > li > a:focus {
 text-decoration: none;

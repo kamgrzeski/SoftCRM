@@ -27,9 +27,18 @@
                         <div class="tab-pane fade active in" id="home">
                             <h4>{{ $companies->name }}</h4>
                             <p>
-                                <strong>Name:</strong> {{ $companies->name }}<br>
+                                <strong>name:</strong> {{ $companies->name }}<br>
                                 <strong>Tax number:</strong> {{ $companies->tax_number }}<br>
                                 <strong>Tags:</strong> {{ $companies->tags }}<br>
+                                <strong>City:</strong> {{ $companies->city }}<br>
+                                <strong>Billing Address:</strong> {{ $companies->billing_address }}<br>
+                                <strong>State:</strong> {{ $companies->state }}<br>
+                                <strong>Country:</strong> {{ $companies->country }}<br>
+                                <strong>Postal Code:</strong> {{ $companies->postal_code }}<br>
+                                <strong>Employees:</strong> {{ $companies->employees }}<br>
+                                <strong>Fax:</strong> {{ $companies->fax }}<br>
+                                <strong>Description:</strong> {{ $companies->description }}<br>
+                                <strong>Active:</strong> {{ $companies->is_active ? 'Yes' : 'No' }}<br>
                             </p>
                         </div>
                         <div class="tab-pane fade" id="profile">

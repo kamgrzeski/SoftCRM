@@ -19,6 +19,14 @@ class Companies extends Model
                 'name' => $allInputs['name'],
                 'tax_number' => $allInputs['tax_number'],
                 'tags' => $allInputs['tags'],
+                'city' => $allInputs['city'],
+                'billing_address' => $allInputs['billing_address'],
+                'state' => $allInputs['state'],
+                'country' => $allInputs['country'],
+                'postal_code' => $allInputs['postal_code'],
+                'employees' => $allInputs['employees'],
+                'fax' => $allInputs['fax'],
+                'description' => $allInputs['description'],
                 'is_active' => 1
             ]
         );
@@ -32,6 +40,14 @@ class Companies extends Model
                 'name' => $allInputs['name'],
                 'tax_number' => $allInputs['tax_number'],
                 'tags' => $allInputs['tags'],
+                'city' => $allInputs['city'],
+                'billing_address' => $allInputs['billing_address'],
+                'state' => $allInputs['state'],
+                'country' => $allInputs['country'],
+                'postal_code' => $allInputs['postal_code'],
+                'employees' => $allInputs['employees'],
+                'fax' => $allInputs['fax'],
+                'description' => $allInputs['description'],
                 'is_active' => 1
             ]);
     }
@@ -45,9 +61,19 @@ class Companies extends Model
         switch ($rulesType) {
             case 'STORE':
                 return [
-                    'name'       => 'required',
-                    'tags'       => 'required',
-                    'tax_number'       => 'required',
+                    'name' => 'required',
+                    'tax_number' => 'required|unique:companies',
+                    'tags' => 'required',
+                    'city' => 'required',
+                    'billing_address' => 'required',
+                    'state' => 'required',
+                    'country' => 'required',
+                    'postal_code' => 'required',
+                    'employees' => 'required',
+                    'fax' => 'required',
+                    'description' => 'required',
+                    'tags' => 'required',
+                    'is_active' => 'required',
                 ];
         }
     }

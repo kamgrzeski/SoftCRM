@@ -13,6 +13,14 @@ class CreateTableCompanies extends Migration
             $table->string('name', 255);
             $table->string('tax_number');
             $table->string('tags', 255);
+            $table->string('city', 255);
+            $table->string('billing_address', 255);
+            $table->string('state', 255);
+            $table->string('country', 255);
+            $table->string('postal_code', 255);
+            $table->string('employees', 255);
+            $table->string('fax');
+            $table->string('description', 255);
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
         });
