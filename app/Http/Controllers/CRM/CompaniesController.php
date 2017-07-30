@@ -56,15 +56,15 @@ class CompaniesController extends Controller
         $validator = Validator::make($allInputs, Companies::getRules('STORE'));
 
         if ($validator->fails()) {
-            return Redirect::to('companies/index')
-                ->withErrors($validator);
+            Session::flash('message', $validator->errors());
+            return Redirect::to('companies/create');
         } else {
             if(Companies::insertRow($allInputs)) {
                 Session::flash('message', 'Successfully created companies!');
                 return Redirect::to('companies');
             } else {
                 Session::flash('message', 'Error with create companies!');
-                return Redirect::to('companies/create');
+                return Redirect::to('companies');
             }
         }
     }
@@ -110,8 +110,7 @@ class CompaniesController extends Controller
         $validator = Validator::make($allInputs, Companies::getRules('STORE'));
 
         if ($validator->fails()) {
-            return Redirect::to('companies/index')
-                ->withErrors($validator);
+            return Redirect::to('companies/index')->withErrors($validator);
         } else {
             if(Companies::updateRow($id, $allInputs)) {
                 Session::flash('message', 'Successfully updated companies!');

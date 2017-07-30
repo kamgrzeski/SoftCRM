@@ -10,7 +10,7 @@
 
     <!-- will be used to show any messages -->
     @if (Session::has('message'))
-        <div class="alert alert-success">{{ Session::get('message') }}</div>
+        <div class="alert alert-warning">{{ Session::get('message') }}</div>
     @endif
     <div class="row">
         <div class="col-md-12">

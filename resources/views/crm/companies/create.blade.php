@@ -7,7 +7,10 @@
 @section('lyric', 'some text about add companies')
 
 @section('content')
-
+    <!-- will be used to show any messages -->
+    @if (Session::has('message'))
+        <div class="alert alert-warning">{{ Session::get('message') }}</div>
+    @endif
 
     <!-- /. ROW  -->
     <div class="row">
