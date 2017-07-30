@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf868e28a7319bb87222e744d3a1a872",
+    "content-hash": "1e1577620e350ba4d0245bce0809da96",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -641,6 +641,43 @@
                 "psr-3"
             ],
             "time": "2017-06-19T01:22:40+00:00"
+        },
+        {
+            "name": "mressex/laravel-auth-profile",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MrEssex/laravel-auth-profile.git",
+                "reference": "a090d1922cfb05b832d690701e271f2645fd50db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MrEssex/laravel-auth-profile/zipball/a090d1922cfb05b832d690701e271f2645fd50db",
+                "reference": "a090d1922cfb05b832d690701e271f2645fd50db",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.4",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MrEssex\\LaravelAuthProfile\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kyle Essex",
+                    "email": "Kylegavinessex@hotmail.com"
+                }
+            ],
+            "description": "Building off of the default Laravel Authentication. View and Edit User Profiles",
+            "time": "2017-06-11T05:55:31+00:00"
         },
         {
             "name": "mtdowling/cron-expression",
