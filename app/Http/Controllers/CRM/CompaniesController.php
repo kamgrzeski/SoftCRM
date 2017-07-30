@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Companies;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use View;
 use Validator;
@@ -52,27 +51,21 @@ class CompaniesController extends Controller
      */
     public function store()
     {
-        $rules = array(
-            'name'       => 'required',
-            'tags'       => 'required',
-            'tax_number'       => 'required',
-        );
-        $validator = Validator::make(Input::all(), $rules);
+        $allInputs = Input::all();
+
+        $validator = Validator::make($allInputs, Companies::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('companies/index')
                 ->withErrors($validator);
         } else {
-            // store
-            $nerd = new Companies;
-            $nerd->name       = Input::get('name');
-            $nerd->tags      = Input::get('tags');
-            $nerd->tax_number = Input::get('tax_number');
-            $nerd->save();
-
-            // redirect
-            Session::flash('message', 'Successfully created companies!');
-            return Redirect::to('companies');
+            if(Companies::insertRow($allInputs)) {
+                Session::flash('message', 'Successfully created companies!');
+                return Redirect::to('companies');
+            } else {
+                Session::flash('message', 'Error with create companies!');
+                return Redirect::to('companies/create');
+            }
         }
     }
 
@@ -112,25 +105,21 @@ class CompaniesController extends Controller
      */
     public function update($id)
     {
-        $rules = array(
-            'name'       => 'required',
-            'tax_number' => 'required',
-            'tags' => 'required',
+        $allInputs = Input::all();
 
-        );
-        $validator = Validator::make(Input::all(), $rules);
+        $validator = Validator::make($allInputs, Companies::getRules('STORE'));
+
         if ($validator->fails()) {
-            Session::flash('message', 'Error!');
-            return Redirect::to('companies/' . $id . '/edit')
+            return Redirect::to('companies/index')
                 ->withErrors($validator);
         } else {
-            $companies = Companies::find($id);
-            $companies->name       = Input::get('name');
-            $companies->tax_number      = Input::get('tax_number');
-            $companies->tags      = Input::get('tags');
-            $companies->save();
-            Session::flash('message', 'Successfully updated companies!');
-            return Redirect::to('companies');
+            if(Companies::updateRow($id, $allInputs)) {
+                Session::flash('message', 'Successfully updated companies!');
+                return Redirect::to('companies');
+            } else {
+                Session::flash('message', 'Error with update companies!');
+                return Redirect::to('companies');
+            }
         }
     }
 
