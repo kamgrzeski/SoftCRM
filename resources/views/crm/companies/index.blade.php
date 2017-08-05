@@ -48,7 +48,7 @@
                                     <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>
 
                                     <td class="text-center">
-                                        <a class="btn btn-small btn-success" href="{{ URL::to('companies/' . $value->id) }}">Show</a>
+                                        <a class="btn btn-small btn-success" href="{{ URL::to('companies/' . $value->id) }}">More informations</a>
 
                                         <a class="btn btn-small btn-info" href="{{ URL::to('companies/' . $value->id . '/edit') }}">Edit</a>
 
