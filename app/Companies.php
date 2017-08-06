@@ -73,8 +73,21 @@ class Companies extends Model
                     'fax' => 'required',
                     'description' => 'required',
                     'tags' => 'required',
-                    'is_active' => 'required',
                 ];
         }
+    }
+
+    public static function setActive($id, $activeType) {
+         $query = DB::table('companies')
+             ->where('id', '=', $id)
+             ->update([
+                 'is_active' => $activeType
+             ]);
+
+         if($query) {
+             return TRUE;
+         } else {
+             return FALSE;
+         }
     }
 }

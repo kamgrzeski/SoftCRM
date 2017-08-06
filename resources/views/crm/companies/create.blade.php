@@ -8,8 +8,14 @@
 
 @section('content')
     <!-- will be used to show any messages -->
-    @if (Session::has('message'))
-        <div class="alert alert-warning">{{ Session::get('message') }}</div>
+    @if(session()->has('message_success'))
+        <div class="alert alert-success">
+            <strong>Well done!</strong> {{ session()->get('message_success') }}
+        </div>
+    @elseif(session()->has('message_danger'))
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> {{ session()->get('message_danger') }}
+        </div>
     @endif
 
     <!-- /. ROW  -->
@@ -79,14 +85,6 @@
                                         {{ Form::label('description', 'Description') }}
                                         {{ Form::textarea('description', null, array('class' => 'form-control')) }}
                                     </div>
-
-                                    <div class="form-group">
-                                        {{ Form::label('test1', 'Active') }}
-                                        {{ Form::checkbox('test1', null, array('class' => 'form-control')) }}
-                                    </div>
-                                        
-
-                                        <p><input type="checkbox" id="test1" /><label for="test1"><span class="ui"></span>Paris</label></p>
                                 </div>
 
                                 <div class="col-lg-12">

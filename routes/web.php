@@ -15,6 +15,9 @@ Auth::routes();
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
+Route::get('/companies/enable/{id}', 'CRM\CompaniesController@enable')->name('enable');
+Route::get('/companies/disable/{id}', 'CRM\CompaniesController@disable')->name('disable');
+
 Route::resource('companies', 'CRM\CompaniesController');
 
 Route::get('/home', 'DashboardController@index')->name('home');

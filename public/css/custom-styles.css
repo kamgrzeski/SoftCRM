@@ -429,4 +429,16 @@ font-size: 19px;
 }
 }
 
+.badge {
+    text-shadow: none;
+    font-size: 12px;
+    padding: 1px 15px;
+    font-weight: normal;
+    line-height: 15px;
+    background-color: #ABBAC3!important;
+}
+
+.label-warning, .badge-warning {
+    background-color: #80d14d !important;
+}
 

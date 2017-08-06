@@ -11,15 +11,15 @@ class CreateTableCompanies extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 255);
-            $table->integer('tax_number');
+            $table->string('tax_number');
             $table->string('tags', 255);
             $table->string('city', 255);
             $table->string('billing_address', 255);
             $table->string('state', 255);
             $table->string('country', 255);
-            $table->integer('postal_code');
+            $table->string('postal_code', 64);
             $table->string('employees', 255);
-            $table->integer('fax');
+            $table->string('fax');
             $table->string('description', 255);
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();

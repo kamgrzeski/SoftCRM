@@ -35,12 +35,6 @@
                                 {{ Form::label('tax_number', 'Tax number') }}
                                 {{ Form::text('tax_number', null, array('class' => 'form-control')) }}
                             </div>
-
-                            <div class="form-group">
-                                {{ Form::label('is_active', 'Active') }}
-                                {{ Form::checkbox('is_active', null, array('class' => 'form-control')) }}
-                            </div>
-
                         </div>
 
                         <div class="col-lg-12">

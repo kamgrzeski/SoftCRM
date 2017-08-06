@@ -17,8 +17,7 @@ class CompaniesController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
     }
 
@@ -27,8 +26,7 @@ class CompaniesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $companies = Companies::all();
 
         return View::make('crm.companies.index')->with('companies', $companies);
@@ -39,8 +37,7 @@ class CompaniesController extends Controller
      *
      * @return Response
      */
-    public function create()
-    {
+    public function create() {
         return View::make('crm.companies.create');
     }
 
@@ -49,8 +46,7 @@ class CompaniesController extends Controller
      *
      * @return Response
      */
-    public function store()
-    {
+    public function store() {
         $allInputs = Input::all();
 
         $validator = Validator::make($allInputs, Companies::getRules('STORE'));
@@ -60,11 +56,9 @@ class CompaniesController extends Controller
             return Redirect::to('companies/create');
         } else {
             if(Companies::insertRow($allInputs)) {
-                Session::flash('message', 'Successfully created companies!');
-                return Redirect::to('companies');
+                return Redirect::to('companies')->with('message_success', 'Successfully created the companies!!');;
             } else {
-                Session::flash('message', 'Error with create companies!');
-                return Redirect::to('companies');
+                return Redirect::to('companies')->with('message_success', 'Error with create the companies!!');;
             }
         }
     }
@@ -75,8 +69,7 @@ class CompaniesController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $companies = Companies::find($id);
 
         return View::make('crm.companies.show')
@@ -89,8 +82,7 @@ class CompaniesController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $companies = Companies::find($id);
 
         return View::make('crm.companies.edit')
@@ -103,8 +95,7 @@ class CompaniesController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
-    {
+    public function update($id) {
         $allInputs = Input::all();
 
         $validator = Validator::make($allInputs, Companies::getRules('STORE'));
@@ -113,11 +104,9 @@ class CompaniesController extends Controller
             return Redirect::to('companies/index')->withErrors($validator);
         } else {
             if(Companies::updateRow($id, $allInputs)) {
-                Session::flash('message', 'Successfully updated companies!');
-                return Redirect::to('companies');
+                return Redirect::to('companies')->with('message_success', 'Successfully updated the companies!!');
             } else {
-                Session::flash('message', 'Error with update companies!');
-                return Redirect::to('companies');
+                return Redirect::to('companies')->with('message_success', 'Error with update the companies!!');
             }
         }
     }
@@ -128,12 +117,30 @@ class CompaniesController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $companies = Companies::find($id);
         $companies->delete();
 
-        Session::flash('message', 'Successfully deleted the companies!');
-        return Redirect::to('companies');
+        return Redirect::to('companies')->with('message_success', 'Successfully deleted the companies!!');
+    }
+
+    public function enable($id) {
+        $companies = Companies::find($id);
+
+        if(Companies::setActive($companies->id, TRUE)) {
+            return Redirect::back()->with('message_success', 'Successfully enable the companies!!');
+        } else {
+            return Redirect::back()->with('message_danger', 'Companies already enabled.');
+        }
+    }
+
+    public function disable($id) {
+        $companies = Companies::find($id);
+
+        if(Companies::setActive($companies->id, FALSE)) {
+            return Redirect::back()->with('message_success', 'Successfully disable the companies!!');
+        } else {
+            return Redirect::back()->with('message_danger', 'Companies already disabled.');
+        }
     }
 }
