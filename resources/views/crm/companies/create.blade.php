@@ -16,9 +16,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    Basic Form Elements
-                </div>
+
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
@@ -83,17 +81,18 @@
                                     </div>
 
                                     <div class="form-group">
-                                        {{ Form::label('is_active', 'Active') }}
-                                        {{ Form::checkbox('is_active', null, array('class' => 'form-control')) }}
+                                        {{ Form::label('test1', 'Active') }}
+                                        {{ Form::checkbox('test1', null, array('class' => 'form-control')) }}
                                     </div>
+                                        
+
+                                        <p><input type="checkbox" id="test1" /><label for="test1"><span class="ui"></span>Paris</label></p>
                                 </div>
 
                                 <div class="col-lg-12">
                                     {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                                     {{ Form::reset('Reset Button', array('class' => 'btn btn-warning')) }}
                                 </div>
-
-
 
                     {{ Form::close() }}
 
