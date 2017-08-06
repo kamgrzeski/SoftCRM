@@ -40,8 +40,8 @@
                             </div>
 
                             <div class="form-group">
-                                {{ Form::label('tags', 'Tags') }}
-                                {{ Form::text('tags', null, array('class' => 'form-control')) }}
+                                {{ Form::label('phone', 'Phone') }}
+                                {{ Form::text('phone', null, array('class' => 'form-control')) }}
                             </div>
 
                             <div class="form-group">
@@ -60,7 +60,7 @@
                             </div>
 
                             <div class="form-group">
-                                {{ Form::label('country', 'country') }}
+                                {{ Form::label('country', 'Country') }}
                                 {{ Form::text('country', null, array('class' => 'form-control')) }}
                             </div>
 
@@ -85,9 +85,11 @@
                                         {{ Form::label('description', 'Description') }}
                                         {{ Form::textarea('description', null, array('class' => 'form-control')) }}
                                     </div>
-                                </div>
 
-                                <div class="col-lg-12">
+                                    </div>
+
+
+                        <div class="col-lg-12">
                                     {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                                     {{ Form::reset('Reset Button', array('class' => 'btn btn-warning')) }}
                                 </div>

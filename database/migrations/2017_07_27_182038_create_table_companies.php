@@ -12,7 +12,7 @@ class CreateTableCompanies extends Migration
             $table->increments('id');
             $table->string('name', 255);
             $table->string('tax_number');
-            $table->string('tags', 255);
+            $table->integer('phone');
             $table->string('city', 255);
             $table->string('billing_address', 255);
             $table->string('state', 255);

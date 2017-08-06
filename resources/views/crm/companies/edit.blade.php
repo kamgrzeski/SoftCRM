@@ -23,12 +23,6 @@
                                 {{ Form::label('name', 'Name') }}
                                 {{ Form::text('name', null, array('class' => 'form-control')) }}
                             </div>
-
-                            <div class="form-group">
-                                {{ Form::label('tags', 'Tags') }}
-                                {{ Form::text('tags', null, array('class' => 'form-control')) }}
-                            </div>
-
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">

@@ -61,8 +61,8 @@
                                     <td>{{ $companies->tax_number }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Tags</th>
-                                    <td>{{ $companies->tags }}</td>
+                                    <th>Phone</th>
+                                    <td>{{ $companies->phone }}</td>
                                 </tr>
                                 <tr>
                                     <th>City</th>

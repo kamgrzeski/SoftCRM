@@ -18,7 +18,7 @@ class Companies extends Model
             [
                 'name' => $allInputs['name'],
                 'tax_number' => $allInputs['tax_number'],
-                'tags' => $allInputs['tags'],
+                'phone' => $allInputs['phone'],
                 'city' => $allInputs['city'],
                 'billing_address' => $allInputs['billing_address'],
                 'state' => $allInputs['state'],
@@ -39,7 +39,7 @@ class Companies extends Model
             ->update([
                 'name' => $allInputs['name'],
                 'tax_number' => $allInputs['tax_number'],
-                'tags' => $allInputs['tags'],
+                'phone' => $allInputs['phone'],
                 'city' => $allInputs['city'],
                 'billing_address' => $allInputs['billing_address'],
                 'state' => $allInputs['state'],
@@ -63,7 +63,6 @@ class Companies extends Model
                 return [
                     'name' => 'required',
                     'tax_number' => 'required|unique:companies',
-                    'tags' => 'required',
                     'city' => 'required',
                     'billing_address' => 'required',
                     'state' => 'required',
@@ -72,7 +71,7 @@ class Companies extends Model
                     'employees' => 'required',
                     'fax' => 'required',
                     'description' => 'required',
-                    'tags' => 'required',
+                    'phone' => 'required',
                 ];
         }
     }

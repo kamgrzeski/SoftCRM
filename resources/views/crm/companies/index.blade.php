@@ -34,8 +34,8 @@
                             <tr>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Tax number</th>
-                                <th class="text-center">Tags</th>
                                 <th class="text-center">City</th>
+                                <th class="text-center">Phone</th>
                                 <th class="text-center">Active</th>
                                 <th class="text-center">Actions</th>
                             </tr>
@@ -46,7 +46,6 @@
 
                                     <td class="text-center">{{ $value->name }}</td>
                                     <td class="text-center">{{ $value->tax_number }}</td>
-                                    <td class="text-center"><a class="btn btn-default btn-sm">{{ $value->tags }}</a></td>
                                     <td class="text-center">{{ $value->city }}</td>
                                     <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>
 
