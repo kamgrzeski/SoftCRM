@@ -20,8 +20,10 @@
                     {{ session()->get('message_danger') }}
                 </div>
             @endif
-                <a href="{{ URL::to('companies/create') }}"><button type="button" class="btn btn-primary btn-lg active">Add Companies</button></a>
-                <br><br>
+            <a href="{{ URL::to('companies/create') }}">
+                <button type="button" class="btn btn-primary btn-lg active">Add Companies</button>
+            </a>
+            <br><br>
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -33,9 +35,11 @@
                             <thead>
                             <tr>
                                 <th class="text-center">Name</th>
-                                <th class="text-center">Tax number</th>
-                                <th class="text-center">City</th>
                                 <th class="text-center">Phone</th>
+                                <th class="text-center">City</th>
+                                <th class="text-center">Country</th>
+                                <th class="text-center">Employees</th>
+                                <th class="text-center">Tax number</th>
                                 <th class="text-center">Active</th>
                                 <th class="text-center">Actions</th>
                             </tr>
@@ -45,22 +49,31 @@
                                 <tr class="odd gradeX">
 
                                     <td class="text-center">{{ $value->name }}</td>
-                                    <td class="text-center">{{ $value->tax_number }}</td>
+                                    <td class="text-center">{{ $value->phone }}</td>
                                     <td class="text-center">{{ $value->city }}</td>
+                                    <td class="text-center">{{ $value->country }}</td>
+                                    <td class="text-center">{{ $value->employees }}</td>
+                                    <td class="text-center">{{ $value->tax_number }}</td>
                                     <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>
 
                                     <td class="text-right">
-                                        <a class="btn btn-small btn-success" href="{{ URL::to('companies/' . $value->id) }}">More informations</a>
+                                        <a class="btn btn-small btn-success"
+                                           href="{{ URL::to('companies/' . $value->id) }}">More informations</a>
 
-                                        <a class="btn btn-small btn-info" href="{{ URL::to('companies/' . $value->id . '/edit') }}">Edit</a>
+                                        <a class="btn btn-small btn-info"
+                                           href="{{ URL::to('companies/' . $value->id . '/edit') }}">Edit</a>
                                         @if($value->is_active == TRUE)
-                                            <a class="btn btn-small btn-warning" href="{{ URL::to('companies/disable/' . $value->id) }}">Disable</a>
+                                            <a class="btn btn-small btn-warning"
+                                               href="{{ URL::to('companies/disable/' . $value->id) }}">Disable</a>
                                         @else
-                                            <a class="btn btn-small btn-warning" href="{{ URL::to('companies/enable/' . $value->id) }}">Enable</a>
+                                            <a class="btn btn-small btn-warning"
+                                               href="{{ URL::to('companies/enable/' . $value->id) }}">Enable</a>
                                         @endif
                                     </td>
                                 </tr>
                             @endforeach
+                            {!! $companies->render() !!}
+
                             </tbody>
                         </table>
                     </div>

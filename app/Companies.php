@@ -32,6 +32,11 @@ class Companies extends Model
         );
     }
 
+    /**
+     * @param $id
+     * @param $allInputs
+     * @return mixed
+     */
     public static function updateRow($id, $allInputs)
     {
         return DB::table('companies')
@@ -76,17 +81,23 @@ class Companies extends Model
         }
     }
 
-    public static function setActive($id, $activeType) {
-         $query = DB::table('companies')
-             ->where('id', '=', $id)
-             ->update([
-                 'is_active' => $activeType
-             ]);
+    /**
+     * @param $id
+     * @param $activeType
+     * @return bool
+     */
+    public static function setActive($id, $activeType)
+    {
+        $query = DB::table('companies')
+            ->where('id', '=', $id)
+            ->update([
+                'is_active' => $activeType
+            ]);
 
-         if($query) {
-             return TRUE;
-         } else {
-             return FALSE;
-         }
+        if ($query) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 }

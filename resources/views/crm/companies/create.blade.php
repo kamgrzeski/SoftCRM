@@ -22,17 +22,15 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-
                             {{ Form::open(array('url' => 'companies')) }}
 
-                                <div class="form-group">
-                                    {{ Form::label('name', 'Name') }}
-                                    {{ Form::text('name', null, array('class' => 'form-control')) }}
-                                </div>
+                            <div class="form-group">
+                                {{ Form::label('name', 'Name') }}
+                                {{ Form::text('name', null, array('class' => 'form-control')) }}
+                            </div>
 
                             <div class="form-group">
                                 {{ Form::label('tax_number', 'Tax Number') }}
@@ -63,47 +61,46 @@
                                 {{ Form::label('country', 'Country') }}
                                 {{ Form::text('country', null, array('class' => 'form-control')) }}
                             </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ Form::label('postal_code', 'Postal Code') }}
+                                {{ Form::text('postal_code', null, array('class' => 'form-control')) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('employees', 'Employees') }}
+                                {{ Form::text('employees', null, array('class' => 'form-control')) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('fax', 'Fax') }}
+                                {{ Form::text('fax', null, array('class' => 'form-control')) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('description', 'Description') }}
+                                {{ Form::textarea('description', null, array('class' => 'form-control')) }}
+                            </div>
 
                         </div>
-                                    <div class="col-lg-6">
-                                    <div class="form-group">
-                                        {{ Form::label('postal_code', 'Postal Code') }}
-                                        {{ Form::text('postal_code', null, array('class' => 'form-control')) }}
-                                    </div>
-
-                                    <div class="form-group">
-                                        {{ Form::label('employees', 'Employees') }}
-                                        {{ Form::text('employees', null, array('class' => 'form-control')) }}
-                                    </div>
-
-                                    <div class="form-group">
-                                        {{ Form::label('fax', 'Fax') }}
-                                        {{ Form::text('fax', null, array('class' => 'form-control')) }}
-                                    </div>
-
-                                    <div class="form-group">
-                                        {{ Form::label('description', 'Description') }}
-                                        {{ Form::textarea('description', null, array('class' => 'form-control')) }}
-                                    </div>
-
-                                    </div>
-
 
                         <div class="col-lg-12">
-                                    {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
-                                    {{ Form::reset('Reset Button', array('class' => 'btn btn-warning')) }}
-                                </div>
+                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                            {{ Form::reset('Reset Button', array('class' => 'btn btn-warning')) }}
+                        </div>
 
                     {{ Form::close() }}
 
                     <!-- /.row (nested) -->
+                    </div>
+                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel-body -->
+                <!-- /.panel -->
             </div>
-            <!-- /.panel -->
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.col-lg-12 -->
-    </div>
 
 
 @endsection
