@@ -21,12 +21,12 @@ class Companies extends Model
                 'phone' => $allInputs['phone'],
                 'city' => $allInputs['city'],
                 'billing_address' => $allInputs['billing_address'],
-                'state' => $allInputs['state'],
                 'country' => $allInputs['country'],
                 'postal_code' => $allInputs['postal_code'],
                 'employees' => $allInputs['employees'],
                 'fax' => $allInputs['fax'],
                 'description' => $allInputs['description'],
+                'client_id' => $allInputs['client_id'],
                 'is_active' => 1
             ]
         );
@@ -47,12 +47,12 @@ class Companies extends Model
                 'phone' => $allInputs['phone'],
                 'city' => $allInputs['city'],
                 'billing_address' => $allInputs['billing_address'],
-                'state' => $allInputs['state'],
                 'country' => $allInputs['country'],
                 'postal_code' => $allInputs['postal_code'],
                 'employees' => $allInputs['employees'],
                 'fax' => $allInputs['fax'],
                 'description' => $allInputs['description'],
+                'client_id' => $allInputs['client_id'],
                 'is_active' => 1
             ]);
     }
@@ -70,13 +70,13 @@ class Companies extends Model
                     'tax_number' => 'required|unique:companies',
                     'city' => 'required',
                     'billing_address' => 'required',
-                    'state' => 'required',
                     'country' => 'required',
                     'postal_code' => 'required',
                     'employees' => 'required',
                     'fax' => 'required',
                     'description' => 'required',
                     'phone' => 'required',
+                    'client_id' => 'required',
                 ];
         }
     }
@@ -99,5 +99,9 @@ class Companies extends Model
         } else {
             return FALSE;
         }
+    }
+
+    public function client() {
+        return $this->hasOne('Client'); // this matches the Eloquent model
     }
 }

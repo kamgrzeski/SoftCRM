@@ -7,8 +7,9 @@ use App\Http\Controllers\Controller;
 use View;
 use Validator;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\DB;
+use App\Client;
 
 class CompaniesController extends Controller
 {
@@ -29,9 +30,11 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        $companies = Companies::all();
-        $companies = Companies::paginate(2);
-        return View::make('crm.companies.index')->with('companies', $companies);
+        $data = [
+            'companies' => Companies::all(),
+            'companiesPaginate' => Companies::paginate(10)
+        ];
+        return View::make('crm.companies.index')->with($data);
     }
 
     /**
@@ -41,7 +44,8 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        return View::make('crm.companies.create');
+        $clients = Client::pluck('full_name', 'id');
+        return View::make('crm.companies.create', compact('clients'));
     }
 
     /**
@@ -59,9 +63,9 @@ class CompaniesController extends Controller
             return Redirect::to('companies/create')->with('message_danger', $validator->errors());
         } else {
             if (Companies::insertRow($allInputs)) {
-                return Redirect::to('companies')->with('message_success', 'Successfully created the companies!!');
+                return Redirect::to('companies')->with('message_success', 'Z powodzeniem dodano firmę!');
             } else {
-                return Redirect::to('companies')->with('message_success', 'Error with create the companies!!');
+                return Redirect::to('companies')->with('message_success', 'Błąd podczas dodawania firmy!');
             }
         }
     }
@@ -110,9 +114,9 @@ class CompaniesController extends Controller
             return Redirect::to('companies')->with('message_danger', $validator);
         } else {
             if (Companies::updateRow($id, $allInputs)) {
-                return Redirect::to('companies')->with('message_success', 'Successfully updated the companies!!');
+                return Redirect::to('companies')->with('message_success', 'Z powodzeniem zaktualizowano firmę!');
             } else {
-                return Redirect::to('companies')->with('message_success', 'Error with update the companies!!');
+                return Redirect::to('companies')->with('message_success', 'Błąd podczas aktualizowania firmy!');
             }
         }
     }
@@ -128,7 +132,7 @@ class CompaniesController extends Controller
         $companies = Companies::find($id);
         $companies->delete();
 
-        return Redirect::to('companies')->with('message_success', 'Successfully deleted the companies!!');
+        return Redirect::to('companies')->with('message_success', 'Firma została pomyślnie usunięta.');
     }
 
     /**
@@ -140,9 +144,9 @@ class CompaniesController extends Controller
         $companies = Companies::find($id);
 
         if (Companies::setActive($companies->id, TRUE)) {
-            return Redirect::back()->with('message_success', 'Successfully enable the companies!!');
+            return Redirect::back()->with('message_success', 'Firma od teraz jest aktywna.');
         } else {
-            return Redirect::back()->with('message_danger', 'Companies already enabled.');
+            return Redirect::back()->with('message_danger', 'Firma jest już aktywna.');
         }
     }
 
@@ -155,9 +159,9 @@ class CompaniesController extends Controller
         $companies = Companies::find($id);
 
         if (Companies::setActive($companies->id, FALSE)) {
-            return Redirect::back()->with('message_success', 'Successfully disable the companies!!');
+            return Redirect::back()->with('message_success', 'Firma została deaktywowana.');
         } else {
-            return Redirect::back()->with('message_danger', 'Companies already disabled.');
+            return Redirect::back()->with('message_danger', 'Firma jest juz nieaktywna.');
         }
     }
 }

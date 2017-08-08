@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Lista firm')
+@section('caption', 'Lista klientów')
 
-@section('title', 'Lista firm')
+@section('title', 'Lista klientów')
 
 @section('lyric', 'lorem ipsum')
 
@@ -20,61 +20,53 @@
                     <strong>Uwaga!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
-            <a href="{{ URL::to('companies/create') }}">
-                <button type="button" class="btn btn-primary btn-lg active">Dodaj firmę</button>
+            <a href="{{ URL::to('client/create') }}">
+                <button type="button" class="btn btn-primary btn-lg active">Dodaj klienta</button>
             </a>
             <br><br>
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Lista firm
+                    Lista klientów
                 </div>
                 <div class="panel-body">
                     <div class="table">
                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <thead>
                             <tr>
-                                <th class="text-center">Nazwa</th>
+                                <th class="text-center">Imię i nazwisko</th>
                                 <th class="text-center">Telefon</th>
-                                <th class="text-center">Miasto</th>
-                                <th class="text-center">Państwo</th>
-                                <th class="text-center">Liczba pracowników</th>
-                                <th class="text-center">NIP</th>
-                                <th class="text-center">Klient</th>
+                                <th class="text-center">Email</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Akcja</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($companies as $key => $value)
+                            @foreach($client as $key => $value)
                                 <tr class="odd gradeX">
 
-                                    <td class="text-center">{{ $value->name }}</td>
+                                    <td class="text-center">{{ $value->full_name }}</td>
                                     <td class="text-center">{{ $value->phone }}</td>
-                                    <td class="text-center">{{ $value->city }}</td>
-                                    <td class="text-center">{{ $value->country }}</td>
-                                    <td class="text-center">{{ $value->employees }}</td>
-                                    <td class="text-center">{{ $value->tax_number }}</td>
-                                    <td class="text-center">{{ $value->client_id }}</td>
+                                    <td class="text-center">{{ $value->email }}</td>
                                     <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>
 
                                     <td class="text-right">
                                         <a class="btn btn-small btn-success"
-                                           href="{{ URL::to('companies/' . $value->id) }}">Więcej informacji</a>
+                                           href="{{ URL::to('client/' . $value->id) }}">Więcej informacji</a>
 
                                         <a class="btn btn-small btn-info"
-                                           href="{{ URL::to('companies/' . $value->id . '/edit') }}">Edytuj</a>
+                                           href="{{ URL::to('client/' . $value->id . '/edit') }}">Edytuj</a>
                                         @if($value->is_active == TRUE)
                                             <a class="btn btn-small btn-warning"
-                                               href="{{ URL::to('companies/disable/' . $value->id) }}">Deaktywuj</a>
+                                               href="{{ URL::to('client/disable/' . $value->id) }}">Deaktywuj</a>
                                         @else
                                             <a class="btn btn-small btn-warning"
-                                               href="{{ URL::to('companies/enable/' . $value->id) }}">Aktywuj</a>
+                                               href="{{ URL::to('client/enable/' . $value->id) }}">Aktywuj</a>
                                         @endif
                                     </td>
                                 </tr>
                             @endforeach
-                            {!! $companiesPaginate->render() !!}
+                            {!! $clientPaginate->render() !!}
                             </tbody>
                         </table>
                     </div>
