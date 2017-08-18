@@ -57,39 +57,35 @@
                             <table class="table table-striped table-bordered">
                                 <tbody class="text-right">
                                 <tr>
-                                    <th>Name</th>
+                                    <th>Nazwa</th>
                                     <td>{{ $companies->name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Tax number</th>
+                                    <th>NIP</th>
                                     <td>{{ $companies->tax_number }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Phone</th>
+                                    <th>Telefon</th>
                                     <td>{{ $companies->phone }}</td>
                                 </tr>
                                 <tr>
-                                    <th>City</th>
+                                    <th>Miasto</th>
                                     <td>{{ $companies->city }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Billing Address</th>
+                                    <th>Adres</th>
                                     <td>{{ $companies->billing_address }}</td>
                                 </tr>
                                 <tr>
-                                    <th>State</th>
-                                    <td>{{ $companies->state }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Country</th>
+                                    <th>Państwo</th>
                                     <td>{{ $companies->country }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Postal Code</th>
+                                    <th>Kod pocztowy</th>
                                     <td>{{ $companies->postal_code }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Employees</th>
+                                    <th>Liczba pracowników</th>
                                     <td>{{ $companies->employees }}</td>
                                 </tr>
                                 <tr>
@@ -97,11 +93,11 @@
                                     <td>{{ $companies->fax }}</td>
                                 </tr>
                                 <tr height="100px">
-                                    <th>Description</th>
+                                    <th>Opis firmy</th>
                                     <td>{{ $companies->description }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Active</th>
+                                    <th>Status</th>
                                     <td>{{ $companies->is_active ? 'Yes' : 'No' }}</td>
                                 </tr>
                                 </tbody>

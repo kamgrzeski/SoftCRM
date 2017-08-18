@@ -25,6 +25,12 @@ Route::get('/companies/enable/{id}', 'CRM\CompaniesController@enable')->name('en
 Route::get('/companies/disable/{id}', 'CRM\CompaniesController@disable')->name('disable');
 Route::resource('companies', 'CRM\CompaniesController');
 
+/* Deals */
+Route::get('/deals/enable/{id}', 'CRM\DealsController@enable')->name('enable');
+Route::get('/deals/disable/{id}', 'CRM\DealsController@disable')->name('disable');
+Route::resource('deals', 'CRM\DealsController');
+
+
 Route::get('/home', 'DashboardController@index')->name('home');
 Route::get('/settings', 'CRM\SettingsController@index')->name('settings');
 Route::get('/', 'DashboardController@index');

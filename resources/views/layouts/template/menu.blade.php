@@ -8,7 +8,7 @@
                 <a class="active-menu" href="#"><i class="fa fa-dashboard"></i>System<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ route('home') }}">Panel główno</a>
+                        <a href="{{ route('home') }}">Panel główny</a>
                         <a href="#">Ustawienia</a>
                     </li>
                 </ul>

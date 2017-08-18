@@ -1,10 +1,10 @@
 @extends('layouts.base')
 
-@section('caption', 'Show company')
+@section('caption', 'Informacje o kliencie')
 
-@section('title', 'show company')
+@section('title', 'Informacje o kliencie')
 
-@section('lyric', 'show company')
+@section('lyric', 'Informacje o kliencie')
 
 @section('content')
     <div class="row">
@@ -70,7 +70,7 @@
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $client->is_active }}</td>
+                                    <td>{{ $client->is_active ? 'Yes' : 'No' }}</td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -101,7 +101,8 @@ class Companies extends Model
         }
     }
 
-    public function client() {
-        return $this->hasOne('Client'); // this matches the Eloquent model
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
     }
 }

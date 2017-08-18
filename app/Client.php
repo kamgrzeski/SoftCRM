@@ -75,4 +75,9 @@ class Client extends Model
             return FALSE;
         }
     }
+
+    public function companies()
+    {
+        return $this->hasOne(Companies::class);
+    }
 }

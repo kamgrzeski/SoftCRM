@@ -55,7 +55,9 @@
                                     <td class="text-center">{{ $value->country }}</td>
                                     <td class="text-center">{{ $value->employees }}</td>
                                     <td class="text-center">{{ $value->tax_number }}</td>
-                                    <td class="text-center">{{ $value->client_id }}</td>
+                                    <td class="text-center">
+                                        <a href="{{ URL::to('client/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
+                                    </td>
                                     <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>
 
                                     <td class="text-right">
