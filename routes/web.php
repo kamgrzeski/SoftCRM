@@ -30,6 +30,11 @@ Route::get('/deals/enable/{id}', 'CRM\DealsController@enable')->name('enable');
 Route::get('/deals/disable/{id}', 'CRM\DealsController@disable')->name('disable');
 Route::resource('deals', 'CRM\DealsController');
 
+/* Employees */
+Route::get('/employees/enable/{id}', 'CRM\EmployeesController@enable')->name('enable');
+Route::get('/employees/disable/{id}', 'CRM\EmployeesController@disable')->name('disable');
+Route::resource('employees', 'CRM\EmployeesController');
+
 
 Route::get('/home', 'DashboardController@index')->name('home');
 Route::get('/settings', 'CRM\SettingsController@index')->name('settings');

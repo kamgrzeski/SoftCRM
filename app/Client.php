@@ -76,6 +76,9 @@ class Client extends Model
         }
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function companies()
     {
         return $this->hasMany(Companies::class);

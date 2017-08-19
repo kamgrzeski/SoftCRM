@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Employees;
 use App\Http\Controllers\Controller;
 use App\Client;
 use View;
@@ -78,11 +79,14 @@ class ClientController extends Controller
     {
         $clients = Client::find($id);
         $companies = Companies::with('client')->get();
+        $employees = Employees::with('companies')->get();
 
         return View::make('crm.client.show')
             ->with([
                 'clients' => $clients,
-                'companies' => $companies]);
+                'companies' => $companies,
+                'employees' => $employees
+            ]);
     }
 
     /**

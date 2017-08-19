@@ -79,6 +79,9 @@ class Deals extends Model
         }
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function companies()
     {
         return $this->belongsTo(Companies::class);

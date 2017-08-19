@@ -29,10 +29,10 @@
                         <li class="active"><a href="#home" data-toggle="tab">Podstawowe informacje</a>
                         </li>
                         <li class=""><a href="#profile" data-toggle="tab">Przypisane firmy <span
-                                        class="badge badge-warning">{{ count($clients->companies) }}</span></a>
+                                        class="badge badge-warning">{{ count($companies) }}</span></a>
                         </li>
                         <li class=""><a href="#messages" data-toggle="tab">Przypisani pracownicy <span
-                                        class="badge badge-warning">0</span></a>
+                                        class="badge badge-warning">{{ count($employees) }}</span></a>
                         </li>
                         <div class="text-right">
                             {{ Form::open(array('url' => 'client/' . $clients->id, 'class' => 'pull-right')) }}
@@ -104,13 +104,34 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="messages">
-                            <h4>Messages Tab</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum.</p>
+                            <h4>Lista pracowników</h4>
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                <tr>
+                                    <th>Imie i nazwisko</th>
+                                    <th>Telefon</th>
+                                    <th>Email</th>
+                                    <th>Stanowisko</th>
+                                    <th>Akcja</th>
+                                </tr>
+                                </thead>
+                                @foreach($employees as $employees_relation)
+                                    <tbody>
+                                    <tr class="odd gradeX">
+                                        <td>{{ $employees_relation->full_name }}</td>
+                                        <td>{{ $employees_relation->phone }}</td>
+                                        <td>{{ $employees_relation->email }}</td>
+                                        <td>{{ $employees_relation->job }}</td>
+                                        <td>
+                                            {{ Form::open(array('url' => 'employees/' . $employees_relation->id, 'class' => 'pull-right')) }}
+                                            {{ Form::hidden('_method', 'DELETE') }}
+                                            {{ Form::submit('Usuń', array('class' => 'btn btn-danger btn-sm')) }}
+                                            {{ Form::close() }}
+                                        </td>
+                                        @endforeach
+                                    </tr>
+                                    </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
