@@ -18,6 +18,7 @@ class Deals extends Model
                 'name' => $allInputs['name'],
                 'start_time' => $allInputs['start_time'],
                 'end_time' => $allInputs['end_time'],
+                'companies_id' => $allInputs['companies_id'],
                 'is_active' => 1
             ]
         );
@@ -36,6 +37,7 @@ class Deals extends Model
                 'name' => $allInputs['name'],
                 'start_time' => $allInputs['start_time'],
                 'end_time' => $allInputs['end_time'],
+                'companies_id' => $allInputs['companies_id'],
                 'is_active' => 1
             ]);
     }
@@ -52,6 +54,7 @@ class Deals extends Model
                     'name' => 'required',
                     'start_time' => 'required',
                     'end_time' => 'required',
+                    'companies_id' => 'required',
                 ];
         }
     }
@@ -74,5 +77,10 @@ class Deals extends Model
         } else {
             return FALSE;
         }
+    }
+
+    public function companies()
+    {
+        return $this->belongsTo(Companies::class);
     }
 }

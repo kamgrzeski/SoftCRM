@@ -12,6 +12,8 @@ class CreateTableDeals extends Migration
             $table->string('name');
             $table->string('start_time');
             $table->string('end_time');
+            $table->unsignedInteger('companies_id');
+            $table->foreign('companies_id')->references('id')->on('companies');
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
         });

@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class Companies extends Model
 {
-
     /**
      * @param $allInputs
      * @return mixed
@@ -67,15 +66,15 @@ class Companies extends Model
             case 'STORE':
                 return [
                     'name' => 'required',
-                    'tax_number' => 'required|unique:companies',
+                    'tax_number' => 'required|unique:companies|integer',
                     'city' => 'required',
                     'billing_address' => 'required',
                     'country' => 'required',
                     'postal_code' => 'required',
-                    'employees' => 'required',
+                    'employees' => 'required|integer',
                     'fax' => 'required',
                     'description' => 'required',
-                    'phone' => 'required',
+                    'phone' => 'required|integer',
                     'client_id' => 'required',
                 ];
         }
@@ -104,5 +103,10 @@ class Companies extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function deals()
+    {
+        return $this->belongsTo(Deals::class);
     }
 }

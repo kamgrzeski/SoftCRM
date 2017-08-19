@@ -8,7 +8,6 @@ use View;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\DB;
 use App\Client;
 
 class CompaniesController extends Controller
@@ -65,7 +64,7 @@ class CompaniesController extends Controller
             if (Companies::insertRow($allInputs)) {
                 return Redirect::to('companies')->with('message_success', 'Z powodzeniem dodano firmę!');
             } else {
-                return Redirect::to('companies')->with('message_success', 'Błąd podczas dodawania firmy!');
+                return Redirect::back()->with('message_success', 'Błąd podczas dodawania firmy!');
             }
         }
     }
@@ -79,7 +78,6 @@ class CompaniesController extends Controller
     public function show($id)
     {
         $companies = Companies::find($id);
-
         return View::make('crm.companies.show')
             ->with('companies', $companies);
     }
@@ -116,7 +114,7 @@ class CompaniesController extends Controller
             if (Companies::updateRow($id, $allInputs)) {
                 return Redirect::to('companies')->with('message_success', 'Z powodzeniem zaktualizowano firmę!');
             } else {
-                return Redirect::to('companies')->with('message_success', 'Błąd podczas aktualizowania firmy!');
+                return Redirect::back()->with('message_success', 'Błąd podczas aktualizowania firmy!');
             }
         }
     }
@@ -144,7 +142,7 @@ class CompaniesController extends Controller
         $companies = Companies::find($id);
 
         if (Companies::setActive($companies->id, TRUE)) {
-            return Redirect::back()->with('message_success', 'Firma od teraz jest aktywna.');
+            return Redirect::to('companies')->with('message_success', 'Firma od teraz jest aktywna.');
         } else {
             return Redirect::back()->with('message_danger', 'Firma jest już aktywna.');
         }
@@ -159,7 +157,7 @@ class CompaniesController extends Controller
         $companies = Companies::find($id);
 
         if (Companies::setActive($companies->id, FALSE)) {
-            return Redirect::back()->with('message_success', 'Firma została deaktywowana.');
+            return Redirect::to('companies')->with('message_success', 'Firma została deaktywowana.');
         } else {
             return Redirect::back()->with('message_danger', 'Firma jest juz nieaktywna.');
         }

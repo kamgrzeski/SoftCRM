@@ -8,6 +8,7 @@ use View;
 use Illuminate\Support\Facades\Input;
 use Validator;
 use Illuminate\Support\Facades\Redirect;
+use App\Companies;
 
 class ClientController extends Controller
 {
@@ -62,7 +63,7 @@ class ClientController extends Controller
             if (Client::insertRow($allInputs)) {
                 return Redirect::to('client')->with('message_success', 'Z powodzeniem dodano klienta!');
             } else {
-                return Redirect::to('client')->with('message_success', 'Błąd podczas dodawania klienta!');
+                return Redirect::back()->with('message_success', 'Błąd podczas dodawania klienta!');
             }
         }
     }
@@ -76,9 +77,12 @@ class ClientController extends Controller
     public function show($id)
     {
         $clients = Client::find($id);
+        $companies = Companies::with('client')->get();
 
         return View::make('crm.client.show')
-            ->with('client', $clients);
+            ->with([
+                'clients' => $clients,
+                'companies' => $companies]);
     }
 
     /**
@@ -108,12 +112,12 @@ class ClientController extends Controller
         $validator = Validator::make($allInputs, Client::getRules('STORE'));
 
         if ($validator->fails()) {
-            return Redirect::to('client')->with('message_danger', $validator);
+            return Redirect::back()->with('message_danger', $validator);
         } else {
             if (Client::updateRow($id, $allInputs)) {
-                return Redirect::to('client')->with('message_success', 'Z powodzeniem zaktualizowano klienta!');
+                return Redirect::back()->with('message_success', 'Z powodzeniem zaktualizowano klienta!');
             } else {
-                return Redirect::to('client')->with('message_success', 'Błąd podczas aktualizowania klienta!');
+                return Redirect::back()->with('message_success', 'Błąd podczas aktualizowania klienta!');
             }
         }
     }

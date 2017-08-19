@@ -49,9 +49,9 @@ class Client extends Model
         switch ($rulesType) {
             case 'STORE':
                 return [
-                    'full_name' => 'required',
-                    'phone' => 'required',
-                    'email' => 'required',
+                    'full_name' => 'required|string',
+                    'phone' => 'required|integer',
+                    'email' => 'required|email',
                 ];
         }
     }
@@ -78,6 +78,6 @@ class Client extends Model
 
     public function companies()
     {
-        return $this->hasOne(Companies::class);
+        return $this->hasMany(Companies::class);
     }
 }

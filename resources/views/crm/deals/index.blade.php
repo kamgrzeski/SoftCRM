@@ -35,6 +35,7 @@
                             <thead>
                             <tr>
                                 <th class="text-center">Nazwa</th>
+                                <th class="text-center">Umowa między firmą</th>
                                 <th class="text-center">Rozpoczęcie umowy</th>
                                 <th class="text-center">Zakończenie umowy</th>
                                 <th class="text-center">Status</th>
@@ -42,10 +43,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($client as $key => $value)
+                            @foreach($deals as $key => $value)
                                 <tr class="odd gradeX">
 
                                     <td class="text-center">{{ $value->name }}</td>
+                                    <td class="text-center"><a href="{{ URL::to('companies/' . $value->companies->id) }}">{{ $value->companies->name }}</a></td>
                                     <td class="text-center">{{ $value->start_time }}</td>
                                     <td class="text-center">{{ $value->end_time }}</td>
                                     <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>

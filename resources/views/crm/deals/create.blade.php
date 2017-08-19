@@ -45,6 +45,12 @@
                                 {{ Form::date('end_time', null, array('class' => 'form-control')) }}
                             </div>
 
+                            <div class="form-group">
+                                {{ Form::label('companies_id', 'Umowa między firmą:') }}
+                                {{ Form::select('companies_id', $deals, null, ['class' => 'form-control'])  }}
+
+                            </div>
+
                         </div>
 
                         <div class="col-lg-12">

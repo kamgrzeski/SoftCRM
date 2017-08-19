@@ -20,10 +20,8 @@ class CreateTableCompanies extends Migration
             $table->string('fax');
             $table->string('description', 255);
             $table->boolean('is_active')->nullable()->default(1);
-
             $table->unsignedInteger('client_id');
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade')->onUpdate('cascade');
-
+            $table->foreign('client_id')->references('id')->on('clients');
             $table->timestamps();
         });
     }

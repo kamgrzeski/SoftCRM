@@ -28,11 +28,11 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#home" data-toggle="tab">Podstawowe informacje</a>
                         </li>
-                        <li class=""><a href="#profile" data-toggle="tab">Faktury <span
-                                        class="badge badge-warning">0</span></a>
+                        <li class=""><a href="#profile" data-toggle="tab">Firma <span
+                                        class="badge badge-warning">{{ count($deals->companies) }}</span></a>
                         </li>
-                        <li class=""><a href="#messages" data-toggle="tab">Pracownicy <span
-                                        class="badge badge-warning">0</span></a>
+                        <li class="""><a href="#messages" data-toggle="tab">Warunki umowy <span
+                                        class="badge badge-danger">BARDZO WAŻNE</span></a>
                         </li>
                         <div class="text-right">
                             {{ Form::open(array('url' => 'client/' . $deals->id, 'class' => 'pull-right')) }}
@@ -61,6 +61,12 @@
                                     <td>{{ $deals->name }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Umowa między firmą</th>
+                                    <td>
+                                        <a href="{{ URL::to('companies/' . $deals->companies->id) }}">{{ $deals->companies->name }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>Data rozpoczenia umowy</th>
                                     <td>{{ $deals->start_time }}</td>
                                 </tr>
@@ -76,16 +82,58 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="profile">
-                            <h4>Profile Tab</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum.</p>
+                            <p> <table class="table table-striped table-bordered">
+                                <h4>Pełne informacje o <strong>{{ $deals->companies->name }}</strong></h4><br>
+                                <tbody class="text-right">
+                                <tr>
+                                    <th>Nazwa</th>
+                                    <td>{{ $deals->companies->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>NIP</th>
+                                    <td>{{ $deals->companies->tax_number }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Telefon</th>
+                                    <td>{{ $deals->companies->phone }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Miasto</th>
+                                    <td>{{ $deals->companies->city }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Adres</th>
+                                    <td>{{ $deals->companies->billing_address }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Państwo</th>
+                                    <td>{{ $deals->companies->country }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Kod pocztowy</th>
+                                    <td>{{ $deals->companies->postal_code }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Liczba pracowników</th>
+                                    <td>{{ $deals->companies->employees }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Fax</th>
+                                    <td>{{ $deals->companies->fax }}</td>
+                                </tr>
+                                <tr height="100px">
+                                    <th>Opis firmy</th>
+                                    <td>{{ $deals->companies->description }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td>{{ $deals->companies->is_active ? 'Yes' : 'No' }}</td>
+                                </tr>
+                                </tbody>
+                            </table></p>
                         </div>
                         <div class="tab-pane fade" id="messages">
-                            <h4>Messages Tab</h4>
+                            <h4>Warunki umowy</h4>
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
                                 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
                                 exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure

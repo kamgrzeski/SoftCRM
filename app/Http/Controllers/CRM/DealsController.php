@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Companies;
 use App\Deals;
 use App\Http\Controllers\Controller;
 use Validator;
@@ -19,7 +20,7 @@ class DealsController extends Controller
     public function index()
     {
         $data = [
-            'client' => Deals::all(),
+            'deals' => Deals::all(),
             'dealsPaginate' => Deals::paginate(10)
         ];
         return View::make('crm.deals.index')->with($data);
@@ -32,7 +33,8 @@ class DealsController extends Controller
      */
     public function create()
     {
-        return View::make('crm.deals.create');
+        $deals = Companies::pluck('tax_number', 'id');
+        return View::make('crm.deals.create', compact('deals'));
     }
 
     /**
@@ -52,7 +54,7 @@ class DealsController extends Controller
             if (Deals::insertRow($allInputs)) {
                 return Redirect::to('deals')->with('message_success', 'Z powodzeniem dodano umowę!');
             } else {
-                return Redirect::to('deals')->with('message_success', 'Błąd podczas dodawania umowę!');
+                return Redirect::back()->with('message_success', 'Błąd podczas dodawania umowę!');
             }
         }
     }
@@ -98,12 +100,12 @@ class DealsController extends Controller
         $validator = Validator::make($allInputs, Deals::getRules('STORE'));
 
         if ($validator->fails()) {
-            return Redirect::to('deals')->with('message_danger', $validator);
+            return Redirect::back()->with('message_danger', $validator);
         } else {
             if (Deals::updateRow($id, $allInputs)) {
-                return Redirect::to('deals')->with('message_success', 'Z powodzeniem zaktualizowano umowę!');
+                return Redirect::back()->with('message_success', 'Z powodzeniem zaktualizowano umowę!');
             } else {
-                return Redirect::to('deals')->with('message_success', 'Błąd podczas aktualizowania umowy!');
+                return Redirect::back()->with('message_success', 'Błąd podczas aktualizowania umowy!');
             }
         }
     }
@@ -119,7 +121,7 @@ class DealsController extends Controller
         $clients = Deals::find($id);
         $clients->delete();
 
-        return Redirect::to('deals')->with('message_success', 'Umowa została pomyślnie usunięta.');
+        return Redirect::back()->with('message_success', 'Umowa została pomyślnie usunięta.');
     }
 
     /**
