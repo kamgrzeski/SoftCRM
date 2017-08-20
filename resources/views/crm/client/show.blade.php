@@ -29,10 +29,10 @@
                         <li class="active"><a href="#home" data-toggle="tab">Podstawowe informacje</a>
                         </li>
                         <li class=""><a href="#profile" data-toggle="tab">Przypisane firmy <span
-                                        class="badge badge-warning">{{ count($companies) }}</span></a>
+                                        class="badge badge-warning">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
                         </li>
                         <li class=""><a href="#messages" data-toggle="tab">Przypisani pracownicy <span
-                                        class="badge badge-warning">{{ count($employees) }}</span></a>
+                                        class="badge badge-warning">{{ \App\Employees::countEmployees() ? : 0 }}</span></a>
                         </li>
                         <div class="text-right">
                             {{ Form::open(array('url' => 'client/' . $clients->id, 'class' => 'pull-right')) }}
@@ -57,7 +57,7 @@
                             <table class="table table-striped table-bordered">
                                 <tbody class="text-right">
                                 <tr>
-                                    <th>Imie i nazwisko</th>
+                                    <th>Nazwa</th>
                                     <td>{{ $clients->full_name }}</td>
                                 </tr>
                                 <tr>
@@ -108,7 +108,7 @@
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th>Imie i nazwisko</th>
+                                    <th>Imię i nazwisko</th>
                                     <th>Telefon</th>
                                     <th>Email</th>
                                     <th>Stanowisko</th>

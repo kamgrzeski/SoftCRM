@@ -36,7 +36,7 @@ Route::get('/employees/disable/{id}', 'CRM\EmployeesController@disable')->name('
 Route::resource('employees', 'CRM\EmployeesController');
 
 
-Route::get('/home', 'DashboardController@index')->name('home');
+Route::get('/', 'DashboardController@index');
 Route::get('/settings', 'CRM\SettingsController@index')->name('settings');
 Route::get('/', 'DashboardController@index');
 Route::get('/accounts', 'CRM\AccountsController@index')->name('accounts');

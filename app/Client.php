@@ -77,6 +77,14 @@ class Client extends Model
     }
 
     /**
+     * @return int
+     */
+    public static function countClients()
+    {
+        return count(DB::table('clients')->get());
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function companies()

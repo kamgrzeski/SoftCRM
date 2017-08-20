@@ -86,6 +86,14 @@ class Employees extends Model
     }
 
     /**
+     * @return int
+     */
+    public static function countEmployees()
+    {
+        return count(DB::table('employees')->get());
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function companies()

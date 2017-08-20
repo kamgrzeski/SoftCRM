@@ -101,6 +101,14 @@ class Companies extends Model
     }
 
     /**
+     * @return int
+     */
+    public static function countCompanies()
+    {
+        return count(DB::table('companies')->get());
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function client()

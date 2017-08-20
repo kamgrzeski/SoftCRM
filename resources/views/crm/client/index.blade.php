@@ -34,7 +34,7 @@
                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <thead>
                             <tr>
-                                <th class="text-center">Imię i nazwisko</th>
+                                <th class="text-center">Nazwa</th>
                                 <th class="text-center">Telefon</th>
                                 <th class="text-center">Email</th>
                                 <th class="text-center">Status</th>
