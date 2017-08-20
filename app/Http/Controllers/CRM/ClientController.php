@@ -121,7 +121,7 @@ class ClientController extends Controller
             if (Client::updateRow($id, $allInputs)) {
                 return Redirect::back()->with('message_success', 'Z powodzeniem zaktualizowano klienta!');
             } else {
-                return Redirect::back()->with('message_success', 'Błąd podczas aktualizowania klienta!');
+                return Redirect::back()->with('message_danger', 'Błąd podczas aktualizowania klienta!');
             }
         }
     }

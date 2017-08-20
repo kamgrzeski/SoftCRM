@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Companies;
+use App\Employees;
 use App\Http\Controllers\Controller;
 use View;
 use Validator;
@@ -64,7 +65,7 @@ class CompaniesController extends Controller
             if (Companies::insertRow($allInputs)) {
                 return Redirect::to('companies')->with('message_success', 'Z powodzeniem dodano firmę!');
             } else {
-                return Redirect::back()->with('message_success', 'Błąd podczas dodawania firmy!');
+                return Redirect::back()->with('message_danger', 'Błąd podczas dodawania firmy!');
             }
         }
     }
@@ -78,8 +79,13 @@ class CompaniesController extends Controller
     public function show($id)
     {
         $companies = Companies::find($id);
+        $employees = Employees::with('companies')->get();
+
         return View::make('crm.companies.show')
-            ->with('companies', $companies);
+            ->with([
+                'companies' => $companies,
+                'employees' => $employees
+            ]);
     }
 
     /**

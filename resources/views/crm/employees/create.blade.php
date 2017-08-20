@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Dodaj firmę')
+@section('caption', 'Dodaj pracownika')
 
-@section('title', 'Dodaj firmę')
+@section('title', 'Dodaj pracownika')
 
 @section('lyric', 'lorem ipsum')
 
@@ -49,7 +49,6 @@
                         </div>
 
                         <div class="col-lg-6">
-
                             <div class="form-group">
                                 {{ Form::label('companies_id', 'Firma') }}
                                 {{ Form::select('companies_id', $employees, null, ['class' => 'form-control'])  }}
@@ -59,7 +58,6 @@
                                 {{ Form::label('note', 'Notatnik') }}
                                 {{ Form::textarea('note', null, array('class' => 'form-control')) }}
                             </div>
-
                         </div>
 
                         <div class="col-lg-12">

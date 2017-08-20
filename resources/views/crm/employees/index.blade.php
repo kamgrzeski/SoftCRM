@@ -38,9 +38,9 @@
                                 <th class="text-center">Telefon</th>
                                 <th class="text-center">Email</th>
                                 <th class="text-center">Stanowisko</th>
-                                <th class="text-center">Notatnik</th>
                                 <th class="text-center">Firma</th>
                                 <th class="text-center">Status</th>
+                                <th class="text-center">Notatnik</th>
                                 <th class="text-center">Akcja</th>
                             </tr>
                             </thead>
@@ -52,12 +52,11 @@
                                     <td class="text-center">{{ $value->phone }}</td>
                                     <td class="text-center">{{ $value->email }}</td>
                                     <td class="text-center">{{ $value->job }}</td>
-                                    <td class="text-center">{{ $value->note }}</td>
                                     <td class="text-center">
-                                        <a href="{{ URL::to('employees/' . $value->id) }}">{{ $value->full_name }}</a>
+                                        <a href="{{ URL::to('companies/' . $value->companies->id) }}">{{ $value->companies->name }}</a>
                                     </td>
                                     <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>
-
+                                    <td class="text-center">{{ $value->note }}</td>
                                     <td class="text-right">
                                         <a class="btn btn-small btn-info"
                                            href="{{ URL::to('employees/' . $value->id . '/edit') }}">Edytuj</a>

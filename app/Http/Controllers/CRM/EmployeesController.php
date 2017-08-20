@@ -91,9 +91,13 @@ class EmployeesController extends Controller
     public function edit($id)
     {
         $employees = Employees::find($id);
+        $companies = Companies::pluck('name', 'id');
 
         return View::make('crm.employees.edit')
-            ->with('employees', $employees);
+            ->with([
+                'employees' => $employees,
+                'companies' => $companies
+            ]);
     }
 
     /**
@@ -114,7 +118,7 @@ class EmployeesController extends Controller
             if (Employees::updateRow($id, $allInputs)) {
                 return Redirect::to('employees')->with('message_success', 'Z powodzeniem zaktualizowano pracownika!');
             } else {
-                return Redirect::back()->with('message_success', 'Błąd podczas aktualizowania pracownika!');
+                return Redirect::back()->with('message_danger', 'Błąd podczas aktualizowania pracownika!');
             }
         }
     }
