@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Deals extends Model
 {
@@ -13,7 +12,7 @@ class Deals extends Model
      */
     public static function insertRow($allInputs)
     {
-        return DB::table('deals')->insert(
+        return Deals::insert(
             [
                 'name' => $allInputs['name'],
                 'start_time' => $allInputs['start_time'],
@@ -31,9 +30,8 @@ class Deals extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return DB::table('deals')
-            ->where('id', '=', $id)
-            ->update([
+        return Deals::where('id', '=', $id)->update(
+            [
                 'name' => $allInputs['name'],
                 'start_time' => $allInputs['start_time'],
                 'end_time' => $allInputs['end_time'],
@@ -66,9 +64,8 @@ class Deals extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $query = DB::table('deals')
-            ->where('id', '=', $id)
-            ->update([
+        $query = Deals::where('id', '=', $id)->update(
+            [
                 'is_active' => $activeType
             ]);
 

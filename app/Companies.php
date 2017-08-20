@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Companies extends Model
 {
@@ -13,7 +12,7 @@ class Companies extends Model
      */
     public static function insertRow($allInputs)
     {
-        return DB::table('companies')->insert(
+        return Companies::insert(
             [
                 'name' => $allInputs['name'],
                 'tax_number' => $allInputs['tax_number'],
@@ -38,9 +37,8 @@ class Companies extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return DB::table('companies')
-            ->where('id', '=', $id)
-            ->update([
+        return Companies::where('id', '=', $id)->update(
+            [
                 'name' => $allInputs['name'],
                 'tax_number' => $allInputs['tax_number'],
                 'phone' => $allInputs['phone'],
@@ -87,9 +85,8 @@ class Companies extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $query = DB::table('companies')
-            ->where('id', '=', $id)
-            ->update([
+        $query = Companies::where('id', '=', $id)->update(
+            [
                 'is_active' => $activeType
             ]);
 
@@ -105,7 +102,7 @@ class Companies extends Model
      */
     public static function countCompanies()
     {
-        return count(DB::table('companies')->get());
+        return count(Companies::get());
     }
 
     /**

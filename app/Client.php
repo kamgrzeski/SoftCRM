@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Client extends Model
 {
@@ -13,7 +12,7 @@ class Client extends Model
      */
     public static function insertRow($allInputs)
     {
-        return DB::table('clients')->insert(
+        return Client::insert(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
@@ -30,9 +29,8 @@ class Client extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return DB::table('clients')
-            ->where('id', '=', $id)
-            ->update([
+        return Client::where('id', '=', $id)->update(
+            [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
                 'email' => $allInputs['email'],
@@ -63,11 +61,7 @@ class Client extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $query = DB::table('clients')
-            ->where('id', '=', $id)
-            ->update([
-                'is_active' => $activeType
-            ]);
+        $query = Client::where('id', '=', $id)->update(['is_active' => $activeType]);
 
         if ($query) {
             return TRUE;
@@ -81,7 +75,7 @@ class Client extends Model
      */
     public static function countClients()
     {
-        return count(DB::table('clients')->get());
+        return count(Client::get());
     }
 
     /**

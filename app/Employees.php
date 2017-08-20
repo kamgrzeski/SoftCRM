@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Employees extends Model
 {
@@ -13,7 +12,7 @@ class Employees extends Model
      */
     public static function insertRow($allInputs)
     {
-        return DB::table('employees')->insert(
+        return Employees::insert(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
@@ -33,9 +32,8 @@ class Employees extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return DB::table('employees')
-            ->where('id', '=', $id)
-            ->update([
+        return Employees::where('id', '=', $id)->update(
+            [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
                 'email' => $allInputs['email'],
@@ -72,9 +70,8 @@ class Employees extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $query = DB::table('employees')
-            ->where('id', '=', $id)
-            ->update([
+        $query = Employees::where('id', '=', $id)->update(
+            [
                 'is_active' => $activeType
             ]);
 
@@ -90,7 +87,7 @@ class Employees extends Model
      */
     public static function countEmployees()
     {
-        return count(DB::table('employees')->get());
+        return count(Employees::get());
     }
 
     /**
