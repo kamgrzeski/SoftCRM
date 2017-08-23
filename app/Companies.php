@@ -21,7 +21,7 @@ class Companies extends Model
                 'billing_address' => $allInputs['billing_address'],
                 'country' => $allInputs['country'],
                 'postal_code' => $allInputs['postal_code'],
-                'employees' => $allInputs['employees'],
+                'employees_size' => $allInputs['employees_size'],
                 'fax' => $allInputs['fax'],
                 'description' => $allInputs['description'],
                 'client_id' => $allInputs['client_id'],
@@ -46,7 +46,7 @@ class Companies extends Model
                 'billing_address' => $allInputs['billing_address'],
                 'country' => $allInputs['country'],
                 'postal_code' => $allInputs['postal_code'],
-                'employees' => $allInputs['employees'],
+                'employees_size' => $allInputs['employees_size'],
                 'fax' => $allInputs['fax'],
                 'description' => $allInputs['description'],
                 'client_id' => $allInputs['client_id'],
@@ -69,7 +69,7 @@ class Companies extends Model
                     'billing_address' => 'required',
                     'country' => 'required',
                     'postal_code' => 'required',
-                    'employees' => 'required|integer',
+                    'employees_size' => 'required|integer',
                     'fax' => 'required',
                     'description' => 'required',
                     'phone' => 'required|integer',
@@ -122,11 +122,10 @@ class Companies extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function employees()
+    public function employees_size()
     {
-        return $this->hasMany(Employees::class);
-
+        return $this->belongsTo(employees_size::class);
     }
 }

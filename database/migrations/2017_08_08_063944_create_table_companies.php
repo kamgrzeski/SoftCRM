@@ -16,7 +16,7 @@ class CreateTableCompanies extends Migration
             $table->string('billing_address', 255);
             $table->string('country', 255);
             $table->string('postal_code', 64);
-            $table->string('employees', 255);
+            $table->string('employees_size', 255);
             $table->string('fax');
             $table->string('description', 255);
             $table->boolean('is_active')->nullable()->default(1);

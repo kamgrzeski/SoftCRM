@@ -29,10 +29,10 @@
                         <li class="active"><a href="#home" data-toggle="tab">Podstawowe informacje</a>
                         </li>
                         <li class=""><a href="#profile" data-toggle="tab">Przypisane firmy <span
-                                        class="badge badge-warning">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
+                                        class="badge badge-warning">{{ count($clients->companies) }}</span></a>
                         </li>
                         <li class=""><a href="#messages" data-toggle="tab">Przypisani pracownicy <span
-                                        class="badge badge-warning">{{ \App\Employees::countEmployees() ? : 0 }}</span></a>
+                                        class="badge badge-warning">{{ count($clients->employees) }}</span></a>
                         </li>
                         <div class="text-right">
                             {{ Form::open(array('url' => 'client/' . $clients->id, 'class' => 'pull-right')) }}
@@ -86,20 +86,20 @@
                                     <th>Akcja</th>
                                 </tr>
                                 </thead>
-                                    @foreach($companies as $companies_relation)
+                                </tr>
+                                @foreach($clients->companies as $companies)
                                     <tbody>
                                     <tr class="odd gradeX">
-                                        <td>{{ $companies_relation->name }}</td>
-                                        <td>{{ $companies_relation->phone }}</td>
-                                        <td>{{ $companies_relation->tax_number }}</td>
+                                        <td>{{ $companies->name }}</td>
+                                        <td>{{ $companies->tax_number }}</td>
+                                        <td>{{ $companies->phone }}</td>
                                         <td>
-                                            {{ Form::open(array('url' => 'companies/' . $companies_relation->id, 'class' => 'pull-right')) }}
+                                            {{ Form::open(array('url' => 'employees/' . $companies->id, 'class' => 'pull-right')) }}
                                             {{ Form::hidden('_method', 'DELETE') }}
                                             {{ Form::submit('Usuń', array('class' => 'btn btn-danger btn-sm')) }}
                                             {{ Form::close() }}
                                         </td>
                                     @endforeach
-                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -115,21 +115,21 @@
                                     <th>Akcja</th>
                                 </tr>
                                 </thead>
-                                @foreach($employees as $employees_relation)
+                                    </tr>
+                                @foreach($clients->employees as $employees)
                                     <tbody>
                                     <tr class="odd gradeX">
-                                        <td>{{ $employees_relation->full_name }}</td>
-                                        <td>{{ $employees_relation->phone }}</td>
-                                        <td>{{ $employees_relation->email }}</td>
-                                        <td>{{ $employees_relation->job }}</td>
+                                        <td>{{ $employees->full_name }}</td>
+                                        <td>{{ $employees->phone }}</td>
+                                        <td>{{ $employees->email }}</td>
+                                        <td>{{ $employees->job }}</td>
                                         <td>
-                                            {{ Form::open(array('url' => 'employees/' . $employees_relation->id, 'class' => 'pull-right')) }}
+                                            {{ Form::open(array('url' => 'employees/' . $employees->id, 'class' => 'pull-right')) }}
                                             {{ Form::hidden('_method', 'DELETE') }}
                                             {{ Form::submit('Usuń', array('class' => 'btn btn-danger btn-sm')) }}
                                             {{ Form::close() }}
                                         </td>
-                                        @endforeach
-                                    </tr>
+                                    @endforeach
                                     </tbody>
                             </table>
                         </div>

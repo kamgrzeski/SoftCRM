@@ -31,9 +31,6 @@
                         <li class=""><a href="#profile" data-toggle="tab">Faktury <span
                                         class="badge badge-warning">0</span></a>
                         </li>
-                        <li class=""><a href="#messages" data-toggle="tab">Pracownicy <span
-                                        class="badge badge-warning">{{ \App\Employees::countEmployees() }}</span></a>
-                        </li>
                         <div class="text-right">
                             {{ Form::open(array('url' => 'companies/' . $companies->id, 'class' => 'pull-right')) }}
                             {{ Form::hidden('_method', 'DELETE') }}
@@ -105,36 +102,6 @@
                         </div>
                         <div class="tab-pane fade" id="profile">
                             <h4>Lorem ipsum</h4>
-                        </div>
-                        <div class="tab-pane fade" id="messages">
-                            <h4>Lista pracowników</h4>
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                                <tr>
-                                    <th>Imię i nazwisko</th>
-                                    <th>Telefon</th>
-                                    <th>Email</th>
-                                    <th>Stanowisko</th>
-                                    <th>Akcja</th>
-                                </tr>
-                                </thead>
-                                @foreach($employees as $employees_relation)
-                                    <tbody>
-                                    <tr class="odd gradeX">
-                                        <td>{{ $employees_relation->full_name }}</td>
-                                        <td>{{ $employees_relation->phone }}</td>
-                                        <td>{{ $employees_relation->email }}</td>
-                                        <td>{{ $employees_relation->job }}</td>
-                                        <td>
-                                            {{ Form::open(array('url' => 'employees/' . $employees_relation->id, 'class' => 'pull-right')) }}
-                                            {{ Form::hidden('_method', 'DELETE') }}
-                                            {{ Form::submit('Usuń', array('class' => 'btn btn-danger btn-sm')) }}
-                                            {{ Form::close() }}
-                                        </td>
-                                        @endforeach
-                                    </tr>
-                                    </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>

@@ -50,8 +50,8 @@
 
                         <div class="col-lg-6">
                             <div class="form-group">
-                                {{ Form::label('companies_id', 'Firma') }}
-                                {{ Form::select('companies_id', $employees, null, ['class' => 'form-control'])  }}
+                                {{ Form::label('client_id', 'Klient') }}
+                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control'])  }}
                             </div>
 
                             <div class="form-group">

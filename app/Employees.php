@@ -19,7 +19,7 @@ class Employees extends Model
                 'email' => $allInputs['email'],
                 'job' => $allInputs['job'],
                 'note' => $allInputs['note'],
-                'companies_id' => $allInputs['companies_id'],
+                'client_id' => $allInputs['client_id'],
                 'is_active' => 1
             ]
         );
@@ -39,7 +39,7 @@ class Employees extends Model
                 'email' => $allInputs['email'],
                 'job' => $allInputs['job'],
                 'note' => $allInputs['note'],
-                'companies_id' => $allInputs['companies_id'],
+                'client_id' => $allInputs['client_id'],
                 'is_active' => 1
             ]);
     }
@@ -58,7 +58,7 @@ class Employees extends Model
                     'email' => 'required',
                     'job' => 'required',
                     'note' => 'required',
-                    'companies_id' => 'required'
+                    'client_id' => 'required'
                 ];
         }
     }
@@ -91,11 +91,28 @@ class Employees extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function companies()
     {
-        return $this->belongsTo(Companies::class);
+        return $this->hasMany(Companies::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function deals()
+    {
+        return $this->belongsTo(Deals::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+
     }
 }
 

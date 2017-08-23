@@ -19,7 +19,7 @@
                     <li>
                         <a href="{{ route('clients') }}">Lista klientów</a>
                         <a href="{{ route('employees') }}">Pracownicy</a>
-                        <a href="{{ route('contacts') }}">Kontakty</a>
+                        <a href="{{ route('contacts') }}">Spotkania</a>
                         <a href="{{ route('deals') }}">Umowy</a>
                         <a href="{{ route('companies') }}">Firmy</a>
                     </li>

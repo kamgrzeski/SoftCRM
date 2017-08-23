@@ -78,14 +78,10 @@ class ClientController extends Controller
     public function show($id)
     {
         $clients = Client::find($id);
-        $companies = Companies::with('client')->get();
-        $employees = Employees::with('companies')->get();
 
         return View::make('crm.client.show')
             ->with([
                 'clients' => $clients,
-                'companies' => $companies,
-                'employees' => $employees
             ]);
     }
 

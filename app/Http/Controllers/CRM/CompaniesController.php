@@ -79,12 +79,10 @@ class CompaniesController extends Controller
     public function show($id)
     {
         $companies = Companies::find($id);
-        $employees = Employees::with('companies')->get();
 
         return View::make('crm.companies.show')
             ->with([
-                'companies' => $companies,
-                'employees' => $employees
+                'companies' => $companies
             ]);
     }
 

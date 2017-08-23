@@ -52,9 +52,7 @@
                                     <td class="text-center">{{ $value->phone }}</td>
                                     <td class="text-center">{{ $value->email }}</td>
                                     <td class="text-center">{{ $value->job }}</td>
-                                    <td class="text-center">
-                                        <a href="{{ URL::to('companies/' . $value->companies->id) }}">{{ $value->companies->name }}</a>
-                                    </td>
+                                    <td class="text-center">{{ $value->client_id }}</td>
                                     <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>
                                     <td class="text-center">{{ $value->note }}</td>
                                     <td class="text-right">

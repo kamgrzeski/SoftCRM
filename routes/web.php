@@ -35,6 +35,9 @@ Route::get('/employees/enable/{id}', 'CRM\EmployeesController@enable')->name('en
 Route::get('/employees/disable/{id}', 'CRM\EmployeesController@disable')->name('disable');
 Route::resource('employees', 'CRM\EmployeesController');
 
+/* Contacts */
+Route::resource('contacts', 'CRM\ContactsController');
+
 
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('/settings', 'CRM\SettingsController@index')->name('settings');

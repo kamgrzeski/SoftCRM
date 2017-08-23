@@ -65,8 +65,8 @@
                             </div>
 
                             <div class="form-group">
-                                {{ Form::label('employees', 'Liczba pracowników') }}
-                                {{ Form::text('employees', null, array('class' => 'form-control')) }}
+                                {{ Form::label('employees_size', 'Liczba pracowników') }}
+                                {{ Form::text('employees_size', null, array('class' => 'form-control')) }}
                             </div>
 
                             <div class="form-group">

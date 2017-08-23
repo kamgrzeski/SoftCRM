@@ -33,7 +33,7 @@ class DealsController extends Controller
      */
     public function create()
     {
-        $deals = Companies::pluck('tax_number', 'id');
+        $deals = Companies::pluck('name', 'id');
         return View::make('crm.deals.create', compact('deals'));
     }
 

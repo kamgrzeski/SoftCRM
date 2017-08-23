@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Client;
 use App\Employees;
 use App\Companies;
 use App\Http\Controllers\Controller;
@@ -43,8 +44,8 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        $employees = Companies::pluck('name', 'id');
-        return View::make('crm.employees.create', compact('employees'));
+        $clients = Client::pluck('full_name', 'id');
+        return View::make('crm.employees.create', compact('clients'));
     }
 
     /**
