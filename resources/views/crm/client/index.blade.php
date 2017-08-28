@@ -9,7 +9,6 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-
             <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
@@ -24,8 +23,8 @@
             {!! Form::text('search', null,
                                    array('required',
                                         'class'=>'form-control',
-                                        'placeholder'=>'Search for a tutorial...')) !!}
-            {!! Form::submit('Search',
+                                        'placeholder'=>'Wpisz nazwę klienta...')) !!}
+            {!! Form::submit('Wyszukaj',
                                        array('class'=>'btn btn-default')) !!}
             {!! Form::close() !!}
             <a href="{{ URL::to('client/create') }}">
@@ -47,6 +46,7 @@
                                     <th class="text-center">Telefon</th>
                                     <th class="text-center">Email</th>
                                     <th class="text-center">Status</th>
+                                    <th class="text-center">Akcja</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -57,6 +57,20 @@
                                         <td class="text-center">{{ $value->phone }}</td>
                                         <td class="text-center">{{ $value->email }}</td>
                                         <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>
+                                        <td class="text-right">
+                                            <a class="btn btn-small btn-success"
+                                               href="{{ URL::to('client/' . $value->id) }}">Więcej informacji</a>
+
+                                            <a class="btn btn-small btn-info"
+                                               href="{{ URL::to('client/' . $value->id . '/edit') }}">Edytuj</a>
+                                            @if($value->is_active == TRUE)
+                                                <a class="btn btn-small btn-warning"
+                                                   href="{{ URL::to('client/disable/' . $value->id) }}">Deaktywuj</a>
+                                            @else
+                                                <a class="btn btn-small btn-warning"
+                                                   href="{{ URL::to('client/enable/' . $value->id) }}">Aktywuj</a>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                                 {!! $clientPaginate->render() !!}
