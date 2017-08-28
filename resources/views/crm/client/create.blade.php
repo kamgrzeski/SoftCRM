@@ -29,12 +29,12 @@
 
                             <div class="form-group">
                                 {{ Form::label('full_name', 'Imie i nazwisko') }}
-                                {{ Form::text('full_name', null, array('class' => 'form-control')) }}
+                                {{ Form::text('full_name', null, array('class' => 'form-control', 'required')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('phone', 'Telefon') }}
-                                {{ Form::text('phone', null, array('class' => 'form-control')) }}
+                                {{ Form::text('phone', null, array('class' => 'form-control', 'required')) }}
                             </div>
                         </div>
 
@@ -42,7 +42,7 @@
 
                             <div class="form-group">
                                 {{ Form::label('email', 'Adres email') }}
-                                {{ Form::text('email', null, array('class' => 'form-control')) }}
+                                {{ Form::text('email', null, array('class' => 'form-control', 'required')) }}
                             </div>
 
                         </div>

@@ -29,12 +29,12 @@
 
                             <div class="form-group">
                                 {{ Form::label('name', 'Nazwa') }}
-                                {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                {{ Form::text('name', null, array('class' => 'form-control', 'required')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('start_time', 'start_time') }}
-                                {{ Form::date('start_time', null, array('class' => 'form-control')) }}
+                                {{ Form::date('start_time', null, array('class' => 'form-control', 'required')) }}
                             </div>
                         </div>
 
@@ -42,12 +42,12 @@
 
                             <div class="form-group">
                                 {{ Form::label('end_time', 'end_time') }}
-                                {{ Form::date('end_time', null, array('class' => 'form-control')) }}
+                                {{ Form::date('end_time', null, array('class' => 'form-control', 'required')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('companies_id', 'Umowa między firmą:') }}
-                                {{ Form::select('companies_id', $deals, null, ['class' => 'form-control'])  }}
+                                {{ Form::select('companies_id', $deals, null, ['class' => 'form-control', 'required'])  }}
 
                             </div>
 

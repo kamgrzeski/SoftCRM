@@ -29,12 +29,12 @@
 
                             <div class="form-group">
                                 {{ Form::label('client_id', 'Klient') }}
-                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control'])  }}
+                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required'])  }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('employee_id', 'Pracownik') }}
-                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control'])  }}
+                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'required'])  }}
                             </div>
                         </div>
 

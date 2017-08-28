@@ -61,27 +61,27 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('postal_code', 'Kod pocztowy') }}
-                                {{ Form::text('postal_code', null, array('class' => 'form-control')) }}
+                                {{ Form::text('postal_code', null, array('class' => 'form-control', 'required')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('employees_size', 'Liczba pracowników') }}
-                                {{ Form::text('employees_size', null, array('class' => 'form-control')) }}
+                                {{ Form::text('employees_size', null, array('class' => 'form-control', 'required')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('fax', 'Fax') }}
-                                {{ Form::text('fax', null, array('class' => 'form-control')) }}
+                                {{ Form::text('fax', null, array('class' => 'form-control', 'required')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('client_id', 'Klient') }}
-                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control'])  }}
+                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required'])  }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('description', 'Krótki opis') }}
-                                {{ Form::textarea('description', null, array('class' => 'form-control')) }}
+                                {{ Form::textarea('description', null, array('class' => 'form-control', 'required')) }}
                             </div>
 
                         </div>

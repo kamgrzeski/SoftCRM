@@ -29,34 +29,34 @@
 
                             <div class="form-group">
                                 {{ Form::label('full_name', 'Imie i nazwisko') }}
-                                {{ Form::text('full_name', null, array('class' => 'form-control')) }}
+                                {{ Form::text('full_name', null, array('class' => 'form-control', 'required')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('phone', 'Telefon') }}
-                                {{ Form::text('phone', null, array('class' => 'form-control')) }}
+                                {{ Form::text('phone', null, array('class' => 'form-control', 'required')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('email', 'Email') }}
-                                {{ Form::text('email', null, array('class' => 'form-control')) }}
+                                {{ Form::text('email', null, array('class' => 'form-control', 'required')) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('job', 'Stanowisko') }}
-                                {{ Form::text('job', null, array('class' => 'form-control')) }}
+                                {{ Form::text('job', null, array('class' => 'form-control', 'required')) }}
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('client_id', 'Klient') }}
-                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control'])  }}
+                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'required'])  }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('note', 'Notatnik') }}
-                                {{ Form::textarea('note', null, array('class' => 'form-control')) }}
+                                {{ Form::textarea('note', null, array('class' => 'form-control', 'required')) }}
                             </div>
                         </div>
 

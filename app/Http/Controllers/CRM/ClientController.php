@@ -38,30 +38,6 @@ class ClientController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function search()
-    {
-        $query = Request::input('search');
-        $clients_search = Client::where('full_name', 'LIKE', '%' . $query . '%')->paginate(10);
-
-        $data = [
-            'client' => Client::all(),
-            'clientPaginate' => Client::paginate(10)
-        ];
-
-        if(!count($clients_search) > 0 ) {
-            return redirect('clients')->with('message_danger', 'nie ma takiego clienta!');
-        } else {
-            $data += ['clients_search' => $clients_search];
-            Redirect::to('client/search')->with('message_success', 'Wykryliśmy '.count($clients_search).' klientów o takich inicjałach!');;
-        }
-
-        return View::make('crm.client.index')->with($data);
-
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return Response
@@ -188,5 +164,30 @@ class ClientController extends Controller
         } else {
             return Redirect::back()->with('message_danger', 'Klient jest juz nieaktywny.');
         }
+    }
+
+
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function search()
+    {
+        $query = Request::input('search');
+        $clients_search = Client::where('full_name', 'LIKE', '%' . $query . '%')->paginate(10);
+
+        $data = [
+            'client' => Client::all(),
+            'clientPaginate' => Client::paginate(10)
+        ];
+
+        if(!count($clients_search) > 0 ) {
+            return redirect('clients')->with('message_danger', 'nie ma takiego clienta!');
+        } else {
+            $data += ['clients_search' => $clients_search];
+            Redirect::to('client/search')->with('message_success', 'Wykryliśmy '.count($clients_search).' klientów o takich inicjałach!');;
+        }
+
+        return View::make('crm.client.index')->with($data);
     }
 }
