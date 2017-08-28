@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Employees;
 use App\Http\Controllers\Controller;
 use App\Client;
 use View;
 use Illuminate\Support\Facades\Input;
 use Validator;
+use Request;
 use Illuminate\Support\Facades\Redirect;
-use App\Companies;
 
 class ClientController extends Controller
 {
@@ -28,13 +27,37 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $data = [
             'client' => Client::all(),
             'clientPaginate' => Client::paginate(10)
         ];
+
         return View::make('crm.client.index')->with($data);
+    }
+
+    public function search()
+    {
+        // Gets the query string from our form submission
+        $query = Request::input('search');
+        // Returns an array of articles that have the query string located somewhere within
+        // our articles titles. Paginates them so we can break up lots of search results.
+        $clients_search = Client::where('full_name', 'LIKE', '%' . $query . '%')->paginate(10);
+
+        if(!count($clients_search) > 0 ) {
+            return Redirect::back()->with('message_danger', 'nie ma takiego clienta!');
+        }
+
+        $data = [
+            'client' => Client::all(),
+            'clientPaginate' => Client::paginate(10),
+            'clients_search' => $clients_search
+        ];
+
+        // returns a view and passes the view the list of articles and the original query.
+        return View::make('crm.client.index')->with($data);
+
     }
 
     /**

@@ -19,6 +19,8 @@ Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/client/enable/{id}', 'CRM\ClientController@enable')->name('enable');
 Route::get('/client/disable/{id}', 'CRM\ClientController@disable')->name('disable');
 Route::resource('client', 'CRM\ClientController');
+Route::post('client/search', ['as' => 'client/search',  'uses' => 'CRM\ClientController@search']);
+
 
 /* Companies */
 Route::get('/companies/enable/{id}', 'CRM\CompaniesController@enable')->name('enable');

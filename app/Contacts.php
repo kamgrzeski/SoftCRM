@@ -51,4 +51,14 @@ class Contacts extends Model
                 ];
         }
     }
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function employees()
+    {
+        return $this->hasOne(Employees::class, 'id');
+    }
 }

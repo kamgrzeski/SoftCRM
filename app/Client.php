@@ -87,10 +87,18 @@ class Client extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function employees()
     {
         return $this->hasMany(Employees::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function contacts()
+    {
+        return $this->hasOne(Contacts::class);
     }
 }

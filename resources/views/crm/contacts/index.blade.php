@@ -42,8 +42,12 @@
                             <tbody>
                             @foreach($contacts as $key => $value)
                                 <tr class="odd gradeX">
-                                    <td class="text-center">{{ $value->client_id }}</td>
-                                    <td class="text-center">{{ $value->employee_id }}</td>
+                                    <td class="text-center">
+                                        <a href="{{ URL::to('client/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{ URL::to('employees/' . $value->employees->id) }}">{{ $value->employees->full_name }}</a>
+                                    </td>
                                     <td class="text-center">{{ $value->date }}</td>
                                     <td class="text-right">
                                         <a class="btn btn-small btn-success"

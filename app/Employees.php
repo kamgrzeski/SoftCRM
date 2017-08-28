@@ -107,12 +107,20 @@ class Employees extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function client()
     {
         return $this->belongsTo(Client::class);
 
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function contacts()
+    {
+        return $this->belongsTo(Contacts::class);
     }
 }
 
