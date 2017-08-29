@@ -14,5 +14,12 @@
 <link href="{{ asset('/css/custom-styles.css') }}" rel="stylesheet" />
 <!-- Google Fonts-->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+<!-- Validator JS-->
+<script src="{{ asset('/js/validator.js') }}"></script>
+
+<!-- Jquery for validator -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
 </head>
 

@@ -18,6 +18,7 @@
 <script src="{{ asset('/js/morris/morris.js') }}"></script>
 <!-- Custom Js -->
 <script src="{{ asset('/js/custom-scripts.js') }}"></script>
+
 </body>
 
 </html>

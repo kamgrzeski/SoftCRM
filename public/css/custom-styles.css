@@ -442,3 +442,17 @@ font-size: 19px;
     background-color: #80d14d !important;
 }
 
+.error {
+    background: #ffcccc;
+}
+
+.success {
+    background: #ccff99;
+}
+
+.error_message {
+    display: block;
+    font-size: 14px;
+    margin-top: 5px;
+    color: red;
+}
