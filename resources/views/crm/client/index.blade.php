@@ -106,7 +106,13 @@
                                         <td class="text-center">{{ $value->full_name }}</td>
                                         <td class="text-center">{{ $value->phone }}</td>
                                         <td class="text-center">{{ $value->email }}</td>
-                                        <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>
+                                        <td class="text-center">
+                                            @if($value->is_active == TRUE)
+                                                <input type="checkbox" data-on="Aktywny" checked data-toggle="toggle" onchange='window.location.assign("{{ URL::to('client/disable/' . $value->id) }}")'/>
+                                            @else
+                                                <input type="checkbox" data-off="Nieaktywny" data-toggle="toggle" onchange='window.location.assign("{{ URL::to('client/enable/' . $value->id) }}")'/>
+                                            @endif
+                                        </td>
 
                                         <td class="text-right">
                                             <a class="btn btn-small btn-success"
@@ -114,13 +120,6 @@
 
                                             <a class="btn btn-small btn-info"
                                                href="{{ URL::to('client/' . $value->id . '/edit') }}">Edytuj</a>
-                                            @if($value->is_active == TRUE)
-                                                <a class="btn btn-small btn-warning"
-                                                   href="{{ URL::to('client/disable/' . $value->id) }}">Deaktywuj</a>
-                                            @else
-                                                <a class="btn btn-small btn-warning"
-                                                   href="{{ URL::to('client/enable/' . $value->id) }}">Aktywuj</a>
-                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
