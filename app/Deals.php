@@ -64,12 +64,12 @@ class Deals extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $query = Deals::where('id', '=', $id)->update(
+        $findDealsById = Deals::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
 
-        if ($query) {
+        if ($findDealsById) {
             return TRUE;
         } else {
             return FALSE;

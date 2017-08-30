@@ -70,12 +70,12 @@ class Employees extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $query = Employees::where('id', '=', $id)->update(
+        $findEmployeesById = Employees::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
 
-        if ($query) {
+        if ($findEmployeesById) {
             return TRUE;
         } else {
             return FALSE;

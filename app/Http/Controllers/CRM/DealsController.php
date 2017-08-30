@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRM;
 use App\Companies;
 use App\Deals;
 use App\Http\Controllers\Controller;
+use App\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -19,11 +20,11 @@ class DealsController extends Controller
      */
     public function index()
     {
-        $data = [
+        $dataOfDeals = [
             'deals' => Deals::all(),
             'dealsPaginate' => Deals::paginate(10)
         ];
-        return View::make('crm.deals.index')->with($data);
+        return View::make('crm.deals.index')->with($dataOfDeals);
     }
 
     /**
@@ -33,8 +34,8 @@ class DealsController extends Controller
      */
     public function create()
     {
-        $deals = Companies::pluck('name', 'id');
-        return View::make('crm.deals.create', compact('deals'));
+        $dataOfDeals = Companies::pluck('name', 'id');
+        return View::make('crm.deals.create', compact('dataOfDeals'));
     }
 
     /**
@@ -52,9 +53,9 @@ class DealsController extends Controller
             return Redirect::to('deals/create')->with('message_danger', $validator->errors());
         } else {
             if (Deals::insertRow($allInputs)) {
-                return Redirect::to('deals')->with('message_success', 'Z powodzeniem dodano umowę!');
+                return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsStore'));
             } else {
-                return Redirect::back()->with('message_success', 'Błąd podczas dodawania umowę!');
+                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsStore'));
             }
         }
     }
@@ -67,10 +68,10 @@ class DealsController extends Controller
      */
     public function show($id)
     {
-        $clients = Deals::find($id);
+        $dataOfDeals = Deals::find($id);
 
         return View::make('crm.deals.show')
-            ->with('deals', $clients);
+            ->with('deals', $dataOfDeals);
     }
 
     /**
@@ -81,10 +82,10 @@ class DealsController extends Controller
      */
     public function edit($id)
     {
-        $clients = Deals::find($id);
+        $dataOfDeals = Deals::find($id);
 
         return View::make('crm.deals.edit')
-            ->with('deals', $clients);
+            ->with('deals', $dataOfDeals);
     }
 
     /**
@@ -103,9 +104,9 @@ class DealsController extends Controller
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if (Deals::updateRow($id, $allInputs)) {
-                return Redirect::back()->with('message_success', 'Z powodzeniem zaktualizowano umowę!');
+                return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessDealsUpdate'));
             } else {
-                return Redirect::back()->with('message_success', 'Błąd podczas aktualizowania umowy!');
+                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsUpdate'));
             }
         }
     }
@@ -118,10 +119,10 @@ class DealsController extends Controller
      */
     public function destroy($id)
     {
-        $clients = Deals::find($id);
-        $clients->delete();
+        $dataOfDeals = Deals::find($id);
+        $dataOfDeals->delete();
 
-        return Redirect::back()->with('message_success', 'Umowa została pomyślnie usunięta.');
+        return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessDealsDelete'));
     }
 
     /**
@@ -130,12 +131,12 @@ class DealsController extends Controller
      */
     public function enable($id)
     {
-        $clients = Deals::find($id);
+        $dataOfDeals = Deals::find($id);
 
-        if (Deals::setActive($clients->id, TRUE)) {
-            return Redirect::back()->with('message_success', 'Umowa od teraz jest aktywna.');
+        if (Deals::setActive($dataOfDeals->id, TRUE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessDealsActive'));
         } else {
-            return Redirect::back()->with('message_danger', 'Umowa jest już aktywna.');
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsActive'));
         }
     }
 
@@ -145,12 +146,12 @@ class DealsController extends Controller
      */
     public function disable($id)
     {
-        $clients = Deals::find($id);
+        $dataOfDeals = Deals::find($id);
 
-        if (Deals::setActive($clients->id, FALSE)) {
-            return Redirect::back()->with('message_success', 'Umowa został deaktywowana.');
+        if (Deals::setActive($dataOfDeals->id, FALSE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.DealsIsNowDeactivated'));
         } else {
-            return Redirect::back()->with('message_danger', 'Umowa jest juz nieaktywna.');
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.DealsIsDeactivated'));
         }
     }
 }

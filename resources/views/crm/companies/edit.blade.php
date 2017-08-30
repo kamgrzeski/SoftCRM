@@ -10,11 +10,11 @@
     <!-- will be used to show any messages -->
     @if(session()->has('message_success'))
         <div class="alert alert-success">
-            <strong>Bardzo dobrze!</strong> {{ session()->get('message_success') }}
+            <strong>Well done!</strong> {{ session()->get('message_success') }}
         </div>
     @elseif(session()->has('message_danger'))
         <div class="alert alert-danger">
-            <strong>Uwaga!</strong> {{ session()->get('message_danger') }}
+            <strong>Danger!</strong> {{ session()->get('message_danger') }}
         </div>
     @endif
     <div class="row">

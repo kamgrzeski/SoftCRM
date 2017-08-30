@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Lista spotkań')
+@section('caption', 'List of contacts')
 
-@section('title', 'Lista spotkań')
+@section('title', 'List of contacts')
 
 @section('lyric', 'lorem ipsum')
 
@@ -12,31 +12,31 @@
             <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
-                    <strong>Bardzo dobrze!</strong> {{ session()->get('message_success') }}
+                    <strong>Well done!</strong> {{ session()->get('message_success') }}
                 </div>
             @elseif(session()->has('message_danger'))
                 <div class="alert alert-danger">
-                    <strong>Uwaga!</strong> {{ session()->get('message_danger') }}
+                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
             <a href="{{ URL::to('contacts/create') }}">
-                <button type="button" class="btn btn-primary btn-lg active">Dodaj spotkanie</button>
+                <button type="button" class="btn btn-primary btn-lg active">Add contacts</button>
             </a>
             <br><br>
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Lista spotkań
+                    List of contacts
                 </div>
                 <div class="panel-body">
                     <div class="table">
                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <thead>
                             <tr>
-                                <th class="text-center">Klient</th>
-                                <th class="text-center">Pracownik</th>
-                                <th class="text-center">Data</th>
-                                <th class="text-center">Akcja</th>
+                                <th class="text-center">Client</th>
+                                <th class="text-center">Employee</th>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -51,17 +51,10 @@
                                     <td class="text-center">{{ $value->date }}</td>
                                     <td class="text-right">
                                         <a class="btn btn-small btn-success"
-                                           href="{{ URL::to('companies/' . $value->id) }}">Więcej informacji</a>
+                                           href="{{ URL::to('contacts/' . $value->id) }}">More information</a>
 
                                         <a class="btn btn-small btn-info"
-                                           href="{{ URL::to('companies/' . $value->id . '/edit') }}">Edytuj</a>
-                                        @if($value->is_active == TRUE)
-                                            <a class="btn btn-small btn-warning"
-                                               href="{{ URL::to('companies/disable/' . $value->id) }}">Deaktywuj</a>
-                                        @else
-                                            <a class="btn btn-small btn-warning"
-                                               href="{{ URL::to('companies/enable/' . $value->id) }}">Aktywuj</a>
-                                        @endif
+                                           href="{{ URL::to('contacts/' . $value->id . '/edit') }}">Edit</a>
                                     </td>
                                 </tr>
                             @endforeach

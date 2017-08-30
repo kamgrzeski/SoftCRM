@@ -6,6 +6,7 @@ use App\Client;
 use App\Contacts;
 use App\Employees;
 use App\Http\Controllers\Controller;
+use App\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -20,12 +21,12 @@ class ContactsController extends Controller
      */
     public function index()
     {
-        $data = [
+        $dataOfContacts = [
             'contacts' => Contacts::all(),
             'contactsPaginate' => Contacts::paginate(10)
         ];
 
-        return View::make('crm.contacts.index')->with($data);
+        return View::make('crm.contacts.index')->with($dataOfContacts);
     }
 
     /**
@@ -35,12 +36,12 @@ class ContactsController extends Controller
      */
     public function create()
     {
-        $clients = Client::pluck('full_name', 'id');
-        $employees = Employees::pluck('full_name', 'id');
+        $dataOfClients = Client::pluck('full_name', 'id');
+        $dataOfEmployees = Employees::pluck('full_name', 'id');
         return View::make('crm.contacts.create')->with(
             [
-                'clients' => $clients,
-                'employees' => $employees
+                'clients' => $dataOfClients,
+                'employees' => $dataOfEmployees
             ]);
     }
 
@@ -59,9 +60,9 @@ class ContactsController extends Controller
             return Redirect::to('contacts/create')->with('message_danger', $validator->errors());
         } else {
             if (Contacts::insertRow($allInputs)) {
-                return Redirect::to('contacts')->with('message_success', 'Z powodzeniem dodano spotkanie!');
+                return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsStore'));
             } else {
-                return Redirect::back()->with('message_success', 'Błąd podczas dodawania spotkania!');
+                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorContactsStore'));
             }
         }
     }
@@ -74,10 +75,10 @@ class ContactsController extends Controller
      */
     public function show($id)
     {
-        $clients = Contacts::find($id);
+        $dataOfContacts = Contacts::find($id);
 
         return View::make('crm.contacts.show')
-            ->with('deals', $clients);
+            ->with('contacts', $dataOfContacts);
     }
 
     /**
@@ -88,10 +89,10 @@ class ContactsController extends Controller
      */
     public function edit($id)
     {
-        $clients = Contacts::find($id);
+        $dataOfContacts = Contacts::find($id);
 
         return View::make('crm.contacts.edit')
-            ->with('deals', $clients);
+            ->with('deals', $dataOfContacts);
     }
 
     /**
@@ -110,9 +111,9 @@ class ContactsController extends Controller
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if (Contacts::updateRow($id, $allInputs)) {
-                return Redirect::back()->with('message_success', 'Z powodzeniem zaktualizowano spotkanie!');
+                return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsUpdate'));
             } else {
-                return Redirect::back()->with('message_success', 'Błąd podczas aktualizowania spotkania!');
+                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorContactsUpdate'));
             }
         }
     }
@@ -125,9 +126,9 @@ class ContactsController extends Controller
      */
     public function destroy($id)
     {
-        $clients = Contacts::find($id);
-        $clients->delete();
+        $dataOfContacts = Contacts::find($id);
+        $dataOfContacts->delete();
 
-        return Redirect::back()->with('message_success', 'Spotkanie zostało pomyślnie usunięte.');
+        return Redirect::to('contacts/index')->with('message_success', Language::getMessage('messages.SuccessContactsDelete'));
     }
 }

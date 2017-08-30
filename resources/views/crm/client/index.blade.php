@@ -1,10 +1,10 @@
 @extends('layouts.base')
 
-@section('caption', 'Lista klientów')
+@section('caption', 'List of clients')
 
-@section('title', 'Lista klientów')
+@section('title', 'List of clients')
 
-@section('lyric', 'lorem ipsum')
+@section('lyric', '')
 
 @section('content')
     <div class="row">
@@ -12,41 +12,41 @@
             <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
-                    <strong>Bardzo dobrze!</strong> {{ session()->get('message_success') }}
+                    <strong>Well done!</strong> {{ session()->get('message_success') }}
                 </div>
             @elseif(session()->has('message_danger'))
                 <div class="alert alert-danger">
-                    <strong>Uwaga!</strong> {{ session()->get('message_danger') }}
+                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
             {!! Form::open(array('route' => 'client/search', 'class'=>'form navbar-form navbar-right searchform')) !!}
             {!! Form::text('search', null,
                                    array('required',
                                         'class'=>'form-control',
-                                        'placeholder'=>'Wpisz nazwę klienta...')) !!}
-            {!! Form::submit('Wyszukaj',
+                                        'placeholder'=>'Write name of client...')) !!}
+            {!! Form::submit('Search',
                                        array('class'=>'btn btn-default')) !!}
             {!! Form::close() !!}
             <a href="{{ URL::to('client/create') }}">
-                <button type="button" class="btn btn-primary btn-lg active">Dodaj klienta</button>
+                <button type="button" class="btn btn-primary btn-lg active">Add client</button>
             </a>
             <br><br>
             @if (isset($clients_search))
             <!-- Advanced Tables -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Lista wyszukanych przez ciebie klientów
+                       List of search clients
                     </div>
                     <div class="panel-body">
                         <div class="table">
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th class="text-center">Imię i nazwisko</th>
-                                    <th class="text-center">Telefon</th>
-                                    <th class="text-center">Email</th>
+                                    <th class="text-center">Full name</th>
+                                    <th class="text-center">Phone</th>
+                                    <th class="text-center">Email address</th>
                                     <th class="text-center">Status</th>
-                                    <th class="text-center">Akcja</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -59,16 +59,16 @@
                                         <td class="text-center">{{ $value->is_active ? 'Yes' : 'No' }}</td>
                                         <td class="text-right">
                                             <a class="btn btn-small btn-success"
-                                               href="{{ URL::to('client/' . $value->id) }}">Więcej informacji</a>
+                                               href="{{ URL::to('client/' . $value->id) }}">More information</a>
 
                                             <a class="btn btn-small btn-info"
-                                               href="{{ URL::to('client/' . $value->id . '/edit') }}">Edytuj</a>
+                                               href="{{ URL::to('client/' . $value->id . '/edit') }}">Edit</a>
                                             @if($value->is_active == TRUE)
                                                 <a class="btn btn-small btn-warning"
-                                                   href="{{ URL::to('client/disable/' . $value->id) }}">Deaktywuj</a>
+                                                   href="{{ URL::to('client/disable/' . $value->id) }}">Deactivate</a>
                                             @else
                                                 <a class="btn btn-small btn-warning"
-                                                   href="{{ URL::to('client/enable/' . $value->id) }}">Aktywuj</a>
+                                                   href="{{ URL::to('client/enable/' . $value->id) }}">Active</a>
                                             @endif
                                         </td>
                                     </tr>
@@ -85,18 +85,18 @@
             <!-- Advanced Tables -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Lista klientów
+                        List of clients
                     </div>
                     <div class="panel-body">
                         <div class="table">
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th class="text-center">Imię i nazwisko</th>
-                                    <th class="text-center">Telefon</th>
+                                    <th class="text-center">Full name</th>
+                                    <th class="text-center">Phone</th>
                                     <th class="text-center">Email</th>
                                     <th class="text-center">Status</th>
-                                    <th class="text-center">Akcja</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -108,18 +108,18 @@
                                         <td class="text-center">{{ $value->email }}</td>
                                         <td class="text-center">
                                             @if($value->is_active == TRUE)
-                                                <input type="checkbox" data-on="Aktywny" checked data-toggle="toggle" onchange='window.location.assign("{{ URL::to('client/disable/' . $value->id) }}")'/>
+                                                <input type="checkbox" data-on="Active" checked data-toggle="toggle" onchange='window.location.assign("{{ URL::to('client/disable/' . $value->id) }}")'/>
                                             @else
-                                                <input type="checkbox" data-off="Nieaktywny" data-toggle="toggle" onchange='window.location.assign("{{ URL::to('client/enable/' . $value->id) }}")'/>
+                                                <input type="checkbox" data-off="Deactivate" data-toggle="toggle" onchange='window.location.assign("{{ URL::to('client/enable/' . $value->id) }}")'/>
                                             @endif
                                         </td>
 
                                         <td class="text-right">
                                             <a class="btn btn-small btn-success"
-                                               href="{{ URL::to('client/' . $value->id) }}">Więcej informacji</a>
+                                               href="{{ URL::to('client/' . $value->id) }}">More information</a>
 
                                             <a class="btn btn-small btn-info"
-                                               href="{{ URL::to('client/' . $value->id . '/edit') }}">Edytuj</a>
+                                               href="{{ URL::to('client/' . $value->id . '/edit') }}">Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach

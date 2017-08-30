@@ -1,10 +1,9 @@
 @extends('layouts.base')
 
-@section('caption', 'Informacje o kliencie')
+@section('caption', 'Information about client: ' . $clients->full_name)
 
-@section('title', 'Informacje o kliencie')
+@section('title', 'Information about client: ' . $clients->full_name)
 
-@section('lyric', 'Informacje o kliencie')
 
 @section('content')
     <div class="row">
@@ -12,40 +11,30 @@
             <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
-                    <strong>Bardzo dobrze!</strong> {{ session()->get('message_success') }}
+                    <strong>Well done!</strong> {{ session()->get('message_success') }}
                 </div>
             @elseif(session()->has('message_danger'))
                 <div class="alert alert-danger">
-                    <strong>Uwaga!</strong> {{ session()->get('message_danger') }}
+                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
+            <br/>
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    Więcej informacji na temat {{ $clients->name }}
-                </div>
-
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#home" data-toggle="tab">Podstawowe informacje</a>
+                        <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
-                        <li class=""><a href="#profile" data-toggle="tab">Przypisane firmy <span
+                        <li class=""><a href="#profile" data-toggle="tab">Assigned companies <span
                                         class="badge badge-warning">{{ count($clients->companies) }}</span></a>
                         </li>
-                        <li class=""><a href="#messages" data-toggle="tab">Przypisani pracownicy <span
+                        <li class=""><a href="#messages" data-toggle="tab">Assigned employees <span
                                         class="badge badge-warning">{{ count($clients->employees) }}</span></a>
                         </li>
                         <div class="text-right">
                             {{ Form::open(array('url' => 'client/' . $clients->id, 'class' => 'pull-right')) }}
                             {{ Form::hidden('_method', 'DELETE') }}
-                            {{ Form::submit('Usuń', array('class' => 'btn btn-small btn-danger')) }}
+                            {{ Form::submit('Delete this client', array('class' => 'btn btn-small btn-danger')) }}
                             {{ Form::close() }}
-                            @if($clients->is_active == TRUE)
-                                <a class="btn btn-small btn-warning"
-                                   href="{{ URL::to('client/disable/' . $clients->id) }}">Deaktywuj</a>
-                            @else
-                                <a class="btn btn-small btn-warning"
-                                   href="{{ URL::to('client/enable/' . $clients->id) }}">Aktywuj</a>
-                            @endif
                         </div>
 
                     </ul>
@@ -57,33 +46,33 @@
                             <table class="table table-striped table-bordered">
                                 <tbody class="text-right">
                                 <tr>
-                                    <th>Nazwa</th>
+                                    <th>Full name</th>
                                     <td>{{ $clients->full_name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Telefon</th>
+                                    <th>Phone</th>
                                     <td>{{ $clients->phone }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Adres email</th>
+                                    <th>Email address</th>
                                     <td>{{ $clients->email }}</td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $clients->is_active ? 'Yes' : 'No' }}</td>
+                                    <td>{{ $clients->is_active ? 'Active' : 'Deactive' }}</td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="tab-pane fade" id="profile">
-                            <h4>Lista firm</h4>
+                            <h4>List of companies</h4>
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th>Nazwa</th>
-                                    <th>Numer telefonu</th>
-                                    <th>NIP</th>
-                                    <th>Akcja</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Tax number</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 </tr>
@@ -96,7 +85,7 @@
                                         <td>
                                             {{ Form::open(array('url' => 'employees/' . $companies->id, 'class' => 'pull-right')) }}
                                             {{ Form::hidden('_method', 'DELETE') }}
-                                            {{ Form::submit('Usuń', array('class' => 'btn btn-danger btn-sm')) }}
+                                            {{ Form::submit('Delete this companies', array('class' => 'btn btn-danger btn-sm')) }}
                                             {{ Form::close() }}
                                         </td>
                                     @endforeach
@@ -104,15 +93,15 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="messages">
-                            <h4>Lista pracowników</h4>
+                            <h4>List of employeees</h4>
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th>Imię i nazwisko</th>
-                                    <th>Telefon</th>
-                                    <th>Email</th>
-                                    <th>Stanowisko</th>
-                                    <th>Akcja</th>
+                                    <th>Full name</th>
+                                    <th>Phone</th>
+                                    <th>Email address</th>
+                                    <th>Job</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                     </tr>
@@ -126,7 +115,7 @@
                                         <td>
                                             {{ Form::open(array('url' => 'employees/' . $employees->id, 'class' => 'pull-right')) }}
                                             {{ Form::hidden('_method', 'DELETE') }}
-                                            {{ Form::submit('Usuń', array('class' => 'btn btn-danger btn-sm')) }}
+                                            {{ Form::submit('Delete this employee', array('class' => 'btn btn-danger btn-sm')) }}
                                             {{ Form::close() }}
                                         </td>
                                     @endforeach

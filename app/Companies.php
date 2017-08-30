@@ -85,12 +85,12 @@ class Companies extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $query = Companies::where('id', '=', $id)->update(
+        $findCompaniesById = Companies::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
 
-        if ($query) {
+        if ($findCompaniesById) {
             return TRUE;
         } else {
             return FALSE;

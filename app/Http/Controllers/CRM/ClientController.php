@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Client;
+use App\Language;
 use View;
 use Illuminate\Support\Facades\Input;
 use Validator;
@@ -29,12 +30,12 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $data = [
+        $dataWithClients = [
             'client' => Client::all(),
             'clientPaginate' => Client::paginate(10)
         ];
 
-        return View::make('crm.client.index')->with($data);
+        return View::make('crm.client.index')->with($dataWithClients);
     }
 
     /**
@@ -62,9 +63,9 @@ class ClientController extends Controller
             return Redirect::to('client/create')->with('message_danger', $validator->errors());
         } else {
             if (Client::insertRow($allInputs)) {
-                return Redirect::to('client')->with('message_success', 'Z powodzeniem dodano klienta!');
+                return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
             } else {
-                return Redirect::back()->with('message_success', 'Błąd podczas dodawania klienta!');
+                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorClientStore'));
             }
         }
     }
@@ -77,11 +78,11 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        $clients = Client::find($id);
+        $dataOfClient = Client::find($id);
 
         return View::make('crm.client.show')
             ->with([
-                'clients' => $clients,
+                'clients' => $dataOfClient,
             ]);
     }
 
@@ -93,10 +94,10 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        $clients = Client::find($id);
+        $clientDetails = Client::find($id);
 
         return View::make('crm.client.edit')
-            ->with('client', $clients);
+            ->with('client', $clientDetails);
     }
 
     /**
@@ -115,9 +116,9 @@ class ClientController extends Controller
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if (Client::updateRow($id, $allInputs)) {
-                return Redirect::back()->with('message_success', 'Z powodzeniem zaktualizowano klienta!');
+                return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
             } else {
-                return Redirect::back()->with('message_danger', 'Błąd podczas aktualizowania klienta!');
+                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorClientStore'));
             }
         }
     }
@@ -130,10 +131,10 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $clients = Client::find($id);
-        $clients->delete();
+        $clientDetails = Client::find($id);
+        $clientDetails->delete();
 
-        return Redirect::to('client')->with('message_success', 'Klient została pomyślnie usunięta.');
+        return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientDelete'));
     }
 
     /**
@@ -142,12 +143,12 @@ class ClientController extends Controller
      */
     public function enable($id)
     {
-        $clients = Client::find($id);
+        $clientDetails = Client::find($id);
 
-        if (Client::setActive($clients->id, TRUE)) {
-            return Redirect::back()->with('message_success', 'Klient od teraz jest aktywny.');
+        if (Client::setActive($clientDetails->id, TRUE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessClientActive'));
         } else {
-            return Redirect::back()->with('message_danger', 'Klient jest już aktywny.');
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsActived'));
         }
     }
 
@@ -157,12 +158,12 @@ class ClientController extends Controller
      */
     public function disable($id)
     {
-        $clients = Client::find($id);
+        $clientDetails = Client::find($id);
 
-        if (Client::setActive($clients->id, FALSE)) {
-            return Redirect::back()->with('message_success', 'Klient został deaktywowany.');
+        if (Client::setActive($clientDetails->id, FALSE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.ClientIsNowDeactivated'));
         } else {
-            return Redirect::back()->with('message_danger', 'Klient jest juz nieaktywny.');
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsDeactivated'));
         }
     }
 
@@ -173,21 +174,21 @@ class ClientController extends Controller
      */
     public function search()
     {
-        $query = Request::input('search');
-        $clients_search = Client::where('full_name', 'LIKE', '%' . $query . '%')->paginate(10);
+        $getValueInput = Request::input('search');
+        $findClientByValue = Client::where('full_name', 'LIKE', '%' . $getValueInput . '%')->paginate(10);
 
-        $data = [
+        $dataOfClients = [
             'client' => Client::all(),
             'clientPaginate' => Client::paginate(10)
         ];
 
-        if(!count($clients_search) > 0 ) {
-            return redirect('clients')->with('message_danger', 'nie ma takiego clienta!');
+        if(!count($findClientByValue) > 0 ) {
+            return redirect('clients')->with('message_danger', Language::getMessage('messages.ThereIsNoClient'));
         } else {
-            $data += ['clients_search' => $clients_search];
-            Redirect::to('client/search')->with('message_success', 'Wykryliśmy '.count($clients_search).' klientów o takich inicjałach!');;
+            $dataOfClients += ['clients_search' => $findClientByValue];
+            Redirect::to('client/search')->with('message_success', 'Find '.count($findClientByValue).' clients!');
         }
 
-        return View::make('crm.client.index')->with($data);
+        return View::make('crm.client.index')->with($dataOfClients);
     }
 }

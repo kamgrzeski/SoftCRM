@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Dodaj klienta')
+@section('caption', 'Add client')
 
-@section('title', 'Dodaj klienta')
+@section('title', 'Add client')
 
 @section('lyric', 'lorem ipsum')
 
@@ -28,12 +28,12 @@
                             {{ Form::open(array('url' => 'client')) }}
 
                             <div class="form-group  input-row">
-                                {{ Form::label('full_name', 'Imie i nazwisko') }}
+                                {{ Form::label('full_name', 'Full name') }}
                                 {{ Form::text('full_name', null, array('class' => 'form-control')) }}
                             </div>
 
                             <div class="form-group input-row">
-                                {{ Form::label('phone', 'Telefon') }}
+                                {{ Form::label('phone', 'Phone') }}
                                 {{ Form::text('phone', null, array('class' => 'form-control')) }}
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                         <div class="col-lg-6">
 
                             <div class="form-group input-row">
-                                {{ Form::label('email', 'Adres email') }}
+                                {{ Form::label('email', 'Emial address') }}
                                 {{ Form::text('email', null, array('class' => 'form-control')) }}
                             </div>
 
@@ -49,7 +49,6 @@
 
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
-                            {{ Form::reset('Reset Button', array('class' => 'btn btn-warning')) }}
                         </div>
 
                     {{ Form::close() }}

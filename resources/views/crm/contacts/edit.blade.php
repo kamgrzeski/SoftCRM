@@ -1,10 +1,10 @@
 @extends('layouts.base')
 
-@section('caption', 'Add contacts')
+@section('caption', 'Edit client')
 
-@section('title', 'Add contacts')
+@section('title', 'Edit client')
 
-@section('lyric', 'lorem ipsum')
+@section('lyric', '')
 
 @section('content')
     <!-- will be used to show any messages -->
@@ -17,42 +17,35 @@
             <strong>Danger!</strong> {{ session()->get('message_danger') }}
         </div>
     @endif
-
-    <!-- /. ROW  -->
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(array('url' => 'contacts')) }}
+                            {{ Form::model($client, array('route' => array('client.update', $client->id), 'method' => 'PUT')) }}
 
                             <div class="form-group">
-                                {{ Form::label('client_id', 'Assign client') }}
-                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control'])  }}
+                                {{ Form::label('full_name', 'Full name') }}
+                                {{ Form::text('full_name', null, array('class' => 'form-control')) }}
                             </div>
-
                             <div class="form-group">
-                                {{ Form::label('employee_id', 'Assign employee') }}
-                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control'])  }}
+                                {{ Form::label('email', 'Email address') }}
+                                {{ Form::text('email', null, array('class' => 'form-control')) }}
                             </div>
                         </div>
-
                         <div class="col-lg-6">
                             <div class="form-group">
-                                {{ Form::label('date', 'Date') }}
-                                {{ Form::date('date', null, array('class' => 'form-control', 'required')) }}
+                                {{ Form::label('phone', 'Phone') }}
+                                {{ Form::text('phone', null, array('class' => 'form-control')) }}
                             </div>
-
                         </div>
-
                         <div class="col-lg-12">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                         </div>
 
-                    {{ Form::close() }}
+                        {{ Form::close() }}
 
-                    <!-- /.row (nested) -->
                     </div>
                     <!-- /.panel-body -->
                 </div>
@@ -60,4 +53,6 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
+
+
 @endsection

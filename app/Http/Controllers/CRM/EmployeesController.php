@@ -6,6 +6,7 @@ use App\Client;
 use App\Employees;
 use App\Companies;
 use App\Http\Controllers\Controller;
+use App\Language;
 use View;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -16,7 +17,6 @@ class EmployeesController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @return void
      */
     public function __construct()
     {
@@ -30,11 +30,11 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        $data = [
+        $dataOfEmployees = [
             'employees' => Employees::all(),
             'employeesPaginate' => Employees::paginate(10)
         ];
-        return View::make('crm.employees.index')->with($data);
+        return View::make('crm.employees.index')->with($dataOfEmployees);
     }
 
     /**
@@ -44,8 +44,8 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        $clients = Client::pluck('full_name', 'id');
-        return View::make('crm.employees.create', compact('clients'));
+        $dataOfClients = Client::pluck('full_name', 'id');
+        return View::make('crm.employees.create', compact('dataOfClients'));
     }
 
     /**
@@ -63,9 +63,9 @@ class EmployeesController extends Controller
             return Redirect::to('employees/create')->with('message_danger', $validator->errors());
         } else {
             if (Employees::insertRow($allInputs)) {
-                return Redirect::to('employees')->with('message_success', 'Z powodzeniem dodano firmę!');
+                return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesStore'));
             } else {
-                return Redirect::back()->with('message_success', 'Błąd podczas dodawania firmy!');
+                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorEmployeesStore'));
             }
         }
     }
@@ -78,9 +78,9 @@ class EmployeesController extends Controller
      */
     public function show($id)
     {
-        $employees = Employees::find($id);
+        $dataOfEmployees = Employees::find($id);
         return View::make('crm.employees.show')
-            ->with('employees', $employees);
+            ->with('employees', $dataOfEmployees);
     }
 
     /**
@@ -91,13 +91,13 @@ class EmployeesController extends Controller
      */
     public function edit($id)
     {
-        $employees = Employees::find($id);
-        $companies = Companies::pluck('name', 'id');
+        $dataOfEmployees = Employees::find($id);
+        $dataWithPluckOfCompanies = Companies::pluck('name', 'id');
 
         return View::make('crm.employees.edit')
             ->with([
-                'employees' => $employees,
-                'companies' => $companies
+                'employees' => $dataOfEmployees,
+                'companies' => $dataWithPluckOfCompanies
             ]);
     }
 
@@ -117,9 +117,9 @@ class EmployeesController extends Controller
             return Redirect::to('employees')->with('message_danger', $validator);
         } else {
             if (Employees::updateRow($id, $allInputs)) {
-                return Redirect::to('employees')->with('message_success', 'Z powodzeniem zaktualizowano pracownika!');
+                return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesUpdate'));
             } else {
-                return Redirect::back()->with('message_danger', 'Błąd podczas aktualizowania pracownika!');
+                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorEmployeesUpdate'));
             }
         }
     }
@@ -132,10 +132,10 @@ class EmployeesController extends Controller
      */
     public function destroy($id)
     {
-        $employees = Employees::find($id);
-        $employees->delete();
+        $dataOfEmployees = Employees::find($id);
+        $dataOfEmployees->delete();
 
-        return Redirect::to('employees')->with('message_success', 'Pracownik został pomyślnie usunięty.');
+        return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesDelete'));
     }
 
     /**
@@ -144,12 +144,12 @@ class EmployeesController extends Controller
      */
     public function enable($id)
     {
-        $employees = Employees::find($id);
+        $dataOfEmployees = Employees::find($id);
 
-        if (Employees::setActive($employees->id, TRUE)) {
-            return Redirect::to('employees')->with('message_success', 'Pracownik od teraz jest aktywny.');
+        if (Employees::setActive($dataOfEmployees->id, TRUE)) {
+            return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesActive'));
         } else {
-            return Redirect::back()->with('message_danger', 'Pracownik jest już aktywny.');
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorEmployeesActive'));
         }
     }
 
@@ -159,12 +159,12 @@ class EmployeesController extends Controller
      */
     public function disable($id)
     {
-        $employees = Employees::find($id);
+        $dataOfEmployees = Employees::find($id);
 
-        if (Employees::setActive($employees->id, FALSE)) {
-            return Redirect::to('employees')->with('message_success', 'Pracownik została deaktywowany.');
+        if (Employees::setActive($dataOfEmployees->id, FALSE)) {
+            return Redirect::to('employees')->with('message_success', Language::getMessage('messages.EmployeesIsNowDeactivated'));
         } else {
-            return Redirect::back()->with('message_danger', 'Pracownik jest juz nieaktywny.');
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.EmployeesIsDeactivated'));
         }
     }
 }

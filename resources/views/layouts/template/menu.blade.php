@@ -8,28 +8,28 @@
                 <a class="active-menu" href="#"><i class="fa fa-dashboard"></i>System<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ URL::to('/') }}">Panel główny</a>
-                        <a href="#">Ustawienia</a>
+                        <a href="{{ URL::to('/') }}">Dashboard</a>
+                        <a href="#">Settings</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-user"></i>Kliencie<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-user"></i>Clients<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ route('clients') }}">Lista klientów</a>
-                        <a href="{{ route('employees') }}">Pracownicy</a>
-                        <a href="{{ route('contacts') }}">Spotkania</a>
-                        <a href="{{ route('deals') }}">Umowy</a>
-                        <a href="{{ route('companies') }}">Firmy</a>
+                        <a href="{{ route('clients') }}">List of clients</a>
+                        <a href="{{ route('employees') }}">Employees</a>
+                        <a href="{{ route('contacts') }}">Contacts</a>
+                        <a href="{{ route('deals') }}">Deals</a>
+                        <a href="{{ route('companies') }}">Companies</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-tasks"></i> Zadania<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-tasks"></i> Tasks<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ route('tasks') }}">List zadań</a>
+                        <a href="{{ route('tasks') }}">List of tasks</a>
                         <a href="{{ route('mailing') }}">Mailing</a>
                     </li>
                 </ul>
@@ -38,45 +38,45 @@
                 <a href="#"><i class="fa fa-money"></i>Marketing<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ route('finances') }}">Finansy</a>
-                        <a href="{{ route('projects') }}">Projekty</a>
-                        <a href="{{ route('invoices') }}">Faktury</a>
-                        <a href="{{ route('charts') }}">Wykresy</a>
+                        <a href="{{ route('finances') }}">Finances</a>
+                        <a href="{{ route('projects') }}">Projects</a>
+                        <a href="{{ route('invoices') }}">Invoices</a>
+                        <a href="{{ route('charts') }}">Charts</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-bar-chart-o"></i>Konta<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-bar-chart-o"></i>Accounts<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ route('accounts') }}">Lista kont</a>
+                        <a href="{{ route('accounts') }}">List of accounts</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-pencil-square-o"></i>Produkty<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-pencil-square-o"></i>Products<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ route('products') }}">Lista produktów</a>
+                        <a href="{{ route('products') }}">List of products</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-shopping-cart"></i> Sprzedaż<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-shopping-cart"></i> Sales<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ route('sales') }}">Lista sprzedaży</a>
+                        <a href="{{ route('sales') }}">List of sales</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="{{ route('reports') }}"><i class="fa fa-file-text"></i>Raporty</a>
+                <a href="{{ route('reports') }}"><i class="fa fa-file-text"></i>Reports</a>
             </li>
             <li>
-                <a href="{{ route('calendar') }}"><i class="fa fa-calendar"></i>Kalendarz</a>
+                <a href="{{ route('calendar') }}"><i class="fa fa-calendar"></i>Calendars</a>
             </li>
             <li>
-                <a href="{{ route('files') }}"><i class="fa fa-folder-open"></i>Pliki</a>
+                <a href="{{ route('files') }}"><i class="fa fa-folder-open"></i>Files</a>
             </li>
         </ul>
 

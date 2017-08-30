@@ -1,10 +1,10 @@
 @extends('layouts.base')
 
-@section('caption', 'Informacje o firmie')
+@section('caption', 'Information about companies')
 
-@section('title', 'Informacje o firmie')
+@section('title', 'Information about companies')
 
-@section('lyric', 'Informacje o firmie')
+@section('lyric', '')
 
 @section('content')
     <div class="row">
@@ -12,39 +12,31 @@
             <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
-                    <strong>Bardzo dobrze!</strong> {{ session()->get('message_success') }}
+                    <strong>Well done!</strong> {{ session()->get('message_success') }}
                 </div>
             @elseif(session()->has('message_danger'))
                 <div class="alert alert-danger">
-                    <strong>Uwaga!</strong> {{ session()->get('message_danger') }}
+                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Więcej informacji na temat {{ $companies->name }}
+                    More information about {{ $companies->name }}
                 </div>
 
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#home" data-toggle="tab">Podstawowe informacje</a>
+                        <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
-                        <li class=""><a href="#profile" data-toggle="tab">Faktury <span
+                        <li class=""><a href="#profile" data-toggle="tab">Invoices <span
                                         class="badge badge-warning">0</span></a>
                         </li>
                         <div class="text-right">
                             {{ Form::open(array('url' => 'companies/' . $companies->id, 'class' => 'pull-right')) }}
                             {{ Form::hidden('_method', 'DELETE') }}
-                            {{ Form::submit('Usuń', array('class' => 'btn btn-small btn-danger')) }}
+                            {{ Form::submit('Delete this companie', array('class' => 'btn btn-small btn-danger')) }}
                             {{ Form::close() }}
-                            @if($companies->is_active == TRUE)
-                                <a class="btn btn-small btn-warning"
-                                   href="{{ URL::to('companies/disable/' . $companies->id) }}">Deaktywuj</a>
-                            @else
-                                <a class="btn btn-small btn-warning"
-                                   href="{{ URL::to('companies/enable/' . $companies->id) }}">Aktywuj</a>
-                            @endif
                         </div>
-
                     </ul>
 
                     <div class="tab-content">
@@ -54,43 +46,43 @@
                             <table class="table table-striped table-bordered">
                                 <tbody class="text-right">
                                 <tr>
-                                    <th>Nazwa</th>
+                                    <th>Name</th>
                                     <td>{{ $companies->name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>NIP</th>
+                                    <th>Tax number</th>
                                     <td>{{ $companies->tax_number }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Telefon</th>
+                                    <th>Phone</th>
                                     <td>{{ $companies->phone }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Miasto</th>
+                                    <th>City</th>
                                     <td>{{ $companies->city }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Adres</th>
+                                    <th>Billing Address</th>
                                     <td>{{ $companies->billing_address }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Państwo</th>
+                                    <th>Country</th>
                                     <td>{{ $companies->country }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Kod pocztowy</th>
+                                    <th>Postal code</th>
                                     <td>{{ $companies->postal_code }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Liczba pracowników</th>
-                                    <td>{{ $companies->employees }}</td>
+                                    <th>Employee size</th>
+                                    <td>{{ $companies->employees_size }}</td>
                                 </tr>
                                 <tr>
                                     <th>Fax</th>
                                     <td>{{ $companies->fax }}</td>
                                 </tr>
                                 <tr height="100px">
-                                    <th>Opis firmy</th>
+                                    <th>Description</th>
                                     <td>{{ $companies->description }}</td>
                                 </tr>
                                 <tr>

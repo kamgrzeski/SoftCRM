@@ -12,40 +12,33 @@
             <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
-                    <strong>Bardzo dobrze!</strong> {{ session()->get('message_success') }}
+                    <strong>Well done!</strong> {{ session()->get('message_success') }}
                 </div>
             @elseif(session()->has('message_danger'))
                 <div class="alert alert-danger">
-                    <strong>Uwaga!</strong> {{ session()->get('message_danger') }}
+                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Więcej informacji na temat {{ $deals->name }}
+                    More information about {{ $deals->name }}
                 </div>
 
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#home" data-toggle="tab">Podstawowe informacje</a>
+                        <li class="active"><a href="#home" data-toggle="tab">The basic information</a>
                         </li>
-                        <li class=""><a href="#profile" data-toggle="tab">Firma <span
+                        <li class=""><a href="#profile" data-toggle="tab">Company <span
                                         class="badge badge-warning">{{ count($deals->companies) }}</span></a>
                         </li>
-                        <li class="""><a href="#messages" data-toggle="tab">Warunki umowy <span
-                                        class="badge badge-danger">BARDZO WAŻNE</span></a>
+                        <li class="""><a href="#messages" data-toggle="tab">Terms of agreement <span
+                                        class="badge badge-danger">VERY IMPORTANT</span></a>
                         </li>
                         <div class="text-right">
                             {{ Form::open(array('url' => 'client/' . $deals->id, 'class' => 'pull-right')) }}
                             {{ Form::hidden('_method', 'DELETE') }}
-                            {{ Form::submit('Usuń', array('class' => 'btn btn-small btn-danger')) }}
+                            {{ Form::submit('Delete this deals', array('class' => 'btn btn-small btn-danger')) }}
                             {{ Form::close() }}
-                            @if($deals->is_active == TRUE)
-                                <a class="btn btn-small btn-warning"
-                                   href="{{ URL::to('client/disable/' . $deals->id) }}">Deaktywuj</a>
-                            @else
-                                <a class="btn btn-small btn-warning"
-                                   href="{{ URL::to('client/enable/' . $deals->id) }}">Aktywuj</a>
-                            @endif
                         </div>
 
                     </ul>

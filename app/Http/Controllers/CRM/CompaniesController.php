@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Companies;
-use App\Employees;
 use App\Http\Controllers\Controller;
+use App\Language;
 use View;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -16,7 +16,6 @@ class CompaniesController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @return void
      */
     public function __construct()
     {
@@ -30,11 +29,11 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        $data = [
+        $dataOfCompanies = [
             'companies' => Companies::all(),
             'companiesPaginate' => Companies::paginate(10)
         ];
-        return View::make('crm.companies.index')->with($data);
+        return View::make('crm.companies.index')->with($dataOfCompanies);
     }
 
     /**
@@ -44,8 +43,8 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        $clients = Client::pluck('full_name', 'id');
-        return View::make('crm.companies.create', compact('clients'));
+        $dataWithPluckOfClient = Client::pluck('full_name', 'id');
+        return View::make('crm.companies.create', compact('dataWithPluckOfClient'));
     }
 
     /**
@@ -63,9 +62,9 @@ class CompaniesController extends Controller
             return Redirect::to('companies/create')->with('message_danger', $validator->errors());
         } else {
             if (Companies::insertRow($allInputs)) {
-                return Redirect::to('companies')->with('message_success', 'Z powodzeniem dodano firmę!');
+                return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesStore'));
             } else {
-                return Redirect::back()->with('message_danger', 'Błąd podczas dodawania firmy!');
+                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorCompaniesStore'));
             }
         }
     }
@@ -78,11 +77,11 @@ class CompaniesController extends Controller
      */
     public function show($id)
     {
-        $companies = Companies::find($id);
+        $dataOfCompanies = Companies::find($id);
 
         return View::make('crm.companies.show')
             ->with([
-                'companies' => $companies
+                'companies' => $dataOfCompanies
             ]);
     }
 
@@ -94,10 +93,10 @@ class CompaniesController extends Controller
      */
     public function edit($id)
     {
-        $companies = Companies::find($id);
+        $dataOfCompanies = Companies::find($id);
 
         return View::make('crm.companies.edit')
-            ->with('companies', $companies);
+            ->with('companies', $dataOfCompanies);
     }
 
     /**
@@ -116,9 +115,9 @@ class CompaniesController extends Controller
             return Redirect::to('companies')->with('message_danger', $validator);
         } else {
             if (Companies::updateRow($id, $allInputs)) {
-                return Redirect::to('companies')->with('message_success', 'Z powodzeniem zaktualizowano firmę!');
+                return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesUpdate'));
             } else {
-                return Redirect::back()->with('message_success', 'Błąd podczas aktualizowania firmy!');
+                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorCompaniesUpdate'));
             }
         }
     }
@@ -131,10 +130,10 @@ class CompaniesController extends Controller
      */
     public function destroy($id)
     {
-        $companies = Companies::find($id);
-        $companies->delete();
+        $dataOfCompanies = Companies::find($id);
+        $dataOfCompanies->delete();
 
-        return Redirect::to('companies')->with('message_success', 'Firma została pomyślnie usunięta.');
+        return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesDelete'));
     }
 
     /**
@@ -143,12 +142,12 @@ class CompaniesController extends Controller
      */
     public function enable($id)
     {
-        $companies = Companies::find($id);
+        $dataOfCompanies = Companies::find($id);
 
-        if (Companies::setActive($companies->id, TRUE)) {
-            return Redirect::to('companies')->with('message_success', 'Firma od teraz jest aktywna.');
+        if (Companies::setActive($dataOfCompanies->id, TRUE)) {
+            return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesActive'));
         } else {
-            return Redirect::back()->with('message_danger', 'Firma jest już aktywna.');
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorCompaniesActive'));
         }
     }
 
@@ -158,12 +157,12 @@ class CompaniesController extends Controller
      */
     public function disable($id)
     {
-        $companies = Companies::find($id);
+        $dataOfCompanies = Companies::find($id);
 
-        if (Companies::setActive($companies->id, FALSE)) {
-            return Redirect::to('companies')->with('message_success', 'Firma została deaktywowana.');
+        if (Companies::setActive($dataOfCompanies->id, FALSE)) {
+            return Redirect::to('companies')->with('message_success', Language::getMessage('messages.CompaniesIsNowDeactivated'));
         } else {
-            return Redirect::back()->with('message_danger', 'Firma jest juz nieaktywna.');
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.CompaniesIsDeactivated'));
         }
     }
 }
