@@ -87,7 +87,6 @@
 
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
-                            {{ Form::reset('Reset Button', array('class' => 'btn btn-warning')) }}
                         </div>
 
                     {{ Form::close() }}

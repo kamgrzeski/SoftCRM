@@ -90,9 +90,15 @@ class ContactsController extends Controller
     public function edit($id)
     {
         $dataOfContacts = Contacts::find($id);
+        $dataWithPluckOfClients = Client::pluck('full_name', 'id');
+        $dataWithPluckOfEmployees = Employees::pluck('full_name', 'id');
 
         return View::make('crm.contacts.edit')
-            ->with('deals', $dataOfContacts);
+            ->with([
+                'contacts' => $dataOfContacts,
+                'clients' => $dataWithPluckOfClients,
+                'employees' => $dataWithPluckOfEmployees
+            ]);
     }
 
     /**

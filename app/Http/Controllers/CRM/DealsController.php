@@ -83,9 +83,13 @@ class DealsController extends Controller
     public function edit($id)
     {
         $dataOfDeals = Deals::find($id);
+        $dataWithPluckOfCompanies = Companies::pluck('name', 'id');
 
         return View::make('crm.deals.edit')
-            ->with('deals', $dataOfDeals);
+            ->with([
+                'deals' => $dataOfDeals,
+                'companies' => $dataWithPluckOfCompanies
+            ]);
     }
 
     /**
@@ -104,7 +108,7 @@ class DealsController extends Controller
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if (Deals::updateRow($id, $allInputs)) {
-                return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessDealsUpdate'));
+                return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsUpdate'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsUpdate'));
             }
