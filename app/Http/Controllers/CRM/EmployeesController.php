@@ -92,12 +92,12 @@ class EmployeesController extends Controller
     public function edit($id)
     {
         $dataOfEmployees = Employees::find($id);
-        $dataWithPluckOfCompanies = Companies::pluck('name', 'id');
+        $dataWithPluckOfClients = Client::pluck('full_name', 'id');
 
         return View::make('crm.employees.edit')
             ->with([
                 'employees' => $dataOfEmployees,
-                'companies' => $dataWithPluckOfCompanies
+                'clients' => $dataWithPluckOfClients
             ]);
     }
 
@@ -114,7 +114,7 @@ class EmployeesController extends Controller
         $validator = Validator::make($allInputs, Employees::getRules('STORE'));
 
         if ($validator->fails()) {
-            return Redirect::to('employees')->with('message_danger', $validator);
+            return Redirect::to('employees')->with('message_danger', $validator->errors());
         } else {
             if (Employees::updateRow($id, $allInputs)) {
                 return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesUpdate'));

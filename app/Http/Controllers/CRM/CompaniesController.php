@@ -94,9 +94,13 @@ class CompaniesController extends Controller
     public function edit($id)
     {
         $dataOfCompanies = Companies::find($id);
+        $dataWithPluckOfClients = Client::pluck('full_name', 'id');
 
         return View::make('crm.companies.edit')
-            ->with('companies', $dataOfCompanies);
+            ->with([
+                'companies' => $dataOfCompanies,
+                'clients' => $dataWithPluckOfClients
+            ]);
     }
 
     /**
@@ -112,7 +116,7 @@ class CompaniesController extends Controller
         $validator = Validator::make($allInputs, Companies::getRules('STORE'));
 
         if ($validator->fails()) {
-            return Redirect::to('companies')->with('message_danger', $validator);
+            return Redirect::back()->with('message_danger', $validator->errors());
         } else {
             if (Companies::updateRow($id, $allInputs)) {
                 return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesUpdate'));

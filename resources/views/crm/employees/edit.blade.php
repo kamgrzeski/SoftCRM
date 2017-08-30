@@ -34,8 +34,8 @@
                                 {{ Form::text('email', null, array('class' => 'form-control')) }}
                             </div>
                             <div class="form-group">
-                                {{ Form::label('companies_id', 'Assign company') }}
-                                {{ Form::select('companies_id', $companies, null, ['class' => 'form-control'])  }}
+                                {{ Form::label('client_id', 'Assign client') }}
+                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control'])  }}
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -52,8 +52,6 @@
                                 {{ Form::textarea('note', null, array('class' => 'form-control')) }}
                             </div>
                         </div>
-
-                    </div>
 
                     <div class="col-lg-12">
                         {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}

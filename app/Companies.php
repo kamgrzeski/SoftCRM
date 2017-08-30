@@ -64,7 +64,7 @@ class Companies extends Model
             case 'STORE':
                 return [
                     'name' => 'required',
-                    'tax_number' => 'required|unique:companies|integer',
+                    'tax_number' => 'required|integer',
                     'city' => 'required',
                     'billing_address' => 'required',
                     'country' => 'required',

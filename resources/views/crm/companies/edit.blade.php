@@ -54,6 +54,11 @@
                                 {{ Form::label('country', 'Country') }}
                                 {{ Form::text('country', null, array('class' => 'form-control')) }}
                             </div>
+
+                            <div class="form-group input-row">
+                                {{ Form::label('client_id', 'Klient') }}
+                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control'])  }}
+                            </div>
                         </div>
 
                         <div class="col-lg-6">
@@ -63,8 +68,8 @@
                             </div>
 
                             <div class="form-group">
-                                {{ Form::label('employees', 'Employees size') }}
-                                {{ Form::text('employees', null, array('class' => 'form-control')) }}
+                                {{ Form::label('employees_size', 'Employees size') }}
+                                {{ Form::text('employees_size', null, array('class' => 'form-control')) }}
                             </div>
 
                             <div class="form-group">
