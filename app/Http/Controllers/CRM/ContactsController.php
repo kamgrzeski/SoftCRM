@@ -10,10 +10,24 @@ use App\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
+use Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class ContactsController extends Controller
 {
+    /**
+     * @return array
+     */
+    private function getDataAndPagination()
+    {
+        $dataOfContacts = [
+            'contacts' => Contacts::all(),
+            'contactsPaginate' => Contacts::paginate(10)
+        ];
+
+        return $dataOfContacts;
+    }
+
     /**
      * Show the application dashboard.
      *
@@ -21,12 +35,7 @@ class ContactsController extends Controller
      */
     public function index()
     {
-        $dataOfContacts = [
-            'contacts' => Contacts::all(),
-            'contactsPaginate' => Contacts::paginate(10)
-        ];
-
-        return View::make('crm.contacts.index')->with($dataOfContacts);
+        return View::make('crm.contacts.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -135,6 +144,25 @@ class ContactsController extends Controller
         $dataOfContacts = Contacts::find($id);
         $dataOfContacts->delete();
 
-        return Redirect::to('contacts/index')->with('message_success', Language::getMessage('messages.SuccessContactsDelete'));
+        return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsDelete'));
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function search()
+    {
+        $getValueInput = Request::input('search');
+        $findDealsByValue = count(Contacts::trySearchContactsByValue('full_name', $getValueInput, 10));
+        $dataOfContacts = $this->getDataAndPagination();
+
+        if(!$findDealsByValue > 0 ) {
+            return redirect('contacts')->with('message_danger', Language::getMessage('messages.ThereIsNoDeals'));
+        } else {
+            $dataOfContacts += ['contacts_search' => $findDealsByValue];
+            Redirect::to('contacts/search')->with('message_success', 'Find '.$findDealsByValue.' contacts!');
+        }
+
+        return View::make('crm.contacts.index')->with($dataOfContacts);
     }
 }

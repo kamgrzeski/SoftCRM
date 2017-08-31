@@ -1,10 +1,10 @@
 @extends('layouts.base')
 
-@section('caption', 'Informacje o umowie')
+@section('caption', 'Information about deals')
 
-@section('title', 'Informacje o umowie')
+@section('title', 'Information about deals')
 
-@section('lyric', 'Informacje o umowie')
+@section('lyric', 'Information about deals')
 
 @section('content')
     <div class="row">
@@ -50,21 +50,21 @@
                             <table class="table table-striped table-bordered">
                                 <tbody class="text-right">
                                 <tr>
-                                    <th>Nazwa</th>
+                                    <th>Name</th>
                                     <td>{{ $deals->name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Umowa między firmą</th>
+                                    <th>Deal between company</th>
                                     <td>
                                         <a href="{{ URL::to('companies/' . $deals->companies->id) }}">{{ $deals->companies->name }}</a>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Data rozpoczenia umowy</th>
+                                    <th>Start date</th>
                                     <td>{{ $deals->start_time }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Data zakończenia umowy</th>
+                                    <th>End date</th>
                                     <td>{{ $deals->end_time }}</td>
                                 </tr>
                                 <tr>
@@ -76,46 +76,46 @@
                         </div>
                         <div class="tab-pane fade" id="profile">
                             <p> <table class="table table-striped table-bordered">
-                                <h4>Pełne informacje o <strong>{{ $deals->companies->name }}</strong></h4><br>
+                                <h4>Full information about <strong>{{ $deals->companies->name }}</strong></h4><br>
                                 <tbody class="text-right">
                                 <tr>
-                                    <th>Nazwa</th>
+                                    <th>Name</th>
                                     <td>{{ $deals->companies->name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>NIP</th>
+                                    <th>Tax number</th>
                                     <td>{{ $deals->companies->tax_number }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Telefon</th>
+                                    <th>Phone</th>
                                     <td>{{ $deals->companies->phone }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Miasto</th>
+                                    <th>City</th>
                                     <td>{{ $deals->companies->city }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Adres</th>
+                                    <th>Billing address</th>
                                     <td>{{ $deals->companies->billing_address }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Państwo</th>
+                                    <th>Country</th>
                                     <td>{{ $deals->companies->country }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Kod pocztowy</th>
+                                    <th>Postal code</th>
                                     <td>{{ $deals->companies->postal_code }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Liczba pracowników</th>
-                                    <td>{{ $deals->companies->employees }}</td>
+                                    <th>Employees size</th>
+                                    <td>{{ $deals->companies->employees_size }}</td>
                                 </tr>
                                 <tr>
                                     <th>Fax</th>
                                     <td>{{ $deals->companies->fax }}</td>
                                 </tr>
                                 <tr height="100px">
-                                    <th>Opis firmy</th>
+                                    <th>Description</th>
                                     <td>{{ $deals->companies->description }}</td>
                                 </tr>
                                 <tr>
@@ -126,7 +126,7 @@
                             </table></p>
                         </div>
                         <div class="tab-pane fade" id="messages">
-                            <h4>Warunki umowy</h4>
+                            <h4>Terms of agreement</h4>
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
                                 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
                                 exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure

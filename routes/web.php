@@ -44,6 +44,8 @@ Route::post('employees/search', ['as' => 'employees/search',  'uses' => 'CRM\Emp
 
 /* Contacts */
 Route::resource('contacts', 'CRM\ContactsController');
+Route::post('contacts/search', ['as' => 'contacts/search',  'uses' => 'CRM\ContactsController@search']);
+
 
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('/settings', 'CRM\SettingsController@index')->name('settings');

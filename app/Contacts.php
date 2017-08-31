@@ -52,6 +52,20 @@ class Contacts extends Model
         }
     }
 
+    /**
+     * @param $type
+     * @param $value
+     * @param int $paginationLimit
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public static function trySearchContactsByValue($type, $value, $paginationLimit = 10)
+    {
+        return Client::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function client()
     {
         return $this->belongsTo(Client::class);
@@ -59,6 +73,6 @@ class Contacts extends Model
 
     public function employees()
     {
-        return $this->hasOne(Employees::class, 'id');
+        return $this->belongsTo(Employees::class, 'employee_id', 'id');
     }
 }

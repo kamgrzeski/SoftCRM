@@ -136,6 +136,12 @@ class CompaniesController extends Controller
     public function destroy($id)
     {
         $dataOfCompanies = Companies::find($id);
+        $countDeals = count($dataOfCompanies->deals()->get());
+
+        if($countDeals > 0 ) {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteDeals'));
+        }
+
         $dataOfCompanies->delete();
 
         return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesDelete'));

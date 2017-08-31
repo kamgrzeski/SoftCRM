@@ -4,7 +4,7 @@
 
 @section('title', 'List of contacts')
 
-@section('lyric', 'lorem ipsum')
+@section('lyric', '')
 
 @section('content')
     <div class="row">
@@ -19,6 +19,14 @@
                     <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
+            {!! Form::open(array('route' => 'contacts/search', 'class'=>'form navbar-form navbar-right searchform')) !!}
+            {!! Form::text('search', null,
+                                   array('required',
+                                        'class'=>'form-control',
+                                        'placeholder'=>'Write name of contacts...')) !!}
+            {!! Form::submit('Search',
+                                       array('class'=>'btn btn-default')) !!}
+            {!! Form::close() !!}
             <a href="{{ URL::to('contacts/create') }}">
                 <button type="button" class="btn btn-primary btn-lg active">Add contacts</button>
             </a>

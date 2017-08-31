@@ -121,11 +121,11 @@ class Employees extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function contacts()
     {
-        return $this->belongsTo(Contacts::class);
+        return $this->hasMany(Contacts::class, 'employee_id');
     }
 }
 

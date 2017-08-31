@@ -4,7 +4,7 @@
 
 @section('title', 'List of deals')
 
-@section('lyric', 'lorem ipsum')
+@section('lyric', '')
 
 @section('content')
     <div class="row">

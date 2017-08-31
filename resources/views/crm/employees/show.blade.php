@@ -59,7 +59,8 @@
                             </tr>
                             <tr>
                                 <th>Assigned client</th>
-                                <td>{{ $employees->client_id }}</td>
+                                <td><a href="{{ URL::to('client/' . $employees->client->id) }}">{{ $employees->client->full_name }}</a></td>
+
                             </tr>
                             <tr>
                                 <th>Status</th>

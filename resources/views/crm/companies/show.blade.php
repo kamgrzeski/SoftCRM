@@ -78,6 +78,12 @@
                                     <td>{{ $companies->employees_size }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Assigned client</th>
+                                    <td>
+                                        <a href="{{ URL::to('client/' . $companies->client->id) }}">{{ $companies->client->full_name }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>Fax</th>
                                     <td>{{ $companies->fax }}</td>
                                 </tr>

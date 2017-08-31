@@ -135,7 +135,7 @@ class DealsController extends Controller
         $dataOfDeals = Deals::find($id);
         $dataOfDeals->delete();
 
-        return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessDealsDelete'));
+        return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsDelete'));
     }
 
     /**

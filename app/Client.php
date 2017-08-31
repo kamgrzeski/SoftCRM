@@ -98,12 +98,4 @@ class Client extends Model
     {
         return $this->hasMany(Employees::class);
     }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function contacts()
-    {
-        return $this->hasOne(Contacts::class);
-    }
 }

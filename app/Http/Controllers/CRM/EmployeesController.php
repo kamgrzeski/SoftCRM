@@ -132,6 +132,11 @@ class EmployeesController extends Controller
     public function destroy($id)
     {
         $dataOfEmployees = Employees::find($id);
+        $countContacts= count($dataOfEmployees->contacts()->get());
+        if($countContacts > 0 ) {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteContacts'));
+        }
+
         $dataOfEmployees->delete();
 
         return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesDelete'));

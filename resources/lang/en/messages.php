@@ -23,10 +23,11 @@ return [
     'ErrorCompaniesActive' => 'Companie hasn\'t been active yet.',
     'CompaniesIsNowDeactivated' => 'Companie has been deactivated.',
     'CompaniesIsDeactivated' => 'Companie has been already deactivated.',
-    'firstDeleteCompanies' => 'Cannont delete this client, have assigned companies.',
-    'firstDeleteEmployees' => 'Cannont delete this client, have assigned employees.',
+    'firstDeleteCompanies' => 'Cannont delete, have assigned companies.',
+    'firstDeleteEmployees' => 'Cannont delete, have assigned employees.',
+    'firstDeleteContacts' => 'Cannont delete, have assigned contacts.',
+    'firstDeleteDeals' => 'Cannont delete, have assigned deals.',
     'ThereIsNoCompanies' => 'A companies with this name doesn\'t exist.',
-
 
     /** Contacts Messages **/
     'SuccessContactsStore' => 'Contact has been added.',

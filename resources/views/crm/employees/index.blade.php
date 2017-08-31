@@ -4,7 +4,7 @@
 
 @section('title', 'List of employees')
 
-@section('lyric', 'lorem ipsum')
+@section('lyric', '')
 
 @section('content')
     <div class="row">
@@ -45,9 +45,9 @@
                                 <th class="text-center">Phone</th>
                                 <th class="text-center">Email address</th>
                                 <th class="text-center">Job</th>
-                                <th class="text-center">Company</th>
-                                <th class="text-center">Status</th>
+                                <th class="text-center">Assigned client</th>
                                 <th class="text-center">Note</th>
+                                <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
                             </thead>
@@ -59,7 +59,7 @@
                                     <td class="text-center">{{ $value->phone }}</td>
                                     <td class="text-center">{{ $value->email }}</td>
                                     <td class="text-center">{{ $value->job }}</td>
-                                    <td class="text-center">{{ $value->client_id }}</td>
+                                    <td class="text-center"><a href="{{ URL::to('client/' . $value->client->id) }}">{{ $value->client->full_name }}</a></td>
                                     <td class="text-center">{{ $value->note }}</td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)
@@ -69,7 +69,7 @@
                                         @endif
                                     </td>
                                     <td class="text-right">
-                                        <a class="btn btn-small btn-warning"
+                                        <a class="btn btn-small btn-success"
                                            href="{{ URL::to('employees/' . $value->id) }}">More information</a>
                                         <a class="btn btn-small btn-info"
                                            href="{{ URL::to('employees/' . $value->id . '/edit') }}">Edit</a>
