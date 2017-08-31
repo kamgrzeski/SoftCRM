@@ -90,7 +90,7 @@
             <!-- Advanced Tables -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        List of clients
+                        <i class="fa fa-users" aria-hidden="true"></i> List of clients
                     </div>
                     <div class="panel-body">
                         <div class="table">

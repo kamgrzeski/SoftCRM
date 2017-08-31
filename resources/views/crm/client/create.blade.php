@@ -109,6 +109,14 @@
                                 }
                             }
                         },
+                        'budget': {
+                            'field': $('input[name=budget]'),
+                            'validate': function(field, event) {
+                                if(!field.val()) {
+                                    throw "A full name is required.";
+                                }
+                            }
+                        },
 
                         //this demonstrates more than one error message
                         //and handling more than one event

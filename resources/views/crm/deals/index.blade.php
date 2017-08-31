@@ -35,7 +35,7 @@
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    List of deals
+                    <i class="fa fa-keyboard-o" aria-hidden="true"></i> List of deals
                 </div>
                 <div class="panel-body">
                     <div class="table">

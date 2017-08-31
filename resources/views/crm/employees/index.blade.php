@@ -34,7 +34,7 @@
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    List of employees
+                    <i class="fa fa-code-fork" aria-hidden="true"></i> List of employees
                 </div>
                 <div class="panel-body">
                     <div class="table">

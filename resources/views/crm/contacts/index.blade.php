@@ -34,7 +34,7 @@
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    List of contacts
+                    <i class="fa fa-phone-square" aria-hidden="true"></i> List of contacts
                 </div>
                 <div class="panel-body">
                     <div class="table">

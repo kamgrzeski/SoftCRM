@@ -34,7 +34,7 @@
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    List of companies
+                    <i class="fa fa-calendar-o" aria-hidden="true"></i>   List of companies
                 </div>
                 <div class="panel-body">
                     <div class="table">

@@ -16,7 +16,7 @@
                     <h3>{{ \App\Companies::countCompanies() ? : 0 }}</h3>
                 </div>
                 <div class="panel-footer back-footer-green">
-                    Firm
+                    Company
 
                 </div>
             </div>
@@ -28,7 +28,7 @@
                     <h3>{{ \App\Sales::countSales() ? : 0 }} </h3>
                 </div>
                 <div class="panel-footer back-footer-blue">
-                    Przychodów
+                    Payments
 
                 </div>
             </div>
@@ -40,7 +40,7 @@
                     <h3>{{ \App\Employees::countEmployees() ? : 0 }} </h3>
                 </div>
                 <div class="panel-footer back-footer-red">
-                    Pracowników
+                    Employees
 
                 </div>
             </div>
@@ -52,7 +52,7 @@
                     <h3>{{ \App\Client::countClients() }} </h3>
                 </div>
                 <div class="panel-footer back-footer-brown">
-                    Klientów
+                    Clients
 
                 </div>
             </div>
