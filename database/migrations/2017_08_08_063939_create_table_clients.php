@@ -12,6 +12,9 @@ class CreateTableClients extends Migration
             $table->string('full_name');
             $table->integer('phone');
             $table->string('email', 255);
+            $table->text('priority');
+            $table->text('section');
+            $table->text('budget');
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
         });

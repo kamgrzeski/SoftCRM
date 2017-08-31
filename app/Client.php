@@ -17,6 +17,9 @@ class Client extends Model
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
                 'email' => $allInputs['email'],
+                'priority' => $allInputs['priority'],
+                'section' => $allInputs['section'],
+                'budget' => $allInputs['budget'],
                 'is_active' => 1
             ]
         );
@@ -34,6 +37,9 @@ class Client extends Model
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
                 'email' => $allInputs['email'],
+                'priority' => $allInputs['priority'],
+                'section' => $allInputs['section'],
+                'budget' => $allInputs['budget'],
                 'is_active' => 1
             ]);
     }
@@ -49,6 +55,9 @@ class Client extends Model
                 return [
                     'full_name' => 'required|string',
                     'phone' => 'required|integer',
+                    'priority' => 'required',
+                    'budget' => 'required',
+                    'section' => 'required',
                     'email' => 'required|email',
                 ];
         }
@@ -70,6 +79,12 @@ class Client extends Model
         }
     }
 
+    /**
+     * @param $type
+     * @param $value
+     * @param int $paginationLimit
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public static function trySearchClientByValue($type, $value, $paginationLimit = 10)
     {
         return Client::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
