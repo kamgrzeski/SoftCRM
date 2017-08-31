@@ -15,6 +15,8 @@ Auth::routes();
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
+Route::group(['middleware' => ['auth']], function () {
+    //
 /* Clients */
 Route::get('/client/enable/{id}', 'CRM\ClientController@enable')->name('enable');
 Route::get('/client/disable/{id}', 'CRM\ClientController@disable')->name('disable');
@@ -66,3 +68,4 @@ Route::get('/companies', 'CRM\CompaniesController@index')->name('companies');
 Route::get('/sales', 'CRM\SalesController@index')->name('sales');
 Route::get('/tasks', 'CRM\TasksController@index')->name('tasks');
 
+});
