@@ -22,6 +22,8 @@ return [
     'ErrorCompaniesActive' => 'Companie hasn\'t been active yet.',
     'CompaniesIsNowDeactivated' => 'Companie has been deactivated.',
     'CompaniesIsDeactivated' => 'Companie has been already deactivated.',
+    'firstDeleteCompanies' => 'Cannont delete this client, have assigned companies.',
+    'firstDeleteEmployees' => 'Cannont delete this client, have assigned employees.',
 
     /** Contacts Messages **/
     'SuccessContactsStore' => 'Contact has been added.',

@@ -35,7 +35,7 @@
                                         class="badge badge-danger">VERY IMPORTANT</span></a>
                         </li>
                         <div class="text-right">
-                            {{ Form::open(array('url' => 'client/' . $deals->id, 'class' => 'pull-right')) }}
+                            {{ Form::open(array('url' => 'deals/' . $deals->id, 'class' => 'pull-right')) }}
                             {{ Form::hidden('_method', 'DELETE') }}
                             {{ Form::submit('Delete this deals', array('class' => 'btn btn-small btn-danger')) }}
                             {{ Form::close() }}

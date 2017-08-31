@@ -130,6 +130,16 @@ class ClientController extends Controller
     public function destroy($id)
     {
         $clientDetails = Client::find($id);
+        $countCompanies = count($clientDetails->companies()->get());
+        $countEmployees = count($clientDetails->employees()->get());
+
+        if($countCompanies > 0 ) {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteCompanies'));
+        }
+        if($countEmployees > 0 ) {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteEmployees'));
+        }
+
         $clientDetails->delete();
 
         return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientDelete'));
