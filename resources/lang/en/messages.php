@@ -11,6 +11,7 @@ return [
     'ErrorClientActive' => 'Client hasn\'t been active yet.',
     'ClientIsNowDeactivated' => 'Client has been deactivated.',
     'ClientIsDeactivated' => 'Client has been already deactivated.',
+    'ThereIsNoClient' => 'A client with this name doesn\'t exist.',
 
     /** Companies Messages **/
     'SuccessCompaniesStore' => 'Companie has been added.',
@@ -24,6 +25,8 @@ return [
     'CompaniesIsDeactivated' => 'Companie has been already deactivated.',
     'firstDeleteCompanies' => 'Cannont delete this client, have assigned companies.',
     'firstDeleteEmployees' => 'Cannont delete this client, have assigned employees.',
+    'ThereIsNoCompanies' => 'A companies with this name doesn\'t exist.',
+
 
     /** Contacts Messages **/
     'SuccessContactsStore' => 'Contact has been added.',
@@ -46,6 +49,7 @@ return [
     'ErrorDealsActive' => 'Deal hasn\'t been active yet.',
     'DealsIsNowDeactivated' => 'Deal has been deactivated.',
     'DealsIsDeactivated' => 'Deal has been already deactivated.',
+    'ThereIsNoDeals' => 'A deal with this name doesn\'t exist.',
 
     /** Employees Messages **/
     'SuccessEmployeesStore' => 'Employee has been added.',

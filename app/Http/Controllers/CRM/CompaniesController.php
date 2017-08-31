@@ -181,7 +181,7 @@ class CompaniesController extends Controller
         $dataOfCompanies = $this->getDataAndPagination();
 
         if(!$findCompaniesByValue > 0 ) {
-            return redirect('companies')->with('message_danger', Language::getMessage('messages.ThereIsNoDeals'));
+            return redirect('companies')->with('message_danger', Language::getMessage('messages.ThereIsNoCompanies'));
         } else {
             $dataOfCompanies += ['companies_search' => $findCompaniesByValue];
             Redirect::to('companies/search')->with('message_success', 'Find '.$findCompaniesByValue.' companies!');
