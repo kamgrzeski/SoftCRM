@@ -97,6 +97,11 @@ class Companies extends Model
         }
     }
 
+    public static function trySearchCompaniesByValue($type, $value, $paginationLimit = 10)
+    {
+        return Companies::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+    }
+
     /**
      * @return int
      */
@@ -128,4 +133,5 @@ class Companies extends Model
     {
         return $this->belongsTo(employees_size::class);
     }
+
 }

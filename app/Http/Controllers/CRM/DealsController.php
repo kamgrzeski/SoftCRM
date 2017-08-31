@@ -9,10 +9,23 @@ use App\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
+use Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class DealsController extends Controller
 {
+    /**
+     * @return array
+     */
+    private function getDataAndPagination() {
+        $dataOfDeals = [
+            'deals' => Deals::all(),
+            'dealsPaginate' => Deals::paginate(10)
+        ];
+
+        return $dataOfDeals;
+    }
+
     /**
      * Show the application dashboard.
      *
@@ -20,11 +33,7 @@ class DealsController extends Controller
      */
     public function index()
     {
-        $dataOfDeals = [
-            'deals' => Deals::all(),
-            'dealsPaginate' => Deals::paginate(10)
-        ];
-        return View::make('crm.deals.index')->with($dataOfDeals);
+        return View::make('crm.deals.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -157,5 +166,24 @@ class DealsController extends Controller
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.DealsIsDeactivated'));
         }
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function search()
+    {
+        $getValueInput = Request::input('search');
+        $findDealsByValue = count(Deals::trySearchDealsByValue('name', $getValueInput, 10));
+        $dataOfDeals = $this->getDataAndPagination();
+
+        if(!$findDealsByValue > 0 ) {
+            return redirect('deals')->with('message_danger', Language::getMessage('messages.ThereIsNoDeals'));
+        } else {
+            $dataOfDeals += ['deals_search' => $findDealsByValue];
+            Redirect::to('deals/search')->with('message_success', 'Find '.$findDealsByValue.' deals!');
+        }
+
+        return View::make('crm.deals.index')->with($dataOfDeals);
     }
 }

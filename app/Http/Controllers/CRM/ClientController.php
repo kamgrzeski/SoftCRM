@@ -14,13 +14,16 @@ use Illuminate\Support\Facades\Redirect;
 class ClientController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * @return array
      */
-    public function __construct()
+    private function getDataAndPagination()
     {
-        $this->middleware('auth');
+        $dataWithClients = [
+            'client' => Client::all(),
+            'clientPaginate' => Client::paginate(10)
+        ];
+
+        return $dataWithClients;
     }
 
     /**
@@ -30,12 +33,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $dataWithClients = [
-            'client' => Client::all(),
-            'clientPaginate' => Client::paginate(10)
-        ];
-
-        return View::make('crm.client.index')->with($dataWithClients);
+        return View::make('crm.client.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -167,28 +165,22 @@ class ClientController extends Controller
         }
     }
 
-
-
     /**
      * @return \Illuminate\Http\RedirectResponse
      */
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findClientByValue = Client::where('full_name', 'LIKE', '%' . $getValueInput . '%')->paginate(10);
+        $findClientByValue = count(Client::trySearchClientByValue('full_name', $getValueInput, 10));
+        $dataOfClient = $this->getDataAndPagination();
 
-        $dataOfClients = [
-            'client' => Client::all(),
-            'clientPaginate' => Client::paginate(10)
-        ];
-
-        if(!count($findClientByValue) > 0 ) {
-            return redirect('clients')->with('message_danger', Language::getMessage('messages.ThereIsNoClient'));
+        if(!$findClientByValue > 0 ) {
+            return redirect('client')->with('message_danger', Language::getMessage('messages.ThereIsNoClient'));
         } else {
-            $dataOfClients += ['clients_search' => $findClientByValue];
-            Redirect::to('client/search')->with('message_success', 'Find '.count($findClientByValue).' clients!');
+            $dataOfClient += ['client_search' => $findClientByValue];
+            Redirect::to('client/search')->with('message_success', 'Find '.$findClientByValue.' client!');
         }
 
-        return View::make('crm.client.index')->with($dataOfClients);
+        return View::make('crm.client.index')->with($dataOfClient);
     }
 }

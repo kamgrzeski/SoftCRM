@@ -4,7 +4,7 @@ namespace App\Http\Controllers\CRM;
 
 use App\Client;
 use App\Employees;
-use App\Companies;
+use Request;
 use App\Http\Controllers\Controller;
 use App\Language;
 use View;
@@ -15,12 +15,15 @@ use Illuminate\Support\Facades\Redirect;
 class EmployeesController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
+     * @return array
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
+    private function getDataAndPagination() {
+        $dataOfEmployees = [
+            'employees' => Employees::all(),
+            'employeesPaginate' => Employees::paginate(10)
+        ];
+
+        return $dataOfEmployees;
     }
 
     /**
@@ -30,11 +33,7 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        $dataOfEmployees = [
-            'employees' => Employees::all(),
-            'employeesPaginate' => Employees::paginate(10)
-        ];
-        return View::make('crm.employees.index')->with($dataOfEmployees);
+        return View::make('crm.employees.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -166,6 +165,25 @@ class EmployeesController extends Controller
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.EmployeesIsDeactivated'));
         }
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function search()
+    {
+        $getValueInput = Request::input('search');
+        $findEmployeesByValue = count(Employees::trySearchEmployeesByValue('full_name', $getValueInput, 10));
+        $dataOfEmployees = $this->getDataAndPagination();
+
+        if(!$findEmployeesByValue > 0 ) {
+            return redirect('employees')->with('message_danger', Language::getMessage('messages.ThereIsNoEmployees'));
+        } else {
+            $dataOfEmployees += ['employees_search' => $findEmployeesByValue];
+            Redirect::to('employees/search')->with('message_success', 'Find '.$findEmployeesByValue.' employees!');
+        }
+
+        return View::make('crm.employees.index')->with($dataOfEmployees);
     }
 }
 

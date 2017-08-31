@@ -82,6 +82,11 @@ class Employees extends Model
         }
     }
 
+    public static function trySearchEmployeesByValue($type, $value, $paginationLimit = 10)
+    {
+        return Employees::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+    }
+
     /**
      * @return int
      */

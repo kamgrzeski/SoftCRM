@@ -10,16 +10,21 @@ use Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use App\Client;
+use Request;
 
 class CompaniesController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
+     * @return array
      */
-    public function __construct()
+    private function getDataAndPagination()
     {
-        $this->middleware('auth');
+        $dataOfCompanies = [
+            'companies' => Companies::all(),
+            'companiesPaginate' => Companies::paginate(10)
+        ];
+
+        return $dataOfCompanies;
     }
 
     /**
@@ -29,11 +34,7 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        $dataOfCompanies = [
-            'companies' => Companies::all(),
-            'companiesPaginate' => Companies::paginate(10)
-        ];
-        return View::make('crm.companies.index')->with($dataOfCompanies);
+        return View::make('crm.companies.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -168,5 +169,24 @@ class CompaniesController extends Controller
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.CompaniesIsDeactivated'));
         }
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function search()
+    {
+        $getValueInput = Request::input('search');
+        $findCompaniesByValue = count(Companies::trySearchCompaniesByValue('name', $getValueInput, 10));
+        $dataOfCompanies = $this->getDataAndPagination();
+
+        if(!$findCompaniesByValue > 0 ) {
+            return redirect('companies')->with('message_danger', Language::getMessage('messages.ThereIsNoDeals'));
+        } else {
+            $dataOfCompanies += ['companies_search' => $findCompaniesByValue];
+            Redirect::to('companies/search')->with('message_success', 'Find '.$findCompaniesByValue.' companies!');
+        }
+
+        return View::make('crm.companies.index')->with($dataOfCompanies);
     }
 }

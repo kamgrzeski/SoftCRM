@@ -83,4 +83,9 @@ class Deals extends Model
     {
         return $this->belongsTo(Companies::class);
     }
+
+    public static function trySearchDealsByValue($type, $value, $paginationLimit = 10)
+    {
+        return Deals::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+    }
 }

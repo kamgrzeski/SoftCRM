@@ -70,6 +70,11 @@ class Client extends Model
         }
     }
 
+    public static function trySearchClientByValue($type, $value, $paginationLimit = 10)
+    {
+        return Client::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+    }
+
     /**
      * @return int
      */

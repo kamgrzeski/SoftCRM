@@ -26,20 +26,22 @@ Route::post('client/search', ['as' => 'client/search',  'uses' => 'CRM\ClientCon
 Route::get('/companies/enable/{id}', 'CRM\CompaniesController@enable')->name('enable');
 Route::get('/companies/disable/{id}', 'CRM\CompaniesController@disable')->name('disable');
 Route::resource('companies', 'CRM\CompaniesController');
+Route::post('companies/search', ['as' => 'companies/search',  'uses' => 'CRM\CompaniesController@search']);
 
 /* Deals */
 Route::get('/deals/enable/{id}', 'CRM\DealsController@enable')->name('enable');
 Route::get('/deals/disable/{id}', 'CRM\DealsController@disable')->name('disable');
 Route::resource('deals', 'CRM\DealsController');
+Route::post('deals/search', ['as' => 'deals/search',  'uses' => 'CRM\DealsController@search']);
 
 /* Employees */
 Route::get('/employees/enable/{id}', 'CRM\EmployeesController@enable')->name('enable');
 Route::get('/employees/disable/{id}', 'CRM\EmployeesController@disable')->name('disable');
 Route::resource('employees', 'CRM\EmployeesController');
+Route::post('employees/search', ['as' => 'employees/search',  'uses' => 'CRM\EmployeesController@search']);
 
 /* Contacts */
 Route::resource('contacts', 'CRM\ContactsController');
-
 
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('/settings', 'CRM\SettingsController@index')->name('settings');
