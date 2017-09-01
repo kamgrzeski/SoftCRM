@@ -166,6 +166,7 @@ return [
         MrEssex\LaravelAuthProfile\AuthProfileServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        ClickNow\Money\MoneyServiceProvider::class,
 
         /*
          * Package Service Providers...

@@ -115,7 +115,7 @@
                                         <td class="text-center">{{ $value->email }}</td>
                                         <td class="text-center">{{ $value->priority }}</td>
                                         <td class="text-center">{{ $value->section }}</td>
-                                        <td class="text-center">{{ $value->budget }}</td>
+                                        <td class="text-center"><button type="submit" class="btn btn-default">{{ \ClickNow\Money\Money::BRL($value->budget) }}</button></td>
                                         <td class="text-center">
                                             @if($value->is_active == TRUE)
                                                 <input type="checkbox" data-on="Active" checked data-toggle="toggle" onchange='window.location.assign("{{ URL::to('client/disable/' . $value->id) }}")'/>

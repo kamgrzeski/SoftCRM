@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e295e3e645e6af262e922ddc6e738da5",
+    "content-hash": "4d2e34ba3fd9c245395734bb767a6a02",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -176,6 +176,61 @@
                 }
             ],
             "time": "2016-06-13T19:28:20+00:00"
+        },
+        {
+            "name": "cknow/laravel-money",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cknow/laravel-money.git",
+                "reference": "a94f18c7fd29114bb1e22a5f32c2d6d7e871eb27"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cknow/laravel-money/zipball/a94f18c7fd29114bb1e22a5f32c2d6d7e871eb27",
+                "reference": "a94f18c7fd29114bb1e22a5f32c2d6d7e871eb27",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.1",
+                "illuminate/view": "~5.1",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "ext-intl": "Required to use NumberFormatter."
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/ClickNow/Money/helpers.php"
+                ],
+                "psr-4": {
+                    "ClickNow\\": "src/ClickNow"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ricardo Gobbo de Souza",
+                    "email": "ricardogobbosouza@yahoo.com.br",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Money",
+            "homepage": "https://github.com/cknow/laravel-money",
+            "keywords": [
+                "currency",
+                "laravel",
+                "money"
+            ],
+            "time": "2016-09-29T19:21:21+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

@@ -58,6 +58,18 @@
                                     <td>{{ $clients->email }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Priority</th>
+                                    <td>{{ $clients->priority }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Section</th>
+                                    <td>{{ $clients->section }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Budget</th>
+                                    <td><button type="submit" class="btn btn-default">{{ \ClickNow\Money\Money::BRL($clients->budget) }}</button></td>
+                                </tr>
+                                <tr>
                                     <th>Status</th>
                                     <td>{{ $clients->is_active ? 'Active' : 'Deactive' }}</td>
                                 </tr>

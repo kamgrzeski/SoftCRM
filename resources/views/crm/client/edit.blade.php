@@ -24,28 +24,38 @@
                     <div class="row">
                         <div class="col-lg-6">
                             {{ Form::model($client, array('route' => array('client.update', $client->id), 'method' => 'PUT')) }}
-
-                            <div class="form-group">
+                            <div class="form-group  input-row">
                                 {{ Form::label('full_name', 'Full name') }}
                                 {{ Form::text('full_name', null, array('class' => 'form-control')) }}
                             </div>
-                            <div class="form-group">
-                                {{ Form::label('email', 'Email address') }}
-                                {{ Form::text('email', null, array('class' => 'form-control')) }}
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group input-row">
                                 {{ Form::label('phone', 'Phone') }}
                                 {{ Form::text('phone', null, array('class' => 'form-control')) }}
                             </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('budget', 'Budget') }}
+                                {{ Form::text('budget', null, array('class' => 'form-control')) }}
+                            </div>
                         </div>
-                    <div class="col-lg-12">
-                        {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
-                    </div>
 
-                    {{ Form::close() }}
-
+                        <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('email', 'Emial address') }}
+                                {{ Form::text('email', null, array('class' => 'form-control')) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('priority', 'Priority') }}
+                                {{ Form::select('priority', [1, 2, 3], null, ['class' => 'form-control']) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('section', 'Section') }}
+                                {{ Form::select('section', ['transport' => 'transport', 'logistic' => 'logistic', 'finances' => 'finances'], null, ['class' => 'form-control']) }}
+                            </div>
+                        </div>
+                        <div class="col-lg-12 validate_form">
+                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                        </div>
+                        {{ Form::close() }}
                 </div>
                 <!-- /.panel-body -->
             </div>
