@@ -31,6 +31,12 @@
                                 {{ Form::text('pagination_size', config('crm_settings.pagination_size'), array('class' => 'form-control')) }}
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('currency', 'Currency') }}
+                                {{ Form::select('currency', ['PLN' => 'PLN', 'EUR' => 'EUR', 'USD' => 'USD'], config('crm_settings.currency'), ['class' => 'form-control']) }}
+                            </div>
+                        </div>
                         <div class="col-lg-12">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                         </div>

@@ -67,7 +67,7 @@
                                 </tr>
                                 <tr>
                                     <th>Budget</th>
-                                    <td><button type="submit" class="btn btn-default">{{ \ClickNow\Money\Money::BRL($clients->budget) }}</button></td>
+                                    <td><button type="submit" class="btn btn-default">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($clients->budget) }}</button></td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
