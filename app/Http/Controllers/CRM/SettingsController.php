@@ -11,7 +11,6 @@ use View;
 
 class SettingsController extends Controller
 {
-
     /**
      * Create a new controller instance.
      *
@@ -48,6 +47,5 @@ class SettingsController extends Controller
         ]);
 
         return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSettingsUpdate'));
-
     }
 }

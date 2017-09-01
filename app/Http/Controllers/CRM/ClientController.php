@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Input;
 use Validator;
 use Request;
 use Illuminate\Support\Facades\Redirect;
+use Config;
 
 class ClientController extends Controller
 {

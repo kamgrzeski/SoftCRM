@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use App\Client;
 use Request;
+use Config;
 
 class CompaniesController extends Controller
 {

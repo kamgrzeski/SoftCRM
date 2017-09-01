@@ -11,6 +11,7 @@ use View;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use Config;
 
 class EmployeesController extends Controller
 {

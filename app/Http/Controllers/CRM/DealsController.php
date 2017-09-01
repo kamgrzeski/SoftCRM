@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Input;
 use View;
 use Request;
 Use Illuminate\Support\Facades\Redirect;
+use Config;
 
 class DealsController extends Controller
 {
