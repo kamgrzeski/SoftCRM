@@ -20,7 +20,7 @@ class DealsController extends Controller
     private function getDataAndPagination() {
         $dataOfDeals = [
             'deals' => Deals::all(),
-            'dealsPaginate' => Deals::paginate(10)
+            'dealsPaginate' => Deals::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataOfDeals;

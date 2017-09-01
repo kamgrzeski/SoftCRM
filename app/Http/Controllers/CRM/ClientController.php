@@ -20,7 +20,7 @@ class ClientController extends Controller
     {
         $dataWithClients = [
             'client' => Client::all(),
-            'clientPaginate' => Client::paginate(10)
+            'clientPaginate' => Client::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataWithClients;

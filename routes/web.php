@@ -46,9 +46,12 @@ Route::post('employees/search', ['as' => 'employees/search',  'uses' => 'CRM\Emp
 Route::resource('contacts', 'CRM\ContactsController');
 Route::post('contacts/search', ['as' => 'contacts/search',  'uses' => 'CRM\ContactsController@search']);
 
+/* Contacts */
+Route::resource('settings', 'CRM\SettingsController');
+Route::get('/settings', 'CRM\SettingsController@index')->name('settings');
+
 
 Route::get('/', 'DashboardController@index')->name('home');
-Route::get('/settings', 'CRM\SettingsController@index')->name('settings');
 Route::get('/', 'DashboardController@index');
 Route::get('/accounts', 'CRM\AccountsController@index')->name('accounts');
 Route::get('/calendar', 'CRM\CalendarController@index')->name('calendar');

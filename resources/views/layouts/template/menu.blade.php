@@ -9,7 +9,7 @@
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ URL::to('/') }}">Dashboard</a>
-                        <a href="#">Settings</a>
+                        <a href="{{ route('settings') }}">Settings</a>
                     </li>
                 </ul>
             </li>

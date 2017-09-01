@@ -20,7 +20,7 @@ class EmployeesController extends Controller
     private function getDataAndPagination() {
         $dataOfEmployees = [
             'employees' => Employees::all(),
-            'employeesPaginate' => Employees::paginate(10)
+            'employeesPaginate' => Employees::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataOfEmployees;

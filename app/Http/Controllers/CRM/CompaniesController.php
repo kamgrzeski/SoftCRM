@@ -21,7 +21,7 @@ class CompaniesController extends Controller
     {
         $dataOfCompanies = [
             'companies' => Companies::all(),
-            'companiesPaginate' => Companies::paginate(10)
+            'companiesPaginate' => Companies::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataOfCompanies;

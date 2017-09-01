@@ -22,7 +22,7 @@ class ContactsController extends Controller
     {
         $dataOfContacts = [
             'contacts' => Contacts::all(),
-            'contactsPaginate' => Contacts::paginate(10)
+            'contactsPaginate' => Contacts::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataOfContacts;

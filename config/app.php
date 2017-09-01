@@ -167,6 +167,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         ClickNow\Money\MoneyServiceProvider::class,
+        Axdlee\Config\ConfigServiceProvider::class,
 
         /*
          * Package Service Providers...
