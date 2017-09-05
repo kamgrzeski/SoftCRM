@@ -44,7 +44,8 @@ class SettingsController extends Controller
         $writeConfig = new Rewrite;
         $writeConfig->toFile(base_path() .'/config/crm_settings.php', [
             'pagination_size' => $getAllInputFromRequest['pagination_size'],
-            'currency' => $getAllInputFromRequest['currency']
+            'currency' => $getAllInputFromRequest['currency'],
+            'priority_size' => $getAllInputFromRequest['priority_size']
         ]);
 
         return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSettingsUpdate'));

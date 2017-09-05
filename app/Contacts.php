@@ -64,6 +64,14 @@ class Contacts extends Model
     }
 
     /**
+     * @return int
+     */
+    public static function countContacts()
+    {
+        return count(Contacts::get());
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function client()

@@ -7,6 +7,11 @@
 @section('lyric', 'lorem ipsum')
 
 @section('content')
+    @if(count($dataOfDeals) == 0)
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> There is no company in system. Please create one. <a href="{{ URL::to('companies/create') }}">Click here!</a>
+        </div>
+    @endif
     <!-- will be used to show any messages -->
     @if(session()->has('message_success'))
         <div class="alert alert-success">
@@ -26,39 +31,29 @@
                     <div class="row">
                         <div class="col-lg-6">
                             {{ Form::open(array('url' => 'deals')) }}
-
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
                                 {{ Form::text('name', null, array('class' => 'form-control')) }}
                             </div>
-
                             <div class="form-group input-row">
                                 {{ Form::label('start_time', 'Start date') }}
                                 {{ Form::date('start_time', null, array('class' => 'form-control')) }}
                             </div>
                         </div>
-
                         <div class="col-lg-6">
-
                             <div class="form-group input-row">
                                 {{ Form::label('end_time', 'End date') }}
                                 {{ Form::date('end_time', null, array('class' => 'form-control')) }}
                             </div>
-
                             <div class="form-group input-row">
                                 {{ Form::label('companies_id', 'Deal between company:') }}
                                 {{ Form::select('companies_id', $dataOfDeals, null, ['class' => 'form-control'])  }}
-
                             </div>
-
                         </div>
-
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                         </div>
-
                     {{ Form::close() }}
-
                     <!-- /.row (nested) -->
                     </div>
                     <!-- /.panel-body -->
@@ -67,7 +62,6 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
-
         <script>
             $(document).ready(function() {
                 //create formValidator object

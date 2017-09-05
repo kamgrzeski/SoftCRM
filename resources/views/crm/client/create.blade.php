@@ -47,7 +47,7 @@
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('priority', 'Priority') }}
-                                {{ Form::select('priority', [1, 2, 3], null, ['class' => 'form-control']) }}
+                                {{ Form::select('priority', \App\GlobalFunctions::getPrioritySize(), null, ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('section', 'Section') }}

@@ -7,6 +7,11 @@
 @section('lyric', '')
 
 @section('content')
+    @if(count($dataWithPluckOfClient) == 0)
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> There is no client in system. Please create any client. <a href="{{ URL::to('client/create') }}">Click here!</a>
+        </div>
+    @endif
     <!-- will be used to show any messages -->
     @if(session()->has('message_success'))
         <div class="alert alert-success">
@@ -74,12 +79,12 @@
                             </div>
 
                             <div class="form-group input-row">
-                                {{ Form::label('client_id', 'Klient') }}
+                                {{ Form::label('client_id', 'Assign client') }}
                                 {{ Form::select('client_id', $dataWithPluckOfClient, null, ['class' => 'form-control'])  }}
                             </div>
 
                             <div class="form-group input-row">
-                                {{ Form::label('description', 'Krótki opis') }}
+                                {{ Form::label('description', 'Description') }}
                                 {{ Form::textarea('description', null, array('class' => 'form-control')) }}
                             </div>
 

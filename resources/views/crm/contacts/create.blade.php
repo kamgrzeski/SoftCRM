@@ -7,6 +7,16 @@
 @section('lyric', 'lorem ipsum')
 
 @section('content')
+    @if(count($clients) == 0)
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> There is no clients in system. Please create one. <a href="{{ URL::to('client/create') }}">Click here!</a>
+        </div>
+    @endif
+    @if(count($employees) == 0)
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> There is no employees in system. Please create one. <a href="{{ URL::to('employees/create') }}">Click here!</a>
+        </div>
+    @endif
     <!-- will be used to show any messages -->
     @if(session()->has('message_success'))
         <div class="alert alert-success">
@@ -17,7 +27,6 @@
             <strong>Danger!</strong> {{ session()->get('message_danger') }}
         </div>
     @endif
-
     <!-- /. ROW  -->
     <div class="row">
         <div class="col-lg-12">
@@ -26,30 +35,24 @@
                     <div class="row">
                         <div class="col-lg-6">
                             {{ Form::open(array('url' => 'contacts')) }}
-
                             <div class="form-group">
                                 {{ Form::label('client_id', 'Assign client') }}
                                 {{ Form::select('client_id', $clients, null, ['class' => 'form-control'])  }}
                             </div>
-
                             <div class="form-group">
                                 {{ Form::label('employee_id', 'Assign employee') }}
                                 {{ Form::select('employee_id', $employees, null, ['class' => 'form-control'])  }}
                             </div>
                         </div>
-
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('date', 'Date') }}
                                 {{ Form::date('date', null, array('class' => 'form-control', 'required')) }}
                             </div>
-
                         </div>
-
                         <div class="col-lg-12">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                         </div>
-
                     {{ Form::close() }}
 
                     <!-- /.row (nested) -->

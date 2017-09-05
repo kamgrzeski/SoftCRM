@@ -77,6 +77,14 @@ class Deals extends Model
     }
 
     /**
+     * @return int
+     */
+    public static function countDeals()
+    {
+        return count(Deals::get());
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function companies()
