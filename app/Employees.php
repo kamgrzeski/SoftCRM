@@ -117,7 +117,6 @@ class Employees extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
-
     }
 
     /**
@@ -126,6 +125,14 @@ class Employees extends Model
     public function contacts()
     {
         return $this->hasMany(Contacts::class, 'employee_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Tasks::class, 'employee_id');
     }
 }
 

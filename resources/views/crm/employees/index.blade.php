@@ -54,7 +54,6 @@
                             <tbody>
                             @foreach($employees as $key => $value)
                                 <tr class="odd gradeX">
-
                                     <td class="text-center">{{ $value->full_name }}</td>
                                     <td class="text-center">{{ $value->phone }}</td>
                                     <td class="text-center">{{ $value->email }}</td>

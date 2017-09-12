@@ -23,7 +23,6 @@ Route::get('/client/disable/{id}', 'CRM\ClientController@disable')->name('disabl
 Route::resource('client', 'CRM\ClientController');
 Route::post('client/search', ['as' => 'client/search',  'uses' => 'CRM\ClientController@search']);
 
-
 /* Companies */
 Route::get('/companies/enable/{id}', 'CRM\CompaniesController@enable')->name('enable');
 Route::get('/companies/disable/{id}', 'CRM\CompaniesController@disable')->name('disable');
@@ -46,31 +45,25 @@ Route::post('employees/search', ['as' => 'employees/search',  'uses' => 'CRM\Emp
 Route::resource('contacts', 'CRM\ContactsController');
 Route::post('contacts/search', ['as' => 'contacts/search',  'uses' => 'CRM\ContactsController@search']);
 
-/* Contacts */
+/* Tasks */
+Route::get('/tasks/enable/{id}', 'CRM\TasksController@enable')->name('enable');
+Route::get('/tasks/disable/{id}', 'CRM\TasksController@disable')->name('disable');
+Route::resource('tasks', 'CRM\TasksController');
+Route::post('tasks/search', ['as' => 'tasks/search',  'uses' => 'CRM\TasksController@search']);
+
+/* Settings */
 Route::resource('settings', 'CRM\SettingsController');
 Route::get('/settings', 'CRM\SettingsController@index')->name('settings');
 
 
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('/', 'DashboardController@index');
-Route::get('/accounts', 'CRM\AccountsController@index')->name('accounts');
-Route::get('/calendar', 'CRM\CalendarController@index')->name('calendar');
 Route::get('/projects', 'CRM\ProjectsController@index')->name('projects');
-Route::get('/products', 'CRM\ProductsController@index')->name('products');
-Route::get('/category', 'CRM\CategoryController@index')->name('category');
-Route::get('/job', 'CRM\JobController@index')->name('job');
-Route::get('/contacts', 'CRM\ContactsController@index')->name('contacts');
-Route::get('/deals', 'CRM\DealsController@index')->name('deals');
 Route::get('/mailing', 'CRM\MailingController@index')->name('mailing');
-Route::get('/employees', 'CRM\EmployeesController@index')->name('employees');
 Route::get('/files', 'CRM\FilesController@index')->name('files');
 Route::get('/invoices', 'CRM\InvoicesController@index')->name('invoices');
 Route::get('/finances', 'CRM\FinancesController@index')->name('finances');
 Route::get('/reports', 'CRM\ReportsController@index')->name('reports');
-Route::get('/charts', 'CRM\ChartsController@index')->name('charts');
-Route::get('/clients', 'CRM\ClientController@index')->name('clients');
-Route::get('/companies', 'CRM\CompaniesController@index')->name('companies');
 Route::get('/sales', 'CRM\SalesController@index')->name('sales');
-Route::get('/tasks', 'CRM\TasksController@index')->name('tasks');
 
 });

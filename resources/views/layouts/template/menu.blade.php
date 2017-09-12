@@ -30,7 +30,6 @@
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ route('tasks') }}">List of tasks</a>
-                        <a href="{{ route('mailing') }}">Mailing</a>
                     </li>
                 </ul>
             </li>
@@ -39,17 +38,6 @@
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ route('finances') }}">Finances</a>
-                        <a href="{{ route('projects') }}">Projects</a>
-                        <a href="{{ route('invoices') }}">Invoices</a>
-                        <a href="{{ route('charts') }}">Charts</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-bar-chart-o"></i>Accounts<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="{{ route('accounts') }}">List of accounts</a>
                     </li>
                 </ul>
             </li>
@@ -62,10 +50,28 @@
                 </ul>
             </li>
             <li>
+                <a href="#"><i class="fa fa-camera"></i>Projects<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ route('products') }}">List of projects</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-caret-square-o-down"></i>Reports<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ route('products') }}">List of reports</a>
+                        <a href="{{ route('charts') }}">Charts</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
                 <a href="#"><i class="fa fa-shopping-cart"></i> Sales<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ route('sales') }}">List of sales</a>
+                        <a href="{{ route('invoices') }}">Invoices</a>
                     </li>
                 </ul>
             </li>
@@ -73,7 +79,7 @@
                 <a href="{{ route('reports') }}"><i class="fa fa-file-text"></i>Reports</a>
             </li>
             <li>
-                <a href="{{ route('calendar') }}"><i class="fa fa-calendar"></i>Calendars</a>
+                <a href="{{ route('mailing') }}"><i class="fa fa-file-text"></i>Mailing</a>
             </li>
             <li>
                 <a href="{{ route('files') }}"><i class="fa fa-folder-open"></i>Files</a>
