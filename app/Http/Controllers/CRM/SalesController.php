@@ -8,13 +8,16 @@ use App\Http\Controllers\Controller;
 class SalesController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * @return array
      */
-    public function __construct()
+    private function getDataAndPagination()
     {
-        $this->middleware('auth');
+        $dataWithClients = [
+            'client' => Client::all(),
+            'clientPaginate' => Client::paginate(Config::get('crm_settings.pagination_size'))
+        ];
+
+        return $dataWithClients;
     }
 
     /**
@@ -24,7 +27,7 @@ class SalesController extends Controller
      */
     public function index()
     {
-        return view('crm.sales.index');
+        return View::make('crm.client.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -34,7 +37,7 @@ class SalesController extends Controller
      */
     public function create()
     {
-        //
+        return View::make('crm.client.create');
     }
 
     /**
@@ -44,50 +47,144 @@ class SalesController extends Controller
      */
     public function store()
     {
-        //
+        $allInputs = Input::all();
+
+        $validator = Validator::make($allInputs, Client::getRules('STORE'));
+
+        if ($validator->fails()) {
+            return Redirect::to('client/create')->with('message_danger', $validator->errors());
+        } else {
+            if (Client::insertRow($allInputs)) {
+                return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
+            } else {
+                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorClientStore'));
+            }
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
     {
-        //
+        $dataOfClient = Client::find($id);
+
+        return View::make('crm.client.show')
+            ->with([
+                'clients' => $dataOfClient,
+            ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
     {
-        //
+        $clientDetails = Client::find($id);
+
+        return View::make('crm.client.edit')
+            ->with('client', $clientDetails);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id)
     {
-        //
+        $allInputs = Input::all();
+
+        $validator = Validator::make($allInputs, Client::getRules('STORE'));
+
+        if ($validator->fails()) {
+            return Redirect::back()->with('message_danger', $validator);
+        } else {
+            if (Client::updateRow($id, $allInputs)) {
+                return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
+            } else {
+                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorClientStore'));
+            }
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
     {
-        //
+        $clientDetails = Client::find($id);
+        $countCompanies = count($clientDetails->companies()->get());
+        $countEmployees = count($clientDetails->employees()->get());
+
+        if($countCompanies > 0 ) {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteCompanies'));
+        }
+        if($countEmployees > 0 ) {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteEmployees'));
+        }
+
+        $clientDetails->delete();
+
+        return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientDelete'));
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function enable($id)
+    {
+        $clientDetails = Client::find($id);
+
+        if (Client::setActive($clientDetails->id, TRUE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessClientActive'));
+        } else {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsActived'));
+        }
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function disable($id)
+    {
+        $clientDetails = Client::find($id);
+
+        if (Client::setActive($clientDetails->id, FALSE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.ClientIsNowDeactivated'));
+        } else {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsDeactivated'));
+        }
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function search()
+    {
+        $getValueInput = Request::input('search');
+        $findClientByValue = count(Client::trySearchClientByValue('full_name', $getValueInput, 10));
+        $dataOfClient = $this->getDataAndPagination();
+
+        if(!$findClientByValue > 0 ) {
+            return redirect('client')->with('message_danger', Language::getMessage('messages.ThereIsNoClient'));
+        } else {
+            $dataOfClient += ['client_search' => $findClientByValue];
+            Redirect::to('client/search')->with('message_success', 'Find '.$findClientByValue.' client!');
+        }
+
+        return View::make('crm.client.index')->with($dataOfClient);
     }
 }

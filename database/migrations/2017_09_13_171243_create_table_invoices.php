@@ -19,6 +19,7 @@ class CreateTableInvoices extends Migration
             $table->integer('number');
             $table->string('subject');
             $table->integer('cost');
+            $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
         });
     }

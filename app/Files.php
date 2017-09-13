@@ -79,6 +79,14 @@ class Files extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function companies()
+    {
+        return $this->belongsTo(Companies::class);
+    }
+
+    /**
      * @param $type
      * @param $value
      * @param int $paginationLimit

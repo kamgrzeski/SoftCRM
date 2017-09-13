@@ -2,19 +2,29 @@
 
 namespace App\Http\Controllers\CRM;
 
-use Illuminate\Http\Request;
+use App\Companies;
+use App\Files;
 use App\Http\Controllers\Controller;
+use App\Language;
+use Validator;
+use Illuminate\Support\Facades\Input;
+use View;
+use Request;
+Use Illuminate\Support\Facades\Redirect;
+use Config;
 
 class FilesController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * @return array
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
+    private function getDataAndPagination() {
+        $dataOfFiles = [
+            'files' => Files::all(),
+            'filesPaginate' => Files::paginate(Config::get('crm_settings.pagination_size'))
+        ];
+
+        return $dataOfFiles;
     }
 
     /**
@@ -24,7 +34,7 @@ class FilesController extends Controller
      */
     public function index()
     {
-        return view('crm.files.index');
+        return View::make('crm.files.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -34,7 +44,8 @@ class FilesController extends Controller
      */
     public function create()
     {
-        //
+        $dataOfFiles = Companies::pluck('name', 'id');
+        return View::make('crm.files.create', compact('dataOfFiles'));
     }
 
     /**
@@ -44,50 +55,136 @@ class FilesController extends Controller
      */
     public function store()
     {
-        //
+        $allInputs = Input::all();
+
+        $validator = Validator::make($allInputs, Files::getRules('STORE'));
+
+        if ($validator->fails()) {
+            return Redirect::to('files/create')->with('message_danger', $validator->errors());
+        } else {
+            if (Files::insertRow($allInputs)) {
+                return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesStore'));
+            } else {
+                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesStore'));
+            }
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
     {
-        //
+        $dataOfFiles = Files::find($id);
+
+        return View::make('crm.files.show')
+            ->with('files', $dataOfFiles);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
     {
-        //
+        $dataOfFiles = Files::find($id);
+        $dataWithPluckOfCompanies = Companies::pluck('name', 'id');
+
+        return View::make('crm.files.edit')
+            ->with([
+                'files' => $dataOfFiles,
+                'companies' => $dataWithPluckOfCompanies
+            ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id)
     {
-        //
+        $allInputs = Input::all();
+
+        $validator = Validator::make($allInputs, Files::getRules('STORE'));
+
+        if ($validator->fails()) {
+            return Redirect::back()->with('message_danger', $validator);
+        } else {
+            if (Files::updateRow($id, $allInputs)) {
+                return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesUpdate'));
+            } else {
+                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesUpdate'));
+            }
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
     {
-        //
+        $dataOfFiles = Files::find($id);
+        $dataOfFiles->delete();
+
+        return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesDelete'));
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function enable($id)
+    {
+        $dataOfFiles = Files::find($id);
+
+        if (Files::setActive($dataOfFiles->id, TRUE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessFilesActive'));
+        } else {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesActive'));
+        }
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function disable($id)
+    {
+        $dataOfFiles = Files::find($id);
+
+        if (Files::setActive($dataOfFiles->id, FALSE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.FilesIsNowDeactivated'));
+        } else {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.FilesIsDeactivated'));
+        }
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function search()
+    {
+        $getValueInput = Request::input('search');
+        $findFilesByValue = count(Files::trySearchFilesByValue('name', $getValueInput, 10));
+        $dataOfFiles = $this->getDataAndPagination();
+
+        if(!$findFilesByValue > 0 ) {
+            return redirect('files')->with('message_danger', Language::getMessage('messages.ThereIsNoFiles'));
+        } else {
+            $dataOfFiles += ['files_search' => $findFilesByValue];
+            Redirect::to('files/search')->with('message_success', 'Find '.$findFilesByValue.' files!');
+        }
+
+        return View::make('crm.files.index')->with($dataOfFiles);
     }
 }

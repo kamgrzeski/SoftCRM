@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableSales extends Migration
+class CreateTableMailing extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateTableSales extends Migration
      * @return void
      */
     public function up() {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('mailing', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->boolean('is_active')->nullable()->default(1);
@@ -27,6 +27,6 @@ class CreateTableSales extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('mailing');
     }
 }

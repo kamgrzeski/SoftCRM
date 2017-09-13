@@ -51,6 +51,18 @@ Route::get('/tasks/disable/{id}', 'CRM\TasksController@disable')->name('disable'
 Route::resource('tasks', 'CRM\TasksController');
 Route::post('tasks/search', ['as' => 'tasks/search',  'uses' => 'CRM\TasksController@search']);
 
+/* Files */
+Route::get('/files/enable/{id}', 'CRM\FilesController@enable')->name('enable');
+Route::get('/files/disable/{id}', 'CRM\FilesController@disable')->name('disable');
+Route::resource('files', 'CRM\FilesController');
+Route::post('files/search', ['as' => 'files/search',  'uses' => 'CRM\FilesController@search']);
+
+/* Mailing */
+Route::get('/mailing/enable/{id}', 'CRM\MailingController@enable')->name('enable');
+Route::get('/mailing/disable/{id}', 'CRM\MailingController@disable')->name('disable');
+Route::resource('mailing', 'CRM\MailingController');
+Route::post('mailing/search', ['as' => 'mailing/search',  'uses' => 'CRM\MailingController@search']);
+
 /* Settings */
 Route::resource('settings', 'CRM\SettingsController');
 Route::get('/settings', 'CRM\SettingsController@index')->name('settings');
