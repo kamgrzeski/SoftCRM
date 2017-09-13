@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers\CRM;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Language;
+use App\Sales;
+use Validator;
+use Illuminate\Support\Facades\Input;
+use View;
+use Request;
+Use Illuminate\Support\Facades\Redirect;
+use Config;
 
 class SalesController extends Controller
 {
@@ -12,12 +19,12 @@ class SalesController extends Controller
      */
     private function getDataAndPagination()
     {
-        $dataWithClients = [
-            'client' => Client::all(),
-            'clientPaginate' => Client::paginate(Config::get('crm_settings.pagination_size'))
+        $dataWithSaless = [
+            'sales' => Sales::all(),
+            'salesPaginate' => Sales::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
-        return $dataWithClients;
+        return $dataWithSaless;
     }
 
     /**
@@ -27,7 +34,7 @@ class SalesController extends Controller
      */
     public function index()
     {
-        return View::make('crm.client.index')->with($this->getDataAndPagination());
+        return View::make('crm.sales.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -37,7 +44,7 @@ class SalesController extends Controller
      */
     public function create()
     {
-        return View::make('crm.client.create');
+        return View::make('crm.sales.create');
     }
 
     /**
@@ -49,15 +56,15 @@ class SalesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Client::getRules('STORE'));
+        $validator = Validator::make($allInputs, Sales::getRules('STORE'));
 
         if ($validator->fails()) {
-            return Redirect::to('client/create')->with('message_danger', $validator->errors());
+            return Redirect::to('sales/create')->with('message_danger', $validator->errors());
         } else {
-            if (Client::insertRow($allInputs)) {
-                return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
+            if (Sales::insertRow($allInputs)) {
+                return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesStore'));
             } else {
-                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorClientStore'));
+                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorSalesStore'));
             }
         }
     }
@@ -70,11 +77,11 @@ class SalesController extends Controller
      */
     public function show($id)
     {
-        $dataOfClient = Client::find($id);
+        $dataOfSales = Sales::find($id);
 
-        return View::make('crm.client.show')
+        return View::make('crm.sales.show')
             ->with([
-                'clients' => $dataOfClient,
+                'sales' => $dataOfSales,
             ]);
     }
 
@@ -86,10 +93,10 @@ class SalesController extends Controller
      */
     public function edit($id)
     {
-        $clientDetails = Client::find($id);
+        $salesDetails = Sales::find($id);
 
-        return View::make('crm.client.edit')
-            ->with('client', $clientDetails);
+        return View::make('crm.sales.edit')
+            ->with('sales', $salesDetails);
     }
 
     /**
@@ -102,15 +109,15 @@ class SalesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Client::getRules('STORE'));
+        $validator = Validator::make($allInputs, Sales::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (Client::updateRow($id, $allInputs)) {
-                return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
+            if (Sales::updateRow($id, $allInputs)) {
+                return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesStore'));
             } else {
-                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorClientStore'));
+                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorSalesStore'));
             }
         }
     }
@@ -123,20 +130,10 @@ class SalesController extends Controller
      */
     public function destroy($id)
     {
-        $clientDetails = Client::find($id);
-        $countCompanies = count($clientDetails->companies()->get());
-        $countEmployees = count($clientDetails->employees()->get());
+        $salesDetails = Sales::find($id);
+        $salesDetails->delete();
 
-        if($countCompanies > 0 ) {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteCompanies'));
-        }
-        if($countEmployees > 0 ) {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteEmployees'));
-        }
-
-        $clientDetails->delete();
-
-        return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientDelete'));
+        return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesDelete'));
     }
 
     /**
@@ -145,12 +142,12 @@ class SalesController extends Controller
      */
     public function enable($id)
     {
-        $clientDetails = Client::find($id);
+        $salesDetails = Sales::find($id);
 
-        if (Client::setActive($clientDetails->id, TRUE)) {
-            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessClientActive'));
+        if (Sales::setActive($salesDetails->id, TRUE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSalesActive'));
         } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsActived'));
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.SalesIsActived'));
         }
     }
 
@@ -160,12 +157,12 @@ class SalesController extends Controller
      */
     public function disable($id)
     {
-        $clientDetails = Client::find($id);
+        $salesDetails = Sales::find($id);
 
-        if (Client::setActive($clientDetails->id, FALSE)) {
-            return Redirect::back()->with('message_success', Language::getMessage('messages.ClientIsNowDeactivated'));
+        if (Sales::setActive($salesDetails->id, FALSE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.SalesIsNowDeactivated'));
         } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsDeactivated'));
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.SalesIsDeactivated'));
         }
     }
 
@@ -175,16 +172,16 @@ class SalesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findClientByValue = count(Client::trySearchClientByValue('full_name', $getValueInput, 10));
-        $dataOfClient = $this->getDataAndPagination();
+        $findSalesByValue = count(Sales::trySearchSalesByValue('full_name', $getValueInput, 10));
+        $dataOfSales = $this->getDataAndPagination();
 
-        if(!$findClientByValue > 0 ) {
-            return redirect('client')->with('message_danger', Language::getMessage('messages.ThereIsNoClient'));
+        if(!$findSalesByValue > 0 ) {
+            return redirect('sales')->with('message_danger', Language::getMessage('messages.ThereIsNoSales'));
         } else {
-            $dataOfClient += ['client_search' => $findClientByValue];
-            Redirect::to('client/search')->with('message_success', 'Find '.$findClientByValue.' client!');
+            $dataOfSales += ['sales_search' => $findSalesByValue];
+            Redirect::to('sales/search')->with('message_success', 'Find '.$findSalesByValue.' sales!');
         }
 
-        return View::make('crm.client.index')->with($dataOfClient);
+        return View::make('crm.sales.index')->with($dataOfSales);
     }
 }

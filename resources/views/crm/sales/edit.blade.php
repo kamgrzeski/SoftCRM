@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Edit files')
+@section('caption', 'Edit sales')
 
-@section('title', 'Edit files')
+@section('title', 'Edit sales')
 
 @section('lyric', 'lorem ipsum')
 
@@ -25,7 +25,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::model($files, array('route' => array('files.update', $files->id), 'method' => 'PUT')) }}
+                            {{ Form::model($sales, array('route' => array('sales.update', $sales->id), 'method' => 'PUT')) }}
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
@@ -34,13 +34,6 @@
                         </div>
 
                         <div class="col-lg-6">
-
-                            <div class="form-group input-row">
-                                {{ Form::label('companies_id', 'Deal between company:') }}
-                                {{ Form::select('companies_id', $companies, null, ['class' => 'form-control'])  }}
-
-                            </div>
-
                         </div>
 
                         <div class="col-lg-12 validate_form">
@@ -96,14 +89,6 @@
                             'validate': function(field, event) {
                                 if(!field.val()) {
                                     throw "A name is required.";
-                                }
-                            }
-                        },
-                        'companies_id': {
-                            'field': $('select[name=companies_id]'),
-                            'validate': function(field, event) {
-                                if(!field.val()) {
-                                    throw "A companies is required.";
                                 }
                             }
                         }

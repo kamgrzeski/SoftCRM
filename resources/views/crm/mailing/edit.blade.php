@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Edit deals')
+@section('caption', 'Edit mailing')
 
-@section('title', 'Edit deals')
+@section('title', 'Edit mailing')
 
 @section('lyric', 'lorem ipsum')
 
@@ -25,31 +25,15 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::model($deals, array('route' => array('deals.update', $deals->id), 'method' => 'PUT')) }}
+                            {{ Form::model($mailing, array('route' => array('mailing.update', $mailing->id), 'method' => 'PUT')) }}
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
                                 {{ Form::text('name', null, array('class' => 'form-control')) }}
                             </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('start_time', 'Start date') }}
-                                {{ Form::date('start_time', null, array('class' => 'form-control')) }}
-                            </div>
                         </div>
 
                         <div class="col-lg-6">
-
-                            <div class="form-group input-row">
-                                {{ Form::label('end_time', 'End date') }}
-                                {{ Form::date('end_time', null, array('class' => 'form-control')) }}
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('companies_id', 'Deal between company:') }}
-                                {{ Form::select('companies_id', $companies, null, ['class' => 'form-control'])  }}
-
-                            </div>
 
                         </div>
 
@@ -106,14 +90,6 @@
                             'validate': function(field, event) {
                                 if(!field.val()) {
                                     throw "A name is required.";
-                                }
-                            }
-                        },
-                        'companies_id': {
-                            'field': $('select[name=companies_id]'),
-                            'validate': function(field, event) {
-                                if(!field.val()) {
-                                    throw "A companies is required.";
                                 }
                             }
                         }

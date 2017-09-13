@@ -31,7 +31,6 @@ class Sales extends Model
         return Sales::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
-                'companies_id' => $allInputs['companies_id'],
                 'is_active' => 1
             ]);
     }
@@ -45,8 +44,7 @@ class Sales extends Model
         switch ($rulesType) {
             case 'STORE':
                 return [
-                    'name' => 'required',
-                    'companies_id' => 'required',
+                    'name' => 'required'
                 ];
         }
     }

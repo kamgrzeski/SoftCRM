@@ -63,6 +63,12 @@ Route::get('/mailing/disable/{id}', 'CRM\MailingController@disable')->name('disa
 Route::resource('mailing', 'CRM\MailingController');
 Route::post('mailing/search', ['as' => 'mailing/search',  'uses' => 'CRM\MailingController@search']);
 
+/* Mailing */
+Route::get('/sales/enable/{id}', 'CRM\SalesController@enable')->name('enable');
+Route::get('/sales/disable/{id}', 'CRM\SalesController@disable')->name('disable');
+Route::resource('sales', 'CRM\SalesController');
+Route::post('sales/search', ['as' => 'sales/search',  'uses' => 'CRM\SalesController@search']);
+
 /* Settings */
 Route::resource('settings', 'CRM\SettingsController');
 Route::get('/settings', 'CRM\SettingsController@index')->name('settings');
