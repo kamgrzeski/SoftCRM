@@ -9,7 +9,7 @@ class GlobalFunctions
         $sizeFromConfig = config('crm_settings.priority_size');
         $arrayFromIteration = [];
 
-        for($i = 1; $i <= $sizeFromConfig; $i++) {
+        for ($i = 1; $i <= $sizeFromConfig; $i++) {
             $arrayFromIteration[] = $i;
         }
         return $arrayFromIteration;

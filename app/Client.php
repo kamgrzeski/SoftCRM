@@ -20,6 +20,10 @@ class Client extends Model
                 'priority' => $allInputs['priority'],
                 'section' => $allInputs['section'],
                 'budget' => $allInputs['budget'],
+                'location' => $allInputs['location'],
+                'zip' => $allInputs['zip'],
+                'city' => $allInputs['city'],
+                'country' => $allInputs['country'],
                 'is_active' => 1
             ]
         );
@@ -40,6 +44,10 @@ class Client extends Model
                 'priority' => $allInputs['priority'],
                 'section' => $allInputs['section'],
                 'budget' => $allInputs['budget'],
+                'location' => $allInputs['location'],
+                'zip' => $allInputs['zip'],
+                'city' => $allInputs['city'],
+                'country' => $allInputs['country'],
                 'is_active' => 1
             ]);
     }
@@ -59,6 +67,10 @@ class Client extends Model
                     'budget' => 'required',
                     'section' => 'required',
                     'email' => 'required|email',
+                    'location' => 'required',
+                    'zip' => 'required',
+                    'city' => 'required',
+                    'country' => 'required'
                 ];
         }
     }
@@ -112,5 +124,13 @@ class Client extends Model
     public function employees()
     {
         return $this->hasMany(Employees::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invoices()
+    {
+        return $this->hasMany(Invoices::class, 'client_id');
     }
 }

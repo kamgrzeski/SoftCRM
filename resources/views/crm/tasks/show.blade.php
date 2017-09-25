@@ -43,7 +43,9 @@
                             </tr>
                             <tr>
                                 <th>Assigned employee</th>
-                                <td class="text-center"><a href="{{ URL::to('employees/' . $tasks->employees->id) }}">{{ $tasks->employees->full_name }}</a></td>
+                                <td class="text-center"><a
+                                            href="{{ URL::to('employees/' . $tasks->employees->id) }}">{{ $tasks->employees->full_name }}</a>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Status</th>

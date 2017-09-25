@@ -134,10 +134,10 @@ class ClientController extends Controller
         $countCompanies = count($clientDetails->companies()->get());
         $countEmployees = count($clientDetails->employees()->get());
 
-        if($countCompanies > 0 ) {
+        if ($countCompanies > 0) {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteCompanies'));
         }
-        if($countEmployees > 0 ) {
+        if ($countEmployees > 0) {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteEmployees'));
         }
 
@@ -185,11 +185,11 @@ class ClientController extends Controller
         $findClientByValue = count(Client::trySearchClientByValue('full_name', $getValueInput, 10));
         $dataOfClient = $this->getDataAndPagination();
 
-        if(!$findClientByValue > 0 ) {
+        if (!$findClientByValue > 0) {
             return redirect('client')->with('message_danger', Language::getMessage('messages.ThereIsNoClient'));
         } else {
             $dataOfClient += ['client_search' => $findClientByValue];
-            Redirect::to('client/search')->with('message_success', 'Find '.$findClientByValue.' client!');
+            Redirect::to('client/search')->with('message_success', 'Find ' . $findClientByValue . ' client!');
         }
 
         return View::make('crm.client.index')->with($dataOfClient);

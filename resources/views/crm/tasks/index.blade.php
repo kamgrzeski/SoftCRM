@@ -51,12 +51,16 @@
                             @foreach($tasks as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->name }}</td>
-                                    <td class="text-center"><a href="{{ URL::to('employees/' . $value->employees->id) }}">{{ $value->employees->full_name }}</a></td>
+                                    <td class="text-center"><a
+                                                href="{{ URL::to('employees/' . $value->employees->id) }}">{{ $value->employees->full_name }}</a>
+                                    </td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)
-                                            <input type="checkbox" data-on="Active" checked data-toggle="toggle" onchange='window.location.assign("{{ URL::to('tasks/disable/' . $value->id) }}")'/>
+                                            <input type="checkbox" data-on="Active" checked data-toggle="toggle"
+                                                   onchange='window.location.assign("{{ URL::to('tasks/disable/' . $value->id) }}")'/>
                                         @else
-                                            <input type="checkbox" data-off="Deactivate" data-toggle="toggle" onchange='window.location.assign("{{ URL::to('tasks/enable/' . $value->id) }}")'/>
+                                            <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
+                                                   onchange='window.location.assign("{{ URL::to('tasks/enable/' . $value->id) }}")'/>
                                         @endif
                                     </td>
                                     <td class="text-right">

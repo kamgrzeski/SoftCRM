@@ -51,9 +51,11 @@
                                     <td class="text-center">{{ $value->name }}</td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)
-                                            <input type="checkbox" data-on="Active" checked data-toggle="toggle" onchange='window.location.assign("{{ URL::to('sales/disable/' . $value->id) }}")'/>
+                                            <input type="checkbox" data-on="Active" checked data-toggle="toggle"
+                                                   onchange='window.location.assign("{{ URL::to('sales/disable/' . $value->id) }}")'/>
                                         @else
-                                            <input type="checkbox" data-off="Deactivate" data-toggle="toggle" onchange='window.location.assign("{{ URL::to('sales/enable/' . $value->id) }}")'/>
+                                            <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
+                                                   onchange='window.location.assign("{{ URL::to('sales/enable/' . $value->id) }}")'/>
                                         @endif
                                     </td>
                                     <td class="text-right">

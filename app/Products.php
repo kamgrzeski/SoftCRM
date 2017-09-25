@@ -32,7 +32,8 @@ class Products extends Model
         return Products::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
-                'companies_id' => $allInputs['companies_id'],
+                'category' => $allInputs['category'],
+                'count' => $allInputs['count'],
                 'is_active' => 1
             ]);
     }
@@ -47,7 +48,8 @@ class Products extends Model
             case 'STORE':
                 return [
                     'name' => 'required',
-                    'companies_id' => 'required',
+                    'category' => 'required',
+                    'count' => 'required',
                 ];
         }
     }

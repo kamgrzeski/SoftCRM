@@ -18,7 +18,8 @@ class EmployeesController extends Controller
     /**
      * @return array
      */
-    private function getDataAndPagination() {
+    private function getDataAndPagination()
+    {
         $dataOfEmployees = [
             'employees' => Employees::all(),
             'employeesPaginate' => Employees::paginate(Config::get('crm_settings.pagination_size'))
@@ -133,8 +134,8 @@ class EmployeesController extends Controller
     public function destroy($id)
     {
         $dataOfEmployees = Employees::find($id);
-        $countContacts= count($dataOfEmployees->contacts()->get());
-        if($countContacts > 0 ) {
+        $countContacts = count($dataOfEmployees->contacts()->get());
+        if ($countContacts > 0) {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteContacts'));
         }
 
@@ -182,11 +183,11 @@ class EmployeesController extends Controller
         $findEmployeesByValue = count(Employees::trySearchEmployeesByValue('full_name', $getValueInput, 10));
         $dataOfEmployees = $this->getDataAndPagination();
 
-        if(!$findEmployeesByValue > 0 ) {
+        if (!$findEmployeesByValue > 0) {
             return redirect('employees')->with('message_danger', Language::getMessage('messages.ThereIsNoEmployees'));
         } else {
             $dataOfEmployees += ['employees_search' => $findEmployeesByValue];
-            Redirect::to('employees/search')->with('message_success', 'Find '.$findEmployeesByValue.' employees!');
+            Redirect::to('employees/search')->with('message_success', 'Find ' . $findEmployeesByValue . ' employees!');
         }
 
         return View::make('crm.employees.index')->with($dataOfEmployees);

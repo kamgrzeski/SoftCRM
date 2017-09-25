@@ -31,7 +31,7 @@
                         <li class=""><a href="#profile" data-toggle="tab">Company <span
                                         class="badge badge-warning">{{ count($deals->companies) }}</span></a>
                         </li>
-                        <li class="""><a href="#messages" data-toggle="tab">Terms of agreement <span
+                        <li class=""><a href="#messages" data-toggle="tab">Terms of agreement <span
                                         class="badge badge-danger">VERY IMPORTANT</span></a>
                         </li>
                         <div class="text-right">
@@ -75,7 +75,8 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="profile">
-                            <p> <table class="table table-striped table-bordered">
+                            <p>
+                            <table class="table table-striped table-bordered">
                                 <h4>Full information about <strong>{{ $deals->companies->name }}</strong></h4><br>
                                 <tbody class="text-right">
                                 <tr>
@@ -123,7 +124,8 @@
                                     <td>{{ $deals->companies->is_active ? 'Yes' : 'No' }}</td>
                                 </tr>
                                 </tbody>
-                            </table></p>
+                            </table>
+                            </p>
                         </div>
                         <div class="tab-pane fade" id="messages">
                             <h4>Terms of agreement</h4>

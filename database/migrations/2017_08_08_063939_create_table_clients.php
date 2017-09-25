@@ -15,6 +15,10 @@ class CreateTableClients extends Migration
             $table->text('priority');
             $table->text('section');
             $table->text('budget');
+            $table->text('location');
+            $table->text('zip');
+            $table->text('city');
+            $table->text('country');
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
         });

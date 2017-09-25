@@ -72,7 +72,8 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="profile">
-                            <p> <table class="table table-striped table-bordered">
+                            <p>
+                            <table class="table table-striped table-bordered">
                                 <h4>Full information about <strong>{{ $files->companies->name }}</strong></h4><br>
                                 <tbody class="text-right">
                                 <tr>
@@ -120,7 +121,8 @@
                                     <td>{{ $files->companies->is_active ? 'Yes' : 'No' }}</td>
                                 </tr>
                                 </tbody>
-                            </table></p>
+                            </table>
+                            </p>
                         </div>
                         <div class="tab-pane fade" id="messages">
                             <h4>Terms of agreement</h4>

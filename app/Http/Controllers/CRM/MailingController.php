@@ -175,11 +175,11 @@ class MailingController extends Controller
         $findMailingByValue = count(Mailing::trySearchMailingByValue('full_name', $getValueInput, 10));
         $dataOfMailing = $this->getDataAndPagination();
 
-        if(!$findMailingByValue > 0 ) {
+        if (!$findMailingByValue > 0) {
             return redirect('mailing')->with('message_danger', Language::getMessage('messages.ThereIsNoMailing'));
         } else {
             $dataOfMailing += ['mailing_search' => $findMailingByValue];
-            Redirect::to('mailing/search')->with('message_success', 'Find '.$findMailingByValue.' mailing!');
+            Redirect::to('mailing/search')->with('message_success', 'Find ' . $findMailingByValue . ' mailing!');
         }
 
         return View::make('crm.mailing.index')->with($dataOfMailing);

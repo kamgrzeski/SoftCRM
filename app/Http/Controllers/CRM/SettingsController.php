@@ -42,10 +42,12 @@ class SettingsController extends Controller
         $getAllInputFromRequest = Input::all();
 
         $writeConfig = new Rewrite;
-        $writeConfig->toFile(base_path() .'/config/crm_settings.php', [
+        $writeConfig->toFile(base_path() . '/config/crm_settings.php', [
             'pagination_size' => $getAllInputFromRequest['pagination_size'],
             'currency' => $getAllInputFromRequest['currency'],
-            'priority_size' => $getAllInputFromRequest['priority_size']
+            'priority_size' => $getAllInputFromRequest['priority_size'],
+            'invoice_tax' => $getAllInputFromRequest['invoice_tax'],
+            'invoice_logo_link' => $getAllInputFromRequest['invoice_logo_link']
         ]);
 
         return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSettingsUpdate'));

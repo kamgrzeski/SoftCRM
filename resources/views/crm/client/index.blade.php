@@ -35,7 +35,7 @@
             <!-- Advanced Tables -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                       List of search clients
+                        List of search clients
                     </div>
                     <div class="panel-body">
                         <div class="table">
@@ -44,7 +44,8 @@
                                 <tr>
                                     <th class="text-center">Full name</th>
                                     <th class="text-center">Phone</th>
-                                    <th class="text-center">Email address</th>                                    <th class="text-center">Phone</th>
+                                    <th class="text-center">Email address</th>
+                                    <th class="text-center">Phone</th>
                                     <th class="text-center">Priority</th>
                                     <th class="text-center">Section</th>
                                     <th class="text-center">Budget</th>
@@ -64,9 +65,11 @@
                                         <td class="text-center">{{ $value->status }}</td>
                                         <td class="text-center">
                                             @if($value->is_active == TRUE)
-                                                <input type="checkbox" data-on="Active" checked data-toggle="toggle" onchange='window.location.assign("{{ URL::to('client/disable/' . $value->id) }}")'/>
+                                                <input type="checkbox" data-on="Active" checked data-toggle="toggle"
+                                                       onchange='window.location.assign("{{ URL::to('client/disable/' . $value->id) }}")'/>
                                             @else
-                                                <input type="checkbox" data-off="Deactivate" data-toggle="toggle" onchange='window.location.assign("{{ URL::to('client/enable/' . $value->id) }}")'/>
+                                                <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
+                                                       onchange='window.location.assign("{{ URL::to('client/enable/' . $value->id) }}")'/>
                                             @endif
                                         </td>
                                         <td class="text-right">
@@ -115,12 +118,17 @@
                                         <td class="text-center">{{ $value->email }}</td>
                                         <td class="text-center">{{ $value->priority }}</td>
                                         <td class="text-center">{{ $value->section }}</td>
-                                        <td class="text-center"><button type="submit" class="btn btn-default">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($value->budget) }}</button></td>
+                                        <td class="text-center">
+                                            <button type="submit"
+                                                    class="btn btn-default">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($value->budget) }}</button>
+                                        </td>
                                         <td class="text-center">
                                             @if($value->is_active == TRUE)
-                                                <input type="checkbox" data-on="Active" checked data-toggle="toggle" onchange='window.location.assign("{{ URL::to('client/disable/' . $value->id) }}")'/>
+                                                <input type="checkbox" data-on="Active" checked data-toggle="toggle"
+                                                       onchange='window.location.assign("{{ URL::to('client/disable/' . $value->id) }}")'/>
                                             @else
-                                                <input type="checkbox" data-off="Deactivate" data-toggle="toggle" onchange='window.location.assign("{{ URL::to('client/enable/' . $value->id) }}")'/>
+                                                <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
+                                                       onchange='window.location.assign("{{ URL::to('client/enable/' . $value->id) }}")'/>
                                             @endif
                                         </td>
                                         <td class="text-right">

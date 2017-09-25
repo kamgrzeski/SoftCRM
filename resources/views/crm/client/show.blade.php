@@ -67,7 +67,10 @@
                                 </tr>
                                 <tr>
                                     <th>Budget</th>
-                                    <td><button type="submit" class="btn btn-default">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($clients->budget) }}</button></td>
+                                    <td>
+                                        <button type="submit"
+                                                class="btn btn-default">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($clients->budget) }}</button>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
@@ -101,7 +104,7 @@
                                             {{ Form::close() }}
                                         </td>
                                     @endforeach
-                                </tbody>
+                                    </tbody>
                             </table>
                         </div>
                         <div class="tab-pane fade" id="messages">
@@ -116,7 +119,7 @@
                                     <th>Action</th>
                                 </tr>
                                 </thead>
-                                    </tr>
+                                </tr>
                                 @foreach($clients->employees as $employees)
                                     <tbody>
                                     <tr class="odd gradeX">

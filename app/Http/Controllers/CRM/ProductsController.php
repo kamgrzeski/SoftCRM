@@ -2,19 +2,29 @@
 
 namespace App\Http\Controllers\CRM;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Language;
+use App\Products;
+use Validator;
+use Illuminate\Support\Facades\Input;
+use View;
+use Request;
+Use Illuminate\Support\Facades\Redirect;
+use Config;
 
 class ProductsController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * @return array
      */
-    public function __construct()
+    private function getDataAndPagination()
     {
-        $this->middleware('auth');
+        $dataWithProducts = [
+            'products' => Products::all(),
+            'productsPaginate' => Products::paginate(Config::get('crm_settings.pagination_size'))
+        ];
+
+        return $dataWithProducts;
     }
 
     /**
@@ -24,7 +34,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        return view('crm.products.index');
+        return View::make('crm.products.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -34,7 +44,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        //
+        return View::make('crm.products.create');
     }
 
     /**
@@ -44,50 +54,134 @@ class ProductsController extends Controller
      */
     public function store()
     {
-        //
+        $allInputs = Input::all();
+
+        $validator = Validator::make($allInputs, Products::getRules('STORE'));
+
+        if ($validator->fails()) {
+            return Redirect::to('products/create')->with('message_danger', $validator->errors());
+        } else {
+            if (Products::insertRow($allInputs)) {
+                return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsStore'));
+            } else {
+                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorProductsStore'));
+            }
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
     {
-        //
+        $dataOfProducts = Products::find($id);
+
+        return View::make('crm.products.show')
+            ->with([
+                'products' => $dataOfProducts,
+            ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
     {
-        //
+        $productsDetails = Products::find($id);
+
+        return View::make('crm.products.edit')
+            ->with('products', $productsDetails);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id)
     {
-        //
+        $allInputs = Input::all();
+
+        $validator = Validator::make($allInputs, Products::getRules('STORE'));
+
+        if ($validator->fails()) {
+            return Redirect::back()->with('message_danger', $validator);
+        } else {
+            if (Products::updateRow($id, $allInputs)) {
+                return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsStore'));
+            } else {
+                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorProductsStore'));
+            }
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
     {
-        //
+        $productsDetails = Products::find($id);
+        $productsDetails->delete();
+
+        return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsDelete'));
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function enable($id)
+    {
+        $productsDetails = Products::find($id);
+
+        if (Products::setActive($productsDetails->id, TRUE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProductsActive'));
+        } else {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ProductsIsActived'));
+        }
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function disable($id)
+    {
+        $productsDetails = Products::find($id);
+
+        if (Products::setActive($productsDetails->id, FALSE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.ProductsIsNowDeactivated'));
+        } else {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ProductsIsDeactivated'));
+        }
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function search()
+    {
+        $getValueInput = Request::input('search');
+        $findProductsByValue = count(Products::trySearchProductsByValue('full_name', $getValueInput, 10));
+        $dataOfProducts = $this->getDataAndPagination();
+
+        if (!$findProductsByValue > 0) {
+            return redirect('products')->with('message_danger', Language::getMessage('messages.ThereIsNoProducts'));
+        } else {
+            $dataOfProducts += ['products_search' => $findProductsByValue];
+            Redirect::to('products/search')->with('message_success', 'Find ' . $findProductsByValue . ' products!');
+        }
+
+        return View::make('crm.products.index')->with($dataOfProducts);
     }
 }

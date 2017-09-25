@@ -18,7 +18,8 @@ class DealsController extends Controller
     /**
      * @return array
      */
-    private function getDataAndPagination() {
+    private function getDataAndPagination()
+    {
         $dataOfDeals = [
             'deals' => Deals::all(),
             'dealsPaginate' => Deals::paginate(Config::get('crm_settings.pagination_size'))
@@ -178,11 +179,11 @@ class DealsController extends Controller
         $findDealsByValue = count(Deals::trySearchDealsByValue('name', $getValueInput, 10));
         $dataOfDeals = $this->getDataAndPagination();
 
-        if(!$findDealsByValue > 0 ) {
+        if (!$findDealsByValue > 0) {
             return redirect('deals')->with('message_danger', Language::getMessage('messages.ThereIsNoDeals'));
         } else {
             $dataOfDeals += ['deals_search' => $findDealsByValue];
-            Redirect::to('deals/search')->with('message_success', 'Find '.$findDealsByValue.' deals!');
+            Redirect::to('deals/search')->with('message_success', 'Find ' . $findDealsByValue . ' deals!');
         }
 
         return View::make('crm.deals.index')->with($dataOfDeals);

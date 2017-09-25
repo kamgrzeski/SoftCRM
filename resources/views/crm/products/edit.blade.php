@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Add mailing')
+@section('caption', 'Edit products')
 
-@section('title', 'Add mailing')
+@section('title', 'Edit products')
 
 @section('lyric', 'lorem ipsum')
 
@@ -25,18 +25,27 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(array('url' => 'mailing')) }}
+                            {{ Form::model($products, array('route' => array('products.update', $products->id), 'method' => 'PUT')) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
                                 {{ Form::text('name', null, array('class' => 'form-control')) }}
                             </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('category', 'Category') }}
+                                {{ Form::text('category', null, array('class' => 'form-control')) }}
+                            </div>
                         </div>
                         <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('count', 'Count') }}
+                                {{ Form::text('count', null, array('class' => 'form-control')) }}
+                            </div>
                         </div>
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                         </div>
                     {{ Form::close() }}
+
                     <!-- /.row (nested) -->
                     </div>
                     <!-- /.panel-body -->
@@ -45,6 +54,7 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
+
         <script>
             $(document).ready(function () {
                 //create formValidator object
@@ -83,6 +93,29 @@
                             'validate': function (field, event) {
                                 if (!field.val()) {
                                     throw "A name is required.";
+                                }
+                            }
+                        },
+                        'category': {
+                            'field': $('input[name=category]'),
+                            'validate': function (field, event) {
+                                if (!field.val()) {
+                                    throw "A category is required.";
+                                }
+                            }
+                        },
+                        'count': {
+                            'field': $('input[name=count]'),
+                            'validate': function (field, event) {
+                                //if the validation is fired from a blur event,
+                                //don't throw any errors if it is empty
+                                if (event === 'blur' && !field.val()) field.addClass('success');
+
+                                if (!field.val()) throw "A count is required.";
+
+                                var count_pattern = /[0-9]$/i;
+                                if (!count_pattern.test(field.val())) {
+                                    throw "Please write a valid count number.";
                                 }
                             }
                         }

@@ -18,7 +18,8 @@ class FilesController extends Controller
     /**
      * @return array
      */
-    private function getDataAndPagination() {
+    private function getDataAndPagination()
+    {
         $dataOfFiles = [
             'files' => Files::all(),
             'filesPaginate' => Files::paginate(Config::get('crm_settings.pagination_size'))
@@ -178,11 +179,11 @@ class FilesController extends Controller
         $findFilesByValue = count(Files::trySearchFilesByValue('name', $getValueInput, 10));
         $dataOfFiles = $this->getDataAndPagination();
 
-        if(!$findFilesByValue > 0 ) {
+        if (!$findFilesByValue > 0) {
             return redirect('files')->with('message_danger', Language::getMessage('messages.ThereIsNoFiles'));
         } else {
             $dataOfFiles += ['files_search' => $findFilesByValue];
-            Redirect::to('files/search')->with('message_success', 'Find '.$findFilesByValue.' files!');
+            Redirect::to('files/search')->with('message_success', 'Find ' . $findFilesByValue . ' files!');
         }
 
         return View::make('crm.files.index')->with($dataOfFiles);

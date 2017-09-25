@@ -63,11 +63,37 @@ Route::get('/mailing/disable/{id}', 'CRM\MailingController@disable')->name('disa
 Route::resource('mailing', 'CRM\MailingController');
 Route::post('mailing/search', ['as' => 'mailing/search',  'uses' => 'CRM\MailingController@search']);
 
-/* Mailing */
+/* Sales */
 Route::get('/sales/enable/{id}', 'CRM\SalesController@enable')->name('enable');
 Route::get('/sales/disable/{id}', 'CRM\SalesController@disable')->name('disable');
 Route::resource('sales', 'CRM\SalesController');
 Route::post('sales/search', ['as' => 'sales/search',  'uses' => 'CRM\SalesController@search']);
+
+/* Products */
+Route::get('/products/enable/{id}', 'CRM\ProductsController@enable')->name('enable');
+Route::get('/products/disable/{id}', 'CRM\ProductsController@disable')->name('disable');
+Route::resource('products', 'CRM\ProductsController');
+Route::post('products/search', ['as' => 'products/search',  'uses' => 'CRM\ProductsController@search']);
+
+/* Finances */
+Route::get('/finances/enable/{id}', 'CRM\FinancesController@enable')->name('enable');
+Route::get('/finances/disable/{id}', 'CRM\FinancesController@disable')->name('disable');
+Route::resource('finances', 'CRM\FinancesController');
+Route::post('finances/search', ['as' => 'finances/search',  'uses' => 'CRM\FinancesController@search']);
+
+/* Invoices */
+Route::get('/invoices/enable/{id}', 'CRM\InvoicesController@enable')->name('enable');
+Route::get('/invoices/disable/{id}', 'CRM\InvoicesController@disable')->name('disable');
+Route::get('/invoices/download/{id}', 'CRM\InvoicesController@getInvoice')->name('getInvoice');
+Route::resource('invoices', 'CRM\InvoicesController');
+Route::post('invoices/search', ['as' => 'invoices/search',  'uses' => 'CRM\InvoicesController@search']);
+
+
+/* Reports */
+Route::get('/reports/enable/{id}', 'CRM\ReportsController@enable')->name('enable');
+Route::get('/reports/disable/{id}', 'CRM\ReportsController@disable')->name('disable');
+Route::resource('reports', 'CRM\ReportsController');
+Route::post('reports/search', ['as' => 'reports/search',  'uses' => 'CRM\ReportsController@search']);
 
 /* Settings */
 Route::resource('settings', 'CRM\SettingsController');

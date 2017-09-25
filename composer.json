@@ -10,10 +10,12 @@
         "barryvdh/laravel-debugbar": "^2.4",
         "barryvdh/laravel-ide-helper": "^2.4",
         "cknow/laravel-money": "^1.0",
+        "consoletvs/invoices": "^1.0",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.2.0",
-        "mressex/laravel-auth-profile": "^1.0"
+        "mressex/laravel-auth-profile": "^1.0",
+        "nesbot/carbon": "^1.22"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -17,11 +17,11 @@
                 <a href="#"><i class="fa fa-user"></i>Clients<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ route('clients') }}">List of clients<span class="label label-warning pull-right" style="margin-top:4px;background-color: #d1b603 !important;">{{ \App\Client::countClients() ? : 0 }}</span></a>
+                        <a href="{{ route('clients') }}">List of clients<span class="label label-primary pull-right" style="margin-top:4px;">{{ \App\Client::countClients() ? : 0 }}</span></a>
                         <a href="{{ route('employees') }}">Employees<span class="label label-primary pull-right" style="margin-top:4px">{{ \App\Employees::countEmployees() ? : 0 }}</span></a>
-                        <a href="{{ route('contacts') }}">Contacts<span class="label label-default pull-right" style="margin-top:4px">{{ \App\Contacts::countContacts() ? : 0 }}</span></a>
-                        <a href="{{ route('deals') }}">Deals<span class="label label-danger pull-right" style="margin-top:4px">{{ \App\Deals::countDeals() ? : 0 }}</span></a>
-                        <a href="{{ route('companies') }}">Companies<span class="label label-success pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
+                        <a href="{{ route('contacts') }}">Contacts<span class="label label-primary pull-right" style="margin-top:4px">{{ \App\Contacts::countContacts() ? : 0 }}</span></a>
+                        <a href="{{ route('deals') }}">Deals<span class="label label-primary pull-right" style="margin-top:4px">{{ \App\Deals::countDeals() ? : 0 }}</span></a>
+                        <a href="{{ route('companies') }}">Companies<span class="label label-primary pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
                     </li>
                 </ul>
             </li>
@@ -62,7 +62,6 @@
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ route('products') }}">List of reports</a>
-                        <a href="{{ route('charts') }}">Charts</a>
                     </li>
                 </ul>
             </li>

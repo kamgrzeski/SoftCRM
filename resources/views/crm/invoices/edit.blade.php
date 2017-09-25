@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Add mailing')
+@section('caption', 'Edit invoices')
 
-@section('title', 'Add mailing')
+@section('title', 'Edit invoices')
 
 @section('lyric', 'lorem ipsum')
 
@@ -25,18 +25,35 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(array('url' => 'mailing')) }}
+                            {{ Form::model($invoices, array('route' => array('invoices.update', $invoices->id), 'method' => 'PUT')) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
                                 {{ Form::text('name', null, array('class' => 'form-control')) }}
                             </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('type', 'Type') }}
+                                {{ Form::text('type', null, array('class' => 'form-control')) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('number', 'Number') }}
+                                {{ Form::text('number', null, array('class' => 'form-control')) }}
+                            </div>
                         </div>
                         <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('subject', 'Subject') }}
+                                {{ Form::text('subject', null, array('class' => 'form-control')) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('cost', 'Cost') }}
+                                {{ Form::text('cost', null, array('class' => 'form-control')) }}
+                            </div>
                         </div>
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                         </div>
                     {{ Form::close() }}
+
                     <!-- /.row (nested) -->
                     </div>
                     <!-- /.panel-body -->
@@ -45,6 +62,7 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
+
         <script>
             $(document).ready(function () {
                 //create formValidator object
@@ -85,7 +103,54 @@
                                     throw "A name is required.";
                                 }
                             }
+                        },
+                        'type': {
+                            'field': $('input[name=type]'),
+                            'validate': function (field, event) {
+                                if (!field.val()) {
+                                    throw "A type is required.";
+                                }
+                            }
+                        },
+                        'number': {
+                            'field': $('input[name=number]'),
+                            'validate': function (field, event) {
+                                if (!field.val()) {
+                                    throw "A number is required."
+
+                                }
+                                ;
+
+                                var number_pattern = /[0-9]$/i;
+                                if (!number_pattern.test(field.val())) {
+                                    throw "Please enter a number.";
+                                }
+                            }
+                        },
+                        'subject': {
+                            'field': $('input[name=subject]'),
+                            'validate': function (field, event) {
+                                if (!field.val()) {
+                                    throw "A subject is required.";
+                                }
+                            }
+                        },
+                        'cost': {
+                            'field': $('input[name=cost]'),
+                            'validate': function (field, event) {
+                                if (!field.val()) {
+                                    throw "A cost is required."
+
+                                }
+                                ;
+
+                                var const_pattern = /[0-9]$/i;
+                                if (!const_pattern.test(field.val())) {
+                                    throw "Please enter a cost.";
+                                }
+                            }
                         }
+
                     }
                 });
 

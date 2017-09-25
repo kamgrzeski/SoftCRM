@@ -168,6 +168,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         ClickNow\Money\MoneyServiceProvider::class,
         Axdlee\Config\ConfigServiceProvider::class,
+        ConsoleTVs\Invoices\InvoicesServiceProvider::class,
 
         /*
          * Package Service Providers...

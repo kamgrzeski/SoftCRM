@@ -34,7 +34,7 @@
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-calendar-o" aria-hidden="true"></i>   List of companies
+                    <i class="fa fa-calendar-o" aria-hidden="true"></i> List of companies
                 </div>
                 <div class="panel-body">
                     <div class="table">
@@ -67,9 +67,11 @@
                                     </td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)
-                                            <input type="checkbox" data-on="Active" checked data-toggle="toggle" onchange='window.location.assign("{{ URL::to('companies/disable/' . $value->id) }}")'/>
+                                            <input type="checkbox" data-on="Active" checked data-toggle="toggle"
+                                                   onchange='window.location.assign("{{ URL::to('companies/disable/' . $value->id) }}")'/>
                                         @else
-                                            <input type="checkbox" data-off="Deactivate" data-toggle="toggle" onchange='window.location.assign("{{ URL::to('companies/enable/' . $value->id) }}")'/>
+                                            <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
+                                                   onchange='window.location.assign("{{ URL::to('companies/enable/' . $value->id) }}")'/>
                                         @endif
                                     </td>
                                     <td class="text-right">

@@ -59,7 +59,9 @@
                             </tr>
                             <tr>
                                 <th>Assigned client</th>
-                                <td><a href="{{ URL::to('client/' . $employees->client->id) }}">{{ $employees->client->full_name }}</a></td>
+                                <td>
+                                    <a href="{{ URL::to('client/' . $employees->client->id) }}">{{ $employees->client->full_name }}</a>
+                                </td>
 
                             </tr>
                             <tr>
@@ -69,9 +71,9 @@
                             </tbody>
                         </table>
                     </div>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

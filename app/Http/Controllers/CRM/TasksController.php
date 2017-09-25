@@ -6,6 +6,7 @@ use App\Employees;
 use App\Tasks;
 use App\Http\Controllers\Controller;
 use App\Language;
+use ConsoleTVs\Invoices\Classes\Invoice;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -18,7 +19,8 @@ class TasksController extends Controller
     /**
      * @return array
      */
-    private function getDataAndPagination() {
+    private function getDataAndPagination()
+    {
         $dataOfTasks = [
             'tasks' => Tasks::all(),
             'tasksPaginate' => Tasks::paginate(Config::get('crm_settings.pagination_size'))
@@ -34,7 +36,7 @@ class TasksController extends Controller
      */
     public function index()
     {
-        return View::make('crm.tasks.index')->with($this->getDataAndPagination());
+       // return View::make('crm.tasks.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -177,11 +179,11 @@ class TasksController extends Controller
         $findTasksByValue = count(Tasks::trySearchTasksByValue('name', $getValueInput, 10));
         $dataOfTasks = $this->getDataAndPagination();
 
-        if(!$findTasksByValue > 0 ) {
+        if (!$findTasksByValue > 0) {
             return redirect('tasks')->with('message_danger', Language::getMessage('messages.ThereIsNoTasks'));
         } else {
             $dataOfTasks += ['tasks_search' => $findTasksByValue];
-            Redirect::to('tasks/search')->with('message_success', 'Find '.$findTasksByValue.' deals!');
+            Redirect::to('tasks/search')->with('message_success', 'Find ' . $findTasksByValue . ' deals!');
         }
 
         return View::make('crm.tasks.index')->with($dataOfTasks);

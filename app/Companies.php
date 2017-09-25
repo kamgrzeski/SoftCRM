@@ -134,4 +134,20 @@ class Companies extends Model
         return $this->belongsTo(employees_size::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function finances()
+    {
+        return $this->hasMany(Finances::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function invoices()
+    {
+        return $this->hasMany(Invoices::class);
+    }
+
 }

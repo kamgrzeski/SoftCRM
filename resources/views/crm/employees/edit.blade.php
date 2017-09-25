@@ -53,19 +53,19 @@
                             </div>
                         </div>
 
-                    <div class="col-lg-12">
-                        {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                        <div class="col-lg-12">
+                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                        </div>
+
+                        {{ Form::close() }}
+
                     </div>
-
-                    {{ Form::close() }}
-
+                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel-body -->
+                <!-- /.panel -->
             </div>
-            <!-- /.panel -->
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.col-lg-12 -->
-    </div>
 
 
 @endsection

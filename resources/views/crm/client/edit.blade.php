@@ -56,13 +56,13 @@
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                         </div>
                         {{ Form::close() }}
+                    </div>
+                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel-body -->
+                <!-- /.panel -->
             </div>
-            <!-- /.panel -->
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.col-lg-12 -->
-    </div>
 
 
 @endsection

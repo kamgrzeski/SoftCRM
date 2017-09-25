@@ -139,7 +139,7 @@ class CompaniesController extends Controller
         $dataOfCompanies = Companies::find($id);
         $countDeals = count($dataOfCompanies->deals()->get());
 
-        if($countDeals > 0 ) {
+        if ($countDeals > 0) {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteDeals'));
         }
 
@@ -187,11 +187,11 @@ class CompaniesController extends Controller
         $findCompaniesByValue = count(Companies::trySearchCompaniesByValue('name', $getValueInput, 10));
         $dataOfCompanies = $this->getDataAndPagination();
 
-        if(!$findCompaniesByValue > 0 ) {
+        if (!$findCompaniesByValue > 0) {
             return redirect('companies')->with('message_danger', Language::getMessage('messages.ThereIsNoCompanies'));
         } else {
             $dataOfCompanies += ['companies_search' => $findCompaniesByValue];
-            Redirect::to('companies/search')->with('message_success', 'Find '.$findCompaniesByValue.' companies!');
+            Redirect::to('companies/search')->with('message_success', 'Find ' . $findCompaniesByValue . ' companies!');
         }
 
         return View::make('crm.companies.index')->with($dataOfCompanies);

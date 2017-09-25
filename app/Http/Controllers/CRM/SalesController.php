@@ -175,11 +175,11 @@ class SalesController extends Controller
         $findSalesByValue = count(Sales::trySearchSalesByValue('full_name', $getValueInput, 10));
         $dataOfSales = $this->getDataAndPagination();
 
-        if(!$findSalesByValue > 0 ) {
+        if (!$findSalesByValue > 0) {
             return redirect('sales')->with('message_danger', Language::getMessage('messages.ThereIsNoSales'));
         } else {
             $dataOfSales += ['sales_search' => $findSalesByValue];
-            Redirect::to('sales/search')->with('message_success', 'Find '.$findSalesByValue.' sales!');
+            Redirect::to('sales/search')->with('message_success', 'Find ' . $findSalesByValue . ' sales!');
         }
 
         return View::make('crm.sales.index')->with($dataOfSales);

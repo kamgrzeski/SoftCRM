@@ -19,6 +19,10 @@ class Invoices extends Model
                 'number' => $allInputs['number'],
                 'subject' => $allInputs['subject'],
                 'cost' => $allInputs['cost'],
+                'companies_id' => $allInputs['companies_id'],
+                'client_id' => $allInputs['client_id'],
+                'notes' => $allInputs['notes'],
+                'amount' => $allInputs['amount'],
                 'is_active' => 1
             ]
         );
@@ -34,7 +38,14 @@ class Invoices extends Model
         return Invoices::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
+                'type' => $allInputs['type'],
+                'number' => $allInputs['number'],
+                'subject' => $allInputs['subject'],
+                'cost' => $allInputs['cost'],
                 'companies_id' => $allInputs['companies_id'],
+                'client_id' => $allInputs['client_id'],
+                'notes' => $allInputs['notes'],
+                'amount' => $allInputs['amount'],
                 'is_active' => 1
             ]);
     }
@@ -49,7 +60,14 @@ class Invoices extends Model
             case 'STORE':
                 return [
                     'name' => 'required',
+                    'type' => 'required',
+                    'number' => 'required|integer',
+                    'subject' => 'required',
+                    'cost' => 'required',
                     'companies_id' => 'required',
+                    'client_id' => 'required',
+                    'notes' => 'required',
+                    'amount' => 'required'
                 ];
         }
     }
@@ -90,5 +108,21 @@ class Invoices extends Model
     public static function trySearchInvoicesByValue($type, $value, $paginationLimit = 10)
     {
         return Invoices::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function companies()
+    {
+        return $this->belongsTo(Companies::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
     }
 }

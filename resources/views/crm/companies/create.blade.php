@@ -218,13 +218,14 @@
                                 //if the validation is fired from a blur event,
                                 //don't throw any errors if it is empty
 
-                                if(!field.val()) {
+                                if (!field.val()) {
                                     throw "A phone number is required."
 
-                                };
+                                }
+                                ;
 
                                 var phone_pattern = /[0-9]$/i;
-                                if(!phone_pattern.test(field.val())) {
+                                if (!phone_pattern.test(field.val())) {
                                     throw "Please enter a valid phone number.";
                                 }
 

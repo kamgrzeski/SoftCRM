@@ -38,6 +38,14 @@
                                 {{ Form::label('budget', 'Budget') }}
                                 {{ Form::text('budget', null, array('class' => 'form-control')) }}
                             </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('city', 'City') }}
+                                {{ Form::text('city', null, array('class' => 'form-control')) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('country', 'Country') }}
+                                {{ Form::text('country', null, array('class' => 'form-control')) }}
+                            </div>
                         </div>
 
                         <div class="col-lg-6">
@@ -51,7 +59,15 @@
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('section', 'Section') }}
-                                    {{ Form::select('section', ['transport' => 'transport', 'logistic' => 'logistic', 'finances' => 'finances'], null, ['class' => 'form-control']) }}
+                                {{ Form::select('section', ['transport' => 'transport', 'logistic' => 'logistic', 'finances' => 'finances'], null, ['class' => 'form-control']) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('location', 'Location') }}
+                                {{ Form::text('location', null, array('class' => 'form-control')) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('zip', 'ZIP') }}
+                                {{ Form::text('zip', null, array('class' => 'form-control')) }}
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">
@@ -69,18 +85,18 @@
         </div>
 
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 //create formValidator object
                 //there are a lot of configuration options that need to be passed,
                 //but this makes it extremely flexibility and doesn't make any assumptions
                 var validator = new formValidator({
                     //this function adds an error message to a form field
-                    addError: function(field, message) {
+                    addError: function (field, message) {
                         //get existing error message field
-                        var error_message_field = $('.error_message',field.parent('.input-row'));
+                        var error_message_field = $('.error_message', field.parent('.input-row'));
 
                         //if the error message field doesn't exist yet, add it
-                        if(!error_message_field.length) {
+                        if (!error_message_field.length) {
                             error_message_field = $('<span/>').addClass('error_message');
                             field.parent('.input-row').append(error_message_field);
                         }
@@ -89,13 +105,13 @@
                         field.addClass('error');
                     },
                     //this removes an error from a form field
-                    removeError: function(field) {
-                        $('.error_message',field.parent('.input-row')).text('').hide();
+                    removeError: function (field) {
+                        $('.error_message', field.parent('.input-row')).text('').hide();
                         field.removeClass('error');
                     },
                     //this is a final callback after failing to validate one or more fields
                     //it can be used to display a summary message, scroll to the first error, etc.
-                    onErrors: function(errors, event) {
+                    onErrors: function (errors, event) {
                         //errors is an array of objects, each containing a 'field' and 'message' parameter
                     },
                     //this defines the actual validation rules
@@ -103,8 +119,8 @@
                         //this is a basic non-empty check
                         'full_name': {
                             'field': $('input[name=full_name]'),
-                            'validate': function(field, event) {
-                                if(!field.val()) {
+                            'validate': function (field, event) {
+                                if (!field.val()) {
                                     throw "A full name is required.";
                                 }
                             }
@@ -114,17 +130,18 @@
                         //and handling more than one event
                         'budget': {
                             'field': $('input[name=budget]'),
-                            'validate': function(field, event) {
+                            'validate': function (field, event) {
                                 //if the validation is fired from a blur event,
                                 //don't throw any errors if it is empty
 
-                                if(!field.val()) {
+                                if (!field.val()) {
                                     throw "A phone number is required."
 
-                                };
+                                }
+                                ;
 
                                 var phone_pattern = /[0-9]$/i;
-                                if(!phone_pattern.test(field.val())) {
+                                if (!phone_pattern.test(field.val())) {
                                     throw "Please enter only number.";
                                 }
 
@@ -135,17 +152,18 @@
                         //and handling more than one event
                         'phone': {
                             'field': $('input[name=phone]'),
-                            'validate': function(field, event) {
+                            'validate': function (field, event) {
                                 //if the validation is fired from a blur event,
                                 //don't throw any errors if it is empty
 
-                                if(!field.val()) {
+                                if (!field.val()) {
                                     throw "A phone number is required."
 
-                                };
+                                }
+                                ;
 
                                 var phone_pattern = /[0-9]$/i;
-                                if(!phone_pattern.test(field.val())) {
+                                if (!phone_pattern.test(field.val())) {
                                     throw "Please enter a valid phone number.";
                                 }
 
@@ -154,15 +172,15 @@
 
                         'email': {
                             'field': $('input[name=email]'),
-                            'validate': function(field, event) {
+                            'validate': function (field, event) {
                                 //if the validation is fired from a blur event,
                                 //don't throw any errors if it is empty
-                                if(event==='blur' && !field.val()) field.addClass('success');
+                                if (event === 'blur' && !field.val()) field.addClass('success');
 
-                                if(!field.val()) throw "A email is required.";
+                                if (!field.val()) throw "A email is required.";
 
                                 var email_pattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-                                if(!email_pattern.test(field.val())) {
+                                if (!email_pattern.test(field.val())) {
                                     throw "Please enter a valid email.";
                                 }
                             }
@@ -173,38 +191,38 @@
                 //now, we attach events
 
                 //this does validation every time a field loses focus
-                $('form').on('blur','input,select',function() {
-                    validator.validateField($(this).attr('name'),'blur');
+                $('form').on('blur', 'input,select', function () {
+                    validator.validateField($(this).attr('name'), 'blur');
                 });
 
                 //this clears errors every time a field gains focus
-                $('form').on('focus','input,select',function() {
+                $('form').on('focus', 'input,select', function () {
                     validator.clearError($(this).attr('name'));
                 });
 
                 //this is for the validate links
-                $('.validate_section').click(function() {
+                $('.validate_section').click(function () {
                     var fields = [];
-                    $('input,select',$(this).closest('.section')).each(function() {
+                    $('input,select', $(this).closest('.section')).each(function () {
                         fields.push($(this).attr('name'));
                     });
 
-                    if(validator.validateFields(fields,'submit')) {
+                    if (validator.validateFields(fields, 'submit')) {
                         alert('success');
                     }
                     return false;
                 });
-                $('.validate_form').click(function() {
-                    if(!validator.validateFields('submit')) {
+                $('.validate_form').click(function () {
+                    if (!validator.validateFields('submit')) {
                         return false;
                     }
                     return true;
                 });
 
                 //this is for the clear links
-                $('.clear_section').click(function() {
+                $('.clear_section').click(function () {
                     var fields = [];
-                    $('input,select',$(this).closest('.section')).each(function() {
+                    $('input,select', $(this).closest('.section')).each(function () {
                         fields.push($(this).attr('name'));
                     });
 

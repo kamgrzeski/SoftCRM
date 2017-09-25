@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Add mailing')
+@section('caption', 'Edit empoloyees')
 
-@section('title', 'Add mailing')
+@section('title', 'Edit empoloyees')
 
 @section('lyric', 'lorem ipsum')
 
@@ -17,27 +17,35 @@
             <strong>Danger!</strong> {{ session()->get('message_danger') }}
         </div>
     @endif
-
-    <!-- /. ROW  -->
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(array('url' => 'mailing')) }}
+                            {{ Form::model($employees, array('route' => array('employees.update', $employees->id), 'method' => 'PUT')) }}
+
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
                                 {{ Form::text('name', null, array('class' => 'form-control')) }}
                             </div>
                         </div>
+
                         <div class="col-lg-6">
+
+                            <div class="form-group input-row">
+                                {{ Form::label('companies_id', 'Assign companies') }}
+                                {{ Form::select('companies_id', $dataWithPluckOfCompanies, null, ['class' => 'form-control'])  }}
+                            </div>
+
                         </div>
+
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                         </div>
-                    {{ Form::close() }}
-                    <!-- /.row (nested) -->
+
+                        {{ Form::close() }}
+
                     </div>
                     <!-- /.panel-body -->
                 </div>
@@ -132,4 +140,5 @@
                 });
             });
         </script>
+
 @endsection

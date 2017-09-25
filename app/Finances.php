@@ -88,4 +88,12 @@ class Finances extends Model
     {
         return Finances::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function companies()
+    {
+        return $this->belongsTo(Companies::class);
+    }
 }

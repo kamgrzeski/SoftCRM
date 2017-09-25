@@ -9,12 +9,14 @@
 @section('content')
     @if(count($clients) == 0)
         <div class="alert alert-danger">
-            <strong>Danger!</strong> There is no clients in system. Please create one. <a href="{{ URL::to('client/create') }}">Click here!</a>
+            <strong>Danger!</strong> There is no clients in system. Please create one. <a
+                    href="{{ URL::to('client/create') }}">Click here!</a>
         </div>
     @endif
     @if(count($employees) == 0)
         <div class="alert alert-danger">
-            <strong>Danger!</strong> There is no employees in system. Please create one. <a href="{{ URL::to('employees/create') }}">Click here!</a>
+            <strong>Danger!</strong> There is no employees in system. Please create one. <a
+                    href="{{ URL::to('employees/create') }}">Click here!</a>
         </div>
     @endif
     <!-- will be used to show any messages -->

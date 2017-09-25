@@ -2,19 +2,30 @@
 
 namespace App\Http\Controllers\CRM;
 
-use Illuminate\Http\Request;
+use App\Companies;
+use App\Finances;
 use App\Http\Controllers\Controller;
+use App\Language;
+use Validator;
+use Illuminate\Support\Facades\Input;
+use View;
+use Request;
+Use Illuminate\Support\Facades\Redirect;
+use Config;
 
 class FinancesController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * @return array
      */
-    public function __construct()
+    private function getDataAndPagination()
     {
-        $this->middleware('auth');
+        $dataOfFinances = [
+            'finances' => Finances::all(),
+            'financesPaginate' => Finances::paginate(Config::get('crm_settings.pagination_size'))
+        ];
+
+        return $dataOfFinances;
     }
 
     /**
@@ -24,7 +35,7 @@ class FinancesController extends Controller
      */
     public function index()
     {
-        return view('crm.finances.index');
+        return View::make('crm.finances.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -34,7 +45,8 @@ class FinancesController extends Controller
      */
     public function create()
     {
-        //
+        $dataWithPluckOfCompanies = Companies::pluck('name', 'id');
+        return View::make('crm.finances.create', compact('dataWithPluckOfCompanies'));
     }
 
     /**
@@ -44,50 +56,139 @@ class FinancesController extends Controller
      */
     public function store()
     {
-        //
+        $allInputs = Input::all();
+
+        $validator = Validator::make($allInputs, Finances::getRules('STORE'));
+
+        if ($validator->fails()) {
+            return Redirect::to('finances/create')->with('message_danger', $validator->errors());
+        } else {
+            if (Finances::insertRow($allInputs)) {
+                return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesStore'));
+            } else {
+                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFinancesStore'));
+            }
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
     {
-        //
+        $dataOfFinances = Finances::find($id);
+
+        return View::make('crm.finances.show')
+            ->with([
+                'finances' => $dataOfFinances
+            ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
     {
-        //
+        $dataOfFinances = Finances::find($id);
+        $dataWithPluckOfCompaniess = Companies::pluck('full_name', 'id');
+
+        return View::make('crm.finances.edit')
+            ->with([
+                'finances' => $dataOfFinances,
+                'clients' => $dataWithPluckOfCompaniess
+            ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id)
     {
-        //
+        $allInputs = Input::all();
+
+        $validator = Validator::make($allInputs, Finances::getRules('STORE'));
+
+        if ($validator->fails()) {
+            return Redirect::back()->with('message_danger', $validator->errors());
+        } else {
+            if (Finances::updateRow($id, $allInputs)) {
+                return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesUpdate'));
+            } else {
+                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorFinancesUpdate'));
+            }
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
     {
-        //
+        $dataOfFinances = Finances::find($id);
+
+        $dataOfFinances->delete();
+
+        return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesDelete'));
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function enable($id)
+    {
+        $dataOfFinances = Finances::find($id);
+
+        if (Finances::setActive($dataOfFinances->id, TRUE)) {
+            return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesActive'));
+        } else {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFinancesActive'));
+        }
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function disable($id)
+    {
+        $dataOfFinances = Finances::find($id);
+
+        if (Finances::setActive($dataOfFinances->id, FALSE)) {
+            return Redirect::to('finances')->with('message_success', Language::getMessage('messages.FinancesIsNowDeactivated'));
+        } else {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.FinancesIsDeactivated'));
+        }
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function search()
+    {
+        $getValueInput = Request::input('search');
+        $findFinancesByValue = count(Finances::trySearchFinancesByValue('name', $getValueInput, 10));
+        $dataOfFinances = $this->getDataAndPagination();
+
+        if (!$findFinancesByValue > 0) {
+            return redirect('finances')->with('message_danger', Language::getMessage('messages.ThereIsNoFinances'));
+        } else {
+            $dataOfFinances += ['finances_search' => $findFinancesByValue];
+            Redirect::to('finances/search')->with('message_success', 'Find ' . $findFinancesByValue . ' finances!');
+        }
+
+        return View::make('crm.finances.index')->with($dataOfFinances);
     }
 }

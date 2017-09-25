@@ -157,11 +157,11 @@ class ContactsController extends Controller
         $findDealsByValue = count(Contacts::trySearchContactsByValue('full_name', $getValueInput, 10));
         $dataOfContacts = $this->getDataAndPagination();
 
-        if(!$findDealsByValue > 0 ) {
+        if (!$findDealsByValue > 0) {
             return redirect('contacts')->with('message_danger', Language::getMessage('messages.ThereIsNoDeals'));
         } else {
             $dataOfContacts += ['contacts_search' => $findDealsByValue];
-            Redirect::to('contacts/search')->with('message_success', 'Find '.$findDealsByValue.' contacts!');
+            Redirect::to('contacts/search')->with('message_success', 'Find ' . $findDealsByValue . ' contacts!');
         }
 
         return View::make('crm.contacts.index')->with($dataOfContacts);
