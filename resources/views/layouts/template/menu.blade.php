@@ -19,9 +19,9 @@
                     <li>
                         <a href="{{ route('clients') }}">Clients<span class="label label-dependencies pull-right" style="margin-top:4px;">{{ \App\Client::countClients() ? : 0 }}</span></a>
                         <a href="{{ route('employees') }}">Employees<span class="label label-dependencies pull-right" style="margin-top:4px">{{ \App\Employees::countEmployees() ? : 0 }}</span></a>
-                        <a href="{{ route('contacts') }}">Contacts<span class="label label-dependencies pull-right" style="margin-top:4px">{{ \App\Contacts::countContacts() ? : 0 }}</span></a>
                         <a href="{{ route('deals') }}">Deals<span class="label label-dependencies pull-right" style="margin-top:4px">{{ \App\Deals::countDeals() ? : 0 }}</span></a>
                         <a href="{{ route('companies') }}">Companies<span class="label label-dependencies pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
+                        <a href="{{ route('contacts') }}">Contacts<span class="label label-dependencies pull-right" style="margin-top:4px">{{ \App\Contacts::countContacts() ? : 0 }}</span></a>
                     </li>
                 </ul>
             </li>

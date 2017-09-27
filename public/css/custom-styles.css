@@ -12,6 +12,11 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+.clock {
+    color: white;
+    font-size: 18px;
+}
+
  #wrapper {
     width: 100%;
     background:#09192A;

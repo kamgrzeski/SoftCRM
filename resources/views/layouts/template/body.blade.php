@@ -7,13 +7,16 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-            </button><a class="navbar-brand" href="{{ URL::to('/') }}"><i class="fa fa-comments"></i> SoftCRM</a>
+            </button>
+            <a class="navbar-brand" href="{{ URL::to('/') }}"><i class="fa fa-comments"></i> SoftCRM</a>
         </div>
 
         <ul class="nav navbar-top-links navbar-right">
+            <span id="localclock" class="clock"></span>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                    (Welcome {{{ Auth::user()->name }}}) <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    (Welcome {{{ Auth::user()->name }}}) <i class="fa fa-user fa-fw"></i> <i
+                            class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li><a href="{{ route('profile') }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
