@@ -4,10 +4,12 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Language;
+use App\Settings;
 use Axdlee\Config\Rewrite;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use View;
+use Validator;
 
 class SettingsController extends Controller
 {
@@ -40,6 +42,12 @@ class SettingsController extends Controller
     public function store()
     {
         $getAllInputFromRequest = Input::all();
+
+        $validator = Validator::make($getAllInputFromRequest, Settings::getRules('SETTINGS'));
+
+        if($validator->fails()) {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorSettingsStore'));
+        }
 
         $writeConfig = new Rewrite;
         $writeConfig->toFile(base_path() . '/config/crm_settings.php', [
