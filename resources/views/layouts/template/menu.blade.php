@@ -29,9 +29,9 @@
                 <a href="#"><i class="fa fa-money"></i>Marketing<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ route('products') }}">Products<span class="label label-marketing pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
-                        <a href="{{ route('tasks') }}">Tasks<span class="label label-marketing pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
-                        <a href="{{ route('products') }}">Projects<span class="label label-marketing pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
+                        <a href="{{ route('products') }}">Products<span class="label label-marketing pull-right" style="margin-top:4px">{{ \App\Products::countProducts() ? : 0 }}</span></a>
+                        <a href="{{ route('tasks') }}">Tasks<span class="label label-marketing pull-right" style="margin-top:4px">{{ \App\Tasks::countTasks() ? : 0 }}</span></a>
+                        <a href="{{ route('products') }}">Projects<span class="label label-marketing pull-right" style="margin-top:4px">{{ \App\Projects::countProjects() ? : 0 }}</span></a>
                     </li>
                 </ul>
             </li>
@@ -39,20 +39,20 @@
                 <a href="#"><i class="fa fa-shopping-cart"></i> Sales<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ route('invoices') }}">Invoices<span class="label label-sales pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
-                        <a href="{{ route('finances') }}">Finances<span class="label label-sales pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
-                        <a href="{{ route('sales') }}">Sales<span class="label label-sales pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
+                        <a href="{{ route('invoices') }}">Invoices<span class="label label-sales pull-right" style="margin-top:4px">{{ \App\Invoices::countInvoices() ? : 0 }}</span></a>
+                        <a href="{{ route('finances') }}">Finances<span class="label label-sales pull-right" style="margin-top:4px">{{ \App\Finances::countFinances() ? : 0 }}</span></a>
+                        <a href="{{ route('sales') }}">Sales<span class="label label-sales pull-right" style="margin-top:4px">{{ \App\Sales::countSales() ? : 0 }}</span></a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="{{ route('mailing') }}"><i class="fa fa-file-text"></i>Mailing<span class="label label-mailing pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
+                <a href="{{ route('mailing') }}"><i class="fa fa-file-text"></i>Mailing<span class="label label-mailing pull-right" style="margin-top:4px">{{ \App\Mailing::countMailing() ? : 0 }}</span></a>
             </li>
             <li>
-                <a href="{{ route('reports') }}"><i class="fa fa-file-text"></i>Reports<span class="label label-reports pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
+                <a href="{{ route('reports') }}"><i class="fa fa-file-text"></i>Reports<span class="label label-reports pull-right" style="margin-top:4px">{{ \App\Reports::countReports() ? : 0 }}</span></a>
             </li>
             <li>
-                <a href="{{ route('files') }}"><i class="fa fa-folder-open"></i>Files<span class="label label-files pull-right" style="margin-top:4px">{{ \App\Companies::countCompanies() ? : 0 }}</span></a>
+                <a href="{{ route('files') }}"><i class="fa fa-folder-open"></i>Files<span class="label label-files pull-right" style="margin-top:4px">{{ \App\Files::countFiles() ? : 0 }}</span></a>
             </li>
         </ul>
 
