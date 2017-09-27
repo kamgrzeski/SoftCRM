@@ -4261,7 +4261,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .label {
   display: inline;
   padding: .2em .6em .3em;
-  font-size: 75%;
+  font-size: 100%;
   font-weight: bold;
   line-height: 1;
   color: #fff;
@@ -4298,8 +4298,33 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   background-color: #3071a9;
 }
 .label-success {
-  background-color: #5cb85c;
+  background-color: #359235;
 }
+
+.label-dependencies {
+  background-color: #e91e63;
+}
+
+.label-marketing {
+  background-color: #d0be23;
+}
+
+.label-sales {
+  background-color: #00BCD4;
+}
+
+.label-mailing {
+  background-color: #795548;
+}
+
+.label-reports {
+  background-color: #673ab7;
+}
+
+.label-files {
+  background-color: #359235;
+}
+
 .label-success[href]:hover,
 .label-success[href]:focus {
   background-color: #449d44;
