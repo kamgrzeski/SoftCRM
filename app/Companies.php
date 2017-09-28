@@ -150,4 +150,12 @@ class Companies extends Model
         return $this->hasMany(Invoices::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function files()
+    {
+        return $this->hasMany(Files::class);
+    }
+
 }

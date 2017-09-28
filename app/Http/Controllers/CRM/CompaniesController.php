@@ -138,9 +138,19 @@ class CompaniesController extends Controller
     {
         $dataOfCompanies = Companies::find($id);
         $countDeals = count($dataOfCompanies->deals()->get());
+        $countFiles = count($dataOfCompanies->files()->get());
+        $countInvoices = count($dataOfCompanies->invoices()->get());
 
         if ($countDeals > 0) {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteDeals'));
+        }
+
+        if ($countFiles > 0) {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteFiles'));
+        }
+
+        if ($countInvoices > 0) {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteInvoices'));
         }
 
         $dataOfCompanies->delete();

@@ -34,7 +34,7 @@
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-code-fork" aria-hidden="true"></i> List of tasks
+                    <i class="fa fa-code-fork" aria-hidden="true"></i> List of uncompleted tasks
                 </div>
                 <div class="panel-body">
                     <div class="table">
@@ -44,41 +44,97 @@
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Assigned employee</th>
                                 <th class="text-center">Status</th>
+                                <th class="text-center">Completed</th>
                                 <th class="text-center">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($tasks as $key => $value)
-                                <tr class="odd gradeX">
-                                    <td class="text-center">{{ $value->name }}</td>
-                                    <td class="text-center"><a
-                                                href="{{ URL::to('employees/' . $value->employees->id) }}">{{ $value->employees->full_name }}</a>
-                                    </td>
-                                    <td class="text-center">
-                                        @if($value->is_active == TRUE)
-                                            <input type="checkbox" data-on="Active" checked data-toggle="toggle"
-                                                   onchange='window.location.assign("{{ URL::to('tasks/disable/' . $value->id) }}")'/>
-                                        @else
-                                            <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
-                                                   onchange='window.location.assign("{{ URL::to('tasks/enable/' . $value->id) }}")'/>
-                                        @endif
-                                    </td>
-                                    <td class="text-right">
-                                        <a class="btn btn-small btn-success"
-                                           href="{{ URL::to('tasks/' . $value->id) }}">More information</a>
-                                        <a class="btn btn-small btn-info"
-                                           href="{{ URL::to('tasks/' . $value->id . '/edit') }}">Edit</a>
-                                    </td>
-                                </tr>
+                                @if($value->completed == 0)
+                                    <tr class="odd gradeX">
+                                        <td class="text-center">{{ $value->name }}</td>
+                                        <td class="text-center"><a
+                                                    href="{{ URL::to('employees/' . $value->employees->id) }}">{{ $value->employees->full_name }}</a>
+                                        </td>
+                                        <td class="text-center">
+                                            @if($value->is_active == TRUE)
+                                                <input type="checkbox" data-on="Active" checked data-toggle="toggle"
+                                                       onchange='window.location.assign("{{ URL::to('tasks/disable/' . $value->id) }}")'/>
+                                            @else
+                                                <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
+                                                       onchange='window.location.assign("{{ URL::to('tasks/enable/' . $value->id) }}")'/>
+                                            @endif
+                                        </td>
+                                        <td class="text-right">{{ $value->completed ? 'Yes' : 'No' }}</td>
+                                        <td class="text-right">
+                                            @if($value->completed == FALSE)
+                                                <a href="{{ URL::to('tasks/completed/' . $value->id) }}">
+                                                    <button type="button" class="btn btn-completed">Mark as completed</button>
+                                                </a>
+                                            @else
+                                                <a href="{{ URL::to('tasks/uncompleted/' . $value->id) }}">
+                                                    <button type="button" class="btn btn-completed">Mark as uncompleted</button>
+                                                </a>
+                                            @endif
+                                            <a class="btn btn-small btn-success"
+                                               href="{{ URL::to('tasks/' . $value->id) }}">More information</a>
+                                            <a class="btn btn-small btn-info"
+                                               href="{{ URL::to('tasks/' . $value->id . '/edit') }}">Edit</a>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                             {!! $tasksPaginate->render() !!}
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
             <!--End Advanced Tables -->
+
+            <!-- Advanced Tables -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-code-fork" aria-hidden="true"></i> List of completed tasks
+                </div>
+                <div class="panel-body">
+                    <div class="table" style="color: grey;">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Assigned employee</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($tasks as $key => $values)
+                                @if($values->completed == 1)
+                                    <tr class="odd gradeX">
+                                        <td class="text-center">{{ $values->name }}</td>
+                                        <td class="text-center">{{ $values->employees->full_name }}</td>
+                                        <td class="text-right">
+                                            @if($values->completed == FALSE)
+                                                <a href="{{ URL::to('tasks/completed/' . $values->id) }}">
+                                                    <button type="button" class="btn btn-completed" style="background-color: grey !important; border-color: grey">Mark as completed</button>
+                                                </a>
+                                            @else
+                                                <a href="{{ URL::to('tasks/uncompleted/' . $values->id) }}">
+                                                    <button type="button" class="btn btn-completed" style="background-color: grey !important; border-color: grey">Mark as uncompleted</button>
+                                                </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                            {!! $tasksPaginate->render() !!}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--End Advanced Tables -->
+
         </div>
     </div>
 @endsection

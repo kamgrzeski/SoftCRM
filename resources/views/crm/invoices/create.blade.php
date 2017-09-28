@@ -7,6 +7,18 @@
 @section('lyric', 'lorem ipsum')
 
 @section('content')
+    @if(count($dataOfCompanies) == 0)
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> There is no companies in system. Please create any client.
+            <a href="{{ URL::to('companies/create') }}">Click here!</a>
+        </div>
+    @endif
+    @if(count($dataOfClient) == 0)
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> There is no client in system. Please create any client.
+            <a href="{{ URL::to('client/create') }}">Click here!</a>
+        </div>
+    @endif
     <!-- will be used to show any messages -->
     @if(session()->has('message_success'))
         <div class="alert alert-success">

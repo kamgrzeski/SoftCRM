@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Add empoloyees')
+@section('caption', 'Add tasks')
 
-@section('title', 'Add empoloyees')
+@section('title', 'Add tasks')
 
 @section('lyric', 'lorem ipsum')
 

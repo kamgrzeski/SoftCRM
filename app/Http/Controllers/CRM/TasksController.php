@@ -36,7 +36,7 @@ class TasksController extends Controller
      */
     public function index()
     {
-       // return View::make('crm.tasks.index')->with($this->getDataAndPagination());
+        return View::make('crm.tasks.index')->with($this->getDataAndPagination());
     }
 
     /**
@@ -187,5 +187,29 @@ class TasksController extends Controller
         }
 
         return View::make('crm.tasks.index')->with($dataOfTasks);
+    }
+
+    public function completedTask($id)
+    {
+        $dataOfTasks = Tasks::find($id);
+
+        if (Tasks::setCompleted($dataOfTasks->id, TRUE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.TasksCompleted'));
+        } else {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.TasksIsNotCompleted'));
+        }
+    }
+
+
+
+    public function uncompletedTask($id)
+    {
+        $dataOfTasks = Tasks::find($id);
+
+        if (Tasks::setCompleted($dataOfTasks->id, FALSE)) {
+            return Redirect::back()->with('message_success', Language::getMessage('messages.TasksunCompleted'));
+        } else {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.TasksIsNotunCompleted'));
+        }
     }
 }

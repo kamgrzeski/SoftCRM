@@ -36,6 +36,12 @@ body {
     min-height:1200px;
 }
 
+.btn-completed {
+    color: #fff;
+    border-color: #B40101;
+    background-color: crimson !important;
+}
+
 .text-center {
     text-align:center;
 }
@@ -65,6 +71,22 @@ p {
     line-height:25px;
     padding-top:20px;
 }
+
+.badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 4px 9px 4px 8px !important;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #999;
+    border-radius: 5px;
+}
+
 /*----------------------------------------------
    DASHBOARD STYLES    
 ------------------------------------------------*/

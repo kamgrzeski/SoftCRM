@@ -24,11 +24,20 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
+
                         <div class="text-right">
-                            {{ Form::open(array('url' => 'tasks/' . $tasks->id, 'class' => 'pull-right')) }}
-                            {{ Form::hidden('_method', 'DELETE') }}
-                            {{ Form::submit('Delete this task', array('class' => 'btn btn-small btn-danger')) }}
-                            {{ Form::close() }}
+                                @if($tasks->completed == FALSE)
+                                    <a href="{{ URL::to('tasks/completed/' . $tasks->id) }}">
+                                        <button type="button" class="btn btn-success">Mark as completed</button>
+                                    </a>
+                                @else
+                                    <a href="{{ URL::to('tasks/uncompleted/' . $tasks->id) }}">
+                                        <button type="button" class="btn btn-success">Mark as uncompleted</button>
+                                    </a>
+                                @endif
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                                        Delete this task <li class="fa fa-trash-o"></li>
+                                    </button>
                         </div>
 
                     </ul>
@@ -43,13 +52,17 @@
                             </tr>
                             <tr>
                                 <th>Assigned employee</th>
-                                <td class="text-center"><a
+                                <td><a
                                             href="{{ URL::to('employees/' . $tasks->employees->id) }}">{{ $tasks->employees->full_name }}</a>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Status</th>
                                 <td>{{ $tasks->is_active ? 'Active' : 'Deactive' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Completed</th>
+                                <td>{{ $tasks->completed ? 'Yes' : 'No' }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -58,5 +71,26 @@
             </div>
         </div>
     </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">You want delete this task?</h4>
+                </div>
+                <div class="modal-body">
+                    Ation will delete permanently this task.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 15px;">Close</button>
+                    {{ Form::open(array('url' => 'tasks/' . $tasks->id, 'class' => 'pull-right')) }}
+                    {{ Form::hidden('_method', 'DELETE') }}
+                    {{ Form::submit('Delete this task', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::close() }}
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

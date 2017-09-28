@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Invoices extends Model
@@ -23,6 +24,7 @@ class Invoices extends Model
                 'client_id' => $allInputs['client_id'],
                 'notes' => $allInputs['notes'],
                 'amount' => $allInputs['amount'],
+                'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
@@ -46,6 +48,7 @@ class Invoices extends Model
                 'client_id' => $allInputs['client_id'],
                 'notes' => $allInputs['notes'],
                 'amount' => $allInputs['amount'],
+                'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }

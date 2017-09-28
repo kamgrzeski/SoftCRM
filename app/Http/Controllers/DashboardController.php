@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Invoices;
+use App\Tasks;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -23,6 +25,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('index');
+        $dataWithAllTasks = Tasks::all()->sortBy('created_at' , 0, true)->slice(0, 5);
+        $dataWithAllInvoices = Invoices::all()->sortBy('created_at', 0, true)->slice(0, 5);
+
+        return view('index')->with([
+            'dataWithAllTasks' => $dataWithAllTasks,
+            'dataWithAllInvoices' => $dataWithAllInvoices
+        ]);
     }
 }

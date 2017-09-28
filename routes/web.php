@@ -50,6 +50,9 @@ Route::get('/tasks/enable/{id}', 'CRM\TasksController@enable')->name('enable');
 Route::get('/tasks/disable/{id}', 'CRM\TasksController@disable')->name('disable');
 Route::resource('tasks', 'CRM\TasksController');
 Route::post('tasks/search', ['as' => 'tasks/search',  'uses' => 'CRM\TasksController@search']);
+Route::get('/tasks/completed/{id}', 'CRM\TasksController@completedTask')->name('completeTask');
+Route::get('/tasks/uncompleted/{id}', 'CRM\TasksController@uncompletedTask')->name('uncompletedTask');
+
 
 /* Files */
 Route::get('/files/enable/{id}', 'CRM\FilesController@enable')->name('enable');

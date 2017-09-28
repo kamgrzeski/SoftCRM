@@ -9,7 +9,7 @@
 @section('content')
     @if(count($dataWithPluckOfClient) == 0)
         <div class="alert alert-danger">
-            <strong>Danger!</strong> There is no client in system. Please create any client. <a href="{{ URL::to('client/create') }}">Click here!</a>
+            <strong>Danger!</strong> There is no  in system. Please create any client. <a href="{{ URL::to('client/create') }}">Click here!</a>
         </div>
     @endif
     <!-- will be used to show any messages -->

@@ -25,10 +25,9 @@
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <div class="text-right">
-                            {{ Form::open(array('url' => 'finances/' . $finances->id, 'class' => 'pull-right')) }}
-                            {{ Form::hidden('_method', 'DELETE') }}
-                            {{ Form::submit('Delete this employee', array('class' => 'btn btn-small btn-danger')) }}
-                            {{ Form::close() }}
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                                Delete this finances <li class="fa fa-trash-o"></li>
+                            </button>
                         </div>
 
                     </ul>
@@ -59,5 +58,24 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">You want delete this finances?</h4>
+                </div>
+                <div class="modal-body">
+                    Ation will delete permanently this finances.
+                </div>
+                <div class="modal-footer">
+                    {{ Form::open(array('url' => 'finances/' . $finances->id, 'class' => 'pull-right')) }}
+                    {{ Form::hidden('_method', 'DELETE') }}
+                    {{ Form::submit('Delete this finances', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::close() }}
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

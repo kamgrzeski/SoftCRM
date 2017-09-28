@@ -20,12 +20,12 @@ class CreateTableInvoices extends Migration
             $table->string('subject');
             $table->string('notes');
             $table->integer('cost');
+            $table->integer('amount');
+            $table->boolean('is_active')->nullable()->default(1);
             $table->unsignedInteger('companies_id');
             $table->foreign('companies_id')->references('id')->on('companies');
             $table->unsignedInteger('client_id');
-            $table->integer('amount');
-            $table->foreign('client_id')->references('id')->on('client');
-            $table->boolean('is_active')->nullable()->default(1);
+            $table->foreign('client_id')->references('id')->on('clients');
             $table->timestamps();
         });
     }

@@ -25,10 +25,9 @@
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <div class="text-right">
-                            {{ Form::open(array('url' => 'contacts/' . $contacts->id, 'class' => 'pull-right')) }}
-                            {{ Form::hidden('_method', 'DELETE') }}
-                            {{ Form::submit('Delete this contact', array('class' => 'btn btn-small btn-danger')) }}
-                            {{ Form::close() }}
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                                Delete this contact <li class="fa fa-trash-o"></li>
+                            </button>
                         </div>
 
                     </ul>
@@ -56,5 +55,26 @@
             </div>
         </div>
     </div>
+    </div>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">You want delete this contacts?</h4>
+                </div>
+                <div class="modal-body">
+                    Ation will delete permanently this contacts.
+                </div>
+                <div class="modal-footer">
+                    {{ Form::open(array('url' => 'contacts/' . $contacts->id, 'class' => 'pull-right')) }}
+                    {{ Form::hidden('_method', 'DELETE') }}
+                    {{ Form::submit('Delete this contact', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::close() }}
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

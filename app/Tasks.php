@@ -2,7 +2,9 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+
 
 class Tasks extends Model
 {
@@ -16,7 +18,8 @@ class Tasks extends Model
             [
                 'name' => $allInputs['name'],
                 'employee_id' => $allInputs['employee_id'],
-                'is_active' => 1
+                'is_active' => 1,
+                'created_at' => Carbon::now()
             ]
         );
     }
@@ -32,7 +35,8 @@ class Tasks extends Model
             [
                 'name' => $allInputs['name'],
                 'employee_id' => $allInputs['employee_id'],
-                'is_active' => 1
+                'is_active' => 1,
+                'updated_at' => Carbon::now()
             ]);
     }
 
@@ -61,6 +65,26 @@ class Tasks extends Model
         $findTasksById = Tasks::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
+            ]);
+
+        if ($findTasksById) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * @param $id
+     * @param $completeType
+     * @return bool
+     * @internal param $activeType
+     */
+    public static function setCompleted($id, $completeType)
+    {
+        $findTasksById = Tasks::where('id', '=', $id)->update(
+            [
+                'completed' => $completeType
             ]);
 
         if ($findTasksById) {

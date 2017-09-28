@@ -31,10 +31,9 @@
                                         class="badge badge-warning">{{ count($clients->employees) }}</span></a>
                         </li>
                         <div class="text-right">
-                            {{ Form::open(array('url' => 'client/' . $clients->id, 'class' => 'pull-right')) }}
-                            {{ Form::hidden('_method', 'DELETE') }}
-                            {{ Form::submit('Delete this client', array('class' => 'btn btn-small btn-danger')) }}
-                            {{ Form::close() }}
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                              Delete this client <li class="fa fa-trash-o"></li>
+                            </button>
                         </div>
 
                     </ul>
@@ -138,6 +137,27 @@
                             </table>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">You want delete this client?</h4>
+                </div>
+                <div class="modal-body">
+                    Ation will delete permanently this client.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 15px;">Close</button>
+                    {{ Form::open(array('url' => 'client/' . $clients->id, 'class' => 'pull-right')) }}
+                    {{ Form::hidden('_method', 'DELETE') }}
+                    {{ Form::submit('Delete this client', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::close() }}
                 </div>
             </div>
         </div>

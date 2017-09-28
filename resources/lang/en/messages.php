@@ -63,4 +63,8 @@ return [
     'ErrorEmployeesActive' => 'Employee hasn\'t been active yet.',
     'EmployeesIsNowDeactivated' => 'Employee has been deactivated.',
     'EmployeesIsDeactivated' => 'Employee has been already deactivated.',
+
+    /** Tasks Messages **/
+    'TasksCompleted' => 'Task successfully completed.',
+    'TasksunCompleted' => 'Task successfully uncompleted.',
 ];
