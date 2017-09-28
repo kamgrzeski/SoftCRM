@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
@@ -24,6 +25,7 @@ class Client extends Model
                 'zip' => $allInputs['zip'],
                 'city' => $allInputs['city'],
                 'country' => $allInputs['country'],
+                'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
@@ -48,6 +50,7 @@ class Client extends Model
                 'zip' => $allInputs['zip'],
                 'city' => $allInputs['city'],
                 'country' => $allInputs['country'],
+                'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }

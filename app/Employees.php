@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Employees extends Model
@@ -20,6 +21,7 @@ class Employees extends Model
                 'job' => $allInputs['job'],
                 'note' => $allInputs['note'],
                 'client_id' => $allInputs['client_id'],
+                'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
@@ -40,6 +42,7 @@ class Employees extends Model
                 'job' => $allInputs['job'],
                 'note' => $allInputs['note'],
                 'client_id' => $allInputs['client_id'],
+                'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }

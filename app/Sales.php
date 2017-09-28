@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -16,6 +17,7 @@ class Sales extends Model
         return Sales::insert(
             [
                 'name' => $allInputs['name'],
+                'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
@@ -31,6 +33,7 @@ class Sales extends Model
         return Sales::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
+                'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }

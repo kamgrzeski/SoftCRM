@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Products extends Model
@@ -17,6 +18,7 @@ class Products extends Model
                 'name' => $allInputs['name'],
                 'category' => $allInputs['category'],
                 'count' => $allInputs['count'],
+                'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
@@ -34,6 +36,7 @@ class Products extends Model
                 'name' => $allInputs['name'],
                 'category' => $allInputs['category'],
                 'count' => $allInputs['count'],
+                'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }

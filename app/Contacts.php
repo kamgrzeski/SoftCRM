@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Contacts extends Model
@@ -16,6 +17,7 @@ class Contacts extends Model
             [
                 'client_id' => $allInputs['client_id'],
                 'employee_id' => $allInputs['employee_id'],
+                'created_at' => Carbon::now(),
                 'date' => $allInputs['date']
             ]
         );

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Companies extends Model
@@ -25,6 +26,7 @@ class Companies extends Model
                 'fax' => $allInputs['fax'],
                 'description' => $allInputs['description'],
                 'client_id' => $allInputs['client_id'],
+                'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );

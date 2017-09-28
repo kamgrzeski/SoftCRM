@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Mailing extends Model
@@ -17,6 +18,7 @@ class Mailing extends Model
         return Mailing::insert(
             [
                 'name' => $allInputs['name'],
+                'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
@@ -32,6 +34,7 @@ class Mailing extends Model
         return Mailing::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
+                'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }

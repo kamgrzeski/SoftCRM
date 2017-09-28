@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Deals extends Model
@@ -18,6 +19,7 @@ class Deals extends Model
                 'start_time' => $allInputs['start_time'],
                 'end_time' => $allInputs['end_time'],
                 'companies_id' => $allInputs['companies_id'],
+                'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );

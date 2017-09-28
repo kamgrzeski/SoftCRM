@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Finances extends Model
@@ -16,6 +17,7 @@ class Finances extends Model
             [
                 'name' => $allInputs['name'],
                 'companies_id' => $allInputs['companies_id'],
+                'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
@@ -32,6 +34,7 @@ class Finances extends Model
             [
                 'name' => $allInputs['name'],
                 'companies_id' => $allInputs['companies_id'],
+                'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }
