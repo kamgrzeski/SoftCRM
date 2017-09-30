@@ -31,7 +31,7 @@
                     <li>
                         <a href="{{ route('products') }}">Products<span class="label label-marketing pull-right" style="margin-top:4px">{{ \App\Products::countProducts() ? : 0 }}</span></a>
                         <a href="{{ route('tasks') }}">Tasks<span class="label label-marketing pull-right" style="margin-top:4px">{{ \App\Tasks::countTasks() ? : 0 }}</span></a>
-                        <a href="{{ route('products') }}">Projects<span class="label label-marketing pull-right" style="margin-top:4px">{{ \App\Projects::countProjects() ? : 0 }}</span></a>
+                        <a href="{{ route('projects') }}">Projects<span class="label label-marketing pull-right" style="margin-top:4px">{{ \App\Projects::countProjects() ? : 0 }}</span></a>
                     </li>
                 </ul>
             </li>

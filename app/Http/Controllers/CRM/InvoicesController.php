@@ -203,24 +203,22 @@ class InvoicesController extends Controller
         $invoice = Invoice::make()
             ->logo(Config::get('crm_settings.invoice_logo_link'))
             ->currency(Config::get('crm_settings.currency'))
-            ->number($invoices->number)
+            ->number($invoices->id)
             ->tax(Config::get('crm_settings.invoice_tax'))
             ->notes($invoices->notes)
             ->customer([
                 'name'      => $invoices->client->full_name,
-                'id'        => $invoices->client->section,
+                'id'        => $invoices->client->id,
                 'phone'     => $invoices->client->phone,
                 'location'  => $invoices->client->location,
                 'zip'       => $invoices->client->zip,
                 'city'      => $invoices->client->city,
                 'country'   => $invoices->client->country
             ])
-            ->addItem($invoices->subject, $invoices->cost, $invoices->amount, 1)
-        ;
+            ->addItem($invoices->subject, $invoices->cost, $invoices->amount, 1);
 
         //this is for multi companies but can be import from config only for one company
         $invoice->business_details["name"] = $invoices->companies->name;
-        $invoice->business_details["id"] = $invoices->companies->id;
         $invoice->business_details["phone"] = $invoices->companies->phone;
         $invoice->business_details["location"] = $invoices->companies->billing_address;
         $invoice->business_details["zip"] = $invoices->companies->postal_code;

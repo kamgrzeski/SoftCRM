@@ -39,21 +39,33 @@
                             {{ Form::open(array('url' => 'contacts')) }}
                             <div class="form-group">
                                 {{ Form::label('client_id', 'Assign client') }}
-                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control'])  }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('client_id', $clients, null, ['class' => 'form-control',
+                                    'placeholder' => 'Please select client'])  }}
+                                </div>
                             </div>
+
                             <div class="form-group">
                                 {{ Form::label('employee_id', 'Assign employee') }}
-                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control'])  }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('employee_id', $employees, null, ['class' => 'form-control',
+                                    'placeholder' => 'Please select employee'])  }}
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('date', 'Date') }}
-                                {{ Form::date('date', null, array('class' => 'form-control', 'required')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    {{ Form::date('date', null, array('class' => 'form-control', 'required')) }}
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-12">
-                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Add contact', array('class' => 'btn btn-primary')) }}
                         </div>
                     {{ Form::close() }}
 

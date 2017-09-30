@@ -7,7 +7,7 @@
 @section('lyric', 'lorem ipsum')
 
 @section('content')
-    @if(count($dataOfFiles) == 0)
+    @if(count($dataOfCompanies) == 0)
         <div class="alert alert-danger">
             <strong>Danger!</strong> There is no company in system. Please create one. <a
                     href="{{ URL::to('companies/create') }}">Click here!</a>
@@ -34,17 +34,24 @@
                             {{ Form::open(array('url' => 'files')) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
                                 {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('companies_id', 'Deal between company:') }}
-                                {{ Form::select('companies_id', $dataOfFiles, null, ['class' => 'form-control'])  }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                {{ Form::select('companies_id', $dataOfCompanies, null, ['class' => 'form-control',
+                                'placeholder' => 'Please select companies'])  }}
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Add file', array('class' => 'btn btn-primary')) }}
                         </div>
                     {{ Form::close() }}
                     <!-- /.row (nested) -->
@@ -64,12 +71,12 @@
                     //this function adds an error message to a form field
                     addError: function (field, message) {
                         //get existing error message field
-                        var error_message_field = $('.error_message', field.parent('.input-row'));
+                        var error_message_field = $('.error_message', field.parent('.input-group'));
 
                         //if the error message field doesn't exist yet, add it
                         if (!error_message_field.length) {
                             error_message_field = $('<span/>').addClass('error_message');
-                            field.parent('.input-row').append(error_message_field);
+                            field.parent('.input-group').append(error_message_field);
                         }
 
                         error_message_field.text(message).show(200);
@@ -77,7 +84,7 @@
                     },
                     //this removes an error from a form field
                     removeError: function (field) {
-                        $('.error_message', field.parent('.input-row')).text('').hide();
+                        $('.error_message', field.parent('.input-group')).text('').hide();
                         field.removeClass('error');
                     },
                     //this is a final callback after failing to validate one or more fields

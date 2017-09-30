@@ -30,11 +30,13 @@
             <a href="{{ URL::to('tasks/create') }}">
                 <button type="button" class="btn btn-primary btn-lg active">Add tasks</button>
             </a>
-            <br><br>
+            <br>
             <!-- Advanced Tables -->
+            <h4 class="page-header">
+                <i class="fa fa-code-fork" aria-hidden="true"></i> List of uncompleted tasks
+            </h4>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-code-fork" aria-hidden="true"></i> List of uncompleted tasks
                 </div>
                 <div class="panel-body">
                     <div class="table">
@@ -93,10 +95,10 @@
             <!--End Advanced Tables -->
 
             <!-- Advanced Tables -->
+            <h4 class="page-header">
+                <i class="fa fa-code-fork" aria-hidden="true"></i> List of completed tasks
+            </h4>
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-code-fork" aria-hidden="true"></i> List of completed tasks
-                </div>
                 <div class="panel-body">
                     <div class="table" style="color: grey;">
                         <table class="table table-striped table-bordered table-hover" id="dataTables-example">

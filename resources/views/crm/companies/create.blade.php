@@ -30,68 +30,95 @@
                     <div class="row">
                         <div class="col-lg-6">
                             {{ Form::open(array('url' => 'companies')) }}
-
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+                                    {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('tax_number', 'Tax number') }}
-                                {{ Form::text('tax_number', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-slack"></i></span>
+                                    {{ Form::text('tax_number', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('phone', 'Phone') }}
-                                {{ Form::text('phone', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
+                                    {{ Form::text('phone', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('city', 'City') }}
-                                {{ Form::text('city', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-globe"></i></span>
+                                    {{ Form::text('city', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('billing_address', 'Billing address') }}
-                                {{ Form::text('billing_address', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-home"></i></span>
+                                    {{ Form::text('billing_address', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('country', 'Country') }}
-                                {{ Form::text('country', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-home"></i></span>
+                                    {{ Form::text('country', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('postal_code', 'Postal code') }}
-                                {{ Form::text('postal_code', null, array('class' => 'form-control')) }}
-                            </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-address-card"></i></span>
+                                    {{ Form::text('postal_code', null, array('class' => 'form-control')) }}
+                                </div></div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('employees_size', 'Employee size') }}
-                                {{ Form::text('employees_size', null, array('class' => 'form-control')) }}
-                            </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-crop"></i></span>
+                                    {{ Form::text('employees_size', null, array('class' => 'form-control')) }}
+                                </div></div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('fax', 'Fax number') }}
-                                {{ Form::text('fax', null, array('class' => 'form-control')) }}
-                            </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-home"></i></span>
+                                    {{ Form::text('fax', null, array('class' => 'form-control')) }}
+                                </div></div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('client_id', 'Assign client') }}
-                                {{ Form::select('client_id', $dataWithPluckOfClient, null, ['class' => 'form-control'])  }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('client_id', $dataWithPluckOfClient, null, ['class' => 'form-control',
+                                    'placeholder' => 'Please select client'])  }}
+                                </div>
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('description', 'Description') }}
                                 {{ Form::textarea('description', null, array('class' => 'form-control')) }}
-                            </div>
+                                </div>
 
                         </div>
 
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Add companie', array('class' => 'btn btn-primary')) }}
                         </div>
 
                     {{ Form::close() }}
@@ -114,12 +141,12 @@
                     //this function adds an error message to a form field
                     addError: function(field, message) {
                         //get existing error message field
-                        var error_message_field = $('.error_message',field.parent('.input-row'));
+                        var error_message_field = $('.error_message',field.parent('.input-group'));
 
                         //if the error message field doesn't exist yet, add it
                         if(!error_message_field.length) {
                             error_message_field = $('<span/>').addClass('error_message');
-                            field.parent('.input-row').append(error_message_field);
+                            field.parent('.input-group').append(error_message_field);
                         }
 
                         error_message_field.text(message).show(200);
@@ -151,6 +178,11 @@
                             'validate': function(field, event) {
                                 if(!field.val()) {
                                     throw "A tax number is required.";
+                                }
+
+                                var tax_pattern = /[0-9]$/i;
+                                if (!tax_pattern.test(field.val())) {
+                                    throw "Please enter a valid tax number.";
                                 }
                             }
                         },
@@ -184,6 +216,11 @@
                                 if(!field.val()) {
                                     throw "A postal code is required.";
                                 }
+
+                                var postal_pattern = /[0-9]$/i;
+                                if (!postal_pattern.test(field.val())) {
+                                    throw "Please enter a valid postal number.";
+                                }
                             }
                         },
                         'employees_size': {
@@ -192,6 +229,11 @@
                                 if(!field.val()) {
                                     throw "A employees size is required.";
                                 }
+
+                                var em_pattern = /[0-9]$/i;
+                                if (!em_pattern.test(field.val())) {
+                                    throw "Please enter a valid employee number.";
+                                }
                             }
                         },
                         'fax': {
@@ -199,6 +241,11 @@
                             'validate': function(field, event) {
                                 if(!field.val()) {
                                     throw "A fax is required.";
+                                }
+
+                                var fax_pattern = /[0-9]$/i;
+                                if (!fax_pattern.test(field.val())) {
+                                    throw "Please enter a valid fax number.";
                                 }
                             }
                         },
@@ -221,8 +268,7 @@
                                 if (!field.val()) {
                                     throw "A phone number is required."
 
-                                }
-                                ;
+                                };
 
                                 var phone_pattern = /[0-9]$/i;
                                 if (!phone_pattern.test(field.val())) {

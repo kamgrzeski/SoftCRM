@@ -480,6 +480,16 @@ font-size: 19px;
 .error_message {
     display: block;
     font-size: 14px;
-    margin-top: 5px;
+    margin-top: 35px !important;
+    margin-right: 30px;
     color: red;
+    position: absolute;
+    z-index: 100;
+}
+
+.input-group {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+    padding-bottom: 15px !important;
 }

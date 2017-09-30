@@ -31,6 +31,9 @@
             </a>
             <br><br>
             <!-- Advanced Tables -->
+            <h4 class="page-header">
+                <i class="fa fa-code-fork" aria-hidden="true"></i> List of uncompleted tasks
+            </h4>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-keyboard-o" aria-hidden="true"></i> List of mailing

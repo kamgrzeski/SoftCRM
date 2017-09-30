@@ -16,9 +16,7 @@ class Invoices extends Model
         return Invoices::insert(
             [
                 'name' => $allInputs['name'],
-                'type' => $allInputs['type'],
-                'number' => $allInputs['number'],
-                'subject' => $allInputs['subject'],
+                'items' => $allInputs['items'],
                 'cost' => $allInputs['cost'],
                 'companies_id' => $allInputs['companies_id'],
                 'client_id' => $allInputs['client_id'],
@@ -40,9 +38,6 @@ class Invoices extends Model
         return Invoices::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
-                'type' => $allInputs['type'],
-                'number' => $allInputs['number'],
-                'subject' => $allInputs['subject'],
                 'cost' => $allInputs['cost'],
                 'companies_id' => $allInputs['companies_id'],
                 'client_id' => $allInputs['client_id'],
@@ -63,9 +58,6 @@ class Invoices extends Model
             case 'STORE':
                 return [
                     'name' => 'required',
-                    'type' => 'required',
-                    'number' => 'required|integer',
-                    'subject' => 'required',
                     'cost' => 'required',
                     'companies_id' => 'required',
                     'client_id' => 'required',

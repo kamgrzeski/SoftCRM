@@ -34,14 +34,21 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
                                 {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('employee_id', 'Assign employees') }}
-                                {{ Form::select('employee_id', $dataOfEmployees, null, ['class' => 'form-control'])  }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                {{ Form::select('employee_id', $dataOfEmployees, null, ['class' => 'form-control',
+                                'placeholder' => 'Please select employee'])  }}
+                                </div>
                             </div>
                         </div>
 
@@ -69,12 +76,12 @@
                     //this function adds an error message to a form field
                     addError: function(field, message) {
                         //get existing error message field
-                        var error_message_field = $('.error_message',field.parent('.input-row'));
+                        var error_message_field = $('.error_message',field.parent('.input-group'));
 
                         //if the error message field doesn't exist yet, add it
                         if(!error_message_field.length) {
                             error_message_field = $('<span/>').addClass('error_message');
-                            field.parent('.input-row').append(error_message_field);
+                            field.parent('.input-group').append(error_message_field);
                         }
 
                         error_message_field.text(message).show(200);
@@ -82,7 +89,7 @@
                     },
                     //this removes an error from a form field
                     removeError: function(field) {
-                        $('.error_message',field.parent('.input-row')).text('').hide();
+                        $('.error_message',field.parent('.input-group')).text('').hide();
                         field.removeClass('error');
                     },
                     //this is a final callback after failing to validate one or more fields

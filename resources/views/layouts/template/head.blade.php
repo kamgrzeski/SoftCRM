@@ -7,7 +7,7 @@
 <!-- Bootstrap Styles-->
 <link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet" />
 <!-- FontAwesome Styles-->
-<link href="{{ asset('/css/font-awesome.css') }}" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <!-- Morris Chart Styles-->
 <link href="{{ asset('/js/morris/morris-0.4.3.min.css') }}" rel="stylesheet" />
 <!-- Custom Styles-->

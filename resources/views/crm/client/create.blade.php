@@ -28,50 +28,89 @@
                             {{ Form::open(array('url' => 'client')) }}
                             <div class="form-group  input-row">
                                 {{ Form::label('full_name', 'Full name') }}
-                                {{ Form::text('full_name', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+                                    {{ Form::text('full_name', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
+
                             <div class="form-group input-row">
                                 {{ Form::label('phone', 'Phone') }}
-                                {{ Form::text('phone', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
+                                    {{ Form::text('phone', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
+
                             <div class="form-group input-row">
                                 {{ Form::label('budget', 'Budget') }}
-                                {{ Form::text('budget', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
+                                    {{ Form::text('budget', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
+
                             <div class="form-group input-row">
                                 {{ Form::label('city', 'City') }}
-                                {{ Form::text('city', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-globe"></i></span>
+                                    {{ Form::text('city', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
+
                             <div class="form-group input-row">
                                 {{ Form::label('country', 'Country') }}
-                                {{ Form::text('country', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-globe"></i></span>
+                                    {{ Form::text('country', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('email', 'Emial address') }}
-                                {{ Form::text('email', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                                    {{ Form::text('email', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
+
                             <div class="form-group input-row">
                                 {{ Form::label('priority', 'Priority') }}
-                                {{ Form::select('priority', \App\GlobalFunctions::getPrioritySize(), null, ['class' => 'form-control']) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-child"></i></span>
+                                    {{ Form::select('priority', \App\GlobalFunctions::getPrioritySize(), null, ['class' => 'form-control']) }}
+                                </div>
                             </div>
+
                             <div class="form-group input-row">
                                 {{ Form::label('section', 'Section') }}
-                                {{ Form::select('section', ['transport' => 'transport', 'logistic' => 'logistic', 'finances' => 'finances'], null, ['class' => 'form-control']) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-feed"></i></span>
+                                    {{ Form::select('section', ['transport' => 'transport', 'logistic' => 'logistic', 'finances' => 'finances'], null, ['class' => 'form-control']) }}
+                                </div>
                             </div>
+
                             <div class="form-group input-row">
                                 {{ Form::label('location', 'Location') }}
-                                {{ Form::text('location', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-pie-chart"></i></span>
+                                    {{ Form::text('location', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
+
                             <div class="form-group input-row">
                                 {{ Form::label('zip', 'ZIP') }}
-                                {{ Form::text('zip', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-registered"></i></span>
+                                    {{ Form::text('zip', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
+
                         </div>
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Add client', array('class' => 'btn btn-primary')) }}
                         </div>
                     {{ Form::close() }}
 
@@ -93,12 +132,12 @@
                     //this function adds an error message to a form field
                     addError: function (field, message) {
                         //get existing error message field
-                        var error_message_field = $('.error_message', field.parent('.input-row'));
+                        var error_message_field = $('.error_message', field.parent('.input-group'));
 
                         //if the error message field doesn't exist yet, add it
                         if (!error_message_field.length) {
                             error_message_field = $('<span/>').addClass('error_message');
-                            field.parent('.input-row').append(error_message_field);
+                            field.parent('.input-group').append(error_message_field);
                         }
 
                         error_message_field.text(message).show(200);
@@ -106,7 +145,7 @@
                     },
                     //this removes an error from a form field
                     removeError: function (field) {
-                        $('.error_message', field.parent('.input-row')).text('').hide();
+                        $('.error_message', field.parent('.input-group')).text('').hide();
                         field.removeClass('error');
                     },
                     //this is a final callback after failing to validate one or more fields
@@ -135,7 +174,7 @@
                                 //don't throw any errors if it is empty
 
                                 if (!field.val()) {
-                                    throw "A phone number is required."
+                                    throw "A budget is required."
 
                                 }
                                 ;
@@ -182,6 +221,39 @@
                                 var email_pattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
                                 if (!email_pattern.test(field.val())) {
                                     throw "Please enter a valid email.";
+                                }
+                            }
+                        },
+                        'city': {
+                            'field': $('input[name=city]'),
+                            'validate': function(field, event) {
+                                if(!field.val()) {
+                                    throw "A city is required.";
+                                }
+                            }
+                        },
+
+                        'country': {
+                            'field': $('input[name=country]'),
+                            'validate': function(field, event) {
+                                if(!field.val()) {
+                                    throw "A country is required.";
+                                }
+                            }
+                        },
+                        'location': {
+                            'field': $('input[name=location]'),
+                            'validate': function(field, event) {
+                                if(!field.val()) {
+                                    throw "A location is required.";
+                                }
+                            }
+                        },
+                        'zip': {
+                            'field': $('input[name=zip]'),
+                            'validate': function(field, event) {
+                                if(!field.val()) {
+                                    throw "A zip is required.";
                                 }
                             }
                         }

@@ -40,61 +40,75 @@
                             {{ Form::open(array('url' => 'invoices')) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+                                    {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
+
                             <div class="form-group input-row">
-                                {{ Form::label('type', 'Type') }}
-                                {{ Form::text('type', null, array('class' => 'form-control')) }}
-                            </div>
-                            <div class="form-group input-row">
-                                {{ Form::label('number', 'Number') }}
-                                {{ Form::text('number', null, array('class' => 'form-control')) }}
+                                {{ Form::label('notes', 'Notes') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+                                    {{ Form::text('notes', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('companies_id', 'Invoice between company:') }}
-                                {{ Form::select('companies_id', $dataOfCompanies, null, ['class' => 'form-control'])  }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('companies_id', $dataOfCompanies, null, ['class' => 'form-control',
+                                    'placeholder' => 'Please select companies'])  }}
+                                </div>
                             </div>
+
                             <div class="form-group input-row">
                                 {{ Form::label('client_id', 'Invoice between client:') }}
-                                {{ Form::select('client_id', $dataOfClient, null, ['class' => 'form-control'])  }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('client_id', $dataOfClient, null, ['class' => 'form-control',
+                                    'placeholder' => 'Please select client'])  }}
+                            </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <h4 class="page-header">
+                Add Products
+            </h4>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            <h3>#1</h3>
-                            <br>
                             <div class="form-group input-row">
-                                {{ Form::label('subject', 'Subject') }}
-                                {{ Form::text('subject', null, array('class' => 'form-control')) }}
+                                {{ Form::label('items', 'Items') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-product-hunt"></i></span>
+                                    {{ Form::text('items', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('cost', 'Cost') }}
-                                {{ Form::text('cost', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-money"></i></span>
+                                    {{ Form::text('cost', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
                         </div>
-
                         <div class="col-lg-6">
-                            <h3>#2</h3>
-                            <br>
-                            <div class="form-group input-row">
-                                {{ Form::label('notes', 'Notes') }}
-                                {{ Form::text('notes', null, array('class' => 'form-control')) }}
-                            </div>
                             <div class="form-group input-row">
                                 {{ Form::label('amount', 'Amount') }}
-                                {{ Form::text('amount', null, array('class' => 'form-control')) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-eye"></i></span>
+                                    {{ Form::text('amount', null, array('class' => 'form-control')) }}
+                                </div>
                             </div>
-
                         </div>
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Add invoice', array('class' => 'btn btn-primary')) }}
                         </div>
                     </div>
                 </div>
@@ -118,12 +132,12 @@
                 //this function adds an error message to a form field
                 addError: function (field, message) {
                     //get existing error message field
-                    var error_message_field = $('.error_message', field.parent('.input-row'));
+                    var error_message_field = $('.error_message', field.parent('.input-group'));
 
                     //if the error message field doesn't exist yet, add it
                     if (!error_message_field.length) {
                         error_message_field = $('<span/>').addClass('error_message');
-                        field.parent('.input-row').append(error_message_field);
+                        field.parent('.input-group').append(error_message_field);
                     }
 
                     error_message_field.text(message).show(200);
@@ -131,7 +145,7 @@
                 },
                 //this removes an error from a form field
                 removeError: function (field) {
-                    $('.error_message', field.parent('.input-row')).text('').hide();
+                    $('.error_message', field.parent('.input-group')).text('').hide();
                     field.removeClass('error');
                 },
                 //this is a final callback after failing to validate one or more fields
@@ -150,37 +164,44 @@
                             }
                         }
                     },
-                    'type': {
-                        'field': $('input[name=type]'),
+                    'items': {
+                        'field': $('input[name=items]'),
                         'validate': function (field, event) {
                             if (!field.val()) {
-                                throw "A type is required.";
-                            }
-                        }
-                    },
-                    'number': {
-                        'field': $('input[name=number]'),
-                        'validate': function (field, event) {
-                            if (!field.val()) {
-                                throw "A number is required."
+                                throw "A items is required."
 
-                            }
-                            ;
+                            };
 
                             var number_pattern = /[0-9]$/i;
                             if (!number_pattern.test(field.val())) {
-                                throw "Please enter a number.";
+                                throw "Please items a number.";
                             }
                         }
                     },
-                    'subject': {
-                        'field': $('input[name=subject]'),
+
+                    'amount': {
+                        'field': $('input[name=amount]'),
                         'validate': function (field, event) {
                             if (!field.val()) {
-                                throw "A subject is required.";
+                                throw "A amount is required."
+
+                            };
+
+                            var number_pattern = /[0-9]$/i;
+                            if (!number_pattern.test(field.val())) {
+                                throw "amount items a number.";
                             }
                         }
                     },
+                    'notes': {
+                        'field': $('input[name=notes]'),
+                        'validate': function (field, event) {
+                            if (!field.val()) {
+                                throw "A notes is required.";
+                            }
+                        }
+                    },
+
                     'cost': {
                         'field': $('input[name=cost]'),
                         'validate': function (field, event) {

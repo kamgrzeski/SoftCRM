@@ -78,6 +78,13 @@ Route::get('/products/disable/{id}', 'CRM\ProductsController@disable')->name('di
 Route::resource('products', 'CRM\ProductsController');
 Route::post('products/search', ['as' => 'products/search',  'uses' => 'CRM\ProductsController@search']);
 
+
+/* Projects */
+Route::get('/projects/enable/{id}', 'CRM\ProjectsController@enable')->name('enable');
+Route::get('/projects/disable/{id}', 'CRM\ProjectsController@disable')->name('disable');
+Route::resource('projects', 'CRM\ProjectsController');
+Route::post('projects/search', ['as' => 'projects/search',  'uses' => 'CRM\ProjectsController@search']);
+
 /* Finances */
 Route::get('/finances/enable/{id}', 'CRM\FinancesController@enable')->name('enable');
 Route::get('/finances/disable/{id}', 'CRM\FinancesController@disable')->name('disable');

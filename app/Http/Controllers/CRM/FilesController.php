@@ -45,8 +45,8 @@ class FilesController extends Controller
      */
     public function create()
     {
-        $dataOfFiles = Companies::pluck('name', 'id');
-        return View::make('crm.files.create', compact('dataOfFiles'));
+        $dataOfCompanies = Companies::pluck('name', 'id');
+        return View::make('crm.files.create', compact('dataOfCompanies'));
     }
 
     /**
