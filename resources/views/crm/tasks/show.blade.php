@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Information about task: ' . $tasks->full_name)
+@section('caption', 'Information about task: ' . $tasks->name)
 
-@section('title', 'Information about task: ' . $tasks->full_name)
+@section('title', 'Information about task: ' . $tasks->name)
 
 
 @section('content')
@@ -18,7 +18,6 @@
                     <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
-            <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <ul class="nav nav-tabs">

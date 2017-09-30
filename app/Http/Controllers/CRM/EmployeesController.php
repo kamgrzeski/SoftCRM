@@ -135,8 +135,14 @@ class EmployeesController extends Controller
     {
         $dataOfEmployees = Employees::find($id);
         $countContacts = count($dataOfEmployees->contacts()->get());
+        $countTasks = count($dataOfEmployees->tasks()->get());
+
         if ($countContacts > 0) {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteContacts'));
+        }
+
+        if ($countTasks > 0) {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteTasks'));
         }
 
         $dataOfEmployees->delete();

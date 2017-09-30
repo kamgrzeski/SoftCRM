@@ -1,9 +1,10 @@
 @extends('layouts.base')
 
-@section('caption', 'Information about employee: ' . $employees->full_name)
+@section('caption', 'Information about employees')
 
-@section('title', 'Information about employee: ' . $employees->full_name)
+@section('title', 'Information about employees')
 
+@section('lyric', '')
 
 @section('content')
     <div class="row">
@@ -18,57 +19,89 @@
                     <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
-            <br/>
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    More information about: {{ $employees->full_name }}
+                </div>
+
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
+                        </li>
+                        <li class=""><a href="#profile" data-toggle="tab">Tasks <span
+                                        class="badge badge-warning">{{ count($employees->tasks) }}</span></a>
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
                                 Delete this employee <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
-
                     </ul>
-                    <div class="tab-pane fade active in" id="home">
-                        <h4></h4>
 
-                        <table class="table table-striped table-bordered">
-                            <tbody class="text-right">
-                            <tr>
-                                <th>Full name</th>
-                                <td>{{ $employees->full_name }}</td>
-                            </tr>
-                            <tr>
-                                <th>Phone</th>
-                                <td>{{ $employees->phone }}</td>
-                            </tr>
-                            <tr>
-                                <th>Email address</th>
-                                <td>{{ $employees->email }}</td>
-                            </tr>
-                            <tr>
-                                <th>Job</th>
-                                <td>{{ $employees->job }}</td>
-                            </tr>
-                            <tr>
-                                <th>Note</th>
-                                <td>{{ $employees->note }}</td>
-                            </tr>
-                            <tr>
-                                <th>Assigned client</th>
-                                <td>
-                                    <a href="{{ URL::to('client/' . $employees->client->id) }}">{{ $employees->client->full_name }}</a>
-                                </td>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="home">
+                            <h4></h4>
 
-                            </tr>
-                            <tr>
-                                <th>Status</th>
-                                <td>{{ $employees->is_active ? 'Active' : 'Deactive' }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                            <table class="table table-striped table-bordered">
+                                <tbody class="text-right">
+                                <tr>
+                                    <th>Full name</th>
+                                    <td>{{ $employees->full_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone</th>
+                                    <td>{{ $employees->phone }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email address</th>
+                                    <td>{{ $employees->email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Job</th>
+                                    <td>{{ $employees->job }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Note</th>
+                                    <td>{{ $employees->note }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Assigned client</th>
+                                    <td>
+                                        <a href="{{ URL::to('client/' . $employees->client->id) }}">{{ $employees->client->full_name }}</a>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td>{{ $employees->is_active ? 'Active' : 'Deactive' }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="profile">
+                            <br>
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                </tr>
+                                @foreach($employees->tasks as $tasks)
+                                    <tbody>
+                                    <tr class="odd gradeX">
+                                        <td>{{ $tasks->name }}</td>
+                                        <td>
+                                            {{ Form::open(array('url' => 'tasks/' . $tasks->id, 'class' => 'pull-right')) }}
+                                            {{ Form::hidden('_method', 'GET') }}
+                                            {{ Form::submit('More information about this tasks', array('class' => 'btn btn-primary btn-sm')) }}
+                                            {{ Form::close() }}
+                                        </td>
+                                    @endforeach
+                                    </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,16 +113,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">You want delete this employee?</h4>
+                    <h4 class="modal-title" id="myModalLabel">You want delete this employees?</h4>
                 </div>
                 <div class="modal-body">
-                    Ation will delete permanently this employee.
+                    Ation will delete permanently this employees.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 15px;">Close</button>
                     {{ Form::open(array('url' => 'employees/' . $employees->id, 'class' => 'pull-right')) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this employee', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::submit('Delete this companie', array('class' => 'btn btn-small btn-danger')) }}
                     {{ Form::close() }}
                 </div>
             </div>

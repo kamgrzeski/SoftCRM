@@ -44,7 +44,6 @@
                                 <th class="text-center">assigned client</th>
                                 <th class="text-center">assigned companie</th>
                                 <th class="text-center">assigned deal</th>
-                                <th class="text-center">Name</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
                             </tr>

@@ -46,7 +46,13 @@
                 </ul>
             </li>
             <li>
-                <a href="{{ route('mailing') }}"><i class="fa fa-file-text"></i>Mailing<span class="label label-mailing pull-right" style="margin-top:4px">{{ \App\Mailing::countMailing() ? : 0 }}</span></a>
+                <a href="#"><i class="fa fa-money"></i>Mailing<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ route('mailing') }}">Mailing list<span class="label label-mailing pull-right" style="margin-top:4px">{{ \App\Mailing::countMailing() ? : 0 }}</span></a>
+                        <a href="#">Mailing manager<span class="label label-mailing pull-right" style="background-color: red;font-size: 11px;margin-top:2px">NEW</span></a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="{{ route('reports') }}"><i class="fa fa-file-text"></i>Reports<span class="label label-reports pull-right" style="margin-top:4px">{{ \App\Reports::countReports() ? : 0 }}</span></a>

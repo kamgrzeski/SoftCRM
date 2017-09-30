@@ -24,10 +24,10 @@ return [
     'ErrorCompaniesActive' => 'Companie hasn\'t been active yet.',
     'CompaniesIsNowDeactivated' => 'Companie has been deactivated.',
     'CompaniesIsDeactivated' => 'Companie has been already deactivated.',
-    'firstDeleteCompanies' => 'Cannont delete, have assigned companies.',
-    'firstDeleteEmployees' => 'Cannont delete, have assigned employees.',
-    'firstDeleteContacts' => 'Cannont delete, have assigned contacts.',
-    'firstDeleteDeals' => 'Cannont delete, have assigned deals.',
+    'firstDeleteCompanies' => 'Cannot delete, have assigned companies.',
+    'firstDeleteEmployees' => 'Cannot delete, have assigned employees.',
+    'firstDeleteContacts' => 'Cannot delete, have assigned contacts.',
+    'firstDeleteDeals' => 'Cannot delete, have assigned deals.',
     'ThereIsNoCompanies' => 'A companies with this name doesn\'t exist.',
 
     /** Contacts Messages **/
@@ -63,8 +63,74 @@ return [
     'ErrorEmployeesActive' => 'Employee hasn\'t been active yet.',
     'EmployeesIsNowDeactivated' => 'Employee has been deactivated.',
     'EmployeesIsDeactivated' => 'Employee has been already deactivated.',
+    'firstDeleteTasks' => 'Cannot delete, have assigned tasks.',
+    'firstDeleteContacts' => 'Cannot delete, have assigned contacts.',
 
     /** Tasks Messages **/
     'TasksCompleted' => 'Task successfully completed.',
     'TasksunCompleted' => 'Task successfully uncompleted.',
+    'SuccessTasksDelete' => 'Task has been deleted.',
+    'SuccessTasksStore' => 'Task has been added.',
+    'SuccessTasksUpdate' => 'Task has been updated.',
+    'ThereIsNoTasks' => 'A task with this name doesn\'t exist.',
+    'CantDeleteUnompletedTask' => 'Task hasn\'t been completed yet.',
+
+    /** Files Messages **/
+    'SuccessFilesStore' => 'File has been added.',
+    'SuccessFilesDelete' => 'File has been deleted.',
+    'SuccessFilesUpdate' => 'File has been updated.',
+
+    /** Mailing Messages **/
+    'SuccessMailingStore' => 'Mailing has been added.',
+    'SuccessMailingDelete' => 'Mailing has been deleted.',
+    'SuccessMailingUpdate' => 'Mailing has been updated.',
+    'SuccessMailingActive' => 'Mailing has been active.',
+    'ErrorMailingActive' => 'Mailing hasn\'t been active yet.',
+    'MailingIsNowDeactivated' => 'Mailing has been deactivated.',
+    'MailingIsDeactivated' => 'Mailing has been already deactivated.',
+
+    /** Sales Messages **/
+    'SuccessSalesStore' => 'Sales has been added.',
+    'SuccessSalesDelete' => 'Sales has been deleted.',
+    'SuccessSalesUpdate' => 'Sales has been updated.',
+    'SuccessSalesActive' => 'Sales has been active.',
+    'ErrorSalesActive' => 'Sales hasn\'t been active yet.',
+    'SalesIsNowDeactivated' => 'Sales has been deactivated.',
+    'SalesIsDeactivated' => 'Sales has been already deactivated.',
+
+    /** Finances Messages **/
+    'SuccessFinancesStore' => 'Finances has been added.',
+    'SuccessFinancesDelete' => 'Finances has been deleted.',
+    'SuccessFinancesUpdate' => 'Finances has been updated.',
+    'SuccessFinancesActive' => 'Finances has been active.',
+    'ErrorFinancesActive' => 'Finances hasn\'t been active yet.',
+    'FinancesIsNowDeactivated' => 'Finances has been deactivated.',
+    'FinancesIsDeactivated' => 'Finances has been already deactivated.',
+
+    /** Invoices Messages **/
+    'SuccessInvoicesStore' => 'Invoices has been added.',
+    'SuccessInvoicesDelete' => 'Invoices has been deleted.',
+    'SuccessInvoicesUpdate' => 'Invoices has been updated.',
+    'SuccessInvoicesActive' => 'Invoices has been active.',
+    'ErrorInvoicesActive' => 'Invoices hasn\'t been active yet.',
+    'InvoicesIsNowDeactivated' => 'Invoices has been deactivated.',
+    'InvoicesIsDeactivated' => 'Invoices has been already deactivated.',
+
+    /** Projects Messages **/
+    'SuccessProjectsStore' => 'Projects has been added.',
+    'SuccessProjectsDelete' => 'Projects has been deleted.',
+    'SuccessProjectsUpdate' => 'Projects has been updated.',
+    'SuccessProjectsActive' => 'Projects has been active.',
+    'ErrorProjectsActive' => 'Projects hasn\'t been active yet.',
+    'ProjectsIsNowDeactivated' => 'Projects has been deactivated.',
+    'ProjectsIsDeactivated' => 'Projects has been already deactivated.',
+
+    /** Products Messages **/
+    'SuccessProductsStore' => 'Products has been added.',
+    'SuccessProductsDelete' => 'Products has been deleted.',
+    'SuccessProductsUpdate' => 'Products has been updated.',
+    'SuccessProductsActive' => 'Products has been active.',
+    'ErrorProductsActive' => 'Products hasn\'t been active yet.',
+    'ProductsIsNowDeactivated' => 'Products has been deactivated.',
+    'ProductsIsDeactivated' => 'Products has been already deactivated.',
 ];

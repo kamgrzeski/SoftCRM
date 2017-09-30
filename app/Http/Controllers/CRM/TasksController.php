@@ -135,7 +135,11 @@ class TasksController extends Controller
     public function destroy($id)
     {
         $dataOfTasks = Tasks::find($id);
-        $dataOfTasks->delete();
+        if($dataOfTasks->completed == 0) {
+            return Redirect::back()->with('message_danger', Language::getMessage('messages.CantDeleteUnompletedTask'));
+        } else {
+            $dataOfTasks->delete();
+        }
 
         return Redirect::to('tasks')->with('message_success', Language::getMessage('messages.SuccessTasksDelete'));
     }
