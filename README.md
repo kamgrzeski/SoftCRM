@@ -29,17 +29,12 @@ composer install
 
 #### 3. Then setup your database and open the .env.example file. Rename this file to .env and enter details for your site, database, stripe and email integration.
 
-#### 4. Run this command from the root project folder.
+#### 4. Run this command from the root project folder and This will create the database tables for you.
 ```
-php artisan key:generate
-```
-
-#### 5. Than run from the root project folder. This will create the database tables for you.
-```
-php artisan db:seed
+php artisan migrate --seed
 ```
 
-#### 6. Than run laravel server by command:
+#### 5. Than run laravel server by command:
 ```
 php artisan serve
 ```
