@@ -30,7 +30,7 @@
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                    {{ Form::text('name', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
                                 </div>
                             </div>
 
@@ -38,7 +38,7 @@
                                 {{ Form::label('category', 'Category') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-podcast"></i></span>
-                                    {{ Form::text('category', null, array('class' => 'form-control')) }}
+                                    {{ Form::text('category', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                                 {{ Form::label('count', 'Count') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::text('count', null, array('class' => 'form-control')) }}
+                                    {{ Form::text('count', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
                                 </div>
                             </div>
 

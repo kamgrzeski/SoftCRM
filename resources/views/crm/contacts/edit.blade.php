@@ -29,19 +29,19 @@
 
                             <div class="form-group">
                                 {{ Form::label('client_id', 'Assign client') }}
-                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control'])  }}
+                                {{ Form::select('client_id', $clients, rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), ['class' => 'form-control'])  }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('employee_id', 'Assign employee') }}
-                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control'])  }}
+                                {{ Form::select('employee_id', $employees, rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), ['class' => 'form-control'])  }}
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('date', 'Date') }}
-                                {{ Form::date('date', null, array('class' => 'form-control', 'required')) }}
+                                {{ Form::date('date', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control', 'required')) }}
                             </div>
 
                         </div>

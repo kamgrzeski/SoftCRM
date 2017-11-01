@@ -1,6 +1,10 @@
 <?php
 
 return [
+
+    /** All **/
+    'InputText' => 'Please write something here...',
+
     /** Clients Messages **/
     'SuccessClientStore' => 'Client has been added.',
     'ErrorClientStore' => 'Client hasn\'t been added yet.',

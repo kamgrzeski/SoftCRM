@@ -27,13 +27,13 @@
 
                             <div class="form-group">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                {{ Form::text('name', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('employee_id', 'Assign employee') }}
-                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control'])  }}
+                                {{ Form::select('employee_id', $employees, rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), ['class' => 'form-control'])  }}
                             </div>
                         </div>
 

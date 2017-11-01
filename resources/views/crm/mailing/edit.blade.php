@@ -29,7 +29,7 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                {{ Form::text('name', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
                             </div>
                         </div>
 

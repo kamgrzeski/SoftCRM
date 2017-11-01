@@ -36,7 +36,7 @@
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                    {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -44,7 +44,7 @@
                                 {{ Form::label('start_time', 'Start date') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    {{ Form::date('start_time', null, array('class' => 'form-control')) }}
+                                    {{ Form::date('start_time', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -54,7 +54,7 @@
                                 {{ Form::label('end_time', 'End date') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    {{ Form::date('end_time', null, array('class' => 'form-control')) }}
+                                    {{ Form::date('end_time', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -62,7 +62,7 @@
                                 {{ Form::label('companies_id', 'Deal between company:') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('companies_id', $dataOfDeals, null, ['class' => 'form-control',
+                                    {{ Form::select('companies_id', $dataOfDeals, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'),
                                     'placeholder' => 'Please select companie'])  }}
                                 </div>
                             </div>

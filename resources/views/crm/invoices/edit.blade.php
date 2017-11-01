@@ -28,25 +28,25 @@
                             {{ Form::model($invoices, array('route' => array('invoices.update', $invoices->id), 'method' => 'PUT')) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                {{ Form::text('name', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('type', 'Type') }}
-                                {{ Form::text('type', null, array('class' => 'form-control')) }}
+                                {{ Form::text('type', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('number', 'Number') }}
-                                {{ Form::text('number', null, array('class' => 'form-control')) }}
+                                {{ Form::text('number', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('subject', 'Subject') }}
-                                {{ Form::text('subject', null, array('class' => 'form-control')) }}
+                                {{ Form::text('subject', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('cost', 'Cost') }}
-                                {{ Form::text('cost', null, array('class' => 'form-control')) }}
+                                {{ Form::text('cost', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">

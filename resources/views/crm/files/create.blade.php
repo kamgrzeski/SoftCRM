@@ -36,7 +36,7 @@
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                                 {{ Form::label('companies_id', 'Deal between company:') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                {{ Form::select('companies_id', $dataOfCompanies, null, ['class' => 'form-control',
+                                {{ Form::select('companies_id', $dataOfCompanies, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'),
                                 'placeholder' => 'Please select companies'])  }}
                                 </div>
                             </div>

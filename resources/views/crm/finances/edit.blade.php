@@ -27,7 +27,7 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control')) }}
+                                {{ Form::text('name', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
                             </div>
                         </div>
 
@@ -35,7 +35,7 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('companies_id', 'Assign companies') }}
-                                {{ Form::select('companies_id', $dataWithPluckOfCompanies, null, ['class' => 'form-control'])  }}
+                                {{ Form::select('companies_id', $dataWithPluckOfCompanies, rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), ['class' => 'form-control'])  }}
                             </div>
 
                         </div>

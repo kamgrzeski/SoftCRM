@@ -19,7 +19,7 @@
                 </div>
             @endif
             {!! Form::open(array('route' => 'projects/search', 'class'=>'form navbar-form navbar-right searchform')) !!}
-            {!! Form::text('search', null,
+            {!! Form::text('search', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'),
                                    array('required',
                                         'class'=>'form-control',
                                         'placeholder'=>'Write name of projects...')) !!}
