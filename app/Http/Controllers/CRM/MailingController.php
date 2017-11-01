@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Client;
 use App\Mailing;
 use App\Http\Controllers\Controller;
 use App\Language;
@@ -34,7 +35,9 @@ class MailingController extends Controller
      */
     public function index()
     {
-        return View::make('crm.mailing.index')->with($this->getDataAndPagination());
+        $clientEmails = Client::All();
+        return View::make('crm.mailing.index')->with([
+            'clientEmails' => $clientEmails]);
     }
 
     /**
