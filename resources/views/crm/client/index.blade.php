@@ -81,11 +81,10 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                                {!! $clientPaginate->render() !!}
                                 </tbody>
                             </table>
                         </div>
-
+                        {!! $clientPaginate->render() !!}
                     </div>
                 </div>
                 <!--End Advanced Tables -->
@@ -140,11 +139,10 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                                {!! $clientPaginate->render() !!}
                                 </tbody>
                             </table>
                         </div>
-
+                        {!! $clientPaginate->render() !!}
                     </div>
                 </div>
                 <!--End Advanced Tables -->

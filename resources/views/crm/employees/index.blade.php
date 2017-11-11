@@ -79,10 +79,10 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            {!! $employeesPaginate->render() !!}
                             </tbody>
                         </table>
                     </div>
+                    {!! $employeesPaginate->render() !!}
 
                 </div>
             </div>

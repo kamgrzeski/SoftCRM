@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'pagination_size' => '11',
+    'pagination_size' => '5',
     'currency' => 'USD',
     'priority_size' => '3',
     'invoice_tax' => '21',

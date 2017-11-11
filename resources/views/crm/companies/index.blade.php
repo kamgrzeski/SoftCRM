@@ -83,11 +83,10 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            {!! $companiesPaginate->render() !!}
                             </tbody>
                         </table>
                     </div>
-
+                    {!! $companiesPaginate->render() !!}
                 </div>
             </div>
             <!--End Advanced Tables -->

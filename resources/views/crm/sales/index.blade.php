@@ -67,11 +67,10 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            {!! $salesPaginate->render() !!}
                             </tbody>
                         </table>
                     </div>
-
+                    {!! $salesPaginate->render() !!}
                 </div>
             </div>
             <!--End Advanced Tables -->

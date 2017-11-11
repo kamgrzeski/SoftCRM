@@ -86,10 +86,10 @@
                                     </tr>
                                 @endif
                             @endforeach
-                            {!! $tasksPaginate->render() !!}
                             </tbody>
                         </table>
                     </div>
+                    {!! $tasksPaginate->render() !!}
                 </div>
             </div>
             <!--End Advanced Tables -->
@@ -129,10 +129,10 @@
                                     </tr>
                                 @endif
                             @endforeach
-                            {!! $tasksPaginate->render() !!}
                             </tbody>
                         </table>
                     </div>
+                    {!! $tasksPaginate->render() !!}
                 </div>
             </div>
             <!--End Advanced Tables -->

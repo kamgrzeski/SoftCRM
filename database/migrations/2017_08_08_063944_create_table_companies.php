@@ -11,7 +11,7 @@ class CreateTableCompanies extends Migration
             $table->increments('id');
             $table->string('name', 255);
             $table->string('tax_number');
-            $table->integer('phone');
+            $table->string('phone');
             $table->string('city', 255);
             $table->string('billing_address', 255);
             $table->string('country', 255);

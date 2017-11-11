@@ -10,7 +10,7 @@ class CreateTableClients extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
             $table->string('full_name');
-            $table->integer('phone');
+            $table->string('phone');
             $table->string('email', 255);
             $table->text('priority');
             $table->text('section');

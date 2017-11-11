@@ -71,10 +71,10 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            {!! $financesPaginate->render() !!}
                             </tbody>
                         </table>
                     </div>
+                    {!! $financesPaginate->render() !!}
 
                 </div>
             </div>

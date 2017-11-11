@@ -67,10 +67,10 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            {!! $productsPaginate->render() !!}
                             </tbody>
                         </table>
                     </div>
+                    {!! $productsPaginate->render() !!}
 
                 </div>
             </div>

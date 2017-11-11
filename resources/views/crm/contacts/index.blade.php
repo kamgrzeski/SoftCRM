@@ -66,10 +66,10 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            {!! $contactsPaginate->render() !!}
                             </tbody>
                         </table>
                     </div>
+                    {!! $contactsPaginate->render() !!}
 
                 </div>
             </div>
