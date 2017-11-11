@@ -36,7 +36,7 @@
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                {{ Form::text('name', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
+                                    {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>
@@ -46,8 +46,7 @@
                                 {{ Form::label('employee_id', 'Assign employees') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                {{ Form::select('employee_id', $dataOfEmployees, rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), ['class' => 'form-control',
-                                'placeholder' => 'Please select employee'])  }}
+                                    {{ Form::select('employee_id', $dataOfEmployees, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
                         </div>

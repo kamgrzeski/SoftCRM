@@ -54,7 +54,7 @@
                     <i class="fa fa-paperclip fa-5x"></i>
                     <h3>{{ \App\Deals::countDeals() ? : 0 }} </h3>
                 </div>
-                <a href="#" style="text-decoration: none">
+                <a href="{{ route('deals') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-brown">
                         All deals
                         <i class="fa fa-arrow-circle-right"></i>

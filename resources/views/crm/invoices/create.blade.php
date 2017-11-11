@@ -42,7 +42,7 @@
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('name', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
+                                    {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -50,7 +50,7 @@
                                 {{ Form::label('notes', 'Notes') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-                                    {{ Form::text('notes', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
+                                    {{ Form::text('notes', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>
@@ -59,8 +59,7 @@
                                 {{ Form::label('companies_id', 'Invoice between company:') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('companies_id', $dataOfCompanies, rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), ['class' => 'form-control',
-                                    'placeholder' => 'Please select companies'])  }}
+                                    {{ Form::select('companies_id', $dataOfCompanies, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
                                 </div>
                             </div>
 
@@ -68,8 +67,7 @@
                                 {{ Form::label('client_id', 'Invoice between client:') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('client_id', $dataOfClient, rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), ['class' => 'form-control',
-                                    'placeholder' => 'Please select client'])  }}
+                                    {{ Form::select('client_id', $dataOfClient, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
                             </div>
                             </div>
                         </div>
@@ -87,14 +85,14 @@
                                 {{ Form::label('items', 'Items') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-product-hunt"></i></span>
-                                    {{ Form::text('items', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
+                                    {{ Form::text('items', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('cost', 'Cost') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-money"></i></span>
-                                    {{ Form::text('cost', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
+                                    {{ Form::text('cost', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>
@@ -103,7 +101,7 @@
                                 {{ Form::label('amount', 'Amount') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-eye"></i></span>
-                                    {{ Form::text('amount', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
+                                    {{ Form::text('amount', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>
