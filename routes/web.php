@@ -63,6 +63,7 @@ Route::post('files/search', ['as' => 'files/search',  'uses' => 'CRM\FilesContro
 /* Mailing */
 Route::get('/mailing/enable/{id}', 'CRM\MailingController@enable')->name('enable');
 Route::get('/mailing/disable/{id}', 'CRM\MailingController@disable')->name('disable');
+Route::post('/mailing/send/{email}', 'CRM\MailingController@sendEmailToThisEmailAddress')->name('sendEmailToThisEmailAddress');
 Route::resource('mailing', 'CRM\MailingController');
 Route::post('mailing/search', ['as' => 'mailing/search',  'uses' => 'CRM\MailingController@search']);
 

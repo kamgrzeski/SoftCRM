@@ -41,6 +41,8 @@
                             <thead>
                             <tr>
                                 <th class="text-center">Name</th>
+                                <th class="text-center">Category</th>
+                                <th class="text-center">Count</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -49,6 +51,8 @@
                             @foreach($products as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->name }}</td>
+                                    <td class="text-center">{{ $value->category }}</td>
+                                    <td class="text-center">{{ $value->count }}</td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)
                                             <input type="checkbox" data-on="Active" checked data-toggle="toggle"

@@ -18,7 +18,6 @@ class Client extends Model
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
                 'email' => $allInputs['email'],
-                'priority' => $allInputs['priority'],
                 'section' => $allInputs['section'],
                 'budget' => $allInputs['budget'],
                 'location' => $allInputs['location'],
@@ -43,7 +42,6 @@ class Client extends Model
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
                 'email' => $allInputs['email'],
-                'priority' => $allInputs['priority'],
                 'section' => $allInputs['section'],
                 'budget' => $allInputs['budget'],
                 'location' => $allInputs['location'],
@@ -66,7 +64,6 @@ class Client extends Model
                 return [
                     'full_name' => 'required|string',
                     'phone' => 'required|integer',
-                    'priority' => 'required',
                     'budget' => 'required',
                     'section' => 'required',
                     'email' => 'required|email',

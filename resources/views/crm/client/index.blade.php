@@ -46,7 +46,6 @@
                                     <th class="text-center">Phone</th>
                                     <th class="text-center">Email address</th>
                                     <th class="text-center">Phone</th>
-                                    <th class="text-center">Priority</th>
                                     <th class="text-center">Section</th>
                                     <th class="text-center">Budget</th>
                                     <th class="text-center">Status</th>
@@ -59,10 +58,9 @@
                                         <td class="text-center">{{ $value->full_name }}</td>
                                         <td class="text-center">{{ $value->phone }}</td>
                                         <td class="text-center">{{ $value->email }}</td>
-                                        <td class="text-center">{{ $value->priority }}</td>
                                         <td class="text-center">{{ $value->section }}</td>
                                         <td class="text-center">{{ $value->budget }}</td>
-                                        <td class="text-center">{{ $value->status }}</td>
+                                        <td class="text-center">{{ $value->is_active }}</td>
                                         <td class="text-center">
                                             @if($value->is_active == TRUE)
                                                 <input type="checkbox" data-on="Active" checked data-toggle="toggle"
@@ -84,7 +82,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        {!! $clientPaginate->render() !!}
                     </div>
                 </div>
                 <!--End Advanced Tables -->
@@ -102,7 +99,6 @@
                                     <th class="text-center">Full name</th>
                                     <th class="text-center">Phone</th>
                                     <th class="text-center">Email address</th>
-                                    <th class="text-center">Priority</th>
                                     <th class="text-center">Section</th>
                                     <th class="text-center">Budget</th>
                                     <th class="text-center">Status</th>
@@ -115,7 +111,6 @@
                                         <td class="text-center">{{ $value->full_name }}</td>
                                         <td class="text-center">{{ $value->phone }}</td>
                                         <td class="text-center">{{ $value->email }}</td>
-                                        <td class="text-center">{{ $value->priority }}</td>
                                         <td class="text-center">{{ $value->section }}</td>
                                         <td class="text-center">
                                             <button type="submit"

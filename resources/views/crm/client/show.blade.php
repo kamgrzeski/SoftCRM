@@ -57,10 +57,6 @@
                                     <td>{{ $clients->email }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Priority</th>
-                                    <td>{{ $clients->priority }}</td>
-                                </tr>
-                                <tr>
                                     <th>Section</th>
                                     <td>{{ $clients->section }}</td>
                                 </tr>

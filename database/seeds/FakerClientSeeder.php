@@ -19,7 +19,6 @@ class FakerClientSeeder extends Seeder
                 'full_name' => $faker->name,
                 'phone' => $faker->phoneNumber,
                 'email' => $faker->companyEmail,
-                'priority' => rand(1, 10),
                 'section' => array_random($section),
                 'budget' => rand(1000, 100000),
                 'location' => $faker->country,

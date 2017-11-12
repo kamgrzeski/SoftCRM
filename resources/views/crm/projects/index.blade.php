@@ -52,9 +52,9 @@
                             @foreach($projects as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->name }}</td>
-                                    <td class="text-center">{{ $value->client_id }}</td>
-                                    <td class="text-center">{{ $value->companies_id }}</td>
-                                    <td class="text-center">{{ $value->deals_id }}</td>
+                                    <td class="text-center">{{ $value->client->full_name }}</td>
+                                    <td class="text-center">{{ $value->companies->name }}</td>
+                                    <td class="text-center">{{ $value->deals->name }}</td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)
                                             <input type="checkbox" data-on="Active" checked data-toggle="toggle"

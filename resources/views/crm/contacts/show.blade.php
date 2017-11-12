@@ -38,11 +38,11 @@
                             <tbody class="text-right">
                             <tr>
                                 <th>Assigned client</th>
-                                <td>{{ $contacts->client_id }}</td>
+                                <td>{{ $contacts->client->full_name }}</td>
                             </tr>
                             <tr>
                                 <th>Assigned employee</th>
-                                <td>{{ $contacts->employee_id  }}</td>
+                                <td>{{ $contacts->employees->full_name  }}</td>
                             </tr>
                             <tr>
                                 <th>Date</th>

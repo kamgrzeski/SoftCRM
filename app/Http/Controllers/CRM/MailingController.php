@@ -187,4 +187,9 @@ class MailingController extends Controller
 
         return View::make('crm.mailing.index')->with($dataOfMailing);
     }
+
+    public function sendEmailToThisEmailAddress($email)
+    {
+        die($email);
+    }
 }

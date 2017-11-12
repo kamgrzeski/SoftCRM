@@ -81,6 +81,9 @@ class Contacts extends Model
         return $this->belongsTo(Client::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function employees()
     {
         return $this->belongsTo(Employees::class, 'employee_id', 'id');

@@ -97,4 +97,29 @@ class Projects extends Model
     {
         return Projects::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function companies()
+    {
+        return $this->belongsTo(Companies::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function deals()
+    {
+        return $this->belongsTo(Deals::class);
+    }
+
 }
