@@ -61,11 +61,12 @@ Route::resource('files', 'CRM\FilesController');
 Route::post('files/search', ['as' => 'files/search',  'uses' => 'CRM\FilesController@search']);
 
 /* Mailing */
-Route::get('/mailing/enable/{id}', 'CRM\MailingController@enable')->name('enable');
-Route::get('/mailing/disable/{id}', 'CRM\MailingController@disable')->name('disable');
 Route::post('/mailing/send/{email}', 'CRM\MailingController@sendEmailToThisEmailAddress')->name('sendEmailToThisEmailAddress');
 Route::resource('mailing', 'CRM\MailingController');
 Route::post('mailing/search', ['as' => 'mailing/search',  'uses' => 'CRM\MailingController@search']);
+
+/* MailManager */
+Route::get('mail_manager', 'CRM\MailManagerController@index')->name('mail_manager');
 
 /* Sales */
 Route::get('/sales/enable/{id}', 'CRM\SalesController@enable')->name('enable');

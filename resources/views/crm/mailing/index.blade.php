@@ -58,11 +58,12 @@
                 <div class="modal-body">
                     {{ Form::open(array('url' => '/mailing/send/' . $value->id)) }}
                     {{ Form::hidden('_method', 'POST') }}
+                    {{ Form::text('username') }}
                     <div class="form-group">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Name">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" required>
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject">
                     </div>
                     <div class="form-group">
                         <textarea class="form-control" type="textarea" id="message" placeholder="Message" maxlength="140" rows="7"></textarea>
@@ -70,7 +71,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    {{ Form::submit('Send email', array('class' => 'btn btn-success')) }}
+                    {{ Form::submit('Add send email to query', array('class' => 'btn btn-success')) }}
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
                 {{ Form::close() }}

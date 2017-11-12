@@ -90,4 +90,9 @@ class Mailing extends Model
     {
         return Mailing::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
+
+    public static function addEmailToMailManager($allInputs)
+    {
+        die('coming soon');
+    }
 }

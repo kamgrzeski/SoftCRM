@@ -50,7 +50,7 @@
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ route('mailing') }}">Mailing list<span class="label label-mailing pull-right" style="margin-top:4px">{{ \App\Mailing::countMailing() ? : 0 }}</span></a>
-                        <a href="#">Mailing manager<span class="label label-mailing pull-right" style="background-color: red;font-size: 11px;margin-top:2px">NEW</span></a>
+                        <a href="{{ route('mail_manager') }}">Mailing manager<span class="label label-mailing pull-right" style="background-color: red;font-size: 11px;margin-top:2px">NEW</span></a>
                     </li>
                 </ul>
             </li>
