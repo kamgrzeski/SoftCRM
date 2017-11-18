@@ -71,7 +71,8 @@ class InvoicesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('invoices/create')->with('message_danger', $validator->errors());
         } else {
-            if (Invoices::insertRow($allInputs)) {
+            if ($invoice = Invoices::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('Invoice has been add with id: '. $invoice);
                 return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorInvoicesStore'));
@@ -143,6 +144,8 @@ class InvoicesController extends Controller
         $invoicesDetails = Invoices::find($id);
         $invoicesDetails->delete();
 
+        SystemLogsController::insertSystemLogs('Invoices has been deleted with id: ' . $invoicesDetails->id);
+
         return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesDelete'));
     }
 
@@ -155,6 +158,7 @@ class InvoicesController extends Controller
         $invoicesDetails = Invoices::find($id);
 
         if (Invoices::setActive($invoicesDetails->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Invoices has been enabled with id: ' . $invoicesDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessInvoicesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.InvoicesIsActived'));
@@ -170,6 +174,7 @@ class InvoicesController extends Controller
         $invoicesDetails = Invoices::find($id);
 
         if (Invoices::setActive($invoicesDetails->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Invoices has been disabled with id: ' . $invoicesDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.InvoicesIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.InvoicesIsDeactivated'));

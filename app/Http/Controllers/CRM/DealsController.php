@@ -63,7 +63,8 @@ class DealsController extends Controller
         if ($validator->fails()) {
             return Redirect::to('deals/create')->with('message_danger', $validator->errors());
         } else {
-            if (Deals::insertRow($allInputs)) {
+            if ($deal = Deals::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('Deal has been add with id: '. $deal);
                 return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsStore'));
@@ -137,6 +138,8 @@ class DealsController extends Controller
         $dataOfDeals = Deals::find($id);
         $dataOfDeals->delete();
 
+        SystemLogsController::insertSystemLogs('Deals has been deleted with id: ' . $dataOfDeals->id);
+
         return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsDelete'));
     }
 
@@ -149,6 +152,7 @@ class DealsController extends Controller
         $dataOfDeals = Deals::find($id);
 
         if (Deals::setActive($dataOfDeals->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Deals has been enabled with id: ' . $dataOfDeals->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessDealsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsActive'));
@@ -164,6 +168,7 @@ class DealsController extends Controller
         $dataOfDeals = Deals::find($id);
 
         if (Deals::setActive($dataOfDeals->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Deals has been disabled with id: ' . $dataOfDeals->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.DealsIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.DealsIsDeactivated'));

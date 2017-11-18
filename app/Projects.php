@@ -13,7 +13,7 @@ class Projects extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Projects::insert(
+        return Projects::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'client_id' => $allInputs['client_id'],

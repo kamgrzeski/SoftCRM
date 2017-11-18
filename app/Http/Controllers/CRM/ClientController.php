@@ -61,7 +61,8 @@ class ClientController extends Controller
         if ($validator->fails()) {
             return Redirect::to('client/create')->with('message_danger', $validator->errors());
         } else {
-            if (Client::insertRow($allInputs)) {
+            if ($client = Client::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('Client has been add with id: '. $client);
                 return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorClientStore'));
@@ -142,6 +143,7 @@ class ClientController extends Controller
         }
 
         $clientDetails->delete();
+        SystemLogsController::insertSystemLogs('Client has been deleted with id: ' . $clientDetails->id);
 
         return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientDelete'));
     }
@@ -154,7 +156,8 @@ class ClientController extends Controller
     {
         $clientDetails = Client::find($id);
 
-        if (Client::setActive($clientDetails->id, TRUE)) {
+        if ($tmp = Client::setActive($clientDetails->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Client has been enabled with id: ' . $clientDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessClientActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsActived'));
@@ -170,6 +173,7 @@ class ClientController extends Controller
         $clientDetails = Client::find($id);
 
         if (Client::setActive($clientDetails->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Client has been disabled with id: ' . $clientDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.ClientIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsDeactivated'));

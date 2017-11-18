@@ -15,7 +15,7 @@ class Mailing extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Mailing::insert(
+        return Mailing::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'created_at' => Carbon::now(),

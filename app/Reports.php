@@ -13,7 +13,7 @@ class Reports extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Reports::insert(
+        return Reports::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'companies_id' => $allInputs['companies_id'],

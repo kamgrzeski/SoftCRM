@@ -11,7 +11,7 @@ class Deals extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public static function insertGetId($allInputs)
     {
         return Deals::insert(
             [

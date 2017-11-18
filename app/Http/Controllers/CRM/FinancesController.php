@@ -63,7 +63,8 @@ class FinancesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('finances/create')->with('message_danger', $validator->errors());
         } else {
-            if (Finances::insertRow($allInputs)) {
+            if ($finance = Finances::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('Finances has been add with id: '. $finance);
                 return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFinancesStore'));
@@ -140,6 +141,8 @@ class FinancesController extends Controller
 
         $dataOfFinances->delete();
 
+        SystemLogsController::insertSystemLogs('Finances has been deleted with id: ' . $dataOfFinances->id);
+
         return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesDelete'));
     }
 
@@ -152,6 +155,7 @@ class FinancesController extends Controller
         $dataOfFinances = Finances::find($id);
 
         if (Finances::setActive($dataOfFinances->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Finances has been enabled with id: ' . $dataOfFinances->id);
             return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFinancesActive'));
@@ -167,6 +171,7 @@ class FinancesController extends Controller
         $dataOfFinances = Finances::find($id);
 
         if (Finances::setActive($dataOfFinances->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Finances has been disabled with id: ' . $dataOfFinances->id);
             return Redirect::to('finances')->with('message_success', Language::getMessage('messages.FinancesIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.FinancesIsDeactivated'));

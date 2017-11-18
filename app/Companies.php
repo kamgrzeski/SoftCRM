@@ -13,7 +13,7 @@ class Companies extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Companies::insert(
+        return Companies::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'tax_number' => $allInputs['tax_number'],

@@ -63,7 +63,8 @@ class EmployeesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('employees/create')->with('message_danger', $validator->errors());
         } else {
-            if (Employees::insertRow($allInputs)) {
+            if ($employee = Employees::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('Employees has been add with id: '. $employee);
                 return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorEmployeesStore'));
@@ -147,6 +148,8 @@ class EmployeesController extends Controller
 
         $dataOfEmployees->delete();
 
+        SystemLogsController::insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id);
+
         return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesDelete'));
     }
 
@@ -159,6 +162,7 @@ class EmployeesController extends Controller
         $dataOfEmployees = Employees::find($id);
 
         if (Employees::setActive($dataOfEmployees->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Employees has been enabled with id: ' . $dataOfEmployees->id);
             return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorEmployeesActive'));
@@ -174,6 +178,7 @@ class EmployeesController extends Controller
         $dataOfEmployees = Employees::find($id);
 
         if (Employees::setActive($dataOfEmployees->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Employees has been disabled with id: ' . $dataOfEmployees->id);
             return Redirect::to('employees')->with('message_success', Language::getMessage('messages.EmployeesIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.EmployeesIsDeactivated'));

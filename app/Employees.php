@@ -13,7 +13,7 @@ class Employees extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Employees::insert(
+        return Employees::insertGetId(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],

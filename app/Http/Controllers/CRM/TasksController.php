@@ -64,7 +64,8 @@ class TasksController extends Controller
         if ($validator->fails()) {
             return Redirect::to('tasks/create')->with('message_danger', $validator->errors());
         } else {
-            if (Tasks::insertRow($allInputs)) {
+            if ($task = Tasks::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('Task has been add with id: '. $task);
                 return Redirect::to('tasks')->with('message_success', Language::getMessage('messages.SuccessTasksStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorTasksStore'));
@@ -139,6 +140,9 @@ class TasksController extends Controller
             return Redirect::back()->with('message_danger', Language::getMessage('messages.CantDeleteUnompletedTask'));
         } else {
             $dataOfTasks->delete();
+
+            SystemLogsController::insertSystemLogs('Tasks has been deleted with id: ' . $dataOfTasks->id);
+
         }
 
         return Redirect::to('tasks')->with('message_success', Language::getMessage('messages.SuccessTasksDelete'));
@@ -153,6 +157,7 @@ class TasksController extends Controller
         $dataOfTasks = Tasks::find($id);
 
         if (Tasks::setActive($dataOfTasks->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Tasks has been enabled with id: ' . $dataOfTasks->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessTasksActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorTasksActive'));
@@ -168,6 +173,7 @@ class TasksController extends Controller
         $dataOfTasks = Tasks::find($id);
 
         if (Tasks::setActive($dataOfTasks->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Tasks has been diabled with id: ' . $dataOfTasks->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.TasksIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.TasksIsDeactivated'));
@@ -198,6 +204,7 @@ class TasksController extends Controller
         $dataOfTasks = Tasks::find($id);
 
         if (Tasks::setCompleted($dataOfTasks->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Tasks has been completed with id: ' . $dataOfTasks->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.TasksCompleted'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.TasksIsNotCompleted'));
@@ -211,6 +218,7 @@ class TasksController extends Controller
         $dataOfTasks = Tasks::find($id);
 
         if (Tasks::setCompleted($dataOfTasks->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Tasks has been uncompleted with id: ' . $dataOfTasks->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.TasksunCompleted'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.TasksIsNotunCompleted'));

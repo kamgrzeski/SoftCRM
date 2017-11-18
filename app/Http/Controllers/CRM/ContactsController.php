@@ -69,7 +69,8 @@ class ContactsController extends Controller
         if ($validator->fails()) {
             return Redirect::to('contacts/create')->with('message_danger', $validator->errors());
         } else {
-            if (Contacts::insertRow($allInputs)) {
+            if ($contact = Contacts::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('Contact has been add with id: '. $contact);
                 return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorContactsStore'));
@@ -144,6 +145,8 @@ class ContactsController extends Controller
     {
         $dataOfContacts = Contacts::find($id);
         $dataOfContacts->delete();
+
+        SystemLogsController::insertSystemLogs('Contacts has been deleted with id: ' . $dataOfContacts->id);
 
         return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsDelete'));
     }

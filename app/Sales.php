@@ -14,7 +14,7 @@ class Sales extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Sales::insert(
+        return Sales::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'created_at' => Carbon::now(),

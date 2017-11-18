@@ -13,7 +13,7 @@ class Files extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Files::insert(
+        return Files::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'companies_id' => $allInputs['companies_id'],

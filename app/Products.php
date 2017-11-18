@@ -13,7 +13,7 @@ class Products extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Products::insert(
+        return Products::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'category' => $allInputs['category'],

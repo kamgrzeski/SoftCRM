@@ -72,7 +72,8 @@ class ProjectsController extends Controller
         if ($validator->fails()) {
             return Redirect::to('projects/create')->with('message_danger', $validator->errors());
         } else {
-            if (Projects::insertRow($allInputs)) {
+            if ($project = Projects::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('Project has been add with id: '. $project);
                 return Redirect::to('projects')->with('message_success', Language::getMessage('messages.SuccessProjectsStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorProjectsStore'));
@@ -144,6 +145,8 @@ class ProjectsController extends Controller
         $projectsDetails = Projects::find($id);
         $projectsDetails->delete();
 
+        SystemLogsController::insertSystemLogs('Projects has been deleted with id: ' . $projectsDetails->id);
+
         return Redirect::to('projects')->with('message_success', Language::getMessage('messages.SuccessProjectsDelete'));
     }
 
@@ -156,6 +159,7 @@ class ProjectsController extends Controller
         $projectsDetails = Projects::find($id);
 
         if (Projects::setActive($projectsDetails->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Projects has been enabled with id: ' . $projectsDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProjectsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProjectsIsActived'));
@@ -171,6 +175,7 @@ class ProjectsController extends Controller
         $projectsDetails = Projects::find($id);
 
         if (Projects::setActive($projectsDetails->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Projects has been disabled with id: ' . $projectsDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.ProjectsIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProjectsIsDeactivated'));

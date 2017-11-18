@@ -13,7 +13,7 @@ class Invoices extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Invoices::insert(
+        return Invoices::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'items' => $allInputs['items'],

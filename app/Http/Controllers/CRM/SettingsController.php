@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Language;
 use App\Settings;
 use Axdlee\Config\Rewrite;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use View;
@@ -48,6 +49,8 @@ class SettingsController extends Controller
             'invoice_tax' => $getAllInputFromRequest['invoice_tax'],
             'invoice_logo_link' => $getAllInputFromRequest['invoice_logo_link']
         ]);
+
+        SystemLogsController::insertSystemLogs('Settings has been changed.');
 
         return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSettingsUpdate'));
     }

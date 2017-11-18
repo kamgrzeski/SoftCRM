@@ -61,7 +61,8 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return Redirect::to('products/create')->with('message_danger', $validator->errors());
         } else {
-            if (Products::insertRow($allInputs)) {
+            if ($product = Products::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('Product has been add with id: '. $product);
                 return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorProductsStore'));
@@ -133,6 +134,9 @@ class ProductsController extends Controller
         $productsDetails = Products::find($id);
         $productsDetails->delete();
 
+        SystemLogsController::insertSystemLogs('Products has been deleted with id: ' . $productsDetails->id);
+
+
         return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsDelete'));
     }
 
@@ -145,6 +149,7 @@ class ProductsController extends Controller
         $productsDetails = Products::find($id);
 
         if (Products::setActive($productsDetails->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Products has been enabled with id: ' . $productsDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProductsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProductsIsActived'));
@@ -160,6 +165,7 @@ class ProductsController extends Controller
         $productsDetails = Products::find($id);
 
         if (Products::setActive($productsDetails->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Products has been disabled with id: ' . $productsDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.ProductsIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProductsIsDeactivated'));

@@ -13,7 +13,7 @@ class Client extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Client::insert(
+        return Client::insertGetId(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],

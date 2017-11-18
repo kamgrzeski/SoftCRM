@@ -61,7 +61,8 @@ class SalesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('sales/create')->with('message_danger', $validator->errors());
         } else {
-            if (Sales::insertRow($allInputs)) {
+            if ($sale = Sales::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('Sales has been add with id: '. $sale);
                 return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorSalesStore'));
@@ -133,6 +134,8 @@ class SalesController extends Controller
         $salesDetails = Sales::find($id);
         $salesDetails->delete();
 
+        SystemLogsController::insertSystemLogs('Sales has been deleted with id: ' . $salesDetails->id);
+
         return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesDelete'));
     }
 
@@ -145,6 +148,7 @@ class SalesController extends Controller
         $salesDetails = Sales::find($id);
 
         if (Sales::setActive($salesDetails->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Sales has been enabled with id: ' . $salesDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSalesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.SalesIsActived'));
@@ -160,6 +164,7 @@ class SalesController extends Controller
         $salesDetails = Sales::find($id);
 
         if (Sales::setActive($salesDetails->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Sales has been disabled with id: ' . $salesDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SalesIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.SalesIsDeactivated'));

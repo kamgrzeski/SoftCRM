@@ -63,7 +63,8 @@ class FilesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('files/create')->with('message_danger', $validator->errors());
         } else {
-            if (Files::insertRow($allInputs)) {
+            if ($file = Files::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('File has been add with id: '. $file);
                 return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesStore'));
@@ -137,6 +138,8 @@ class FilesController extends Controller
         $dataOfFiles = Files::find($id);
         $dataOfFiles->delete();
 
+        SystemLogsController::insertSystemLogs('Files has been deleted with id: ' . $dataOfFiles->id);
+
         return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesDelete'));
     }
 
@@ -149,6 +152,7 @@ class FilesController extends Controller
         $dataOfFiles = Files::find($id);
 
         if (Files::setActive($dataOfFiles->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Files has been enable with id: ' . $dataOfFiles->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessFilesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesActive'));
@@ -164,6 +168,7 @@ class FilesController extends Controller
         $dataOfFiles = Files::find($id);
 
         if (Files::setActive($dataOfFiles->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Files has been disabled with id: ' . $dataOfFiles->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.FilesIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.FilesIsDeactivated'));

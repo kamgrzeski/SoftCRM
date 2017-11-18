@@ -13,7 +13,7 @@ class Finances extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Finances::insert(
+        return Finances::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'companies_id' => $allInputs['companies_id'],

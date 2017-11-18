@@ -63,7 +63,8 @@ class CompaniesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('companies/create')->with('message_danger', $validator->errors());
         } else {
-            if (Companies::insertRow($allInputs)) {
+            if ($companie = Companies::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('Companies has been add with id: '. $companie);
                 return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorCompaniesStore'));
@@ -155,6 +156,8 @@ class CompaniesController extends Controller
 
         $dataOfCompanies->delete();
 
+        SystemLogsController::insertSystemLogs('Companies has been deleted with id: ' . $dataOfCompanies->id);
+
         return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesDelete'));
     }
 
@@ -167,6 +170,7 @@ class CompaniesController extends Controller
         $dataOfCompanies = Companies::find($id);
 
         if (Companies::setActive($dataOfCompanies->id, TRUE)) {
+            SystemLogsController::insertSystemLogs('Companies has been enabled with id: ' . $dataOfCompanies->id);
             return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorCompaniesActive'));
@@ -182,6 +186,7 @@ class CompaniesController extends Controller
         $dataOfCompanies = Companies::find($id);
 
         if (Companies::setActive($dataOfCompanies->id, FALSE)) {
+            SystemLogsController::insertSystemLogs('Companies has been disabled with id: ' . $dataOfCompanies->id);
             return Redirect::to('companies')->with('message_success', Language::getMessage('messages.CompaniesIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.CompaniesIsDeactivated'));

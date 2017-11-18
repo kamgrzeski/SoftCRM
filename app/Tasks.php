@@ -14,7 +14,7 @@ class Tasks extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Tasks::insert(
+        return Tasks::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'employee_id' => $allInputs['employee_id'],

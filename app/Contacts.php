@@ -13,7 +13,7 @@ class Contacts extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Contacts::insert(
+        return Contacts::insertGetId(
             [
                 'client_id' => $allInputs['client_id'],
                 'employee_id' => $allInputs['employee_id'],
