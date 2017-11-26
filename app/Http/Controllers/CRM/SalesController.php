@@ -141,33 +141,18 @@ class SalesController extends Controller
 
     /**
      * @param $id
+     * @param $value
      * @return mixed
      */
-    public function enable($id)
+    public function isActiveFunction($id, $value)
     {
         $salesDetails = Sales::find($id);
 
-        if (Sales::setActive($salesDetails->id, TRUE)) {
+        if (Sales::setActive($salesDetails->id, $value)) {
             SystemLogsController::insertSystemLogs('Sales has been enabled with id: ' . $salesDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSalesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.SalesIsActived'));
-        }
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function disable($id)
-    {
-        $salesDetails = Sales::find($id);
-
-        if (Sales::setActive($salesDetails->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('Sales has been disabled with id: ' . $salesDetails->id);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.SalesIsNowDeactivated'));
-        } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.SalesIsDeactivated'));
         }
     }
 

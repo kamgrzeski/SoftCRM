@@ -150,33 +150,18 @@ class TasksController extends Controller
 
     /**
      * @param $id
+     * @param $value
      * @return mixed
      */
-    public function enable($id)
+    public function isActiveFunction($id, $value)
     {
         $dataOfTasks = Tasks::find($id);
 
-        if (Tasks::setActive($dataOfTasks->id, TRUE)) {
+        if (Tasks::setActive($dataOfTasks->id, $value)) {
             SystemLogsController::insertSystemLogs('Tasks has been enabled with id: ' . $dataOfTasks->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessTasksActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorTasksActive'));
-        }
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function disable($id)
-    {
-        $dataOfTasks = Tasks::find($id);
-
-        if (Tasks::setActive($dataOfTasks->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('Tasks has been diabled with id: ' . $dataOfTasks->id);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.TasksIsNowDeactivated'));
-        } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.TasksIsDeactivated'));
         }
     }
 

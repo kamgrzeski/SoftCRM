@@ -148,33 +148,18 @@ class FinancesController extends Controller
 
     /**
      * @param $id
+     * @param $value
      * @return mixed
      */
-    public function enable($id)
+    public function isActiveFunction($id, $value)
     {
         $dataOfFinances = Finances::find($id);
 
-        if (Finances::setActive($dataOfFinances->id, TRUE)) {
+        if (Finances::setActive($dataOfFinances->id, $value)) {
             SystemLogsController::insertSystemLogs('Finances has been enabled with id: ' . $dataOfFinances->id);
             return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFinancesActive'));
-        }
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function disable($id)
-    {
-        $dataOfFinances = Finances::find($id);
-
-        if (Finances::setActive($dataOfFinances->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('Finances has been disabled with id: ' . $dataOfFinances->id);
-            return Redirect::to('finances')->with('message_success', Language::getMessage('messages.FinancesIsNowDeactivated'));
-        } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.FinancesIsDeactivated'));
         }
     }
 

@@ -155,33 +155,18 @@ class EmployeesController extends Controller
 
     /**
      * @param $id
+     * @param $value
      * @return mixed
      */
-    public function enable($id)
+    public function isActiveFunction($id, $value)
     {
         $dataOfEmployees = Employees::find($id);
 
-        if (Employees::setActive($dataOfEmployees->id, TRUE)) {
+        if (Employees::setActive($dataOfEmployees->id, $value)) {
             SystemLogsController::insertSystemLogs('Employees has been enabled with id: ' . $dataOfEmployees->id);
             return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorEmployeesActive'));
-        }
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function disable($id)
-    {
-        $dataOfEmployees = Employees::find($id);
-
-        if (Employees::setActive($dataOfEmployees->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('Employees has been disabled with id: ' . $dataOfEmployees->id);
-            return Redirect::to('employees')->with('message_success', Language::getMessage('messages.EmployeesIsNowDeactivated'));
-        } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.EmployeesIsDeactivated'));
         }
     }
 

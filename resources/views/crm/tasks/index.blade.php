@@ -61,10 +61,10 @@
                                         <td class="text-center">
                                             @if($value->is_active == TRUE)
                                                 <input type="checkbox" data-on="Active" checked data-toggle="toggle"
-                                                       onchange='window.location.assign("{{ URL::to('tasks/disable/' . $value->id) }}")'/>
+                                                       onchange='window.location.assign("{{ URL::to('tasks/set-active/' . $value->id . '/0') }}")'/>
                                             @else
                                                 <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
-                                                       onchange='window.location.assign("{{ URL::to('tasks/enable/' . $value->id) }}")'/>
+                                                       onchange='window.location.assign("{{ URL::to('tasks/set-active/' . $value->id . '/1') }}")'/>
                                             @endif
                                         </td>
                                         <td class="text-right">{{ $value->completed ? 'Yes' : 'No' }}</td>

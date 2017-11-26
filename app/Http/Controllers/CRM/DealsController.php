@@ -145,33 +145,18 @@ class DealsController extends Controller
 
     /**
      * @param $id
+     * @param $value
      * @return mixed
      */
-    public function enable($id)
+    public function isActiveFunction($id, $value)
     {
         $dataOfDeals = Deals::find($id);
 
-        if (Deals::setActive($dataOfDeals->id, TRUE)) {
+        if (Deals::setActive($dataOfDeals->id, $value)) {
             SystemLogsController::insertSystemLogs('Deals has been enabled with id: ' . $dataOfDeals->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessDealsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsActive'));
-        }
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function disable($id)
-    {
-        $dataOfDeals = Deals::find($id);
-
-        if (Deals::setActive($dataOfDeals->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('Deals has been disabled with id: ' . $dataOfDeals->id);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.DealsIsNowDeactivated'));
-        } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.DealsIsDeactivated'));
         }
     }
 

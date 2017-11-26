@@ -151,36 +151,20 @@ class InvoicesController extends Controller
 
     /**
      * @param $id
+     * @param $value
      * @return mixed
      */
-    public function enable($id)
+    public function isActiveFunction($id, $value)
     {
         $invoicesDetails = Invoices::find($id);
 
-        if (Invoices::setActive($invoicesDetails->id, TRUE)) {
+        if (Invoices::setActive($invoicesDetails->id, $value)) {
             SystemLogsController::insertSystemLogs('Invoices has been enabled with id: ' . $invoicesDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessInvoicesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.InvoicesIsActived'));
         }
     }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function disable($id)
-    {
-        $invoicesDetails = Invoices::find($id);
-
-        if (Invoices::setActive($invoicesDetails->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('Invoices has been disabled with id: ' . $invoicesDetails->id);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.InvoicesIsNowDeactivated'));
-        } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.InvoicesIsDeactivated'));
-        }
-    }
-
     /**
      * @return \Illuminate\Http\RedirectResponse
      */

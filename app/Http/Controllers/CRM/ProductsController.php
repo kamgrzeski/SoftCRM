@@ -142,33 +142,18 @@ class ProductsController extends Controller
 
     /**
      * @param $id
+     * @param $value
      * @return mixed
      */
-    public function enable($id)
+    public function isActiveFunction($id, $value)
     {
         $productsDetails = Products::find($id);
 
-        if (Products::setActive($productsDetails->id, TRUE)) {
+        if (Products::setActive($productsDetails->id, $value)) {
             SystemLogsController::insertSystemLogs('Products has been enabled with id: ' . $productsDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProductsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProductsIsActived'));
-        }
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function disable($id)
-    {
-        $productsDetails = Products::find($id);
-
-        if (Products::setActive($productsDetails->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('Products has been disabled with id: ' . $productsDetails->id);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.ProductsIsNowDeactivated'));
-        } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.ProductsIsDeactivated'));
         }
     }
 

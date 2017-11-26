@@ -150,33 +150,18 @@ class ClientController extends Controller
 
     /**
      * @param $id
+     * @param $value
      * @return mixed
      */
-    public function enable($id)
+    public function isActiveFunction($id, $value)
     {
         $clientDetails = Client::find($id);
 
-        if ($tmp = Client::setActive($clientDetails->id, TRUE)) {
-            SystemLogsController::insertSystemLogs('Client has been enabled with id: ' . $clientDetails->id);
+        if (Client::setActive($clientDetails->id, $value)) {
+//            SystemLogsController::insertSystemLogs('Client has been enabled with id: ' . $clientDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessClientActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsActived'));
-        }
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function disable($id)
-    {
-        $clientDetails = Client::find($id);
-
-        if (Client::setActive($clientDetails->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('Client has been disabled with id: ' . $clientDetails->id);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.ClientIsNowDeactivated'));
-        } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsDeactivated'));
         }
     }
 

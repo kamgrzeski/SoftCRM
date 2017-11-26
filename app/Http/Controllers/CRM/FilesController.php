@@ -145,33 +145,18 @@ class FilesController extends Controller
 
     /**
      * @param $id
+     * @param $value
      * @return mixed
      */
-    public function enable($id)
+    public function isActiveFunction($id, $value)
     {
         $dataOfFiles = Files::find($id);
 
-        if (Files::setActive($dataOfFiles->id, TRUE)) {
+        if (Files::setActive($dataOfFiles->id, $value)) {
             SystemLogsController::insertSystemLogs('Files has been enable with id: ' . $dataOfFiles->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessFilesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesActive'));
-        }
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function disable($id)
-    {
-        $dataOfFiles = Files::find($id);
-
-        if (Files::setActive($dataOfFiles->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('Files has been disabled with id: ' . $dataOfFiles->id);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.FilesIsNowDeactivated'));
-        } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.FilesIsDeactivated'));
         }
     }
 

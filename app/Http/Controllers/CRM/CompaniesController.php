@@ -163,13 +163,14 @@ class CompaniesController extends Controller
 
     /**
      * @param $id
+     * @param $value
      * @return mixed
      */
-    public function enable($id)
+    public function isActiveFunction($id, $value)
     {
         $dataOfCompanies = Companies::find($id);
 
-        if (Companies::setActive($dataOfCompanies->id, TRUE)) {
+        if (Companies::setActive($dataOfCompanies->id, $value)) {
             SystemLogsController::insertSystemLogs('Companies has been enabled with id: ' . $dataOfCompanies->id);
             return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesActive'));
         } else {

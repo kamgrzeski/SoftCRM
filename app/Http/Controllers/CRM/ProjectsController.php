@@ -152,33 +152,18 @@ class ProjectsController extends Controller
 
     /**
      * @param $id
+     * @param $value
      * @return mixed
      */
-    public function enable($id)
+    public function isActiveFunction($id, $value)
     {
         $projectsDetails = Projects::find($id);
 
-        if (Projects::setActive($projectsDetails->id, TRUE)) {
+        if (Projects::setActive($projectsDetails->id, $value)) {
             SystemLogsController::insertSystemLogs('Projects has been enabled with id: ' . $projectsDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProjectsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProjectsIsActived'));
-        }
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function disable($id)
-    {
-        $projectsDetails = Projects::find($id);
-
-        if (Projects::setActive($projectsDetails->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('Projects has been disabled with id: ' . $projectsDetails->id);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.ProjectsIsNowDeactivated'));
-        } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.ProjectsIsDeactivated'));
         }
     }
 
