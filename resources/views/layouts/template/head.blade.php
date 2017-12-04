@@ -45,7 +45,7 @@
             width: 100%;
             height: 100%;
             z-index: 9999;
-            background: url({{ asset("img/loader.gif") }}) center no-repeat #fff;
+            background: url({{ asset("images/loader.gif") }}) center no-repeat #fff;
         }
     </style>
     <script>
