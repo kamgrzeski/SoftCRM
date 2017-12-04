@@ -41,9 +41,9 @@
                             <thead>
                             <tr>
                                 <th class="text-center">Name</th>
-                                <th class="text-center">assigned client</th>
-                                <th class="text-center">assigned companie</th>
-                                <th class="text-center">assigned deal</th>
+                                <th class="text-center">Assigned client</th>
+                                <th class="text-center">Assigned companie</th>
+                                <th class="text-center">Assigned deal</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -52,9 +52,15 @@
                             @foreach($projects as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->name }}</td>
-                                    <td class="text-center">{{ $value->client->full_name }}</td>
-                                    <td class="text-center">{{ $value->companies->name }}</td>
-                                    <td class="text-center">{{ $value->deals->name }}</td>
+                                    <td class="text-center"><a
+                                                href="{{ URL::to('client/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
+                                    </td>
+                                    <td class="text-center"><a
+                                                href="{{ URL::to('companies/' . $value->companies->id) }}">{{ $value->companies->name }}</a>
+                                    </td>
+                                    <td class="text-center"><a
+                                                href="{{ URL::to('deals/' . $value->deals->id) }}">{{ $value->deals->name }}</a>
+                                    </td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)
                                             <input type="checkbox" data-on="Active" checked data-toggle="toggle"

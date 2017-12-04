@@ -18,6 +18,7 @@ class Products extends Model
                 'name' => $allInputs['name'],
                 'category' => $allInputs['category'],
                 'count' => $allInputs['count'],
+                'price' => $allInputs['price'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
@@ -36,6 +37,7 @@ class Products extends Model
                 'name' => $allInputs['name'],
                 'category' => $allInputs['category'],
                 'count' => $allInputs['count'],
+                'price' => $allInputs['price'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
@@ -53,6 +55,7 @@ class Products extends Model
                     'name' => 'required',
                     'category' => 'required',
                     'count' => 'required',
+                    'price' => 'required'
                 ];
         }
     }

@@ -15,11 +15,13 @@ class FakerProjectsSeeder extends Seeder
         $userIds = \App\Client::all()->pluck('id')->toArray();
         $companiesIds = \App\Companies::all()->pluck('id')->toArray();
         $dealsIds = \App\Deals::all()->pluck('id')->toArray();
-        $rowRand = rand(30,100);
+        $projectName = ['Geolides', 'noderston', 'ipader', 'KickSlider', 'maxim.safe', 'grunlog', 'ivier', 'easyntaxhl',
+            'bbbles', 'abombl', 'yabbit', 'quireMobi', 'Redmondup', 'Typer', 'envil.it', 'kerbuildy', 'Audione', 'rotroll',
+            'lighlight', 'Golias', 'Supernova'];
 
-        for ($i = 0; $i<$rowRand; $i++) {
+        for ($i = 0; $i<=20; $i++) {
             $projects = [
-                'name' => $faker->name,
+                'name' => $projectName[$i],
                 'client_id' => $faker->randomElement($userIds),
                 'companies_id' => $faker->randomElement($companiesIds),
                 'deals_id' => $faker->randomElement($dealsIds),

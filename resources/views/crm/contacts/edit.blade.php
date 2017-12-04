@@ -26,22 +26,21 @@
                     <div class="row">
                         <div class="col-lg-6">
                             {{ Form::open(array('url' => 'contacts')) }}
-
-                            <div class="form-group">
-                                {{ Form::label('client_id', 'Assign client') }}
-                                {{ Form::select('client_id', $clients, rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), ['class' => 'form-control'])  }}
+                            <div class="form-group input-row">
+                                {{ Form::label('client_id', 'Klient:') }}
+                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
                             </div>
 
-                            <div class="form-group">
-                                {{ Form::label('employee_id', 'Assign employee') }}
-                                {{ Form::select('employee_id', $employees, rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), ['class' => 'form-control'])  }}
+                            <div class="form-group input-row">
+                                {{ Form::label('employee_id', 'Assign employee:') }}
+                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('date', 'Date') }}
-                                {{ Form::date('date', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control', 'required')) }}
+                                {{ Form::date('date', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                             </div>
 
                         </div>

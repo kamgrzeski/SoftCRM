@@ -63,7 +63,7 @@ class Client extends Model
             case 'STORE':
                 return [
                     'full_name' => 'required|string',
-                    'phone' => 'required|integer',
+                    'phone' => 'required',
                     'budget' => 'required',
                     'section' => 'required',
                     'email' => 'required|email',

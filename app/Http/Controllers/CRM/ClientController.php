@@ -128,6 +128,7 @@ class ClientController extends Controller
      *
      * @param  int $id
      * @return Response
+     * @throws \Exception
      */
     public function destroy($id)
     {
@@ -158,7 +159,7 @@ class ClientController extends Controller
         $clientDetails = Client::find($id);
 
         if (Client::setActive($clientDetails->id, $value)) {
-//            SystemLogsController::insertSystemLogs('Client has been enabled with id: ' . $clientDetails->id);
+            SystemLogsController::insertSystemLogs('Client has been enabled with id: ' . $clientDetails->id);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessClientActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsActived'));

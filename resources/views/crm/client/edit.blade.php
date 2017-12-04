@@ -36,6 +36,10 @@
                                 {{ Form::label('budget', 'Budget') }}
                                 {{ Form::text('budget', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                             </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('location', 'Location') }}
+                                {{ Form::text('location', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                            </div>
                         </div>
 
                         <div class="col-lg-6">
@@ -51,6 +55,19 @@
                                 {{ Form::label('section', 'Section') }}
                                 {{ Form::select('section', ['transport' => 'transport', 'logistic' => 'logistic', 'finances' => 'finances'], null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')]) }}
                             </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('zip', 'Zip') }}
+                                {{ Form::text('zip', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('city', 'City') }}
+                                {{ Form::text('city', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('country', 'Country') }}
+                                {{ Form::text('country', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                            </div>
+
                         </div>
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}

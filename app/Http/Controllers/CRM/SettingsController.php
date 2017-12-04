@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Language;
 use App\Settings;
 use Axdlee\Config\Rewrite;
+use Hamcrest\Core\Set;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -23,7 +24,11 @@ class SettingsController extends Controller
     public function index()
     {
         $input = config('crm_settings.temp');
-        return view('crm.settings.index')->with($input);
+
+        return view('crm.settings.index')->with([
+            'input' => $input,
+            'logs' => $this->formatAllSystemLogs()
+        ]);
     }
 
     /**
@@ -53,5 +58,28 @@ class SettingsController extends Controller
         SystemLogsController::insertSystemLogs('Settings has been changed.');
 
         return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSettingsUpdate'));
+    }
+
+    /**
+     * @return array
+     */
+    public function formatAllSystemLogs()
+    {
+        $allLogs = Settings::all();
+        $tempArray = [];
+
+        foreach ($allLogs as $key => $result)
+        {
+            $tempArray[$key] = [
+                'user_id' => $result->user_id,
+                'actions' => $result->actions,
+                'date' => $result->date,
+                'ip_address' => $result->ip_address
+            ];
+        }
+
+        $formatLogs = $tempArray;
+
+        return $formatLogs;
     }
 }

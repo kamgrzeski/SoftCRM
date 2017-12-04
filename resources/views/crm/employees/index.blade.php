@@ -46,7 +46,6 @@
                                 <th class="text-center">Email address</th>
                                 <th class="text-center">Job</th>
                                 <th class="text-center">Assigned client</th>
-                                <th class="text-center">Note</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -61,7 +60,6 @@
                                     <td class="text-center"><a
                                                 href="{{ URL::to('client/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
                                     </td>
-                                    <td class="text-center">{{ $value->note }}</td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)
                                             <input type="checkbox" data-on="Active" checked data-toggle="toggle"

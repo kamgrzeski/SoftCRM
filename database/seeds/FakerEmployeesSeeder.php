@@ -20,8 +20,8 @@ class FakerEmployeesSeeder extends Seeder
                 'full_name' => $faker->name,
                 'phone' => $faker->phoneNumber,
                 'email' => $faker->email,
-                'job' => $faker->email,
-                'note' => $faker->uuid,
+                'job' => $faker->jobTitle,
+                'note' => $faker->text($maxNbChars = 200),
                 'client_id' => $faker->randomElement($userIds),
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now()

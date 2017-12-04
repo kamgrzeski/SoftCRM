@@ -105,10 +105,19 @@ class ProjectsController extends Controller
      */
     public function edit($id)
     {
+
         $projectsDetails = Projects::find($id);
+        $dataWithPluckOfClients = Client::pluck('full_name', 'id');
+        $dataWithPluckOfDeals = Deals::pluck('name', 'id');
+        $dataWithPluckOfCompanies = Companies::pluck('name', 'id');
 
         return View::make('crm.projects.edit')
-            ->with('projects', $projectsDetails);
+            ->with([
+                'projects' => $projectsDetails,
+                'clients' => $dataWithPluckOfClients,
+                'deals' => $dataWithPluckOfDeals,
+                'companies' => $dataWithPluckOfCompanies
+            ]);
     }
 
     /**
@@ -139,6 +148,7 @@ class ProjectsController extends Controller
      *
      * @param  int $id
      * @return Response
+     * @throws \Exception
      */
     public function destroy($id)
     {

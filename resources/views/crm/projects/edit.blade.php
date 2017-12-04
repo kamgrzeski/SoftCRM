@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Add products')
+@section('caption', 'Edit projects')
 
-@section('title', 'Add products')
+@section('title', 'Edit projects')
 
 @section('lyric', 'lorem ipsum')
 
@@ -25,45 +25,31 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(array('url' => 'products')) }}
+                            {{ Form::model($projects, array('route' => array('projects.update', $projects->id), 'method' => 'PUT')) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
-                                </div>
+                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                             </div>
-
                             <div class="form-group input-row">
-                                {{ Form::label('category', 'Category') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-podcast"></i></span>
-                                    {{ Form::text('category', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
-                                </div>
+                                {{ Form::label('client_id', 'Assign client') }}
+                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
                             </div>
                         </div>
-
                         <div class="col-lg-6">
                             <div class="form-group input-row">
-                                {{ Form::label('count', 'Count') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::text('count', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
-                                </div>
+                                {{ Form::label('companies_id', 'Deal between company:') }}
+                                {{ Form::select('companies_id', $companies, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
                             </div>
                             <div class="form-group input-row">
-                                {{ Form::label('price', 'Price') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::text('price', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
-                                </div>
+                                {{ Form::label('deals_id', 'Deal:') }}
+                                {{ Form::select('deals_id', $deals, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
                             </div>
-
                         </div>
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Add product', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                         </div>
                     {{ Form::close() }}
+
                     <!-- /.row (nested) -->
                     </div>
                     <!-- /.panel-body -->
@@ -72,6 +58,7 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
+
         <script>
             $(document).ready(function () {
                 //create formValidator object
@@ -81,12 +68,12 @@
                     //this function adds an error message to a form field
                     addError: function (field, message) {
                         //get existing error message field
-                        var error_message_field = $('.error_message', field.parent('.input-group'));
+                        var error_message_field = $('.error_message', field.parent('.input-row'));
 
                         //if the error message field doesn't exist yet, add it
                         if (!error_message_field.length) {
                             error_message_field = $('<span/>').addClass('error_message');
-                            field.parent('.input-group').append(error_message_field);
+                            field.parent('.input-row').append(error_message_field);
                         }
 
                         error_message_field.text(message).show(200);
@@ -94,7 +81,7 @@
                     },
                     //this removes an error from a form field
                     removeError: function (field) {
-                        $('.error_message', field.parent('.input-group')).text('').hide();
+                        $('.error_message', field.parent('.input-row')).text('').hide();
                         field.removeClass('error');
                     },
                     //this is a final callback after failing to validate one or more fields
@@ -110,29 +97,6 @@
                             'validate': function (field, event) {
                                 if (!field.val()) {
                                     throw "A name is required.";
-                                }
-                            }
-                        },
-                        'category': {
-                            'field': $('input[name=category]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A category is required.";
-                                }
-                            }
-                        },
-                        'count': {
-                            'field': $('input[name=count]'),
-                            'validate': function (field, event) {
-                                //if the validation is fired from a blur event,
-                                //don't throw any errors if it is empty
-                                if (event === 'blur' && !field.val()) field.addClass('success');
-
-                                if (!field.val()) throw "A count is required.";
-
-                                var count_pattern = /[0-9]$/i;
-                                if (!count_pattern.test(field.val())) {
-                                    throw "Please write a valid count number.";
                                 }
                             }
                         }

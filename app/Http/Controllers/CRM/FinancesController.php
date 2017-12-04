@@ -97,12 +97,12 @@ class FinancesController extends Controller
     public function edit($id)
     {
         $dataOfFinances = Finances::find($id);
-        $dataWithPluckOfCompaniess = Companies::pluck('full_name', 'id');
+        $dataWithPluckOfCompaniess = Companies::pluck('name', 'id');
 
         return View::make('crm.finances.edit')
             ->with([
                 'finances' => $dataOfFinances,
-                'clients' => $dataWithPluckOfCompaniess
+                'companies' => $dataWithPluckOfCompaniess
             ]);
     }
 
@@ -134,6 +134,7 @@ class FinancesController extends Controller
      *
      * @param  int $id
      * @return Response
+     * @throws \Exception
      */
     public function destroy($id)
     {

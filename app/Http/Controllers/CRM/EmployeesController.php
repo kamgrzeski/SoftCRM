@@ -131,6 +131,7 @@ class EmployeesController extends Controller
      *
      * @param  int $id
      * @return Response
+     * @throws \Exception
      */
     public function destroy($id)
     {

@@ -23,21 +23,23 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::model($employees, array('route' => array('employees.update', $employees->id), 'method' => 'PUT')) }}
+                            {{ Form::model($finances, array('route' => array('finances.update', $finances->id), 'method' => 'PUT')) }}
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), array('class' => 'form-control')) }}
+                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
                             </div>
                         </div>
 
                         <div class="col-lg-6">
-
                             <div class="form-group input-row">
-                                {{ Form::label('companies_id', 'Assign companies') }}
-                                {{ Form::select('companies_id', $dataWithPluckOfCompanies, rol', 'placeholder' => \App\Language::getMessage('messages.InputText'), ['class' => 'form-control'])  }}
+                                {{ Form::label('companies_id', 'Assigned company:') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('companies_id', $companies, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'),
+                                    'placeholder' => 'Please select companies'])  }}
+                                </div>
                             </div>
-
                         </div>
 
                         <div class="col-lg-12 validate_form">

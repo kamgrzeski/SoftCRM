@@ -48,7 +48,6 @@
                             <div class="form-group input-row">
                                 {{ Form::label('companies_id', 'Deal between company:') }}
                                 {{ Form::select('companies_id', $companies, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
-
                             </div>
 
                         </div>

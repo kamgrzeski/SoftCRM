@@ -67,7 +67,7 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Latest Tasks <span class="badge"> {{ \App\Tasks::countTasks() ? : '0' }}</span></button>
+                    Latest tasks <span class="badge"> {{ \App\Tasks::countTasks() ? : '0' }}</span></button>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
@@ -114,6 +114,33 @@
                     </div>
                     <div class="text-right">
                         <a href="{{ URL::to('invoices') }}">More Invoices <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Latest add products <span class="badge"> {{ \App\Products::countProducts() ? : '0' }}</span></button>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        @if(count($dataWithAllProducts) > 0)
+                            @foreach ($dataWithAllProducts as $result)
+                                <a href="{{ URL::to('products/' . $result->id) }}" class="list-group-item">
+                                    <span class="badge badge" style="background-color: #428bca !important;">{{ $result->created_at->diffForHumans() }}</span>
+                                    <span class="badge badge" style="background-color: #298a15 !important;">
+                                        {{ \ClickNow\Money\Money::{config('crm_settings.currency')}($result->price) }} [{{ $result->count }}]</span>
+                                    <i class="fa fa-fw fa-product-hunt"></i> {{ $result->name }}
+                                </a>
+                            @endforeach
+                        @else
+                            There is no tasks.
+                        @endif
+                    </div>
+                    <div class="text-right">
+                        <a href="{{ URL::to('products') }}">More products <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>

@@ -24,90 +24,68 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-lg-12">
-                            {{ Form::open(array('url' => 'settings')) }}
-                            <div class="panel-group" id="accordion">
-                                <div class="panel panel-default" id="panel1">
-                                    <div class="panel-heading"
-                                         style="background-color: #f6f6f6;padding: 10px 0px 20px 20px">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-target="#collapseOne" class="collapsed">
-                                                Global settings #1
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseOne" class="panel-collapse collapse in">
-                                        <div class="panel-body" style="background-color: #f6f6f6">
-                                            <div class="col-lg-6">
-                                                <div class="form-group input-row">
-                                                    {{ Form::label('pagination_size', 'Pagination size') }}
-                                                    {{ Form::text('pagination_size', config('crm_settings.pagination_size'), array('class' => 'form-control')) }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="panel panel-default" id="panel2">
-                                    <div class="panel-heading"
-                                         style="background-color: #f6f6f6;padding: 10px 0px 20px 20px">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-target="#collapseTwo" class="collapsed">
-                                                Client settings #2
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseTwo" class="panel-collapse collapse">
-                                        <div class="panel-body" style="background-color: #f6f6f6">
-                                            <div class="col-lg-6">
-                                                <div class="form-group input-row">
-                                                    {{ Form::label('priority_size', 'Priority size') }}
-                                                    {{ Form::text('priority_size', config('crm_settings.priority_size'), array('class' => 'form-control')) }}
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="form-group input-row">
-                                                    {{ Form::label('currency', 'Currency type') }}
-                                                    {{ Form::select('currency', ['PLN' => 'PLN', 'EUR' => 'EUR', 'USD' => 'USD'], config('crm_settings.currency'), ['class' => 'form-control']) }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="panel panel-default" id="panel3">
-                                    <div class="panel-heading"
-                                         style="background-color: #f6f6f6;padding: 10px 0px 20px 20px">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-target="#collapseThree" class="collapsed">
-                                                Invoice settings #3
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseThree" class="panel-collapse collapse">
-                                        <div class="panel-body" style="background-color: #f6f6f6">
-                                            <div class="col-lg-6">
-                                                <div class="form-group input-row">
-                                                    {{ Form::label('invoice_tax', 'Tax') }}
-                                                    {{ Form::text('invoice_tax', config('crm_settings.invoice_tax'), array('class' => 'form-control')) }}
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="form-group input-row">
-                                                    {{ Form::label('invoice_logo_link', 'Invoice logo') }}
-                                                    {{ Form::text('invoice_logo_link', config('crm_settings.invoice_logo_link'), array('class' => 'form-control')) }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        {{ Form::open(array('url' => 'settings')) }}
+                        <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('pagination_size', 'Pagination size') }}
+                                {{ Form::text('pagination_size', config('crm_settings.pagination_size'), array('class' => 'form-control')) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('priority_size', 'Priority size') }}
+                                {{ Form::text('priority_size', config('crm_settings.priority_size'), array('class' => 'form-control')) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('invoice_logo_link', 'Invoice logo') }}
+                                {{ Form::text('invoice_logo_link', config('crm_settings.invoice_logo_link'), array('class' => 'form-control')) }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('currency', 'Currency type') }}
+                                {{ Form::select('currency', ['PLN' => 'PLN', 'EUR' => 'EUR', 'USD' => 'USD'], config('crm_settings.currency'), ['class' => 'form-control']) }}
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('invoice_tax', 'Tax') }}
+                                {{ Form::text('invoice_tax', config('crm_settings.invoice_tax'), array('class' => 'form-control')) }}
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
                         </div>
                     {{ Form::close() }}
-
+                    <!-- /.row (nested) -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4>System logs</h4>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Date</th>
+                                    <th>IP Address</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($logs as $key => $value)
+                                    <tr class="active">
+                                        <td>{{ $value['user_id'] }}</td>
+                                        <td>{{ $value['actions'] }}</td>
+                                        <td>{{ $value['date'] }}</td>
+                                        <td>{{ $value['ip_address'] }}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     <!-- /.row (nested) -->
                     </div>
                     <!-- /.panel-body -->
@@ -116,6 +94,8 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
+
+
 
         <script>
             $(document).ready(function () {

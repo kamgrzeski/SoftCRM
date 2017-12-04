@@ -74,7 +74,7 @@ class Companies extends Model
                     'employees_size' => 'required|integer',
                     'fax' => 'required',
                     'description' => 'required',
-                    'phone' => 'required|integer',
+                    'phone' => 'required',
                     'client_id' => 'required',
                 ];
         }
