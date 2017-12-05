@@ -61,7 +61,12 @@
                 <a href="{{ route('files') }}"><i class="fa fa-folder-open"></i>Files<span class="label label-files pull-right" style="margin-top:4px">{{ \App\Files::countFiles() ? : 0 }}</span></a>
             </li>
         </ul>
-
+        <ul style="margin-top: 10px; color: #dee7f1;margin-left:-30px;font-size: 14px;">
+            <h4>Informations</h4>
+            <li>Cash turnover:  {{ \App\Http\Controllers\DashboardController::countCashTurnover() }}</li>
+            <li>Operations: {{ \App\Http\Controllers\DashboardController::countAllRowsInDb() }}</li>
+            <li>Email sents: {{ \App\Mailing::countMailing() ? : 0 }}</li>
+        </ul>
     </div>
 
 </nav>

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\Invoices;
 use App\Products;
 use App\Tasks;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -56,6 +57,46 @@ class DashboardController extends Controller
         }
 
         return $arrayWithFormattedTasks;
+    }
 
+    /**
+     * @return mixed
+     */
+    public static function countCashTurnover()
+    {
+//        $sales = Sales::all();
+//        $salesSum = 0;
+//        $finances = Finances::all();
+//        $financesSum = 0;
+        $clients = Client::all();
+        $clientSum = 0;
+        $products = Products::all();
+        $productSum = 0;
+
+        foreach($clients as $client) {
+            $clientSum += $client->budget;
+        }
+        foreach($products as $product) {
+            $productSum += $product->price * $product->count;
+        }
+
+        $oficialSum = $clientSum + $productSum;
+
+        return \ClickNow\Money\Money::{config('crm_settings.currency')}($oficialSum);
+    }
+
+    /**
+     * @return int
+     */
+    public static function countAllRowsInDb()
+    {
+        $counter = 0;
+        $tables = array_map('reset', \DB::select('SHOW TABLES'));
+
+        foreach ($tables as $table) {
+            $counter += DB::table($table)->count();
+        }
+
+        return $counter;
     }
 }

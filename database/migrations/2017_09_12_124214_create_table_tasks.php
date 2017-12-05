@@ -14,7 +14,7 @@ class CreateTableTasks extends Migration
     public function up() {
         Schema::create('tasks', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->text('name');
             $table->unsignedInteger('employee_id');
             $table->foreign('employee_id')->references('id')->on('employees');
             $table->boolean('is_active')->nullable()->default(1);
