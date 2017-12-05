@@ -73,9 +73,9 @@
                     <div class="list-group">
                         @if(count($dataWithAllTasks) > 0)
                         @foreach ($dataWithAllTasks as $result)
-                            <a href="{{ URL::to('tasks/' . $result->id) }}" class="list-group-item">
-                                <span class="badge badge" style="background-color: #428bca !important;">{{ $result->created_at->diffForHumans() }}</span>
-                                <i class="fa fa-fw fa-comment"></i> {{ $result->name }}
+                            <a href="{{ URL::to('tasks/' . $result['id']) }}" class="list-group-item">
+                                <span class="badge badge" style="background-color: #428bca !important;">{{ $result['created_at']->diffForHumans() }}</span>
+                                <i class="fa fa-fw fa-comment"></i> {{ $result['name'] }}
                             </a>
                         @endforeach
                         @else

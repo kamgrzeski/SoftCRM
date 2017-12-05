@@ -26,14 +26,36 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $dataWithAllTasks = Tasks::all()->sortBy('created_at' , 0, true)->slice(0, 5);
         $dataWithAllInvoices = Invoices::all()->sortBy('created_at', 0, true)->slice(0, 5);
         $dataWithAllProducts = Products::all()->sortBy('created_at', 0, true)->slice(0, 5);
 
         return view('index')->with([
-            'dataWithAllTasks' => $dataWithAllTasks,
+            'dataWithAllTasks' => $this->formatTasks(),
             'dataWithAllInvoices' => $dataWithAllInvoices,
             'dataWithAllProducts' => $dataWithAllProducts
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    public function formatTasks()
+    {
+        $tasks = Tasks::all();
+        $arrayWithFormattedTasks = [];
+
+        foreach ($tasks as $key => $task) {
+            $nameTask = substr($task->name, 0, 80);
+            $nameTask .= '[..]';
+
+            $arrayWithFormattedTasks[$key] = [
+                'id' => $task->id,
+                'name' => $nameTask,
+                'created_at' => $task->created_at
+            ];
+        }
+
+        return $arrayWithFormattedTasks;
+
     }
 }

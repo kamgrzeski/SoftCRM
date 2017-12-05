@@ -18,7 +18,7 @@ class FakerTasksSeeder extends Seeder
 
         for ($i = 0; $i<$rowRand; $i++) {
             $tasks = [
-                'name' => $faker->name,
+                'name' => $faker->text($maxNbChars = 200),
                 'employee_id' => $faker->randomElement($employeeIds),
                 'completed' => 0,
                 'created_at' => \Carbon\Carbon::now(),
