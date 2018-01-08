@@ -62,7 +62,7 @@ class ProductsController extends Controller
             return Redirect::to('products/create')->with('message_danger', $validator->errors());
         } else {
             if ($product = Products::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Product has been add with id: '. $product);
+                SystemLogsController::insertSystemLogs('Product has been add with id: '. $product, 200);
                 return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorProductsStore'));
@@ -135,7 +135,7 @@ class ProductsController extends Controller
         $productsDetails = Products::find($id);
         $productsDetails->delete();
 
-        SystemLogsController::insertSystemLogs('Products has been deleted with id: ' . $productsDetails->id);
+        SystemLogsController::insertSystemLogs('Products has been deleted with id: ' . $productsDetails->id, 200);
 
 
         return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsDelete'));
@@ -151,7 +151,7 @@ class ProductsController extends Controller
         $productsDetails = Products::find($id);
 
         if (Products::setActive($productsDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('Products has been enabled with id: ' . $productsDetails->id);
+            SystemLogsController::insertSystemLogs('Products has been enabled with id: ' . $productsDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProductsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProductsIsActived'));

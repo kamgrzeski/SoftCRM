@@ -63,9 +63,14 @@
         </ul>
         <ul style="margin-top: 10px; color: #dee7f1;margin-left:-30px;font-size: 14px;">
             <h4>Informations</h4>
-            <li>Cash turnover:  {{ \App\Http\Controllers\DashboardController::countCashTurnover() }}</li>
-            <li>Operations: {{ \App\Http\Controllers\DashboardController::countAllRowsInDb() }}</li>
-            <li>Email sents: {{ \App\Mailing::countMailing() ? : 0 }}</li>
+            <li><i class="fa fa-money" aria-hidden="true"></i> Today income:  {{ \App\Http\Controllers\DashboardController::countTodayIncome() }}</span></li>
+            <li><i class="fa fa-money" aria-hidden="true"></i> Yesterday income: {{ \App\Http\Controllers\DashboardController::countYesterdayIncome() }}</li>
+            <li><i class="fa fa-money" aria-hidden="true"></i> Cash turnover:  {{ \App\Http\Controllers\DashboardController::countCashTurnover() }}</li>
+            <br>
+            <li><i class="fa fa-file-text" aria-hidden="true"></i></i> Invoices: {{ \App\Invoices::countRows() ? : 0 }}</li>
+            <li><i class="fa fa-envelope-o" aria-hidden="true"></i> Email sents: {{ \App\Mailing::countMailing() ? : 0 }}</li>
+            <li><i class="fa fa-cogs" aria-hidden="true"></i> Operations: {{ \App\Http\Controllers\DashboardController::countAllRowsInDb() }}</li>
+            <li><i class="fa fa-book" aria-hidden="true"></i> System logs: {{ \App\SystemLogs::countRows() ? : 0 }}</li>
         </ul>
     </div>
 

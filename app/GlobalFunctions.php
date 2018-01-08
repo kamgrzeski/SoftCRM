@@ -4,6 +4,9 @@ namespace App;
 
 class GlobalFunctions
 {
+    /**
+     * @return array
+     */
     public static function getPrioritySize()
     {
         $sizeFromConfig = config('crm_settings.priority_size');

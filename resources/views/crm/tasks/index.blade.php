@@ -40,11 +40,12 @@
                 </div>
                 <div class="panel-body">
                     <div class="table">
-                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
                             <thead>
                             <tr>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Assigned employee</th>
+                                <th class="text-center">Duration</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Completed</th>
                                 <th class="text-center">Action</th>
@@ -58,6 +59,7 @@
                                         <td class="text-center"><a
                                                     href="{{ URL::to('employees/' . $value->employees->id) }}">{{ $value->employees->full_name }}</a>
                                         </td>
+                                        <td class="text-right">{{ $value->duration . ' days' }}</td>
                                         <td class="text-center">
                                             @if($value->is_active == TRUE)
                                                 <input type="checkbox" data-on="Active" checked data-toggle="toggle"
@@ -101,7 +103,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="table" style="color: grey;">
-                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
                             <thead>
                             <tr>
                                 <th class="text-center">Name</th>

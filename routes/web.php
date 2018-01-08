@@ -100,6 +100,7 @@ Route::resource('settings', 'CRM\SettingsController');
 Route::get('/settings', 'CRM\SettingsController@index')->name('settings');
 
 
+
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('/', 'DashboardController@index');
 Route::get('/calendar', 'CRM\CalendarController@index')->name('calendar');

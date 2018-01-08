@@ -72,7 +72,7 @@ class InvoicesController extends Controller
             return Redirect::to('invoices/create')->with('message_danger', $validator->errors());
         } else {
             if ($invoice = Invoices::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Invoice has been add with id: '. $invoice);
+                SystemLogsController::insertSystemLogs('Invoice has been add with id: '. $invoice, 200);
                 return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorInvoicesStore'));
@@ -145,7 +145,7 @@ class InvoicesController extends Controller
         $invoicesDetails = Invoices::find($id);
         $invoicesDetails->delete();
 
-        SystemLogsController::insertSystemLogs('Invoices has been deleted with id: ' . $invoicesDetails->id);
+        SystemLogsController::insertSystemLogs('Invoices has been deleted with id: ' . $invoicesDetails->id, 200);
 
         return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesDelete'));
     }
@@ -160,7 +160,7 @@ class InvoicesController extends Controller
         $invoicesDetails = Invoices::find($id);
 
         if (Invoices::setActive($invoicesDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('Invoices has been enabled with id: ' . $invoicesDetails->id);
+            SystemLogsController::insertSystemLogs('Invoices has been enabled with id: ' . $invoicesDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessInvoicesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.InvoicesIsActived'));

@@ -38,11 +38,12 @@
         </div>
         <ul>
             <li class="input-row">
-                <input type="text" class="text" id="email" type="email" name="email" autocomplete="off" placeholder="Write your email here ...">
+                <input type="text" class="text" id="email" type="email" name="email" readonly
+                       onfocus="this.removeAttribute('readonly');" autocomplete="off" placeholder="Write your email here ..." value="admin@admin.com">
                 <a href="#" class=" icon user"></a>
             </li>
             <li>
-                <input id="password" type="password" name="password" placeholder="Write your password here ...">
+                <input id="password" type="password" name="password" placeholder="Write your password here ..." value="admin">
                 <a href="#" class=" icon lock"></a>
             </li>
             {{--<a class="btn btn-link" href="{{ route('password.request') }}">--}}

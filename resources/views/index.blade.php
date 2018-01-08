@@ -8,12 +8,12 @@
     <div class="row">
         <div class="col-md-3 col-sm-12 col-xs-12">
             <div class="panel panel-primary text-center no-boder bg-color-green">
-                <div class="panel-body">
-                    <i class="fa fa-rocket fa-5x"></i>
-                    <h3>{{ \App\Client::countClients() ? : 0 }}</h3>
+                    <div class="panel-body boxes">
+                    <i class="fa fa-rocket fa-3x"></i>
+                    <h3 style="padding:8px;font-size:18px">{{ \App\Client::countClients() ? : 0 }}</h3>
                 </div>
                 <a href="{{ route('clients') }}" style="text-decoration: none">
-                    <div class="panel-footer back-footer-green">
+                    <div class="panel-footer back-footer-green boxes-font">
                         All clients
                         <i class="fa fa-arrow-circle-right"></i>
                     </div>
@@ -22,12 +22,12 @@
         </div>
         <div class="col-md-3 col-sm-12 col-xs-12">
             <div class="panel panel-primary text-center no-boder bg-color-blue">
-                <div class="panel-body">
-                    <i class="fa fa-compass fa-5x"></i>
-                    <h3>{{ \App\Companies::countCompanies() ? : 0 }} </h3>
+                <div class="panel-body boxes">
+                    <i class="fa fa-compass fa-3x"></i>
+                    <h3 style="padding:8px;font-size:18px">{{ \App\Companies::countCompanies() ? : 0 }} </h3>
                 </div>
                 <a href="#" style="text-decoration: none">
-                    <div class="panel-footer back-footer-blue">
+                    <div class="panel-footer back-footer-blue boxes-font">
                         All companies
                         <i class="fa fa-arrow-circle-right"></i>
                     </div>
@@ -36,12 +36,12 @@
         </div>
         <div class="col-md-3 col-sm-12 col-xs-12">
             <div class="panel panel-primary text-center no-boder bg-color-red">
-                <div class="panel-body">
-                    <i class="fa fa fa-users fa-5x"></i>
-                    <h3>{{ \App\Employees::countEmployees() ? : 0 }} </h3>
+                <div class="panel-body boxes">
+                    <i class="fa fa fa-users fa-3x"></i>
+                    <h3 style="padding:8px;font-size:18px">{{ \App\Employees::countEmployees() ? : 0 }} </h3>
                 </div>
                 <a href="{{ route('employees') }}" style="text-decoration: none">
-                    <div class="panel-footer back-footer-red">
+                    <div class="panel-footer back-footer-red boxes-font">
                         All employees
                         <i class="fa fa-arrow-circle-right"></i>
                     </div>
@@ -50,12 +50,12 @@
         </div>
         <div class="col-md-3 col-sm-12 col-xs-12">
             <div class="panel panel-primary text-center no-boder bg-color-brown">
-                <div class="panel-body">
-                    <i class="fa fa-paperclip fa-5x"></i>
-                    <h3>{{ \App\Deals::countDeals() ? : 0 }} </h3>
+                <div class="panel-body boxes">
+                    <i class="fa fa-paperclip fa-3x"></i>
+                    <h3 style="padding:8px;font-size:18px">{{ \App\Deals::countDeals() ? : 0 }} </h3>
                 </div>
                 <a href="{{ route('deals') }}" style="text-decoration: none">
-                    <div class="panel-footer back-footer-brown">
+                    <div class="panel-footer back-footer-brown boxes-font">
                         All deals
                         <i class="fa fa-arrow-circle-right"></i>
                     </div>
@@ -131,7 +131,7 @@
                                 <a href="{{ URL::to('products/' . $result->id) }}" class="list-group-item">
                                     <span class="badge badge" style="background-color: #428bca !important;">{{ $result->created_at->diffForHumans() }}</span>
                                     <span class="badge badge" style="background-color: #298a15 !important;">
-                                        {{ \ClickNow\Money\Money::{config('crm_settings.currency')}($result->price) }} [{{ $result->count }}]</span>
+                                        {{ \ClickNow\Money\Money::{config('crm_settings.currency')}($result->price) }} [{{ $result->count }} qty]</span>
                                     <i class="fa fa-fw fa-product-hunt"></i> {{ $result->name }}
                                 </a>
                             @endforeach

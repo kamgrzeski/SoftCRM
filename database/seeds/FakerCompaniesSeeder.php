@@ -28,7 +28,7 @@ class FakerCompaniesSeeder extends Seeder
                 'fax' => $faker->phoneNumber,
                 'description' => $faker->text($maxNbChars = 200),
                 'client_id' => $faker->randomElement($userIds),
-                'created_at' => \Carbon\Carbon::now(),
+                'created_at' => $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now'),
                 'updated_at' => \Carbon\Carbon::now()
             ];
 

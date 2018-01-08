@@ -6,6 +6,7 @@ use App\Client;
 use App\Invoices;
 use App\Products;
 use App\Tasks;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -42,7 +43,7 @@ class DashboardController extends Controller
      */
     public function formatTasks()
     {
-        $tasks = Tasks::all();
+        $tasks = Tasks::all()->sortBy('created_at', 0, true)->slice(0, 5);
         $arrayWithFormattedTasks = [];
 
         foreach ($tasks as $key => $task) {
@@ -64,28 +65,56 @@ class DashboardController extends Controller
      */
     public static function countCashTurnover()
     {
-//        $sales = Sales::all();
-//        $salesSum = 0;
-//        $finances = Finances::all();
-//        $financesSum = 0;
-        $clients = Client::all();
-        $clientSum = 0;
         $products = Products::all();
         $productSum = 0;
 
-        foreach($clients as $client) {
-            $clientSum += $client->budget;
-        }
+
         foreach($products as $product) {
             $productSum += $product->price * $product->count;
         }
 
-        $oficialSum = $clientSum + $productSum;
+        $oficialSum = $productSum;
 
         return \ClickNow\Money\Money::{config('crm_settings.currency')}($oficialSum);
     }
 
     /**
+     * @return mixed
+     */
+    public static function countTodayIncome()
+    {
+        $yesterdayAmount = self::countYesterdayIncome()->getAmount();
+
+        $products = Products::whereDate('created_at', Carbon::today())->get();
+        $productSum = 0;
+
+        foreach($products as $product) {
+            $productSum += $product->price * $product->count;
+        }
+
+        $todayIncome = $productSum;
+
+        return \ClickNow\Money\Money::{config('crm_settings.currency')}($todayIncome);
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function countYesterdayIncome()
+    {
+        $products = Products::whereDate('created_at', Carbon::yesterday())->get();
+        $productSum = 0;
+
+        foreach($products as $product) {
+            $productSum += $product->price * $product->count;
+        }
+
+        $yesterdayIncome = $productSum;
+
+        return \ClickNow\Money\Money::{config('crm_settings.currency')}($yesterdayIncome);
+    }
+
+        /**
      * @return int
      */
     public static function countAllRowsInDb()
@@ -99,4 +128,5 @@ class DashboardController extends Controller
 
         return $counter;
     }
+
 }

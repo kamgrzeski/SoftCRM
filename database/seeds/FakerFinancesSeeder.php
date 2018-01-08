@@ -19,7 +19,7 @@ class FakerFinancesSeeder extends Seeder
             $finances = [
                 'name' => $faker->name,
                 'companies_id' => $faker->randomElement($companiesIds),
-                'created_at' => \Carbon\Carbon::now(),
+                'created_at' => $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now'),
                 'updated_at' => \Carbon\Carbon::now()
             ];
 

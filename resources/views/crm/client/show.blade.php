@@ -76,7 +76,7 @@
                         </div>
                         <div class="tab-pane fade" id="profile">
                             <h4>List of companies</h4>
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
                                 <thead>
                                 <tr>
                                     <th>Name</th>
@@ -104,7 +104,7 @@
                         </div>
                         <div class="tab-pane fade" id="messages">
                             <h4>List of employeees</h4>
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
                                 <thead>
                                 <tr>
                                     <th>Full name</th>

@@ -16,6 +16,9 @@
     <!-- Google Fonts-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
 
+    <link rel="stylesheet" href="{{ asset('/css/sortable-theme-dark.css') }}" />
+    <script src="{{ asset('/js/sortable.min.js') }}"></script>
+
     <!-- Validator JS-->
     <script src="{{ asset('/js/validator.js') }}"></script>
 

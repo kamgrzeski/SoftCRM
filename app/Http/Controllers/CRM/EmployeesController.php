@@ -64,7 +64,7 @@ class EmployeesController extends Controller
             return Redirect::to('employees/create')->with('message_danger', $validator->errors());
         } else {
             if ($employee = Employees::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Employees has been add with id: '. $employee);
+                SystemLogsController::insertSystemLogs('Employees has been add with id: '. $employee, 200);
                 return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorEmployeesStore'));
@@ -149,7 +149,7 @@ class EmployeesController extends Controller
 
         $dataOfEmployees->delete();
 
-        SystemLogsController::insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id);
+        SystemLogsController::insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id, 200);
 
         return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesDelete'));
     }
@@ -164,7 +164,7 @@ class EmployeesController extends Controller
         $dataOfEmployees = Employees::find($id);
 
         if (Employees::setActive($dataOfEmployees->id, $value)) {
-            SystemLogsController::insertSystemLogs('Employees has been enabled with id: ' . $dataOfEmployees->id);
+            SystemLogsController::insertSystemLogs('Employees has been enabled with id: ' . $dataOfEmployees->id, 200);
             return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorEmployeesActive'));

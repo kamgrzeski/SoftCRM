@@ -73,7 +73,7 @@ class ProjectsController extends Controller
             return Redirect::to('projects/create')->with('message_danger', $validator->errors());
         } else {
             if ($project = Projects::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Project has been add with id: '. $project);
+                SystemLogsController::insertSystemLogs('Project has been add with id: '. $project, 200);
                 return Redirect::to('projects')->with('message_success', Language::getMessage('messages.SuccessProjectsStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorProjectsStore'));
@@ -155,7 +155,7 @@ class ProjectsController extends Controller
         $projectsDetails = Projects::find($id);
         $projectsDetails->delete();
 
-        SystemLogsController::insertSystemLogs('Projects has been deleted with id: ' . $projectsDetails->id);
+        SystemLogsController::insertSystemLogs('Projects has been deleted with id: ' . $projectsDetails->id, 200);
 
         return Redirect::to('projects')->with('message_success', Language::getMessage('messages.SuccessProjectsDelete'));
     }
@@ -170,7 +170,7 @@ class ProjectsController extends Controller
         $projectsDetails = Projects::find($id);
 
         if (Projects::setActive($projectsDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('Projects has been enabled with id: ' . $projectsDetails->id);
+            SystemLogsController::insertSystemLogs('Projects has been enabled with id: ' . $projectsDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProjectsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProjectsIsActived'));

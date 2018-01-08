@@ -55,7 +55,7 @@ class SettingsController extends Controller
             'invoice_logo_link' => $getAllInputFromRequest['invoice_logo_link']
         ]);
 
-        SystemLogsController::insertSystemLogs('Settings has been changed.');
+        SystemLogsController::insertSystemLogs('Settings has been changed.', 200);
 
         return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSettingsUpdate'));
     }
@@ -71,10 +71,13 @@ class SettingsController extends Controller
         foreach ($allLogs as $key => $result)
         {
             $tempArray[$key] = [
+                'id' => $result->id,
                 'user_id' => $result->user_id,
                 'actions' => $result->actions,
-                'date' => $result->date,
-                'ip_address' => $result->ip_address
+                'city' => $result->city,
+                'country' => $result->country,
+                'ip_address' => $result->ip_address,
+                'date' => $result->date
             ];
         }
 

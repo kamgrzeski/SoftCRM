@@ -18,6 +18,7 @@ class Tasks extends Model
             [
                 'name' => $allInputs['name'],
                 'employee_id' => $allInputs['employee_id'],
+                'duration' => $allInputs['duration'],
                 'is_active' => 1,
                 'created_at' => Carbon::now()
             ]
@@ -35,6 +36,7 @@ class Tasks extends Model
             [
                 'name' => $allInputs['name'],
                 'employee_id' => $allInputs['employee_id'],
+                'duration' => $allInputs['duration'],
                 'is_active' => 1,
                 'updated_at' => Carbon::now()
             ]);
@@ -51,6 +53,7 @@ class Tasks extends Model
                 return [
                     'name' => 'required',
                     'employee_id' => 'required',
+                    'duration' => 'required'
                 ];
         }
     }

@@ -65,7 +65,7 @@ class TasksController extends Controller
             return Redirect::to('tasks/create')->with('message_danger', $validator->errors());
         } else {
             if ($task = Tasks::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Task has been add with id: '. $task);
+                SystemLogsController::insertSystemLogs('Task has been add with id: '. $task, 200);
                 return Redirect::to('tasks')->with('message_success', Language::getMessage('messages.SuccessTasksStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorTasksStore'));
@@ -142,7 +142,7 @@ class TasksController extends Controller
         } else {
             $dataOfTasks->delete();
 
-            SystemLogsController::insertSystemLogs('Tasks has been deleted with id: ' . $dataOfTasks->id);
+            SystemLogsController::insertSystemLogs('Tasks has been deleted with id: ' . $dataOfTasks->id, 200);
 
         }
 
@@ -159,7 +159,7 @@ class TasksController extends Controller
         $dataOfTasks = Tasks::find($id);
 
         if (Tasks::setActive($dataOfTasks->id, $value)) {
-            SystemLogsController::insertSystemLogs('Tasks has been enabled with id: ' . $dataOfTasks->id);
+            SystemLogsController::insertSystemLogs('Tasks has been enabled with id: ' . $dataOfTasks->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessTasksActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorTasksActive'));
@@ -190,7 +190,7 @@ class TasksController extends Controller
         $dataOfTasks = Tasks::find($id);
 
         if (Tasks::setCompleted($dataOfTasks->id, TRUE)) {
-            SystemLogsController::insertSystemLogs('Tasks has been completed with id: ' . $dataOfTasks->id);
+            SystemLogsController::insertSystemLogs('Tasks has been completed with id: ' . $dataOfTasks->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.TasksCompleted'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.TasksIsNotCompleted'));
@@ -204,7 +204,7 @@ class TasksController extends Controller
         $dataOfTasks = Tasks::find($id);
 
         if (Tasks::setCompleted($dataOfTasks->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('Tasks has been uncompleted with id: ' . $dataOfTasks->id);
+            SystemLogsController::insertSystemLogs('Tasks has been uncompleted with id: ' . $dataOfTasks->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.TasksunCompleted'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.TasksIsNotunCompleted'));

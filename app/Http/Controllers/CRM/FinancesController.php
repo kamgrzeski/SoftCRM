@@ -64,7 +64,7 @@ class FinancesController extends Controller
             return Redirect::to('finances/create')->with('message_danger', $validator->errors());
         } else {
             if ($finance = Finances::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Finances has been add with id: '. $finance);
+                SystemLogsController::insertSystemLogs('Finances has been add with id: '. $finance, 200);
                 return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFinancesStore'));
@@ -142,7 +142,7 @@ class FinancesController extends Controller
 
         $dataOfFinances->delete();
 
-        SystemLogsController::insertSystemLogs('Finances has been deleted with id: ' . $dataOfFinances->id);
+        SystemLogsController::insertSystemLogs('Finances has been deleted with id: ' . $dataOfFinances->id, 200);
 
         return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesDelete'));
     }
@@ -157,7 +157,7 @@ class FinancesController extends Controller
         $dataOfFinances = Finances::find($id);
 
         if (Finances::setActive($dataOfFinances->id, $value)) {
-            SystemLogsController::insertSystemLogs('Finances has been enabled with id: ' . $dataOfFinances->id);
+            SystemLogsController::insertSystemLogs('Finances has been enabled with id: ' . $dataOfFinances->id, 200);
             return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFinancesActive'));

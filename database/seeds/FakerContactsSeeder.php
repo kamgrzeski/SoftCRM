@@ -21,7 +21,7 @@ class FakerContactsSeeder extends Seeder
                 'client_id' => $faker->randomElement($userIds),
                 'employee_id' => $faker->randomElement($employeeIds),
                 'date' => $faker->date,
-                'created_at' => \Carbon\Carbon::now(),
+                'created_at' => $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now'),
                 'updated_at' => \Carbon\Carbon::now()
             ];
 

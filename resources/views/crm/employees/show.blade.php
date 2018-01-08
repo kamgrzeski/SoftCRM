@@ -80,7 +80,7 @@
                         </div>
                         <div class="tab-pane fade" id="profile">
                             <br>
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
                                 <thead>
                                 <tr>
                                     <th>Name</th>

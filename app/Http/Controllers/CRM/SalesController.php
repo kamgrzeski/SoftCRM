@@ -62,7 +62,7 @@ class SalesController extends Controller
             return Redirect::to('sales/create')->with('message_danger', $validator->errors());
         } else {
             if ($sale = Sales::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Sales has been add with id: '. $sale);
+                SystemLogsController::insertSystemLogs('Sales has been add with id: '. $sale, 200);
                 return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorSalesStore'));
@@ -135,7 +135,7 @@ class SalesController extends Controller
         $salesDetails = Sales::find($id);
         $salesDetails->delete();
 
-        SystemLogsController::insertSystemLogs('Sales has been deleted with id: ' . $salesDetails->id);
+        SystemLogsController::insertSystemLogs('Sales has been deleted with id: ' . $salesDetails->id, 200);
 
         return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesDelete'));
     }
@@ -150,7 +150,7 @@ class SalesController extends Controller
         $salesDetails = Sales::find($id);
 
         if (Sales::setActive($salesDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('Sales has been enabled with id: ' . $salesDetails->id);
+            SystemLogsController::insertSystemLogs('Sales has been enabled with id: ' . $salesDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSalesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.SalesIsActived'));

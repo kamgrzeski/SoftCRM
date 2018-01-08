@@ -46,7 +46,7 @@
                         <table class="table table-striped table-bordered">
                             <tbody class="text-right">
                             <tr>
-                                <th>Full name</th>
+                                <th>Name</th>
                                 <td>{{ $tasks->name }}</td>
                             </tr>
                             <tr>
@@ -54,6 +54,10 @@
                                 <td><a
                                             href="{{ URL::to('employees/' . $tasks->employees->id) }}">{{ $tasks->employees->full_name }}</a>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th>Date</th>
+                                <td>{{ $tasks->created_at }}</td>
                             </tr>
                             <tr>
                                 <th>Status</th>

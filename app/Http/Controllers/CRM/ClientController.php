@@ -62,7 +62,7 @@ class ClientController extends Controller
             return Redirect::to('client/create')->with('message_danger', $validator->errors());
         } else {
             if ($client = Client::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Client has been add with id: '. $client);
+                SystemLogsController::insertSystemLogs('Client has been add with id: '. $client, 200);
                 return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorClientStore'));
@@ -144,7 +144,7 @@ class ClientController extends Controller
         }
 
         $clientDetails->delete();
-        SystemLogsController::insertSystemLogs('Client has been deleted with id: ' . $clientDetails->id);
+        SystemLogsController::insertSystemLogs('Client has been deleted with id: ' . $clientDetails->id, 200);
 
         return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientDelete'));
     }
@@ -159,7 +159,7 @@ class ClientController extends Controller
         $clientDetails = Client::find($id);
 
         if (Client::setActive($clientDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('Client has been enabled with id: ' . $clientDetails->id);
+            SystemLogsController::insertSystemLogs('Client has been enabled with id: ' . $clientDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessClientActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsActived'));

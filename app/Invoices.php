@@ -106,7 +106,7 @@ class Invoices extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function companies()
     {
@@ -114,10 +114,15 @@ class Invoices extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public static function countRows()
+    {
+        return Invoices::all()->count();
     }
 }

@@ -29,9 +29,9 @@ composer install
 
 #### 3. Then setup your database and open the .env.example file. Rename this file to .env and enter details for your site, database, stripe and email integration.
 
-#### 4. Run this command from the root project folder and This will create the database tables for you.
+#### 4. Run this command from the root project folder and this will create the database tables for you. This is our custom command to process all missing features.
 ```
-php artisan migrate --seed
+php artisan process-softcrm
 ```
 
 #### 5. Than run laravel server by command:

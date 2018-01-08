@@ -7,9 +7,15 @@ use App\Http\Controllers\Controller;
 
 class SystemLogsController extends Controller
 {
-    public static function insertSystemLogs($actions)
+    /**
+     * @param $actions
+     * @param int $statusCode
+     * @return bool
+     */
+    public static function insertSystemLogs($actions, $statusCode)
     {
-        if(SystemLogs::insertRow($actions)) {
+        $logs = new SystemLogs();
+        if($logs->insertRow($actions, $statusCode)) {
             return true;
         }
     }

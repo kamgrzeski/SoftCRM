@@ -14,11 +14,13 @@ class SystemLogs extends Migration
     public function up() {
         Schema::create('systemlogs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id');
-            $table->string('actions');
-            $table->dateTime('date');
-            $table->string('ip_address');
-
+            $table->string('user_id')->nullable();
+            $table->string('actions')->nullable();
+            $table->integer('status_code')->nullable();
+            $table->string('ip_address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
+            $table->dateTime('date')->nullable();
         });
     }
 

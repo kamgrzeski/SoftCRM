@@ -70,8 +70,10 @@
                                 <tr>
                                     <th>User</th>
                                     <th>Action</th>
-                                    <th>Date</th>
+                                    <th>City</th>
+                                    <th>Country</th>
                                     <th>IP Address</th>
+                                    <th>Date</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -79,8 +81,10 @@
                                     <tr class="active">
                                         <td>{{ $value['user_id'] }}</td>
                                         <td>{{ $value['actions'] }}</td>
-                                        <td>{{ $value['date'] }}</td>
+                                        <td>{{ $value['city'] }}</td>
+                                        <td>{{ $value['country'] }}</td>
                                         <td>{{ $value['ip_address'] }}</td>
+                                        <td>{{ $value['date'] }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>

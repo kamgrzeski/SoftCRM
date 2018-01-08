@@ -17,7 +17,7 @@ class FakerSalesSeeder extends Seeder
         for ($i = 0; $i<$rowRand; $i++) {
             $sales = [
                 'name' => $faker->userName,
-                'created_at' => \Carbon\Carbon::now(),
+                'created_at' => $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now'),
                 'updated_at' => \Carbon\Carbon::now()
             ];
 

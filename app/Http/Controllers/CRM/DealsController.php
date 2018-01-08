@@ -64,7 +64,7 @@ class DealsController extends Controller
             return Redirect::to('deals/create')->with('message_danger', $validator->errors());
         } else {
             if ($deal = Deals::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Deal has been add with id: '. $deal);
+                SystemLogsController::insertSystemLogs('Deal has been add with id: '. $deal, 200);
                 return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsStore'));
@@ -139,7 +139,7 @@ class DealsController extends Controller
         $dataOfDeals = Deals::find($id);
         $dataOfDeals->delete();
 
-        SystemLogsController::insertSystemLogs('Deals has been deleted with id: ' . $dataOfDeals->id);
+        SystemLogsController::insertSystemLogs('Deals has been deleted with id: ' .$dataOfDeals->id, 200);
 
         return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsDelete'));
     }
@@ -154,7 +154,7 @@ class DealsController extends Controller
         $dataOfDeals = Deals::find($id);
 
         if (Deals::setActive($dataOfDeals->id, $value)) {
-            SystemLogsController::insertSystemLogs('Deals has been enabled with id: ' . $dataOfDeals->id);
+            SystemLogsController::insertSystemLogs('Deals has been enabled with id: ' .$dataOfDeals->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessDealsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsActive'));
