@@ -20,10 +20,8 @@ class SystemLogs extends Model
         if (strpos($hostName, 'localhost') != 0) {
             $this->ip = Request::ip();
         } else {
-            $this->ip = '212.182.97.186';
+            $this->ip = '66.249.69.115'; // googlebot
         }
-
-//        $this->ip = '212.182.97.186';
     }
 
     /**
