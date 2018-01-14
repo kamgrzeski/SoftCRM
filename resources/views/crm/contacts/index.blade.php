@@ -28,7 +28,7 @@
                                        array('class'=>'btn btn-default')) !!}
             {!! Form::close() !!}
             <a href="{{ URL::to('contacts/create') }}">
-                <button type="button" class="btn btn-primary btn-lg active">Add contacts</button>
+                <button type="button" class="btn btn-primary btn active">Add contacts</button>
             </a>
             <br><br>
             <!-- Advanced Tables -->
@@ -44,7 +44,7 @@
                                 <th class="text-center">Client</th>
                                 <th class="text-center">Employee</th>
                                 <th class="text-center">Date</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center" style="width:180px">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -58,10 +58,10 @@
                                     </td>
                                     <td class="text-center">{{ $value->date }}</td>
                                     <td class="text-right">
-                                        <a class="btn btn-small btn-success"
+                                        <a class="btn btn-small btn-success small-btn"
                                            href="{{ URL::to('contacts/' . $value->id) }}">More information</a>
 
-                                        <a class="btn btn-small btn-info"
+                                        <a class="btn btn-small btn-info small-btn"
                                            href="{{ URL::to('contacts/' . $value->id . '/edit') }}">Edit</a>
                                     </td>
                                 </tr>

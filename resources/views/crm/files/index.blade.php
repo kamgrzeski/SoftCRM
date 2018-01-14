@@ -27,7 +27,7 @@
                                        array('class'=>'btn btn-default')) !!}
             {!! Form::close() !!}
             <a href="{{ URL::to('files/create') }}">
-                <button type="button" class="btn btn-primary btn-lg active">Add files</button>
+                <button type="button" class="btn btn-primary btn active">Add files</button>
             </a>
             <br><br>
             <!-- Advanced Tables -->
@@ -43,7 +43,7 @@
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Deal between company</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center" style="width:180px">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -55,18 +55,24 @@
                                     </td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)
-                                            <input type="checkbox" data-on="Active" checked data-toggle="toggle"
-                                                   onchange='window.location.assign("{{ URL::to('files/set-active/' . $value->id . '/0') }}")'/>
+                                            <label class="switch">
+                                                <input type="checkbox"
+                                                       onchange='window.location.assign("{{ URL::to('files/set-active/' . $value->id . '/0') }}")' checked>
+                                                <span class="slider"></span>
+                                            </label>
                                         @else
-                                            <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
-                                                   onchange='window.location.assign("{{ URL::to('files/set-active/' . $value->id . '/1') }}")'/>
+                                            <label class="switch">
+                                                <input type="checkbox"
+                                                       onchange='window.location.assign("{{ URL::to('files/set-active/' . $value->id . '/1') }}")'>
+                                                <span class="slider"></span>
+                                            </label>
                                         @endif
                                     </td>
                                     <td class="text-right">
-                                        <a class="btn btn-small btn-success"
+                                        <a class="btn btn-small btn-success small-btn"
                                            href="{{ URL::to('files/' . $value->id) }}">More information</a>
 
-                                        <a class="btn btn-small btn-info"
+                                        <a class="btn btn-small btn-info small-btn"
                                            href="{{ URL::to('files/' . $value->id . '/edit') }}">Edit</a>
                                     </td>
                                 </tr>

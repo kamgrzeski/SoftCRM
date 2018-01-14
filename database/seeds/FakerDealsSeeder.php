@@ -17,7 +17,7 @@ class FakerDealsSeeder extends Seeder
 
         for ($i = 0; $i<$rowRand; $i++) {
             $deals = [
-                'name' => $faker->name,
+                'name' => $faker->company,
                 'start_time' => $faker->date,
                 'end_time' => $faker->date,
                 'companies_id' => $faker->randomElement($companiesIds),

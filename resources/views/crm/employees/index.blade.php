@@ -28,7 +28,7 @@
                                        array('class'=>'btn btn-default')) !!}
             {!! Form::close() !!}
             <a href="{{ URL::to('employees/create') }}">
-                <button type="button" class="btn btn-primary btn-lg active">Add employees</button>
+                <button type="button" class="btn btn-primary btn active">Add employees</button>
             </a>
             <br><br>
             <!-- Advanced Tables -->
@@ -47,7 +47,7 @@
                                 <th class="text-center">Job</th>
                                 <th class="text-center">Assigned client</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center" style="width:180px">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -61,18 +61,24 @@
                                                 href="{{ URL::to('client/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
                                     </td>
                                     <td class="text-center">
-                                        @if($value->is_active == TRUE)
-                                            <input type="checkbox" data-on="Active" checked data-toggle="toggle"
-                                                   onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/0') }}")'/>
-                                        @else
-                                            <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
-                                                   onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/1') }}")'/>
-                                        @endif
+                                            @if($value->is_active == TRUE)
+                                                <label class="switch">
+                                                    <input type="checkbox"
+                                                           onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/0') }}")' checked>
+                                                    <span class="slider"></span>
+                                                </label>
+                                            @else
+                                                <label class="switch">
+                                                    <input type="checkbox"
+                                                           onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/1') }}")'>
+                                                    <span class="slider"></span>
+                                                </label>
+                                            @endif
                                     </td>
                                     <td class="text-right">
-                                        <a class="btn btn-small btn-success"
+                                        <a class="btn btn-small btn-success small-btn"
                                            href="{{ URL::to('employees/' . $value->id) }}">More information</a>
-                                        <a class="btn btn-small btn-info"
+                                        <a class="btn btn-small btn-info small-btn"
                                            href="{{ URL::to('employees/' . $value->id . '/edit') }}">Edit</a>
                                     </td>
                                 </tr>

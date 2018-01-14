@@ -27,7 +27,7 @@
                                        array('class'=>'btn btn-default')) !!}
             {!! Form::close() !!}
             <a href="{{ URL::to('products/create') }}">
-                <button type="button" class="btn btn-primary btn-lg active">Add products</button>
+                <button type="button" class="btn btn-primary btn active">Add products</button>
             </a>
             <br><br>
             <!-- Advanced Tables -->
@@ -45,7 +45,7 @@
                                 <th class="text-center">Count</th>
                                 <th class="text-center">Price Util</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center" style="width:180px">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -59,19 +59,25 @@
                                                 class="btn btn-default">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($value->price) }}</button>
                                     </td>
                                     <td class="text-center">
-                                        @if($value->is_active == TRUE)
-                                            <input type="checkbox" data-on="Active" checked data-toggle="toggle"
-                                                   onchange='window.location.assign("{{ URL::to('products/set-active/' . $value->id . '/0') }}")'/>
-                                        @else
-                                            <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
-                                                   onchange='window.location.assign("{{ URL::to('products/set-active/' . $value->id . '/1') }}")'/>
-                                        @endif
+                                            @if($value->is_active == TRUE)
+                                                <label class="switch">
+                                                    <input type="checkbox"
+                                                           onchange='window.location.assign("{{ URL::to('products/set-active/' . $value->id . '/0') }}")' checked>
+                                                    <span class="slider"></span>
+                                                </label>
+                                            @else
+                                                <label class="switch">
+                                                    <input type="checkbox"
+                                                           onchange='window.location.assign("{{ URL::to('products/set-active/' . $value->id . '/1') }}")'>
+                                                    <span class="slider"></span>
+                                                </label>
+                                            @endif
                                     </td>
                                     <td class="text-right">
-                                        <a class="btn btn-small btn-success"
+                                        <a class="btn btn-small btn-success small-btn"
                                            href="{{ URL::to('products/' . $value->id) }}">More information</a>
 
-                                        <a class="btn btn-small btn-info"
+                                        <a class="btn btn-small btn-info small-btn"
                                            href="{{ URL::to('products/' . $value->id . '/edit') }}">Edit</a>
                                     </td>
                                 </tr>

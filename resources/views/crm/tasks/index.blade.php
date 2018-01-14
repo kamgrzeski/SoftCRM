@@ -28,7 +28,7 @@
                                        array('class'=>'btn btn-default')) !!}
             {!! Form::close() !!}
             <a href="{{ URL::to('tasks/create') }}">
-                <button type="button" class="btn btn-primary btn-lg active">Add tasks</button>
+                <button type="button" class="btn btn-primary btn active">Add tasks</button>
             </a>
             <br>
             <!-- Advanced Tables -->
@@ -48,7 +48,7 @@
                                 <th class="text-center">Duration</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Completed</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center" style="width:300px">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -61,28 +61,34 @@
                                         </td>
                                         <td class="text-right">{{ $value->duration . ' days' }}</td>
                                         <td class="text-center">
-                                            @if($value->is_active == TRUE)
-                                                <input type="checkbox" data-on="Active" checked data-toggle="toggle"
-                                                       onchange='window.location.assign("{{ URL::to('tasks/set-active/' . $value->id . '/0') }}")'/>
-                                            @else
-                                                <input type="checkbox" data-off="Deactivate" data-toggle="toggle"
-                                                       onchange='window.location.assign("{{ URL::to('tasks/set-active/' . $value->id . '/1') }}")'/>
-                                            @endif
+                                                @if($value->is_active == TRUE)
+                                                    <label class="switch">
+                                                        <input type="checkbox"
+                                                               onchange='window.location.assign("{{ URL::to('tasks/set-active/' . $value->id . '/0') }}")' checked>
+                                                        <span class="slider"></span>
+                                                    </label>
+                                                @else
+                                                    <label class="switch">
+                                                        <input type="checkbox"
+                                                               onchange='window.location.assign("{{ URL::to('tasks/set-active/' . $value->id . '/1') }}")'>
+                                                        <span class="slider"></span>
+                                                    </label>
+                                                @endif
                                         </td>
                                         <td class="text-right">{{ $value->completed ? 'Yes' : 'No' }}</td>
                                         <td class="text-right">
                                             @if($value->completed == FALSE)
                                                 <a href="{{ URL::to('tasks/completed/' . $value->id) }}">
-                                                    <button type="button" class="btn btn-completed">Mark as completed</button>
+                                                    <button type="button" class="btn btn-completed small-btn">Mark as completed</button>
                                                 </a>
                                             @else
                                                 <a href="{{ URL::to('tasks/uncompleted/' . $value->id) }}">
-                                                    <button type="button" class="btn btn-completed">Mark as uncompleted</button>
+                                                    <button type="button" class="btn btn-completed small-btn">Mark as uncompleted</button>
                                                 </a>
                                             @endif
-                                            <a class="btn btn-small btn-success"
+                                            <a class="btn btn-small btn-success small-btn"
                                                href="{{ URL::to('tasks/' . $value->id) }}">More information</a>
-                                            <a class="btn btn-small btn-info"
+                                            <a class="btn btn-small btn-info small-btn"
                                                href="{{ URL::to('tasks/' . $value->id . '/edit') }}">Edit</a>
                                         </td>
                                     </tr>
@@ -108,7 +114,7 @@
                             <tr>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Assigned employee</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center" style="width:180px">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -120,11 +126,11 @@
                                         <td class="text-right">
                                             @if($values->completed == FALSE)
                                                 <a href="{{ URL::to('tasks/completed/' . $values->id) }}">
-                                                    <button type="button" class="btn btn-completed" style="background-color: grey !important; border-color: grey">Mark as completed</button>
+                                                    <button type="button" class="btn btn-completed small-btn" style="background-color: grey !important; border-color: grey">Mark as completed</button>
                                                 </a>
                                             @else
                                                 <a href="{{ URL::to('tasks/uncompleted/' . $values->id) }}">
-                                                    <button type="button" class="btn btn-completed" style="background-color: grey !important; border-color: grey">Mark as uncompleted</button>
+                                                    <button type="button" class="btn btn-completed small-btn" style="background-color: grey !important; border-color: grey">Mark as uncompleted</button>
                                                 </a>
                                             @endif
                                         </td>
