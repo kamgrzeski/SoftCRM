@@ -44,6 +44,8 @@
                                 <th class="text-center">Assigned client</th>
                                 <th class="text-center">Assigned companie</th>
                                 <th class="text-center">Assigned deal</th>
+                                <th class="text-center">Cost</th>
+                                <th class="text-center">Start Date</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center" style="width:180px">Action</th>
                             </tr>
@@ -61,6 +63,9 @@
                                     <td class="text-center"><a
                                                 href="{{ URL::to('deals/' . $value->deals->id) }}">{{ $value->deals->name }}</a>
                                     </td>
+                                    <td class="text-center">{{ $value->cost }}</td>
+                                    <td class="text-center">{{ $value->start_date }}</td>
+
                                     <td class="text-center">
                                             @if($value->is_active == TRUE)
                                                 <label class="switch">

@@ -45,6 +45,14 @@
                                 <td>{{ $contacts->employees->full_name  }}</td>
                             </tr>
                             <tr>
+                                <th>Contact</th>
+                                <td>{{ $contacts->client->phone  }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ $contacts->client->email  }}</td>
+                            </tr>
+                            <tr>
                                 <th>Date</th>
                                 <td>{{ $contacts->date }}</td>
                             </tr>
@@ -57,7 +65,6 @@
     </div>
     </div>
 
-
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -66,7 +73,7 @@
                     <h4 class="modal-title" id="myModalLabel">You want delete this contacts?</h4>
                 </div>
                 <div class="modal-body">
-                    Ation will delete permanently this contacts.
+                    Action will delete permanently this contacts.
                 </div>
                 <div class="modal-footer">
                     {{ Form::open(array('url' => 'contacts/' . $contacts->id, 'class' => 'pull-right')) }}

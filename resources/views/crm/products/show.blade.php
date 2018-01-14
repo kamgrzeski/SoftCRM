@@ -1,10 +1,9 @@
 @extends('layouts.base')
 
-@section('caption', 'Information about products')
+@section('caption', 'Information about product')
 
-@section('title', 'Information about products')
+@section('title', 'Information about product')
 
-@section('lyric', 'Information about products')
 
 @section('content')
     <div class="row">
@@ -19,26 +18,51 @@
                     <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
+            <br/>
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    More information about {{ $products->name }}
-                </div>
-
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#home" data-toggle="tab">The basic information</a>
+                        <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
-                                Delete this products <li class="fa fa-trash-o"></li>
+                                Delete this product <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
 
                     </ul>
+                    <div class="tab-pane fade active in" id="home">
+                        <h4></h4>
 
+                        <table class="table table-striped table-bordered">
+                            <tbody class="text-right">
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ $products->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Category</th>
+                                <td>{{ $products->category  }}</td>
+                            </tr>
+                            <tr>
+                                <th>Count</th>
+                                <td>{{ $products->count  }}</td>
+                            </tr>
+                            <tr>
+                                <th>Price</th>
+                                <td>{{ $products->price  }}</td>
+                            </tr>
+                            <tr>
+                                <th>Status</th>
+                                <td>{{ $products->is_active ? 'Yes' : 'No' }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -49,12 +73,12 @@
                     <h4 class="modal-title" id="myModalLabel">You want delete this products?</h4>
                 </div>
                 <div class="modal-body">
-                    Ation will delete permanently this products.
+                    Action will delete permanently this products.
                 </div>
                 <div class="modal-footer">
                     {{ Form::open(array('url' => 'products/' . $products->id, 'class' => 'pull-right')) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this products', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::submit('Delete this product', array('class' => 'btn btn-small btn-danger')) }}
                     {{ Form::close() }}
                 </div>
             </div>

@@ -58,6 +58,20 @@
                                     {{ Form::select('client_id', $dataOfClients, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
                                 </div>
                             </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('cost', 'Cost') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-cog"></i></span>
+                                    {{ Form::text('cost', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                </div>
+                            </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('start_time', 'Start date') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-cog"></i></span>
+                                    {{ Form::date('start_time', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-lg-6">
@@ -144,6 +158,22 @@
                             'validate': function (field, event) {
                                 if (!field.val()) {
                                     throw "A count is required.";
+                                }
+                            }
+                        },
+                        'cost': {
+                            'field': $('input[name=cost]'),
+                            'validate': function (field, event) {
+                                if (!field.val()) {
+                                    throw "A cost is required.";
+                                }
+                            }
+                        },
+                        'start_date': {
+                            'field': $('input[name=start_date]'),
+                            'validate': function (field, event) {
+                                if (!field.val()) {
+                                    throw "A start date is required.";
                                 }
                             }
                         },

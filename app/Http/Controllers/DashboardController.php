@@ -47,12 +47,13 @@ class DashboardController extends Controller
         $arrayWithFormattedTasks = [];
 
         foreach ($tasks as $key => $task) {
-            $nameTask = substr($task->name, 0, 80);
+            $nameTask = substr($task->name, 0, 70);
             $nameTask .= '[..]';
 
             $arrayWithFormattedTasks[$key] = [
                 'id' => $task->id,
                 'name' => $nameTask,
+                'duration' => $task->duration,
                 'created_at' => $task->created_at
             ];
         }

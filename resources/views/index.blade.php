@@ -75,6 +75,7 @@
                         @foreach ($dataWithAllTasks as $result)
                             <a href="{{ URL::to('tasks/' . $result['id']) }}" class="list-group-item">
                                 <span class="badge badge" style="background-color: #428bca !important;">{{ $result['created_at']->diffForHumans() }}</span>
+                                <span class="badge badge" style="background-color: #428bca !important;">{{ $result['duration'] . ' days' }}</span>
                                 <i class="fa fa-fw fa-comment"></i> {{ $result['name'] }}
                             </a>
                         @endforeach
@@ -130,8 +131,10 @@
                             @foreach ($dataWithAllProducts as $result)
                                 <a href="{{ URL::to('products/' . $result->id) }}" class="list-group-item">
                                     <span class="badge badge" style="background-color: #428bca !important;">{{ $result->created_at->diffForHumans() }}</span>
+                                    <span class="badge badge" style="background-color: #8a3a44 !important;">
+                                         {{ $result->count }} qty</span>
                                     <span class="badge badge" style="background-color: #298a15 !important;">
-                                        {{ \ClickNow\Money\Money::{config('crm_settings.currency')}($result->price) }} [{{ $result->count }} qty]</span>
+                                        {{ \ClickNow\Money\Money::{config('crm_settings.currency')}($result->price) }}</span>
                                     <i class="fa fa-fw fa-product-hunt"></i> {{ $result->name }}
                                 </a>
                             @endforeach

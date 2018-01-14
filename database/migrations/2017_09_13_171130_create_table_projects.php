@@ -21,6 +21,8 @@ class CreateTableProjects extends Migration
             $table->foreign('companies_id')->references('id')->on('companies');
             $table->unsignedInteger('deals_id');
             $table->foreign('deals_id')->references('id')->on('deals');
+            $table->integer('cost');
+            $table->dateTime('start_date');
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
         });

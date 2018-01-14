@@ -19,6 +19,8 @@ class Projects extends Model
                 'client_id' => $allInputs['client_id'],
                 'companies_id' => $allInputs['companies_id'],
                 'deals_id' => $allInputs['deals_id'],
+                'start_date' => $allInputs['start_date'],
+                'cost' => $allInputs['cost'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
@@ -38,6 +40,8 @@ class Projects extends Model
                 'client_id' => $allInputs['client_id'],
                 'companies_id' => $allInputs['companies_id'],
                 'deals_id' => $allInputs['deals_id'],
+                'start_date' => $allInputs['start_date'],
+                'cost' => $allInputs['cost'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
@@ -55,7 +59,9 @@ class Projects extends Model
                     'name' => 'required',
                     'client_id' => 'required',
                     'companies_id' => 'required',
-                    'deals_id' => 'required'
+                    'deals_id' => 'required',
+                    'start_date' => 'required',
+                    'cost' => 'required'
                 ];
         }
     }
