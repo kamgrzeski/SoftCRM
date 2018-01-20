@@ -82,10 +82,10 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group input-row">
-                                {{ Form::label('items', 'Items') }}
+                                {{ Form::label('product_id', 'Choose product:') }}
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-product-hunt"></i></span>
-                                    {{ Form::text('items', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('product_id', $dataOfProducts, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
                                 </div>
                             </div>
                             <div class="form-group input-row">
@@ -159,20 +159,6 @@
                         'validate': function (field, event) {
                             if (!field.val()) {
                                 throw "A name is required.";
-                            }
-                        }
-                    },
-                    'items': {
-                        'field': $('input[name=items]'),
-                        'validate': function (field, event) {
-                            if (!field.val()) {
-                                throw "A items is required."
-
-                            };
-
-                            var number_pattern = /[0-9]$/i;
-                            if (!number_pattern.test(field.val())) {
-                                throw "Please items a number.";
                             }
                         }
                     },

@@ -15,7 +15,6 @@ class CreateTableInvoices extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('items');
             $table->string('notes');
             $table->integer('cost');
             $table->integer('amount');
@@ -24,6 +23,8 @@ class CreateTableInvoices extends Migration
             $table->foreign('companies_id')->references('id')->on('companies');
             $table->unsignedInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients');
+            $table->unsignedInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
             $table->timestamps();
         });
     }

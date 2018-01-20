@@ -169,7 +169,7 @@ return [
         ClickNow\Money\MoneyServiceProvider::class,
         Axdlee\Config\ConfigServiceProvider::class,
         ConsoleTVs\Invoices\InvoicesServiceProvider::class,
-
+        Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
         /*
          * Package Service Providers...
          */

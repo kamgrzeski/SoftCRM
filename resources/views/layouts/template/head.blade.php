@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="{{ asset('/css/sortable-theme-dark.css') }}" />
     <script src="{{ asset('/js/sortable.min.js') }}"></script>
 
+    <script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>
+    <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
+
     <!-- Validator JS-->
     <script src="{{ asset('/js/validator.js') }}"></script>
 

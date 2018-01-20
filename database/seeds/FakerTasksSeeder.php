@@ -20,8 +20,8 @@ class FakerTasksSeeder extends Seeder
                 'name' => $faker->text($maxNbChars = 200),
                 'employee_id' => $faker->randomElement($employeeIds),
                 'duration' => rand(1,30),
-                'completed' => 0,
-                'created_at' => $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now'),
+                'completed' => rand(0,1),
+                'created_at' => $faker->dateTimeBetween($startDate = '-15 days', $endDate = 'now'),
                 'updated_at' => \Carbon\Carbon::now()
             ];
 

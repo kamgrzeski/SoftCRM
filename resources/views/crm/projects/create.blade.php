@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Add products')
+@section('caption', 'Add project')
 
-@section('title', 'Add products')
+@section('title', 'Add project')
 
 @section('lyric', 'lorem ipsum')
 
@@ -101,7 +101,7 @@
 
                         </div>
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Add product', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Add project', array('class' => 'btn btn-primary')) }}
                         </div>
                     {{ Form::close() }}
                     <!-- /.row (nested) -->

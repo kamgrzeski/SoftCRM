@@ -7,8 +7,7 @@ use App\Companies;
 use App\Invoices;
 use App\Http\Controllers\Controller;
 use App\Language;
-use Carbon\Carbon;
-use ConsoleTVs\Invoices\Classes\Invoice;
+use App\Products;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -50,10 +49,13 @@ class InvoicesController extends Controller
     {
         $dataOfCompanies = Companies::pluck('name', 'id');
         $dataOfClient = Client::pluck('full_name', 'id');
+        $dataOfProducts = Products::pluck('name', 'id');
+
         return View::make('crm.invoices.create')->with(
             [
                 'dataOfCompanies' => $dataOfCompanies,
-                'dataOfClient' => $dataOfClient
+                'dataOfClient' => $dataOfClient,
+                'dataOfProducts' => $dataOfProducts
             ]);
     }
 
@@ -183,38 +185,5 @@ class InvoicesController extends Controller
         }
 
         return View::make('crm.invoices.index')->with($dataOfInvoices);
-    }
-
-    public function getInvoice($id)
-    {
-        $invoices = Invoices::find($id);
-        $time = Carbon::parse(Carbon::now());
-
-        $invoice = Invoice::make()
-            ->logo(Config::get('crm_settings.invoice_logo_link'))
-            ->currency(Config::get('crm_settings.currency'))
-            ->number($invoices->id)
-            ->tax(Config::get('crm_settings.invoice_tax'))
-            ->notes($invoices->notes)
-            ->customer([
-                'name'      => $invoices->client->full_name,
-                'id'        => $invoices->client->id,
-                'phone'     => $invoices->client->phone,
-                'location'  => $invoices->client->location,
-                'zip'       => $invoices->client->zip,
-                'city'      => $invoices->client->city,
-                'country'   => $invoices->client->country
-            ])
-            ->addItem($invoices->subject, $invoices->cost, $invoices->amount, 1);
-
-        //this is for multi companies but can be import from config only for one company
-        $invoice->business_details["name"] = $invoices->companies->name;
-        $invoice->business_details["phone"] = $invoices->companies->phone;
-        $invoice->business_details["location"] = $invoices->companies->billing_address;
-        $invoice->business_details["zip"] = $invoices->companies->postal_code;
-        $invoice->business_details["city"] = $invoices->companies->city;
-        $invoice->business_details["country"] = $invoices->companies->country;
-
-        return $invoice->show($time->timestamp . '_softCRM_' . 'Billennium');
     }
 }

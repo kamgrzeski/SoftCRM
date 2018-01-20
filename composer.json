@@ -11,6 +11,7 @@
         "barryvdh/laravel-ide-helper": "^2.4",
         "cknow/laravel-money": "^1.0",
         "consoletvs/invoices": "^1.0",
+        "fx3costa/laravelchartjs": "^2.3",
         "fzaninotto/faker": "^1.7",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",

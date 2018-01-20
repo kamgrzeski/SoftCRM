@@ -64,6 +64,22 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {!! $tasksGraphData->render() !!}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {!! $itemsCountGraphData->render() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -148,5 +164,8 @@
                 </div>
             </div>
         </div>
+
     </div>
+
+
 @endsection
