@@ -17,7 +17,7 @@
                             <thead>
                             <tr>
                                 <th class="text-center">Name</th>
-                                <th class="text-center" style="width:180px">Action</th>
+                                <th class="text-center" style="width:3x00px">Action</th>
                             </tr>
                             </thead>
                             <tbody>

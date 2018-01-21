@@ -91,7 +91,7 @@
                         @foreach ($dataWithAllTasks as $result)
                             <a href="{{ URL::to('tasks/' . $result['id']) }}" class="list-group-item">
                                 <span class="badge badge" style="background-color: #428bca !important;">{{ $result['created_at']->diffForHumans() }}</span>
-                                <span class="badge badge" style="background-color: #428bca !important;">{{ $result['duration'] . ' days' }}</span>
+                                <span class="badge badge" style="background-color: #ca4e6e !important;">Duration: {{ $result['duration'] . ' days' }}</span>
                                 <i class="fa fa-fw fa-comment"></i> {{ $result['name'] }}
                             </a>
                         @endforeach

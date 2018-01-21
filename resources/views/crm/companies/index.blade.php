@@ -49,7 +49,7 @@
                                 <th class="text-center">Tax number</th>
                                 <th class="text-center">Client</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center" style="width:180px">Action</th>
+                                <th class="text-center" style="width:200px">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -81,11 +81,16 @@
                                             @endif
                                     </td>
                                     <td class="text-right">
-                                        <a class="btn btn-small btn-success small-btn"
-                                           href="{{ URL::to('companies/' . $value->id) }}">More information</a>
-
-                                        <a class="btn btn-small btn-info small-btn"
-                                           href="{{ URL::to('companies/' . $value->id . '/edit') }}">Edit</a>
+                                        <div class="btn-group">
+                                            <a class="btn btn-small btn-primary"
+                                               href="{{ URL::to('companies/' . $value->id) }}">More information</a>
+                                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="{{ URL::to('companies/' . $value->id . '/edit') }}">Edit</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">Some option</a></li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

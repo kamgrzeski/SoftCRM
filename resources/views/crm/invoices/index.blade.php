@@ -42,7 +42,7 @@
                             <tr>
                                 <th class="text-center">Name</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center" style="width:180px">Action</th>
+                                <th class="text-center" style="width:200px">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -71,7 +71,6 @@
                                            href="{{ URL::to('invoices/' . $value->id) }}">More information</a>
                                         <a class="btn btn-small btn-info small-btn"
                                            href="{{ URL::to('invoices/' . $value->id . '/edit') }}">Edit</a>
-
                                     </td>
                                 </tr>
                             @endforeach
