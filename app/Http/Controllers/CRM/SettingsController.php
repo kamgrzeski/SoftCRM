@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Language;
 use App\Settings;
 use Axdlee\Config\Rewrite;
-use Hamcrest\Core\Set;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 use View;
 use Validator;
+use Config;
 
 class SettingsController extends Controller
 {
@@ -52,8 +52,12 @@ class SettingsController extends Controller
             'currency' => $getAllInputFromRequest['currency'],
             'priority_size' => $getAllInputFromRequest['priority_size'],
             'invoice_tax' => $getAllInputFromRequest['invoice_tax'],
-            'invoice_logo_link' => $getAllInputFromRequest['invoice_logo_link']
+            'invoice_logo_link' => $getAllInputFromRequest['invoice_logo_link'],
+            'rollbar_token' => $getAllInputFromRequest['rollbar_token']
         ]);
+
+        $envEditor = DotenvEditor::setKey('ROLLBAR_TOKEN', $getAllInputFromRequest['rollbar_token']);
+        $envEditor = DotenvEditor::save();
 
         SystemLogsController::insertSystemLogs('Settings has been changed.', 200);
 

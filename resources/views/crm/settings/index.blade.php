@@ -48,6 +48,10 @@
                                 {{ Form::label('invoice_tax', 'Tax') }}
                                 {{ Form::text('invoice_tax', config('crm_settings.invoice_tax'), array('class' => 'form-control')) }}
                             </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('rollbar_token', 'ROLLBAR_TOKEN') }}
+                                {{ Form::text('rollbar_token', config('crm_settings.rollbar_token'), array('class' => 'form-control')) }}
+                            </div>
                         </div>
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}

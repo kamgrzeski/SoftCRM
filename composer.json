@@ -13,11 +13,13 @@
         "consoletvs/invoices": "^1.0",
         "fx3costa/laravelchartjs": "^2.3",
         "fzaninotto/faker": "^1.7",
+        "jackiedo/dotenv-editor": "^1.0",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.2.0",
         "mressex/laravel-auth-profile": "^1.0",
-        "nesbot/carbon": "^1.22"
+        "nesbot/carbon": "^1.22",
+        "rollbar/rollbar-laravel": "^2.2"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",

@@ -170,6 +170,8 @@ return [
         Axdlee\Config\ConfigServiceProvider::class,
         ConsoleTVs\Invoices\InvoicesServiceProvider::class,
         Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
+        Rollbar\Laravel\RollbarServiceProvider::class,
+        Jackiedo\DotenvEditor\DotenvEditorServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -234,7 +236,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-
+        'DotenvEditor' => Jackiedo\DotenvEditor\Facades\DotenvEditor::class,
     ],
 
 ];
