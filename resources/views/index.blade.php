@@ -9,13 +9,12 @@
         <div class="col-md-3 col-sm-12 col-xs-12">
             <div class="panel panel-primary text-center no-boder bg-color-green">
                     <div class="panel-body boxes">
-                    <i class="fa fa-rocket fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">{{ \App\Client::countClients() ? : 0 }}</h3>
+                    <i class="fa fa-female fa-3x"></i>
+                    <h3 style="padding:8px;font-size:18px">Clients: {{ \App\Client::countClients() ? : 0 }}</h3>
                 </div>
                 <a href="{{ route('clients') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-green boxes-font">
-                        All clients
-                        <i class="fa fa-arrow-circle-right"></i>
+                        {{ \App\Client::getClientsInLatestMonth() . '%' ? : '0.00%' }} Increase in 30 Days
                     </div>
                 </a>
             </div>
@@ -24,12 +23,11 @@
             <div class="panel panel-primary text-center no-boder bg-color-blue">
                 <div class="panel-body boxes">
                     <i class="fa fa-compass fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">{{ \App\Companies::countCompanies() ? : 0 }} </h3>
+                    <h3 style="padding:8px;font-size:18px">Companies: {{ \App\Companies::countCompanies() ? : 0 }} </h3>
                 </div>
                 <a href="#" style="text-decoration: none">
                     <div class="panel-footer back-footer-blue boxes-font">
-                        All companies
-                        <i class="fa fa-arrow-circle-right"></i>
+                        {{ \App\Companies::getCompaniesInLatestMonth() . '%' ? : '0.00%' }} Increase in 30 Days
                     </div>
                 </a>
             </div>
@@ -38,12 +36,11 @@
             <div class="panel panel-primary text-center no-boder bg-color-red">
                 <div class="panel-body boxes">
                     <i class="fa fa fa-users fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">{{ \App\Employees::countEmployees() ? : 0 }} </h3>
+                    <h3 style="padding:8px;font-size:18px">Employees: {{ \App\Employees::countEmployees() ? : 0 }} </h3>
                 </div>
                 <a href="{{ route('employees') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-red boxes-font">
-                        All employees
-                        <i class="fa fa-arrow-circle-right"></i>
+                        {{ \App\Employees::getEmployeesInLatestMonth() . '%' ? : '0.00%' }} Increase in 30 Days
                     </div>
                 </a>
             </div>
@@ -52,12 +49,11 @@
             <div class="panel panel-primary text-center no-boder bg-color-brown">
                 <div class="panel-body boxes">
                     <i class="fa fa-paperclip fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">{{ \App\Deals::countDeals() ? : 0 }} </h3>
+                    <h3 style="padding:8px;font-size:18px">Deals: {{ \App\Deals::countDeals() ? : 0 }} </h3>
                 </div>
                 <a href="{{ route('deals') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-brown boxes-font">
-                        All deals
-                        <i class="fa fa-arrow-circle-right"></i>
+                        {{ \App\Deals::getDealsInLatestMonth() . '%' ? : '0.00%' }} Increase in 30 Days
                     </div>
                 </a>
             </div>

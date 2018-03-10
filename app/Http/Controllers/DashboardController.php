@@ -244,7 +244,6 @@ class DashboardController extends Controller
             ->options([]);
 
         return $itemsCountGraphData;
-
     }
 
 }

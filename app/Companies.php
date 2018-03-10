@@ -137,7 +137,7 @@ class Companies extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function finances()
     {
@@ -145,7 +145,7 @@ class Companies extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function invoices()
     {
@@ -153,11 +153,22 @@ class Companies extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function files()
     {
         return $this->hasMany(Files::class);
     }
 
+    /**
+     * @return float|int
+     */
+    public static function getCompaniesInLatestMonth() {
+        $companiesCount = Companies::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allCompanies = Companies::all()->count();
+
+        $percentage = ($allCompanies / 100) * $companiesCount;
+
+        return $percentage;
+    }
 }

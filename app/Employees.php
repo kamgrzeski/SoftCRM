@@ -137,5 +137,17 @@ class Employees extends Model
     {
         return $this->hasMany(Tasks::class, 'employee_id');
     }
+
+    /**
+     * @return float|int
+     */
+    public static function getEmployeesInLatestMonth() {
+        $employeesCount = Employees::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allEmployees = Employees::all()->count();
+
+        $percentage = ($allEmployees / 100) * $employeesCount;
+
+        return $percentage;
+    }
 }
 

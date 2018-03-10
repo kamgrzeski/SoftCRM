@@ -133,4 +133,16 @@ class Client extends Model
     {
         return $this->hasMany(Invoices::class, 'client_id');
     }
+
+    /**
+     * @return float|int
+     */
+    public static function getClientsInLatestMonth() {
+        $clientCount = Client::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allClient = Client::all()->count();
+
+        $new_width = ($allClient / 100) * $clientCount;
+
+        return $new_width;
+    }
 }

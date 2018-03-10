@@ -104,4 +104,16 @@ class Deals extends Model
     {
         return Deals::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
+
+    /**
+     * @return float|int
+     */
+    public static function getDealsInLatestMonth() {
+        $dealsCount = Deals::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allDeals = Deals::all()->count();
+
+        $percentage = ($allDeals / 100) * $dealsCount;
+
+        return $percentage;
+    }
 }
