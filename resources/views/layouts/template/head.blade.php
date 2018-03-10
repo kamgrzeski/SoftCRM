@@ -30,6 +30,7 @@
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <div class="se-pre-con"></div>
+    @if (Config::get('crm_settings.loading_circle') == 1)
     <style>
         .no-js #loader {
             display: none;
@@ -59,6 +60,7 @@
             $(".se-pre-con").delay(900).fadeOut("slow");
         });
     </script>
+    @endif
 
     <script type="text/javascript">
         $(document).ready(function () {

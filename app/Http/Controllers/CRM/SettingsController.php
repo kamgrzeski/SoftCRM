@@ -53,7 +53,8 @@ class SettingsController extends Controller
             'priority_size' => $getAllInputFromRequest['priority_size'],
             'invoice_tax' => $getAllInputFromRequest['invoice_tax'],
             'invoice_logo_link' => $getAllInputFromRequest['invoice_logo_link'],
-            'rollbar_token' => $getAllInputFromRequest['rollbar_token']
+            'rollbar_token' => $getAllInputFromRequest['rollbar_token'],
+            'loading_circle' => $getAllInputFromRequest['loading_circle']
         ]);
 
         $envEditor = DotenvEditor::setKey('ROLLBAR_TOKEN', $getAllInputFromRequest['rollbar_token']);

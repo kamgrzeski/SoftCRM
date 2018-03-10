@@ -4,8 +4,6 @@
 
 @section('title', 'Settings')
 
-@section('lyric', 'lorem ipsum')
-
 @section('content')
     <!-- will be used to show any messages -->
     @if(session()->has('message_success'))
@@ -38,6 +36,10 @@
                                 {{ Form::label('invoice_logo_link', 'Invoice logo') }}
                                 {{ Form::text('invoice_logo_link', config('crm_settings.invoice_logo_link'), array('class' => 'form-control')) }}
                             </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('loading_circle', 'Loading circle') }}
+                                {{ Form::select('loading_circle', [1 => 'Show', 0 =>'Don\'t show'], config('crm_settings.loading_circle'), ['class'=>'form-control']) }}
+                            </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group input-row">
@@ -49,12 +51,12 @@
                                 {{ Form::text('invoice_tax', config('crm_settings.invoice_tax'), array('class' => 'form-control')) }}
                             </div>
                             <div class="form-group input-row">
-                                {{ Form::label('rollbar_token', 'ROLLBAR_TOKEN') }}
+                                {{ Form::label('rollbar_token', 'Rollbar Token') }}
                                 {{ Form::text('rollbar_token', config('crm_settings.rollbar_token'), array('class' => 'form-control')) }}
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Save settings', array('class' => 'btn btn-primary')) }}
                         </div>
                     {{ Form::close() }}
                     <!-- /.row (nested) -->

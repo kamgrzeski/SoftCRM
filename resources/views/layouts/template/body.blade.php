@@ -10,12 +10,11 @@
             </button>
             <a class="navbar-brand" href="{{ URL::to('/') }}"><i class="fa fa-comments"></i> SoftCRM</a>
         </div>
-
         <ul class="nav navbar-top-links navbar-right">
-            <span id="localclock" class="clock"></span>
+                <span id="localclock" class="clock"></span>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                    (Welcome {{{ Auth::user()->name }}}) <i class="fa fa-user fa-fw"></i> <i
+                    <img src="{{ asset('./img/avatar.png') }}"> Welcome {{{ Auth::user()->name }}} <i
                             class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
