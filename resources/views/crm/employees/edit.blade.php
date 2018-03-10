@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="col-lg-12">
-                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Edit employee', array('class' => 'btn btn-primary')) }}
                         </div>
 
                         {{ Form::close() }}

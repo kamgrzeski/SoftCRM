@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Submit Button', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Edit sales', array('class' => 'btn btn-primary')) }}
                         </div>
 
                     {{ Form::close() }}
