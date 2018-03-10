@@ -17,7 +17,7 @@ class FakerCompaniesSeeder extends Seeder
 
         for ($i = 0; $i<$rowRand; $i++) {
             $companies = [
-                'name' => $faker->name,
+                'name' => $faker->company,
                 'tax_number' => $faker->unixTime($max = 'now'),
                 'phone' => $faker->phoneNumber,
                 'city' => $faker->city,

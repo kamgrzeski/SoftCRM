@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Companies;
 use App\Deals;
 use App\Finances;
-use App\Invoices;
 use App\Products;
 use App\Projects;
 use App\Sales;
@@ -31,12 +31,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $dataWithAllInvoices = Invoices::all()->sortBy('created_at', 0, true)->slice(0, 5);
+        $dataWithAllCompanies = Companies::all()->sortBy('created_at', 0, true)->slice(0, 5);
         $dataWithAllProducts = Products::all()->sortBy('created_at', 0, true)->slice(0, 5);
 
         return view('index')->with([
             'dataWithAllTasks' => $this->formatTasks(),
-            'dataWithAllInvoices' => $dataWithAllInvoices,
+            'dataWithAllCompanies' => $dataWithAllCompanies,
             'dataWithAllProducts' => $dataWithAllProducts,
             'tasksGraphData' => $this->taskGraphData(),
             'itemsCountGraphData' => $this->itemsCountGraphData()

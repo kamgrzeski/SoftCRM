@@ -105,29 +105,23 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Latest invoices <span class="badge"> {{ \App\Invoices::countInvoices() ? : '0' }}</span>
+                    Latest add companies <span class="badge"> {{ \App\Companies::countCompanies() ? : '0' }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
-                        @if(count($dataWithAllInvoices) > 0)
-                            @foreach ($dataWithAllInvoices as $result)
-                                <a href="{{ URL::to('invoices/' . $result->id) }}" class="list-group-item">
-                                    <span class="badge badge" style="background-color: #428bca !important;">{{ $result->created_at->diffForHumans() }}</span>
-                                    <i class="fa fa-fw fa-money"></i> {{ $result->companies->name }} | {{ $result->client->full_name }}
-                                    <span class="badge badge-secondary" style="background-color: #e91e63 !important; margin-right: 10px">
-                                            {{ \ClickNow\Money\Money::{config('crm_settings.currency')}($result->cost) }}
-                                        </span>
-                                    <span class="badge badge-secondary" style="background-color: #795548 !important; margin-right: 10px">
-                                            {{ $result->amount }} pieces
-                                        </span>
+                        @if(count($dataWithAllCompanies) > 0)
+                            @foreach ($dataWithAllCompanies as $result)
+                                <a href="{{ URL::to('companies/' . $result->id) }}" class="list-group-item">
+                                    <i class="fa fa-compass"></i> {{ $result->name }}
+                                    <span class="badge badge" style="background-color: #ff9800 !important;">Phone: {{ $result->phone }}</span>
                                 </a>
                             @endforeach
                         @else
-                            There is no invoices.
+                            There is no companies.
                         @endif
                     </div>
                     <div class="text-right">
-                        <a href="{{ URL::to('invoices') }}">More Invoices <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="{{ URL::to('companies') }}">More companies <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>

@@ -497,6 +497,7 @@ font-size: 19px;
 
 .boxes {
     padding: 8px !important;
+    border-style: solid;
 }
 
 .boxes-font {

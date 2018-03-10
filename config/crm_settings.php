@@ -6,6 +6,6 @@ return [
     'priority_size' => '3',
     'invoice_tax' => '21',
     'invoice_logo_link' => 'http://i.imgur.com/t9G3rFM.png',
-    'rollbar_token' => '123',
+    'rollbar_token' => '',
     'loading_circle' => '0',
 ];
