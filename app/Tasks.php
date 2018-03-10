@@ -132,6 +132,10 @@ class Tasks extends Model
     {
         $tasks = Tasks::where('completed', '=', $isCompleted)->count();
 
-        return $tasks;
+        $taskAll = Tasks::all()->count();
+
+        $percentage = round(($tasks / $taskAll) * 100);
+
+        return $tasks . ' (' . $percentage .  '%)';
     }
 }
