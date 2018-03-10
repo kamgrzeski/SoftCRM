@@ -80,6 +80,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Latest tasks <span class="badge"> {{ \App\Tasks::countTasks() ? : '0' }}</span></button>
+                    <span style="float: right">Completed: {{ \App\Tasks::getAllCompletedAndUncompletedTasks(1) ? : '0' }} | Uncompleted: {{ \App\Tasks::getAllCompletedAndUncompletedTasks(0) ? : '0' }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">

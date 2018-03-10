@@ -123,4 +123,15 @@ class Tasks extends Model
     {
         return $this->belongsTo(Employees::class, 'employee_id');
     }
+
+    /**
+     * @param $isCompleted
+     * @return mixed
+     */
+    public static function getAllCompletedAndUncompletedTasks($isCompleted)
+    {
+        $tasks = Tasks::where('completed', '=', $isCompleted)->count();
+
+        return $tasks;
+    }
 }
