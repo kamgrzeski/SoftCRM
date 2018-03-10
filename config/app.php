@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'SoftCRM'),
 
     /*
     |--------------------------------------------------------------------------
@@ -164,8 +164,6 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         MrEssex\LaravelAuthProfile\AuthProfileServiceProvider::class,
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
         ClickNow\Money\MoneyServiceProvider::class,
         Axdlee\Config\ConfigServiceProvider::class,
         ConsoleTVs\Invoices\InvoicesServiceProvider::class,
