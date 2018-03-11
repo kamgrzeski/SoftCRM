@@ -21,7 +21,7 @@ class FinancesController extends Controller
     private function getDataAndPagination()
     {
         $dataOfFinances = [
-            'finances' => Finances::all(),
+            'finances' => Finances::all()->sortByDesc('created_at'),
             'financesPaginate' => Finances::paginate(Config::get('crm_settings.pagination_size'))
         ];
 

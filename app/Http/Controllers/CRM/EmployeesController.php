@@ -21,7 +21,7 @@ class EmployeesController extends Controller
     private function getDataAndPagination()
     {
         $dataOfEmployees = [
-            'employees' => Employees::all(),
+            'employees' => Employees::all()->sortByDesc('created_at'),
             'employeesPaginate' => Employees::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
@@ -162,7 +162,6 @@ class EmployeesController extends Controller
     public function isActiveFunction($id, $value)
     {
         $dataOfEmployees = Employees::find($id);
-
         if (Employees::setActive($dataOfEmployees->id, $value)) {
             SystemLogsController::insertSystemLogs('Employees has been enabled with id: ' . $dataOfEmployees->id, 200);
             return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesActive'));

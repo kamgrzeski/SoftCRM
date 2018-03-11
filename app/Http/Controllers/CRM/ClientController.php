@@ -20,7 +20,7 @@ class ClientController extends Controller
     private function getDataAndPagination()
     {
         $dataWithClients = [
-            'client' => Client::all(),
+            'client' => Client::all()->sortByDesc('created_at'),
             'clientPaginate' => Client::paginate(Config::get('crm_settings.pagination_size'))
         ];
 

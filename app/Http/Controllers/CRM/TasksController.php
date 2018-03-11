@@ -22,7 +22,7 @@ class TasksController extends Controller
     private function getDataAndPagination()
     {
         $dataOfTasks = [
-            'tasks' => Tasks::all(),
+            'tasks' => Tasks::all()->sortByDesc('created_at'),
             'tasksPaginate' => Tasks::paginate(Config::get('crm_settings.pagination_size'))
         ];
 

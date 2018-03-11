@@ -21,7 +21,7 @@ class DealsController extends Controller
     private function getDataAndPagination()
     {
         $dataOfDeals = [
-            'deals' => Deals::all(),
+            'deals' => Deals::all()->sortByDesc('created_at'),
             'dealsPaginate' => Deals::paginate(Config::get('crm_settings.pagination_size'))
         ];
 

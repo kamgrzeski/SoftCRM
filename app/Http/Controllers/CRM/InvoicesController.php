@@ -23,7 +23,7 @@ class InvoicesController extends Controller
     private function getDataAndPagination()
     {
         $dataWithInvoices = [
-            'invoices' => Invoices::all(),
+            'invoices' => Invoices::all()->sortByDesc('created_at'),
             'invoicesPaginate' => Invoices::paginate(Config::get('crm_settings.pagination_size'))
         ];
 

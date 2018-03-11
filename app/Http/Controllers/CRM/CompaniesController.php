@@ -21,7 +21,7 @@ class CompaniesController extends Controller
     private function getDataAndPagination()
     {
         $dataOfCompanies = [
-            'companies' => Companies::all(),
+            'companies' => Companies::all()->sortByDesc('created_at'),
             'companiesPaginate' => Companies::paginate(Config::get('crm_settings.pagination_size'))
         ];
 

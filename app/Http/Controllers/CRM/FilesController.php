@@ -21,7 +21,7 @@ class FilesController extends Controller
     private function getDataAndPagination()
     {
         $dataOfFiles = [
-            'files' => Files::all(),
+            'files' => Files::all()->sortByDesc('created_at'),
             'filesPaginate' => Files::paginate(Config::get('crm_settings.pagination_size'))
         ];
 

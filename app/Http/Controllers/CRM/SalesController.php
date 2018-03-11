@@ -20,7 +20,7 @@ class SalesController extends Controller
     private function getDataAndPagination()
     {
         $dataWithSaless = [
-            'sales' => Sales::all(),
+            'sales' => Sales::all()->sortByDesc('created_at'),
             'salesPaginate' => Sales::paginate(Config::get('crm_settings.pagination_size'))
         ];
 

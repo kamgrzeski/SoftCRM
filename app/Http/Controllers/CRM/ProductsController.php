@@ -20,7 +20,7 @@ class ProductsController extends Controller
     private function getDataAndPagination()
     {
         $dataWithProducts = [
-            'products' => Products::all(),
+            'products' => Products::all()->sortByDesc('created_at'),
             'productsPaginate' => Products::paginate(Config::get('crm_settings.pagination_size'))
         ];
 

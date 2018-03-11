@@ -23,7 +23,7 @@ class ProjectsController extends Controller
     private function getDataAndPagination()
     {
         $dataWithProjects = [
-            'projects' => Projects::all(),
+            'projects' => Projects::all()->sortByDesc('created_at'),
             'projectsPaginate' => Projects::paginate(Config::get('crm_settings.pagination_size'))
         ];
 

@@ -21,7 +21,7 @@ class MailingController extends Controller
     private function getDataAndPagination()
     {
         $dataWithMailing = [
-            'mailing' => Mailing::all(),
+            'mailing' => Mailing::all()->sortByDesc('created_at'),
             'mailingPaginate' => Mailing::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
