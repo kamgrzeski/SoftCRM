@@ -11,57 +11,19 @@
           rel='stylesheet' type='text/css'>
 </head>
 <body>
-
-<h1>SoftCRM</h1>
-<h4 class="small-text">Customer relationship management system</h4>
-<div class="login">
-    <div class="ribbon-wrapper h2 ribbon-red">
-        <div class="ribbon-front">
-            <h2>Login Panel</h2>
-        </div>
-        <div class="ribbon-edge-topleft2"></div>
-        <div class="ribbon-edge-bottomleft"></div>
+<div class="login-page">
+    <div style="text-align: center;color:white">
+        <h1>SoftCRM</h1>
+        <h4 class="small-text">Customer relationship management system</h4></div>
+    <div class="form">
+        <form method="POST" action="{{ route('login') }}" class="login-form">
+            {{ csrf_field() }}
+            <input id="email" type="email" name="email" placeholder="Write your email here ..." value="admin@admin.com"/>
+            <input id="password" type="password" name="password" placeholder="Write your password here ..." value="admin"/>
+            <button>login</button>
+            <p class="message">Not registered? <a href="#">Create an account</a></p>
+        </form>
     </div>
-    <form method="POST" action="{{ route('login') }}">
-        {{ csrf_field() }}
-        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            @if ($errors->has('email'))
-                <span class="help-block">
-            <strong>{{ $errors->first('email') }}</strong>
-            </span>
-            @endif
-            @if ($errors->has('password'))
-                <span class="help-block">
-            <strong>{{ $errors->first('password') }}</strong>
-            </span>
-            @endif
-        </div>
-        <ul>
-            <li class="input-row">
-                <input type="text" class="text" id="email" type="email" name="email" readonly
-                       onfocus="this.removeAttribute('readonly');" autocomplete="off" placeholder="Write your email here ..." value="admin@admin.com">
-                <a href="#" class=" icon user"></a>
-            </li>
-            <li>
-                <input id="password" type="password" name="password" placeholder="Write your password here ..." value="admin">
-                <a href="#" class=" icon lock"></a>
-            </li>
-            {{--<a class="btn btn-link" href="{{ route('password.request') }}">--}}
-            <a class="btn btn-link" href="#">
-                Forgot Your Password?
-            </a>
-            <li>
-
-                <div class="submit">
-                    <button type="submit">Log in</button>
-                </div>
-            </li>
-        </ul>
-    </form>
-</div>
-<div class="copy-right">
-    <p>Copyright &copy; <?php echo date('Y'); ?> All rights Reserved | Template by &nbsp;<a href="http://w3layouts.com">W3layouts</a>
-    </p>
 </div>
 </body>
 </html>

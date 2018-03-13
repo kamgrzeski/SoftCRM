@@ -33,8 +33,8 @@
                                 {{ Form::text('priority_size', config('crm_settings.priority_size'), array('class' => 'form-control')) }}
                             </div>
                             <div class="form-group input-row">
-                                {{ Form::label('invoice_logo_link', 'Invoice logo') }}
-                                {{ Form::text('invoice_logo_link', config('crm_settings.invoice_logo_link'), array('class' => 'form-control')) }}
+                                {{ Form::label('invoice_logo_link', 'Invoice logo (comping soon)') }}
+                                {{ Form::text('invoice_logo_link', config('crm_settings.invoice_logo_link'), array('class' => 'form-control', 'disabled')) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('loading_circle', 'Loading circle') }}
@@ -74,7 +74,7 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>User</th>
+                                    <th>User Id</th>
                                     <th>Action</th>
                                     <th>City</th>
                                     <th>Country</th>
