@@ -58,7 +58,7 @@
                                 {{ Form::label('date', 'Date') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    {{ Form::date('date', null, array('class' => 'form-control', 'required', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::date('date', \Carbon\Carbon::now(), array('class' => 'form-control', 'required', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>

@@ -53,6 +53,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ Form::label('date_of_payment', 'Date of payment') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    {{ Form::date('date_of_payment', null, array('class' => 'form-control', 'required', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="col-lg-6">
                         </div>

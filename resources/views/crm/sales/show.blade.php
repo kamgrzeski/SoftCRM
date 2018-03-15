@@ -41,8 +41,12 @@
                                 <td>{{ $sales->name }}</td>
                             </tr>
                             <tr>
-                                <th>Name</th>
-                                <td>{{ $sales->name }}</td>
+                                <th>Quantity</th>
+                                <td>{{ $sales->quantity }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date of payment</th>
+                                <td>{{ $sales->date_of_payment }}</td>
                             </tr>
                             <tr>
                                 <th>Assigned Product</th>

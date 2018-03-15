@@ -22,6 +22,7 @@ class SalesModel extends Model
             [
                 'name' => $allInputs['name'],
                 'quantity' => $allInputs['quantity'],
+                'date_of_payment' => $allInputs['date_of_payment'],
                 'product_id' => $allInputs['product_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
@@ -40,6 +41,7 @@ class SalesModel extends Model
             [
                 'name' => $allInputs['name'],
                 'quantity' => $allInputs['quantity'],
+                'date_of_payment' => $allInputs['date_of_payment'],
                 'product_id' => $allInputs['product_id'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
@@ -58,6 +60,7 @@ class SalesModel extends Model
                     'name' => 'required',
                     'quantity' => 'required',
                     'product_id' => 'required',
+                    'date_of_payment' => 'required',
                 ];
         }
     }

@@ -44,6 +44,7 @@
                                 <th class="text-center">Quantity</th>
                                 <th class="text-center">Price</th>
                                 <th class="text-center">Product</th>
+                                <th class="text-center">Date of Payment</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center" style="width:200px">Action</th>
                             </tr>
@@ -62,6 +63,7 @@
                                     <td class="text-center"><a
                                                 href="{{ URL::to('products/' . $value->products->id) }}">{{ $value->products->name }}</a>
                                     </td>
+                                        <td class="text-center">{{ $value->date_of_payment }}</td>
                                     <td class="text-center">
                                             @if($value->is_active == TRUE)
                                                 <label class="switch">

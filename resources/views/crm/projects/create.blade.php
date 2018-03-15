@@ -69,7 +69,7 @@
                                 {{ Form::label('start_time', 'Start date') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::date('start_time', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::date('start_time', \Carbon\Carbon::now(), array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>

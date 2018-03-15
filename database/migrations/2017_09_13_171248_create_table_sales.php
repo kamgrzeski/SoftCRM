@@ -17,6 +17,7 @@ class CreateTableSales extends Migration
             $table->string('name');
             $table->integer('quantity');
             $table->integer('price');
+            $table->date('date_of_payment');
             $table->unsignedInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
             $table->boolean('is_active')->nullable()->default(1);

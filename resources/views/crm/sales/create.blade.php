@@ -55,6 +55,15 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ Form::label('date_of_payment', 'Date of payment') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    {{ Form::date('date_of_payment', \Carbon\Carbon::now(), array('class' => 'form-control', 'required', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
                         </div>
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Add sales', array('class' => 'btn btn-primary')) }}
@@ -114,6 +123,14 @@
                             'validate': function (field, event) {
                                 if (!field.val()) {
                                     throw "A quantity is required.";
+                                }
+                            }
+                        },
+                        'date_of_payment': {
+                            'field': $('input[name=date_of_payment]'),
+                            'validate': function (field, event) {
+                                if (!field.val()) {
+                                    throw "A date_of_payment is required.";
                                 }
                             }
                         }
