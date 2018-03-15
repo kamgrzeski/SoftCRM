@@ -45,12 +45,12 @@ class SalesController extends Controller
      */
     public function create()
     {
-    $dataOfProducts = ProductsModel::pluck('name', 'id');
+        $dataOfProducts = ProductsModel::pluck('name', 'id');
 
-    return View::make('crm.sales.create')->with(
-        [
-        'dataOfProducts' => $dataOfProducts
-        ]);
+        return View::make('crm.sales.create')->with(
+            [
+            'dataOfProducts' => $dataOfProducts
+            ]);
     }
 
     /**
@@ -100,10 +100,19 @@ class SalesController extends Controller
      */
     public function edit($id)
     {
+//        $salesDetails = SalesModel::find($id);
+//
+//        return View::make('crm.sales.edit')
+//            ->with('sales', $salesDetails);
+
         $salesDetails = SalesModel::find($id);
+        $dataWithPluckOfProducts = ProductsModel::pluck('name', 'id');
 
         return View::make('crm.sales.edit')
-            ->with('sales', $salesDetails);
+            ->with([
+                'sales' => $salesDetails,
+                'dataWithPluckOfProducts' => $dataWithPluckOfProducts
+            ]);
     }
 
     /**

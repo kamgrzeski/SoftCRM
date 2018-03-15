@@ -34,6 +34,27 @@
                         </div>
 
                         <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('product_id', 'Assign product') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('product_id', $dataWithPluckOfProducts, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')]) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                <div class="form-group input-row">
+                                    {{ Form::label('quantity', 'Quantity') }}
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+                                        {{ Form::text('quantity', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
                         </div>
 
                         <div class="col-lg-12 validate_form">

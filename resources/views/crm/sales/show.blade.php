@@ -41,6 +41,14 @@
                                 <td>{{ $sales->name }}</td>
                             </tr>
                             <tr>
+                                <th>Name</th>
+                                <td>{{ $sales->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Assigned Product</th>
+                                <td>{{ $sales->products->name }}</td>
+                            </tr>
+                            <tr>
                                 <th>Status</th>
                                 <td>{{ $sales->is_active ? 'Yes' : 'No'  }}</td>
                             </tr>

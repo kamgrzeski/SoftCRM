@@ -36,10 +36,10 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group input-row">
-                                {{ Form::label('employee_id', 'Assign product') }}
+                                {{ Form::label('product_id', 'Assign product') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('employee_id', $dataOfProducts, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')]) }}
+                                    {{ Form::select('product_id', $dataOfProducts, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
                         </div>
