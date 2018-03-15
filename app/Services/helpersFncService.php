@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Settings;
-use App\Tasks;
+
+use App\Models\SettingsModel;
+use App\Models\TasksModel;
 
 class helpersFncService
 {
@@ -26,7 +27,7 @@ class helpersFncService
      */
     public function formatTasks()
     {
-        $tasks = Tasks::all()->sortBy('created_at', 0, true)->slice(0, 5);
+        $tasks = TasksModel::all()->sortBy('created_at', 0, true)->slice(0, 5);
         $arrayWithFormattedTasks = [];
 
         foreach ($tasks as $key => $task) {
@@ -49,7 +50,7 @@ class helpersFncService
      */
     public function formatAllSystemLogs()
     {
-        $allLogs = Settings::all();
+        $allLogs = SettingsModel::all();
         $tempArray = [];
 
         foreach ($allLogs as $key => $result)

@@ -1,13 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Request;
 
-class SystemLogs extends Model
+class SystemLogsModel extends Model
 {
     protected $table = 'systemlogs';
 
@@ -33,7 +33,7 @@ class SystemLogs extends Model
     {
         $userInformation = $this->getUserInformation();
 
-        return SystemLogs::insert(
+        return SystemLogsModel::insert(
             [
                 'user_id' => Auth::id(),
                 'actions' => $actions,
@@ -61,7 +61,7 @@ class SystemLogs extends Model
      */
     public static function countRows()
     {
-        return SystemLogs::all()->count();
+        return SystemLogsModel::all()->count();
     }
 
 

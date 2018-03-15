@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Client;
-use App\Contacts;
-use App\Employees;
 use App\Http\Controllers\Controller;
-use App\Language;
+use App\Models\ClientsModel;
+use App\Models\ContactsModel;
+use App\Models\EmployeesModel;
+use App\Models\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -22,8 +22,8 @@ class ContactsController extends Controller
     private function getDataAndPagination()
     {
         $dataOfContacts = [
-            'contacts' => Contacts::all()->sortByDesc('created_at'),
-            'contactsPaginate' => Contacts::paginate(Config::get('crm_settings.pagination_size'))
+            'contacts' => ContactsModel::all()->sortByDesc('created_at'),
+            'contactsPaginate' => ContactsModel::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataOfContacts;
@@ -46,8 +46,8 @@ class ContactsController extends Controller
      */
     public function create()
     {
-        $dataOfClients = Client::pluck('full_name', 'id');
-        $dataOfEmployees = Employees::pluck('full_name', 'id');
+        $dataOfClients = ClientsModel::pluck('full_name', 'id');
+        $dataOfEmployees = EmployeesModel::pluck('full_name', 'id');
         return View::make('crm.contacts.create')->with(
             [
                 'clients' => $dataOfClients,
@@ -64,12 +64,12 @@ class ContactsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Contacts::getRules('STORE'));
+        $validator = Validator::make($allInputs, ContactsModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('contacts/create')->with('message_danger', $validator->errors());
         } else {
-            if ($contact = Contacts::insertRow($allInputs)) {
+            if ($contact = ContactsModel::insertRow($allInputs)) {
                 SystemLogsController::insertSystemLogs('Contact has been add with id: '. $contact, 200);
                 return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsStore'));
             } else {
@@ -86,7 +86,7 @@ class ContactsController extends Controller
      */
     public function show($id)
     {
-        $dataOfContacts = Contacts::find($id);
+        $dataOfContacts = ContactsModel::find($id);
 
         return View::make('crm.contacts.show')
             ->with('contacts', $dataOfContacts);
@@ -100,9 +100,9 @@ class ContactsController extends Controller
      */
     public function edit($id)
     {
-        $dataOfContacts = Contacts::find($id);
-        $dataWithPluckOfClients = Client::pluck('full_name', 'id');
-        $dataWithPluckOfEmployees = Employees::pluck('full_name', 'id');
+        $dataOfContacts = ContactsModel::find($id);
+        $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
+        $dataWithPluckOfEmployees = EmployeesModel::pluck('full_name', 'id');
 
         return View::make('crm.contacts.edit')
             ->with([
@@ -122,12 +122,12 @@ class ContactsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Contacts::getRules('STORE'));
+        $validator = Validator::make($allInputs, ContactsModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (Contacts::updateRow($id, $allInputs)) {
+            if (ContactsModel::updateRow($id, $allInputs)) {
                 return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsUpdate'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorContactsUpdate'));
@@ -144,10 +144,10 @@ class ContactsController extends Controller
      */
     public function destroy($id)
     {
-        $dataOfContacts = Contacts::find($id);
+        $dataOfContacts = ContactsModel::find($id);
         $dataOfContacts->delete();
 
-        SystemLogsController::insertSystemLogs('Contacts has been deleted with id: ' . $dataOfContacts->id, 200);
+        SystemLogsController::insertSystemLogs('ContactsModel has been deleted with id: ' . $dataOfContacts->id, 200);
 
         return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsDelete'));
     }
@@ -158,7 +158,7 @@ class ContactsController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findDealsByValue = count(Contacts::trySearchContactsByValue('full_name', $getValueInput, 10));
+        $findDealsByValue = count(ContactsModel::trySearchContactsByValue('full_name', $getValueInput, 10));
         $dataOfContacts = $this->getDataAndPagination();
 
         if (!$findDealsByValue > 0) {

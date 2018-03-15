@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Language;
-use App\Sales;
+use App\Models\Language;
+use App\Models\SalesModel;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -20,8 +20,8 @@ class SalesController extends Controller
     private function getDataAndPagination()
     {
         $dataWithSaless = [
-            'sales' => Sales::all()->sortByDesc('created_at'),
-            'salesPaginate' => Sales::paginate(Config::get('crm_settings.pagination_size'))
+            'sales' => SalesModel::all()->sortByDesc('created_at'),
+            'salesPaginate' => SalesModel::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataWithSaless;
@@ -56,13 +56,13 @@ class SalesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Sales::getRules('STORE'));
+        $validator = Validator::make($allInputs, SalesModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('sales/create')->with('message_danger', $validator->errors());
         } else {
-            if ($sale = Sales::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Sales has been add with id: '. $sale, 200);
+            if ($sale = SalesModel::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('SalesModel has been add with id: '. $sale, 200);
                 return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorSalesStore'));
@@ -78,7 +78,7 @@ class SalesController extends Controller
      */
     public function show($id)
     {
-        $dataOfSales = Sales::find($id);
+        $dataOfSales = SalesModel::find($id);
 
         return View::make('crm.sales.show')
             ->with([
@@ -94,7 +94,7 @@ class SalesController extends Controller
      */
     public function edit($id)
     {
-        $salesDetails = Sales::find($id);
+        $salesDetails = SalesModel::find($id);
 
         return View::make('crm.sales.edit')
             ->with('sales', $salesDetails);
@@ -110,12 +110,12 @@ class SalesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Sales::getRules('STORE'));
+        $validator = Validator::make($allInputs, SalesModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (Sales::updateRow($id, $allInputs)) {
+            if (SalesModel::updateRow($id, $allInputs)) {
                 return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorSalesStore'));
@@ -132,10 +132,10 @@ class SalesController extends Controller
      */
     public function destroy($id)
     {
-        $salesDetails = Sales::find($id);
+        $salesDetails = SalesModel::find($id);
         $salesDetails->delete();
 
-        SystemLogsController::insertSystemLogs('Sales has been deleted with id: ' . $salesDetails->id, 200);
+        SystemLogsController::insertSystemLogs('SalesModel has been deleted with id: ' . $salesDetails->id, 200);
 
         return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesDelete'));
     }
@@ -147,10 +147,10 @@ class SalesController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $salesDetails = Sales::find($id);
+        $salesDetails = SalesModel::find($id);
 
-        if (Sales::setActive($salesDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('Sales has been enabled with id: ' . $salesDetails->id, 200);
+        if (SalesModel::setActive($salesDetails->id, $value)) {
+            SystemLogsController::insertSystemLogs('SalesModel has been enabled with id: ' . $salesDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSalesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.SalesIsActived'));
@@ -163,7 +163,7 @@ class SalesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findSalesByValue = count(Sales::trySearchSalesByValue('full_name', $getValueInput, 10));
+        $findSalesByValue = count(SalesModel::trySearchSalesByValue('full_name', $getValueInput, 10));
         $dataOfSales = $this->getDataAndPagination();
 
         if (!$findSalesByValue > 0) {

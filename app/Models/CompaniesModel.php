@@ -1,19 +1,24 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Companies extends Model
+class CompaniesModel extends Model
 {
+    /**
+     * table name
+     */
+    protected $table = 'companies';
+
     /**
      * @param $allInputs
      * @return mixed
      */
     public static function insertRow($allInputs)
     {
-        return Companies::insertGetId(
+        return CompaniesModel::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'tax_number' => $allInputs['tax_number'],
@@ -39,7 +44,7 @@ class Companies extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Companies::where('id', '=', $id)->update(
+        return CompaniesModel::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'tax_number' => $allInputs['tax_number'],
@@ -87,7 +92,7 @@ class Companies extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $findCompaniesById = Companies::where('id', '=', $id)->update(
+        $findCompaniesById = CompaniesModel::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -101,7 +106,7 @@ class Companies extends Model
 
     public static function trySearchCompaniesByValue($type, $value, $paginationLimit = 10)
     {
-        return Companies::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return CompaniesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 
     /**
@@ -109,7 +114,7 @@ class Companies extends Model
      */
     public static function countCompanies()
     {
-        return count(Companies::get());
+        return count(CompaniesModel::get());
     }
 
     /**
@@ -117,7 +122,7 @@ class Companies extends Model
      */
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(ClientsModel::class);
     }
 
     /**
@@ -125,7 +130,7 @@ class Companies extends Model
      */
     public function deals()
     {
-        return $this->hasMany(Deals::class);
+        return $this->hasMany(DealsModel::class);
     }
 
     /**
@@ -141,7 +146,7 @@ class Companies extends Model
      */
     public function finances()
     {
-        return $this->hasMany(Finances::class);
+        return $this->hasMany(FinancesModel::class);
     }
 
     /**
@@ -149,7 +154,7 @@ class Companies extends Model
      */
     public function invoices()
     {
-        return $this->hasMany(Invoices::class);
+        return $this->hasMany(InvoicesModel::class);
     }
 
     /**
@@ -157,15 +162,15 @@ class Companies extends Model
      */
     public function files()
     {
-        return $this->hasMany(Files::class);
+        return $this->hasMany(FilesModel::class);
     }
 
     /**
      * @return float|int
      */
     public static function getCompaniesInLatestMonth() {
-        $companiesCount = Companies::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allCompanies = Companies::all()->count();
+        $companiesCount = CompaniesModel::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allCompanies = CompaniesModel::all()->count();
 
         $percentage = ($allCompanies / 100) * $companiesCount;
 

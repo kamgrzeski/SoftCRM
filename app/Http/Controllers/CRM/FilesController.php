@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Companies;
-use App\Files;
 use App\Http\Controllers\Controller;
-use App\Language;
+use App\Models\CompaniesModel;
+use App\Models\FilesModel;
+use App\Models\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -21,8 +21,8 @@ class FilesController extends Controller
     private function getDataAndPagination()
     {
         $dataOfFiles = [
-            'files' => Files::all()->sortByDesc('created_at'),
-            'filesPaginate' => Files::paginate(Config::get('crm_settings.pagination_size'))
+            'files' => FilesModel::all()->sortByDesc('created_at'),
+            'filesPaginate' => FilesModel::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataOfFiles;
@@ -45,7 +45,7 @@ class FilesController extends Controller
      */
     public function create()
     {
-        $dataOfCompanies = Companies::pluck('name', 'id');
+        $dataOfCompanies = CompaniesModel::pluck('name', 'id');
         return View::make('crm.files.create', compact('dataOfCompanies'));
     }
 
@@ -58,12 +58,12 @@ class FilesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Files::getRules('STORE'));
+        $validator = Validator::make($allInputs, FilesModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('files/create')->with('message_danger', $validator->errors());
         } else {
-            if ($file = Files::insertRow($allInputs)) {
+            if ($file = FilesModel::insertRow($allInputs)) {
                 SystemLogsController::insertSystemLogs('File has been add with id: '. $file, 200);
                 return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesStore'));
             } else {
@@ -80,7 +80,7 @@ class FilesController extends Controller
      */
     public function show($id)
     {
-        $dataOfFiles = Files::find($id);
+        $dataOfFiles = FilesModel::find($id);
 
         return View::make('crm.files.show')
             ->with('files', $dataOfFiles);
@@ -94,8 +94,8 @@ class FilesController extends Controller
      */
     public function edit($id)
     {
-        $dataOfFiles = Files::find($id);
-        $dataWithPluckOfCompanies = Companies::pluck('name', 'id');
+        $dataOfFiles = FilesModel::find($id);
+        $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
 
         return View::make('crm.files.edit')
             ->with([
@@ -114,12 +114,12 @@ class FilesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Files::getRules('STORE'));
+        $validator = Validator::make($allInputs, FilesModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (Files::updateRow($id, $allInputs)) {
+            if (FilesModel::updateRow($id, $allInputs)) {
                 return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesUpdate'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesUpdate'));
@@ -136,10 +136,10 @@ class FilesController extends Controller
      */
     public function destroy($id)
     {
-        $dataOfFiles = Files::find($id);
+        $dataOfFiles = FilesModel::find($id);
         $dataOfFiles->delete();
 
-        SystemLogsController::insertSystemLogs('Files has been deleted with id: ' . $dataOfFiles->id, 200);
+        SystemLogsController::insertSystemLogs('FilesModel has been deleted with id: ' . $dataOfFiles->id, 200);
 
         return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesDelete'));
     }
@@ -151,10 +151,10 @@ class FilesController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $dataOfFiles = Files::find($id);
+        $dataOfFiles = FilesModel::find($id);
 
-        if (Files::setActive($dataOfFiles->id, $value)) {
-            SystemLogsController::insertSystemLogs('Files has been enable with id: ' . $dataOfFiles->id, 200);
+        if (FilesModel::setActive($dataOfFiles->id, $value)) {
+            SystemLogsController::insertSystemLogs('FilesModel has been enable with id: ' . $dataOfFiles->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessFilesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesActive'));
@@ -167,7 +167,7 @@ class FilesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findFilesByValue = count(Files::trySearchFilesByValue('name', $getValueInput, 10));
+        $findFilesByValue = count(FilesModel::trySearchFilesByValue('name', $getValueInput, 10));
         $dataOfFiles = $this->getDataAndPagination();
 
         if (!$findFilesByValue > 0) {

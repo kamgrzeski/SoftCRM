@@ -1,10 +1,10 @@
 @extends('layouts.base')
 
-@section('caption', 'Reports')
+@section('caption', 'ReportsModel')
 
-@section('title', 'Reports')
+@section('title', 'ReportsModel')
 
-@section('lyric', 'some text about Reports.')
+@section('lyric', 'ReportsModel')
 
 @section('content')
     <p>This is my body content in Reports.</p>

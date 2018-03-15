@@ -1,19 +1,24 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class ClientsModel extends Model
 {
+    /**
+     * table name
+     */
+    protected $table = 'clients';
+
     /**
      * @param $allInputs
      * @return mixed
      */
     public static function insertRow($allInputs)
     {
-        return Client::insertGetId(
+        return ClientsModel::insertGetId(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
@@ -37,7 +42,7 @@ class Client extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Client::where('id', '=', $id)->update(
+        return ClientsModel::where('id', '=', $id)->update(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
@@ -82,7 +87,7 @@ class Client extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $findClientById = Client::where('id', '=', $id)->update(['is_active' => $activeType]);
+        $findClientById = ClientsModel::where('id', '=', $id)->update(['is_active' => $activeType]);
 
         if ($findClientById) {
             return TRUE;
@@ -99,7 +104,7 @@ class Client extends Model
      */
     public static function trySearchClientByValue($type, $value, $paginationLimit = 10)
     {
-        return Client::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return ClientsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 
     /**
@@ -107,7 +112,7 @@ class Client extends Model
      */
     public static function countClients()
     {
-        return count(Client::get());
+        return count(ClientsModel::get());
     }
 
     /**
@@ -115,7 +120,7 @@ class Client extends Model
      */
     public function companies()
     {
-        return $this->hasMany(Companies::class);
+        return $this->hasMany(CompaniesModel::class);
     }
 
     /**
@@ -131,15 +136,15 @@ class Client extends Model
      */
     public function invoices()
     {
-        return $this->hasMany(Invoices::class, 'client_id');
+        return $this->hasMany(InvoicesModel::class, 'client_id');
     }
 
     /**
      * @return float|int
      */
     public static function getClientsInLatestMonth() {
-        $clientCount = Client::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allClient = Client::all()->count();
+        $clientCount = ClientsModel::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allClient = ClientsModel::all()->count();
 
         $new_width = ($allClient / 100) * $clientCount;
 

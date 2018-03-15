@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Client;
-use App\Language;
+use App\Models\ClientsModel;
 use View;
 use Illuminate\Support\Facades\Input;
 use Validator;
@@ -20,8 +19,8 @@ class ClientController extends Controller
     private function getDataAndPagination()
     {
         $dataWithClients = [
-            'client' => Client::all()->sortByDesc('created_at'),
-            'clientPaginate' => Client::paginate(Config::get('crm_settings.pagination_size'))
+            'client' => ClientsModel::all()->sortByDesc('created_at'),
+            'clientPaginate' => ClientsModel::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataWithClients;
@@ -56,13 +55,13 @@ class ClientController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Client::getRules('STORE'));
+        $validator = Validator::make($allInputs, ClientsModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('client/create')->with('message_danger', $validator->errors());
         } else {
-            if ($client = Client::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Client has been add with id: '. $client, 200);
+            if ($client = ClientsModel::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('ClientsModel has been add with id: '. $client, 200);
                 return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorClientStore'));
@@ -78,7 +77,7 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        $dataOfClient = Client::find($id);
+        $dataOfClient = ClientsModel::find($id);
 
         return View::make('crm.client.show')
             ->with([
@@ -94,7 +93,7 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        $clientDetails = Client::find($id);
+        $clientDetails = ClientsModel::find($id);
 
         return View::make('crm.client.edit')
             ->with('client', $clientDetails);
@@ -110,12 +109,12 @@ class ClientController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Client::getRules('STORE'));
+        $validator = Validator::make($allInputs, ClientsModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (Client::updateRow($id, $allInputs)) {
+            if (ClientsModel::updateRow($id, $allInputs)) {
                 return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorClientStore'));
@@ -132,7 +131,7 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $clientDetails = Client::find($id);
+        $clientDetails = ClientsModel::find($id);
         $countCompanies = count($clientDetails->companies()->get());
         $countEmployees = count($clientDetails->employees()->get());
 
@@ -144,7 +143,7 @@ class ClientController extends Controller
         }
 
         $clientDetails->delete();
-        SystemLogsController::insertSystemLogs('Client has been deleted with id: ' . $clientDetails->id, 200);
+        SystemLogsController::insertSystemLogs('ClientsModel has been deleted with id: ' . $clientDetails->id, 200);
 
         return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientDelete'));
     }
@@ -156,10 +155,10 @@ class ClientController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $clientDetails = Client::find($id);
+        $clientDetails = ClientsModel::find($id);
 
-        if (Client::setActive($clientDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('Client has been enabled with id: ' . $clientDetails->id, 200);
+        if (ClientsModel::setActive($clientDetails->id, $value)) {
+            SystemLogsController::insertSystemLogs('ClientsModel has been enabled with id: ' . $clientDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessClientActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsActived'));
@@ -172,7 +171,7 @@ class ClientController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findClientByValue = count(Client::trySearchClientByValue('full_name', $getValueInput, 10));
+        $findClientByValue = count(ClientsModel::trySearchClientByValue('full_name', $getValueInput, 10));
         $dataOfClient = $this->getDataAndPagination();
 
         if (!$findClientByValue > 0) {

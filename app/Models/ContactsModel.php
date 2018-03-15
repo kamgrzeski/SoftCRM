@@ -1,19 +1,24 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Contacts extends Model
+class ContactsModel extends Model
 {
+    /**
+     * table name
+     */
+    protected $table = 'contacts';
+
     /**
      * @param $allInputs
      * @return mixed
      */
     public static function insertRow($allInputs)
     {
-        return Contacts::insertGetId(
+        return ContactsModel::insertGetId(
             [
                 'client_id' => $allInputs['client_id'],
                 'employee_id' => $allInputs['employee_id'],
@@ -30,7 +35,7 @@ class Contacts extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Contacts::where('id', '=', $id)->update(
+        return ContactsModel::where('id', '=', $id)->update(
             [
                 'client_id' => $allInputs['client_id'],
                 'employee_id' => $allInputs['employee_id'],
@@ -62,7 +67,7 @@ class Contacts extends Model
      */
     public static function trySearchContactsByValue($type, $value, $paginationLimit = 10)
     {
-        return Client::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return ClientsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 
     /**
@@ -70,7 +75,7 @@ class Contacts extends Model
      */
     public static function countContacts()
     {
-        return count(Contacts::get());
+        return count(ContactsModel::get());
     }
 
     /**
@@ -78,7 +83,7 @@ class Contacts extends Model
      */
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(ClientsModel::class);
     }
 
     /**
@@ -86,6 +91,6 @@ class Contacts extends Model
      */
     public function employees()
     {
-        return $this->belongsTo(Employees::class, 'employee_id', 'id');
+        return $this->belongsTo(EmployeesModel::class, 'employee_id', 'id');
     }
 }

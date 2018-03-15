@@ -1,27 +1,30 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Invoices extends Model
+class ProjectsModel extends Model
 {
+    /**
+     * table name
+     */
+    protected $table = 'projects';
     /**
      * @param $allInputs
      * @return mixed
      */
     public static function insertRow($allInputs)
     {
-        return Invoices::insertGetId(
+        return ProjectsModel::insertGetId(
             [
                 'name' => $allInputs['name'],
-                'items' => $allInputs['items'],
-                'cost' => $allInputs['cost'],
-                'companies_id' => $allInputs['companies_id'],
                 'client_id' => $allInputs['client_id'],
-                'notes' => $allInputs['notes'],
-                'amount' => $allInputs['amount'],
+                'companies_id' => $allInputs['companies_id'],
+                'deals_id' => $allInputs['deals_id'],
+                'start_date' => $allInputs['start_date'],
+                'cost' => $allInputs['cost'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
@@ -35,14 +38,14 @@ class Invoices extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Invoices::where('id', '=', $id)->update(
+        return ProjectsModel::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
-                'cost' => $allInputs['cost'],
-                'companies_id' => $allInputs['companies_id'],
                 'client_id' => $allInputs['client_id'],
-                'notes' => $allInputs['notes'],
-                'amount' => $allInputs['amount'],
+                'companies_id' => $allInputs['companies_id'],
+                'deals_id' => $allInputs['deals_id'],
+                'start_date' => $allInputs['start_date'],
+                'cost' => $allInputs['cost'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
@@ -58,11 +61,11 @@ class Invoices extends Model
             case 'STORE':
                 return [
                     'name' => 'required',
-                    'cost' => 'required',
-                    'companies_id' => 'required',
                     'client_id' => 'required',
-                    'notes' => 'required',
-                    'amount' => 'required'
+                    'companies_id' => 'required',
+                    'deals_id' => 'required',
+                    'start_date' => 'required',
+                    'cost' => 'required'
                 ];
         }
     }
@@ -74,12 +77,12 @@ class Invoices extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $findInvoicesById = Invoices::where('id', '=', $id)->update(
+        $findProjectsById = ProjectsModel::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
 
-        if ($findInvoicesById) {
+        if ($findProjectsById) {
             return TRUE;
         } else {
             return FALSE;
@@ -89,9 +92,9 @@ class Invoices extends Model
     /**
      * @return int
      */
-    public static function countInvoices()
+    public static function countProjects()
     {
-        return count(Invoices::get());
+        return count(ProjectsModel::get());
     }
 
     /**
@@ -100,17 +103,9 @@ class Invoices extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchInvoicesByValue($type, $value, $paginationLimit = 10)
+    public static function trySearchProjectsByValue($type, $value, $paginationLimit = 10)
     {
-        return Invoices::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function companies()
-    {
-        return $this->belongsTo(Companies::class);
+        return ProjectsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 
     /**
@@ -118,11 +113,23 @@ class Invoices extends Model
      */
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(ClientsModel::class);
     }
 
-    public static function countRows()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function companies()
     {
-        return Invoices::all()->count();
+        return $this->belongsTo(CompaniesModel::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function deals()
+    {
+        return $this->belongsTo(DealsModel::class);
+    }
+
 }

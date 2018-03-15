@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Client;
-use App\Companies;
-use App\Invoices;
 use App\Http\Controllers\Controller;
-use App\Language;
-use App\Products;
+use App\Models\ClientsModel;
+use App\Models\CompaniesModel;
+use App\Models\InvoicesModel;
+use App\Models\Language;
+use App\Models\ProductsModel;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -23,8 +23,8 @@ class InvoicesController extends Controller
     private function getDataAndPagination()
     {
         $dataWithInvoices = [
-            'invoices' => Invoices::all()->sortByDesc('created_at'),
-            'invoicesPaginate' => Invoices::paginate(Config::get('crm_settings.pagination_size'))
+            'invoices' => InvoicesModel::all()->sortByDesc('created_at'),
+            'invoicesPaginate' => InvoicesModel::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataWithInvoices;
@@ -47,9 +47,9 @@ class InvoicesController extends Controller
      */
     public function create()
     {
-        $dataOfCompanies = Companies::pluck('name', 'id');
-        $dataOfClient = Client::pluck('full_name', 'id');
-        $dataOfProducts = Products::pluck('name', 'id');
+        $dataOfCompanies = CompaniesModel::pluck('name', 'id');
+        $dataOfClient = ClientsModel::pluck('full_name', 'id');
+        $dataOfProducts = ProductsModel::pluck('name', 'id');
 
         return View::make('crm.invoices.create')->with(
             [
@@ -68,12 +68,12 @@ class InvoicesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Invoices::getRules('STORE'));
+        $validator = Validator::make($allInputs, InvoicesModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('invoices/create')->with('message_danger', $validator->errors());
         } else {
-            if ($invoice = Invoices::insertRow($allInputs)) {
+            if ($invoice = InvoicesModel::insertRow($allInputs)) {
                 SystemLogsController::insertSystemLogs('Invoice has been add with id: '. $invoice, 200);
                 return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesStore'));
             } else {
@@ -90,7 +90,7 @@ class InvoicesController extends Controller
      */
     public function show($id)
     {
-        $dataOfInvoices = Invoices::find($id);
+        $dataOfInvoices = InvoicesModel::find($id);
 
         return View::make('crm.invoices.show')
             ->with([
@@ -106,7 +106,7 @@ class InvoicesController extends Controller
      */
     public function edit($id)
     {
-        $invoicesDetails = Invoices::find($id);
+        $invoicesDetails = InvoicesModel::find($id);
 
         return View::make('crm.invoices.edit')
             ->with('invoices', $invoicesDetails);
@@ -122,12 +122,12 @@ class InvoicesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Invoices::getRules('STORE'));
+        $validator = Validator::make($allInputs, InvoicesModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (Invoices::updateRow($id, $allInputs)) {
+            if (InvoicesModel::updateRow($id, $allInputs)) {
                 return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorInvoicesStore'));
@@ -144,10 +144,10 @@ class InvoicesController extends Controller
      */
     public function destroy($id)
     {
-        $invoicesDetails = Invoices::find($id);
+        $invoicesDetails = InvoicesModel::find($id);
         $invoicesDetails->delete();
 
-        SystemLogsController::insertSystemLogs('Invoices has been deleted with id: ' . $invoicesDetails->id, 200);
+        SystemLogsController::insertSystemLogs('InvoicesModel has been deleted with id: ' . $invoicesDetails->id, 200);
 
         return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesDelete'));
     }
@@ -159,10 +159,10 @@ class InvoicesController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $invoicesDetails = Invoices::find($id);
+        $invoicesDetails = InvoicesModel::find($id);
 
-        if (Invoices::setActive($invoicesDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('Invoices has been enabled with id: ' . $invoicesDetails->id, 200);
+        if (InvoicesModel::setActive($invoicesDetails->id, $value)) {
+            SystemLogsController::insertSystemLogs('InvoicesModel has been enabled with id: ' . $invoicesDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessInvoicesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.InvoicesIsActived'));
@@ -174,7 +174,7 @@ class InvoicesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findInvoicesByValue = count(Invoices::trySearchInvoicesByValue('full_name', $getValueInput, 10));
+        $findInvoicesByValue = count(InvoicesModel::trySearchInvoicesByValue('full_name', $getValueInput, 10));
         $dataOfInvoices = $this->getDataAndPagination();
 
         if (!$findInvoicesByValue > 0) {

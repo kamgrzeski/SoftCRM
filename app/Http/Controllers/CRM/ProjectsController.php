@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Client;
-use App\Companies;
-use App\Deals;
-use App\Projects;
 use App\Http\Controllers\Controller;
-use App\Language;
+use App\Models\ClientsModel;
+use App\Models\CompaniesModel;
+use App\Models\DealsModel;
+use App\Models\Language;
+use App\Models\ProjectsModel;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -23,8 +23,8 @@ class ProjectsController extends Controller
     private function getDataAndPagination()
     {
         $dataWithProjects = [
-            'projects' => Projects::all()->sortByDesc('created_at'),
-            'projectsPaginate' => Projects::paginate(Config::get('crm_settings.pagination_size'))
+            'projects' => ProjectsModel::all()->sortByDesc('created_at'),
+            'projectsPaginate' => ProjectsModel::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataWithProjects;
@@ -47,9 +47,9 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        $dataOfClients = Client::pluck('full_name', 'id');
-        $dataOfCompanies = Companies::pluck('name', 'id');
-        $dataOfDeals = Deals::pluck('name', 'id');
+        $dataOfClients = ClientsModel::pluck('full_name', 'id');
+        $dataOfCompanies = CompaniesModel::pluck('name', 'id');
+        $dataOfDeals = DealsModel::pluck('name', 'id');
         return View::make('crm.projects.create')->with(
             [
                 'dataOfClients' => $dataOfClients,
@@ -67,12 +67,12 @@ class ProjectsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Projects::getRules('STORE'));
+        $validator = Validator::make($allInputs, ProjectsModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('projects/create')->with('message_danger', $validator->errors());
         } else {
-            if ($project = Projects::insertRow($allInputs)) {
+            if ($project = ProjectsModel::insertRow($allInputs)) {
                 SystemLogsController::insertSystemLogs('Project has been add with id: '. $project, 200);
                 return Redirect::to('projects')->with('message_success', Language::getMessage('messages.SuccessProjectsStore'));
             } else {
@@ -89,7 +89,7 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        $dataOfProjects = Projects::find($id);
+        $dataOfProjects = ProjectsModel::find($id);
 
         return View::make('crm.projects.show')
             ->with([
@@ -106,10 +106,10 @@ class ProjectsController extends Controller
     public function edit($id)
     {
 
-        $projectsDetails = Projects::find($id);
-        $dataWithPluckOfClients = Client::pluck('full_name', 'id');
-        $dataWithPluckOfDeals = Deals::pluck('name', 'id');
-        $dataWithPluckOfCompanies = Companies::pluck('name', 'id');
+        $projectsDetails = ProjectsModel::find($id);
+        $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
+        $dataWithPluckOfDeals = DealsModel::pluck('name', 'id');
+        $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
 
         return View::make('crm.projects.edit')
             ->with([
@@ -130,12 +130,12 @@ class ProjectsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Projects::getRules('STORE'));
+        $validator = Validator::make($allInputs, ProjectsModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (Projects::updateRow($id, $allInputs)) {
+            if (ProjectsModel::updateRow($id, $allInputs)) {
                 return Redirect::to('projects')->with('message_success', Language::getMessage('messages.SuccessProjectsStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorProjectsStore'));
@@ -152,10 +152,10 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
-        $projectsDetails = Projects::find($id);
+        $projectsDetails = ProjectsModel::find($id);
         $projectsDetails->delete();
 
-        SystemLogsController::insertSystemLogs('Projects has been deleted with id: ' . $projectsDetails->id, 200);
+        SystemLogsController::insertSystemLogs('ProjectsModel has been deleted with id: ' . $projectsDetails->id, 200);
 
         return Redirect::to('projects')->with('message_success', Language::getMessage('messages.SuccessProjectsDelete'));
     }
@@ -167,10 +167,10 @@ class ProjectsController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $projectsDetails = Projects::find($id);
+        $projectsDetails = ProjectsModel::find($id);
 
-        if (Projects::setActive($projectsDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('Projects has been enabled with id: ' . $projectsDetails->id, 200);
+        if (ProjectsModel::setActive($projectsDetails->id, $value)) {
+            SystemLogsController::insertSystemLogs('ProjectsModel has been enabled with id: ' . $projectsDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProjectsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProjectsIsActived'));
@@ -183,7 +183,7 @@ class ProjectsController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findProjectsByValue = count(Projects::trySearchProjectsByValue('full_name', $getValueInput, 10));
+        $findProjectsByValue = count(ProjectsModel::trySearchProjectsByValue('full_name', $getValueInput, 10));
         $dataOfProjects = $this->getDataAndPagination();
 
         if (!$findProjectsByValue > 0) {

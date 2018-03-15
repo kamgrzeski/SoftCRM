@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Client;
-use App\Employees;
+use App\Models\ClientsModel;
+use App\Models\EmployeesModel;
+use App\Models\Language;
 use Request;
 use App\Http\Controllers\Controller;
-use App\Language;
 use View;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -21,8 +21,8 @@ class EmployeesController extends Controller
     private function getDataAndPagination()
     {
         $dataOfEmployees = [
-            'employees' => Employees::all()->sortByDesc('created_at'),
-            'employeesPaginate' => Employees::paginate(Config::get('crm_settings.pagination_size'))
+            'employees' => EmployeesModel::all()->sortByDesc('created_at'),
+            'employeesPaginate' => EmployeesModel::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataOfEmployees;
@@ -45,7 +45,7 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        $dataOfClients = Client::pluck('full_name', 'id');
+        $dataOfClients = ClientsModel::pluck('full_name', 'id');
         return View::make('crm.employees.create', compact('dataOfClients'));
     }
 
@@ -63,7 +63,7 @@ class EmployeesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('employees/create')->with('message_danger', $validator->errors());
         } else {
-            if ($employee = Employees::insertRow($allInputs)) {
+            if ($employee = EmployeesModel::insertRow($allInputs)) {
                 SystemLogsController::insertSystemLogs('Employees has been add with id: '. $employee, 200);
                 return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesStore'));
             } else {
@@ -80,7 +80,7 @@ class EmployeesController extends Controller
      */
     public function show($id)
     {
-        $dataOfEmployees = Employees::find($id);
+        $dataOfEmployees = EmployeesModel::find($id);
         return View::make('crm.employees.show')
             ->with('employees', $dataOfEmployees);
     }
@@ -93,8 +93,8 @@ class EmployeesController extends Controller
      */
     public function edit($id)
     {
-        $dataOfEmployees = Employees::find($id);
-        $dataWithPluckOfClients = Client::pluck('full_name', 'id');
+        $dataOfEmployees = EmployeesModel::find($id);
+        $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
 
         return View::make('crm.employees.edit')
             ->with([
@@ -113,12 +113,12 @@ class EmployeesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Employees::getRules('STORE'));
+        $validator = Validator::make($allInputs, EmployeesModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('employees')->with('message_danger', $validator->errors());
         } else {
-            if (Employees::updateRow($id, $allInputs)) {
+            if (EmployeesModel::updateRow($id, $allInputs)) {
                 return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesUpdate'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorEmployeesUpdate'));
@@ -135,7 +135,7 @@ class EmployeesController extends Controller
      */
     public function destroy($id)
     {
-        $dataOfEmployees = Employees::find($id);
+        $dataOfEmployees = EmployeesModel::find($id);
         $countContacts = count($dataOfEmployees->contacts()->get());
         $countTasks = count($dataOfEmployees->tasks()->get());
 
@@ -161,8 +161,8 @@ class EmployeesController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $dataOfEmployees = Employees::find($id);
-        if (Employees::setActive($dataOfEmployees->id, $value)) {
+        $dataOfEmployees = EmployeesModel::find($id);
+        if (EmployeesModel::setActive($dataOfEmployees->id, $value)) {
             SystemLogsController::insertSystemLogs('Employees has been enabled with id: ' . $dataOfEmployees->id, 200);
             return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesActive'));
         } else {
@@ -176,7 +176,7 @@ class EmployeesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findEmployeesByValue = count(Employees::trySearchEmployeesByValue('full_name', $getValueInput, 10));
+        $findEmployeesByValue = count(EmployeesModel::trySearchEmployeesByValue('full_name', $getValueInput, 10));
         $dataOfEmployees = $this->getDataAndPagination();
 
         if (!$findEmployeesByValue > 0) {

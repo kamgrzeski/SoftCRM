@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\SystemLogs;
 use App\Http\Controllers\Controller;
+use App\Models\SystemLogsModel;
 
 class SystemLogsController extends Controller
 {
@@ -14,7 +14,7 @@ class SystemLogsController extends Controller
      */
     public static function insertSystemLogs($actions, $statusCode)
     {
-        $logs = new SystemLogs();
+        $logs = new SystemLogsModel();
         if($logs->insertRow($actions, $statusCode)) {
             return true;
         }

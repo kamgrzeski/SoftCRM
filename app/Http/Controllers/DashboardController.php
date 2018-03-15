@@ -2,19 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Companies;
-use App\Deals;
-use App\Finances;
-use App\Products;
-use App\Projects;
-use App\Sales;
-use App\Services\CalculateCash;
+use App\Models\CompaniesModel;
+use App\Models\ProductsModel;
 use App\Services\CalculateCashService;
 use App\Services\graphDataService;
 use App\Services\helpersFncService;
-use App\Tasks;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -35,8 +27,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $dataWithAllCompanies = Companies::all()->sortBy('created_at', 0, true)->slice(0, 5);
-        $dataWithAllProducts = Products::all()->sortBy('created_at', 0, true)->slice(0, 5);
+        $dataWithAllCompanies = CompaniesModel::all()->sortBy('created_at', 0, true)->slice(0, 5);
+        $dataWithAllProducts = ProductsModel::all()->sortBy('created_at', 0, true)->slice(0, 5);
 
         return view('index')->with([
             'dataWithAllTasks' => $this->formatTasks(),

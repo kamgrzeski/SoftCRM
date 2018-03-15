@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Companies;
-use App\Finances;
 use App\Http\Controllers\Controller;
-use App\Language;
+use App\Models\CompaniesModel;
+use App\Models\FinancesModel;
+use App\Models\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -21,8 +21,8 @@ class FinancesController extends Controller
     private function getDataAndPagination()
     {
         $dataOfFinances = [
-            'finances' => Finances::all()->sortByDesc('created_at'),
-            'financesPaginate' => Finances::paginate(Config::get('crm_settings.pagination_size'))
+            'finances' => FinancesModel::all()->sortByDesc('created_at'),
+            'financesPaginate' => FinancesModel::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataOfFinances;
@@ -45,7 +45,7 @@ class FinancesController extends Controller
      */
     public function create()
     {
-        $dataWithPluckOfCompanies = Companies::pluck('name', 'id');
+        $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
         return View::make('crm.finances.create', compact('dataWithPluckOfCompanies'));
     }
 
@@ -58,13 +58,13 @@ class FinancesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Finances::getRules('STORE'));
+        $validator = Validator::make($allInputs, FinancesModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('finances/create')->with('message_danger', $validator->errors());
         } else {
-            if ($finance = Finances::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Finances has been add with id: '. $finance, 200);
+            if ($finance = FinancesModel::insertRow($allInputs)) {
+                SystemLogsController::insertSystemLogs('FinancesModel has been add with id: '. $finance, 200);
                 return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFinancesStore'));
@@ -80,7 +80,7 @@ class FinancesController extends Controller
      */
     public function show($id)
     {
-        $dataOfFinances = Finances::find($id);
+        $dataOfFinances = FinancesModel::find($id);
 
         return View::make('crm.finances.show')
             ->with([
@@ -96,8 +96,8 @@ class FinancesController extends Controller
      */
     public function edit($id)
     {
-        $dataOfFinances = Finances::find($id);
-        $dataWithPluckOfCompaniess = Companies::pluck('name', 'id');
+        $dataOfFinances = FinancesModel::find($id);
+        $dataWithPluckOfCompaniess = CompaniesModel::pluck('name', 'id');
 
         return View::make('crm.finances.edit')
             ->with([
@@ -116,12 +116,12 @@ class FinancesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Finances::getRules('STORE'));
+        $validator = Validator::make($allInputs, FinancesModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator->errors());
         } else {
-            if (Finances::updateRow($id, $allInputs)) {
+            if (FinancesModel::updateRow($id, $allInputs)) {
                 return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesUpdate'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorFinancesUpdate'));
@@ -138,11 +138,11 @@ class FinancesController extends Controller
      */
     public function destroy($id)
     {
-        $dataOfFinances = Finances::find($id);
+        $dataOfFinances = FinancesModel::find($id);
 
         $dataOfFinances->delete();
 
-        SystemLogsController::insertSystemLogs('Finances has been deleted with id: ' . $dataOfFinances->id, 200);
+        SystemLogsController::insertSystemLogs('FinancesModel has been deleted with id: ' . $dataOfFinances->id, 200);
 
         return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesDelete'));
     }
@@ -154,10 +154,10 @@ class FinancesController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $dataOfFinances = Finances::find($id);
+        $dataOfFinances = FinancesModel::find($id);
 
-        if (Finances::setActive($dataOfFinances->id, $value)) {
-            SystemLogsController::insertSystemLogs('Finances has been enabled with id: ' . $dataOfFinances->id, 200);
+        if (FinancesModel::setActive($dataOfFinances->id, $value)) {
+            SystemLogsController::insertSystemLogs('FinancesModel has been enabled with id: ' . $dataOfFinances->id, 200);
             return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFinancesActive'));
@@ -170,7 +170,7 @@ class FinancesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findFinancesByValue = count(Finances::trySearchFinancesByValue('name', $getValueInput, 10));
+        $findFinancesByValue = count(FinancesModel::trySearchFinancesByValue('name', $getValueInput, 10));
         $dataOfFinances = $this->getDataAndPagination();
 
         if (!$findFinancesByValue > 0) {

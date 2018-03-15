@@ -48,28 +48,28 @@
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('client_id', 'Assign client') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('client_id', $dataOfClients, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
+                                    {{ Form::select('client_id', $dataOfClients, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
                                 </div>
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('cost', 'Cost') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::text('cost', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('cost', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('start_time', 'Start date') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::date('start_time', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::date('start_time', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                                 {{ Form::label('count', 'Count') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::text('count', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('count', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -87,7 +87,7 @@
                                 {{ Form::label('client_id', 'Assign companies') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('companies_id', $dataOfCompanies, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
+                                    {{ Form::select('companies_id', $dataOfCompanies, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
                                 </div>
                             </div>
 
@@ -95,7 +95,7 @@
                                 {{ Form::label('client_id', 'Assign deals') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('deals_id', $dataOfDeals, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
+                                    {{ Form::select('deals_id', $dataOfDeals, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
                                 </div>
                             </div>
 

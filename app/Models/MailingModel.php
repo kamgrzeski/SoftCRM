@@ -1,20 +1,21 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
-class Sales extends Model
+class MailingModel extends Model
 {
+    protected $table = 'mailing';
+
     /**
      * @param $allInputs
      * @return mixed
      */
     public static function insertRow($allInputs)
     {
-        return Sales::insertGetId(
+        return MailingModel::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'created_at' => Carbon::now(),
@@ -30,7 +31,7 @@ class Sales extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Sales::where('id', '=', $id)->update(
+        return MailingModel::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'updated_at' => Carbon::now(),
@@ -59,12 +60,12 @@ class Sales extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $findSalesById = Sales::where('id', '=', $id)->update(
+        $findMailingById = MailingModel::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
 
-        if ($findSalesById) {
+        if ($findMailingById) {
             return TRUE;
         } else {
             return FALSE;
@@ -74,9 +75,9 @@ class Sales extends Model
     /**
      * @return int
      */
-    public static function countSales()
+    public static function countMailing()
     {
-        return count(Sales::get());
+        return count(MailingModel::get());
     }
 
     /**
@@ -85,8 +86,13 @@ class Sales extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchSalesByValue($type, $value, $paginationLimit = 10)
+    public static function trySearchMailingByValue($type, $value, $paginationLimit = 10)
     {
-        return Sales::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return MailingModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+    }
+
+    public static function addEmailToMailManager($allInputs)
+    {
+        die('coming soon');
     }
 }

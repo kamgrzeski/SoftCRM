@@ -1,20 +1,24 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Tasks extends Model
+class TasksModel extends Model
 {
+    /**
+     * table name
+     */
+    protected $table = 'tasks';
     /**
      * @param $allInputs
      * @return mixed
      */
     public static function insertRow($allInputs)
     {
-        return Tasks::insertGetId(
+        return TasksModel::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'employee_id' => $allInputs['employee_id'],
@@ -32,7 +36,7 @@ class Tasks extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Tasks::where('id', '=', $id)->update(
+        return TasksModel::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'employee_id' => $allInputs['employee_id'],
@@ -65,7 +69,7 @@ class Tasks extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $findTasksById = Tasks::where('id', '=', $id)->update(
+        $findTasksById = TasksModel::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -85,7 +89,7 @@ class Tasks extends Model
      */
     public static function setCompleted($id, $completeType)
     {
-        $findTasksById = Tasks::where('id', '=', $id)->update(
+        $findTasksById = TasksModel::where('id', '=', $id)->update(
             [
                 'completed' => $completeType
             ]);
@@ -102,7 +106,7 @@ class Tasks extends Model
      */
     public static function countTasks()
     {
-        return count(Tasks::get());
+        return count(TasksModel::get());
     }
 
     /**
@@ -113,7 +117,7 @@ class Tasks extends Model
      */
     public static function trySearchTasksByValue($type, $value, $paginationLimit = 10)
     {
-        return Tasks::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return TasksModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 
     /**
@@ -121,7 +125,7 @@ class Tasks extends Model
      */
     public function employees()
     {
-        return $this->belongsTo(Employees::class, 'employee_id');
+        return $this->belongsTo(EmployeesModel::class, 'employee_id');
     }
 
     /**
@@ -130,9 +134,9 @@ class Tasks extends Model
      */
     public static function getAllCompletedAndUncompletedTasks($isCompleted)
     {
-        $tasks = Tasks::where('completed', '=', $isCompleted)->count();
+        $tasks = TasksModel::where('completed', '=', $isCompleted)->count();
 
-        $taskAll = Tasks::all()->count();
+        $taskAll = TasksModel::all()->count();
 
         $percentage = round(($tasks / $taskAll) * 100);
 

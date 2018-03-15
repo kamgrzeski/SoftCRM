@@ -41,7 +41,7 @@
                                 {{ Form::label('client_id', 'Assign client') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
+                                    {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
                                 </div>
                             </div>
 
@@ -49,7 +49,7 @@
                                 {{ Form::label('employee_id', 'Assign employee') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
+                                    {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                                 {{ Form::label('date', 'Date') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    {{ Form::date('date', null, array('class' => 'form-control', 'required', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::date('date', null, array('class' => 'form-control', 'required', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>

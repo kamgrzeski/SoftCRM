@@ -1,21 +1,28 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Files extends Model
+class DealsModel extends Model
 {
+    /**
+     * table name
+     */
+    protected $table = 'deals';
+
     /**
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public static function insertGetId($allInputs)
     {
-        return Files::insertGetId(
+        return DealsModel::insert(
             [
                 'name' => $allInputs['name'],
+                'start_time' => $allInputs['start_time'],
+                'end_time' => $allInputs['end_time'],
                 'companies_id' => $allInputs['companies_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
@@ -30,11 +37,12 @@ class Files extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Files::where('id', '=', $id)->update(
+        return DealsModel::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
+                'start_time' => $allInputs['start_time'],
+                'end_time' => $allInputs['end_time'],
                 'companies_id' => $allInputs['companies_id'],
-                'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }
@@ -49,6 +57,8 @@ class Files extends Model
             case 'STORE':
                 return [
                     'name' => 'required',
+                    'start_time' => 'required',
+                    'end_time' => 'required',
                     'companies_id' => 'required',
                 ];
         }
@@ -61,12 +71,12 @@ class Files extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $findFilesById = Files::where('id', '=', $id)->update(
+        $findDealsById = DealsModel::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
 
-        if ($findFilesById) {
+        if ($findDealsById) {
             return TRUE;
         } else {
             return FALSE;
@@ -76,9 +86,9 @@ class Files extends Model
     /**
      * @return int
      */
-    public static function countFiles()
+    public static function countDeals()
     {
-        return count(Files::get());
+        return count(DealsModel::get());
     }
 
     /**
@@ -86,7 +96,7 @@ class Files extends Model
      */
     public function companies()
     {
-        return $this->belongsTo(Companies::class);
+        return $this->belongsTo(CompaniesModel::class);
     }
 
     /**
@@ -95,8 +105,20 @@ class Files extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchFilesByValue($type, $value, $paginationLimit = 10)
+    public static function trySearchDealsByValue($type, $value, $paginationLimit = 10)
     {
-        return Files::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return DealsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+    }
+
+    /**
+     * @return float|int
+     */
+    public static function getDealsInLatestMonth() {
+        $dealsCount = DealsModel::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allDeals = DealsModel::all()->count();
+
+        $percentage = ($allDeals / 100) * $dealsCount;
+
+        return $percentage;
     }
 }

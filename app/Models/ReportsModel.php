@@ -1,24 +1,29 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Products extends Model
+class ReportsModel extends Model
 {
+
+    /**
+     * table name
+     */
+    protected $table = 'reports';
+
     /**
      * @param $allInputs
      * @return mixed
      */
     public static function insertRow($allInputs)
     {
-        return Products::insertGetId(
+        return ReportsModel::insertGetId(
             [
                 'name' => $allInputs['name'],
-                'category' => $allInputs['category'],
-                'count' => $allInputs['count'],
-                'price' => $allInputs['price'] * 100,
+                'companies_id' => $allInputs['companies_id'],
+                'clients_id' => $allInputs['clients_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
@@ -32,12 +37,11 @@ class Products extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Products::where('id', '=', $id)->update(
+        return ReportsModel::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
-                'category' => $allInputs['category'],
-                'count' => $allInputs['count'],
-                'price' => $allInputs['price'],
+                'companies_id' => $allInputs['companies_id'],
+                'clients_id' => $allInputs['clients_id'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
@@ -53,9 +57,7 @@ class Products extends Model
             case 'STORE':
                 return [
                     'name' => 'required',
-                    'category' => 'required',
-                    'count' => 'required',
-                    'price' => 'required'
+                    'companies_id' => 'required',
                 ];
         }
     }
@@ -67,12 +69,12 @@ class Products extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $findProductsById = Products::where('id', '=', $id)->update(
+        $findReportsById = ReportsModel::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
 
-        if ($findProductsById) {
+        if ($findReportsById) {
             return TRUE;
         } else {
             return FALSE;
@@ -82,9 +84,9 @@ class Products extends Model
     /**
      * @return int
      */
-    public static function countProducts()
+    public static function countReports()
     {
-        return count(Products::get());
+        return count(ReportsModel::get());
     }
 
     /**
@@ -93,8 +95,8 @@ class Products extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchProductsByValue($type, $value, $paginationLimit = 10)
+    public static function trySearchReportsByValue($type, $value, $paginationLimit = 10)
     {
-        return Products::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return ReportsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 }

@@ -1,6 +1,6 @@
     @extends('layouts.base')
 
-@section('caption', 'Settings')
+@section('caption', 'SettingsModel')
 
 @section('title', 'Settings')
 

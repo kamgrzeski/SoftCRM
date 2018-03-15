@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Companies;
-use App\Deals;
 use App\Http\Controllers\Controller;
-use App\Language;
+use App\Models\CompaniesModel;
+use App\Models\DealsModel;
+use App\Models\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -21,8 +21,8 @@ class DealsController extends Controller
     private function getDataAndPagination()
     {
         $dataOfDeals = [
-            'deals' => Deals::all()->sortByDesc('created_at'),
-            'dealsPaginate' => Deals::paginate(Config::get('crm_settings.pagination_size'))
+            'deals' => DealsModel::all()->sortByDesc('created_at'),
+            'dealsPaginate' => DealsModel::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataOfDeals;
@@ -45,7 +45,7 @@ class DealsController extends Controller
      */
     public function create()
     {
-        $dataOfDeals = Companies::pluck('name', 'id');
+        $dataOfDeals = CompaniesModel::pluck('name', 'id');
         return View::make('crm.deals.create', compact('dataOfDeals'));
     }
 
@@ -58,12 +58,12 @@ class DealsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Deals::getRules('STORE'));
+        $validator = Validator::make($allInputs, DealsModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('deals/create')->with('message_danger', $validator->errors());
         } else {
-            if ($deal = Deals::insertRow($allInputs)) {
+            if ($deal = DealsModel::insertRow($allInputs)) {
                 SystemLogsController::insertSystemLogs('Deal has been add with id: '. $deal, 200);
                 return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsStore'));
             } else {
@@ -80,7 +80,7 @@ class DealsController extends Controller
      */
     public function show($id)
     {
-        $dataOfDeals = Deals::find($id);
+        $dataOfDeals = DealsModel::find($id);
 
         return View::make('crm.deals.show')
             ->with('deals', $dataOfDeals);
@@ -94,8 +94,8 @@ class DealsController extends Controller
      */
     public function edit($id)
     {
-        $dataOfDeals = Deals::find($id);
-        $dataWithPluckOfCompanies = Companies::pluck('name', 'id');
+        $dataOfDeals = DealsModel::find($id);
+        $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
 
         return View::make('crm.deals.edit')
             ->with([
@@ -114,12 +114,12 @@ class DealsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Deals::getRules('STORE'));
+        $validator = Validator::make($allInputs, DealsModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (Deals::updateRow($id, $allInputs)) {
+            if (DealsModel::updateRow($id, $allInputs)) {
                 return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsUpdate'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsUpdate'));
@@ -136,10 +136,10 @@ class DealsController extends Controller
      */
     public function destroy($id)
     {
-        $dataOfDeals = Deals::find($id);
+        $dataOfDeals = DealsModel::find($id);
         $dataOfDeals->delete();
 
-        SystemLogsController::insertSystemLogs('Deals has been deleted with id: ' .$dataOfDeals->id, 200);
+        SystemLogsController::insertSystemLogs('DealsModel has been deleted with id: ' .$dataOfDeals->id, 200);
 
         return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsDelete'));
     }
@@ -151,10 +151,10 @@ class DealsController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $dataOfDeals = Deals::find($id);
+        $dataOfDeals = DealsModel::find($id);
 
-        if (Deals::setActive($dataOfDeals->id, $value)) {
-            SystemLogsController::insertSystemLogs('Deals has been enabled with id: ' .$dataOfDeals->id, 200);
+        if (DealsModel::setActive($dataOfDeals->id, $value)) {
+            SystemLogsController::insertSystemLogs('DealsModel has been enabled with id: ' .$dataOfDeals->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessDealsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsActive'));
@@ -167,7 +167,7 @@ class DealsController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findDealsByValue = count(Deals::trySearchDealsByValue('name', $getValueInput, 10));
+        $findDealsByValue = count(DealsModel::trySearchDealsByValue('name', $getValueInput, 10));
         $dataOfDeals = $this->getDataAndPagination();
 
         if (!$findDealsByValue > 0) {

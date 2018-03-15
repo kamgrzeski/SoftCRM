@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Client;
-use App\Mailing;
 use App\Http\Controllers\Controller;
-use App\Language;
+use App\Models\ClientsModel;
+use App\Models\MailingModel;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -21,8 +20,8 @@ class MailingController extends Controller
     private function getDataAndPagination()
     {
         $dataWithMailing = [
-            'mailing' => Mailing::all()->sortByDesc('created_at'),
-            'mailingPaginate' => Mailing::paginate(Config::get('crm_settings.pagination_size'))
+            'mailing' => MailingModel::all()->sortByDesc('created_at'),
+            'mailingPaginate' => MailingModel::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataWithMailing;
@@ -35,7 +34,7 @@ class MailingController extends Controller
      */
     public function index()
     {
-        $clientEmails = Client::All();
+        $clientEmails = ClientsModel::All();
         return View::make('crm.mailing.index')->with([
             'clientEmails' => $clientEmails]);
     }
@@ -47,7 +46,7 @@ class MailingController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findMailingByValue = count(Mailing::trySearchMailingByValue('full_name', $getValueInput, 10));
+        $findMailingByValue = count(MailingModel::trySearchMailingByValue('full_name', $getValueInput, 10));
         $dataOfMailing = $this->getDataAndPagination();
 
         if (!$findMailingByValue > 0) {
@@ -62,6 +61,6 @@ class MailingController extends Controller
 
     public function sendEmailToThisEmailAddress($allInputs)
     {
-        Mailing::addEmailToMailManager($allInputs);
+        MailingModel::addEmailToMailManager($allInputs);
     }
 }

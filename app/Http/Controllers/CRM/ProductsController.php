@@ -4,7 +4,7 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Language;
-use App\Products;
+use App\Models\ProductsModel;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -20,8 +20,8 @@ class ProductsController extends Controller
     private function getDataAndPagination()
     {
         $dataWithProducts = [
-            'products' => Products::all()->sortByDesc('created_at'),
-            'productsPaginate' => Products::paginate(Config::get('crm_settings.pagination_size'))
+            'products' => ProductsModel::all()->sortByDesc('created_at'),
+            'productsPaginate' => ProductsModel::paginate(Config::get('crm_settings.pagination_size'))
         ];
 
         return $dataWithProducts;
@@ -56,12 +56,12 @@ class ProductsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Products::getRules('STORE'));
+        $validator = Validator::make($allInputs, ProductsModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('products/create')->with('message_danger', $validator->errors());
         } else {
-            if ($product = Products::insertRow($allInputs)) {
+            if ($product = ProductsModel::insertRow($allInputs)) {
                 SystemLogsController::insertSystemLogs('Product has been add with id: '. $product, 200);
                 return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsStore'));
             } else {
@@ -78,7 +78,7 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $dataOfProducts = Products::find($id);
+        $dataOfProducts = ProductsModel::find($id);
 
         return View::make('crm.products.show')
             ->with([
@@ -94,7 +94,7 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        $productsDetails = Products::find($id);
+        $productsDetails = ProductsModel::find($id);
 
         return View::make('crm.products.edit')
             ->with('products', $productsDetails);
@@ -110,12 +110,12 @@ class ProductsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, Products::getRules('STORE'));
+        $validator = Validator::make($allInputs, ProductsModel::getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (Products::updateRow($id, $allInputs)) {
+            if (ProductsModel::updateRow($id, $allInputs)) {
                 return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorProductsStore'));
@@ -132,10 +132,10 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        $productsDetails = Products::find($id);
+        $productsDetails = ProductsModel::find($id);
         $productsDetails->delete();
 
-        SystemLogsController::insertSystemLogs('Products has been deleted with id: ' . $productsDetails->id, 200);
+        SystemLogsController::insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, 200);
 
 
         return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsDelete'));
@@ -148,10 +148,10 @@ class ProductsController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $productsDetails = Products::find($id);
+        $productsDetails = ProductsModel::find($id);
 
-        if (Products::setActive($productsDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('Products has been enabled with id: ' . $productsDetails->id, 200);
+        if (ProductsModel::setActive($productsDetails->id, $value)) {
+            SystemLogsController::insertSystemLogs('ProductsModel has been enabled with id: ' . $productsDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProductsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProductsIsActived'));
@@ -164,7 +164,7 @@ class ProductsController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findProductsByValue = count(Products::trySearchProductsByValue('full_name', $getValueInput, 10));
+        $findProductsByValue = count(ProductsModel::trySearchProductsByValue('full_name', $getValueInput, 10));
         $dataOfProducts = $this->getDataAndPagination();
 
         if (!$findProductsByValue > 0) {

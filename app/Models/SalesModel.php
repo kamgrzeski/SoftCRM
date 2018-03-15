@@ -1,23 +1,26 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
-class Reports extends Model
+class SalesModel extends Model
 {
+    /**
+     * table name
+     */
+    protected $table = 'sales';
     /**
      * @param $allInputs
      * @return mixed
      */
     public static function insertRow($allInputs)
     {
-        return Reports::insertGetId(
+        return SalesModel::insertGetId(
             [
                 'name' => $allInputs['name'],
-                'companies_id' => $allInputs['companies_id'],
-                'clients_id' => $allInputs['clients_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
@@ -31,11 +34,9 @@ class Reports extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Reports::where('id', '=', $id)->update(
+        return SalesModel::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
-                'companies_id' => $allInputs['companies_id'],
-                'clients_id' => $allInputs['clients_id'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
@@ -50,8 +51,7 @@ class Reports extends Model
         switch ($rulesType) {
             case 'STORE':
                 return [
-                    'name' => 'required',
-                    'companies_id' => 'required',
+                    'name' => 'required'
                 ];
         }
     }
@@ -63,12 +63,12 @@ class Reports extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $findReportsById = Reports::where('id', '=', $id)->update(
+        $findSalesById = SalesModel::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
 
-        if ($findReportsById) {
+        if ($findSalesById) {
             return TRUE;
         } else {
             return FALSE;
@@ -78,9 +78,9 @@ class Reports extends Model
     /**
      * @return int
      */
-    public static function countReports()
+    public static function countSales()
     {
-        return count(Reports::get());
+        return count(SalesModel::get());
     }
 
     /**
@@ -89,8 +89,8 @@ class Reports extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchReportsByValue($type, $value, $paginationLimit = 10)
+    public static function trySearchSalesByValue($type, $value, $paginationLimit = 10)
     {
-        return Reports::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return SalesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 }

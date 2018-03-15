@@ -8,7 +8,8 @@
 
 namespace App\Services;
 
-use App\Products;
+use App\Models\ProductsModel;
+use App\Models\TasksModel;
 use App\Tasks;
 use Carbon\Carbon;
 use ClickNow\Money\Money;
@@ -21,7 +22,7 @@ class CalculateCashService
      */
     public function countCashTurnover()
     {
-        $products = Products::all();
+        $products = ProductsModel::all();
         $productSum = 0;
 
         foreach($products as $product) {
@@ -38,7 +39,7 @@ class CalculateCashService
      */
     public function countTodayIncome()
     {
-        $products = Products::whereDate('created_at', Carbon::today())->get();
+        $products = ProductsModel::whereDate('created_at', Carbon::today())->get();
         $productSum = 0;
 
         foreach($products as $product) {
@@ -55,7 +56,7 @@ class CalculateCashService
      */
     public function countYesterdayIncome()
     {
-        $products = Products::whereDate('created_at', Carbon::yesterday())->get();
+        $products = ProductsModel::whereDate('created_at', Carbon::yesterday())->get();
         $productSum = 0;
 
         foreach($products as $product) {
@@ -95,7 +96,7 @@ class CalculateCashService
         }
 
         if($isCompleted) {
-            $posts = Tasks::where( 'created_at', '>=', $dates->keys()->first() )->where('completed', '=', 1)
+            $posts = TasksModel::where( 'created_at', '>=', $dates->keys()->first() )->where('completed', '=', 1)
                 ->groupBy( 'date' )
                 ->orderBy( 'date' )
                 ->get( [
@@ -104,7 +105,7 @@ class CalculateCashService
                 ] )
                 ->pluck( 'count', 'date' );
         } else {
-            $posts = Tasks::where( 'created_at', '>=', $dates->keys()->first() )
+            $posts = TasksModel::where( 'created_at', '>=', $dates->keys()->first() )
                 ->groupBy( 'date' )
                 ->orderBy( 'date' )
                 ->get( [

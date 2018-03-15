@@ -1,19 +1,25 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Finances extends Model
+class FinancesModel extends Model
 {
+
+    /**
+     * table name
+     */
+    protected $table = 'finances';
+
     /**
      * @param $allInputs
      * @return mixed
      */
     public static function insertRow($allInputs)
     {
-        return Finances::insertGetId(
+        return FinancesModel::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'companies_id' => $allInputs['companies_id'],
@@ -30,7 +36,7 @@ class Finances extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Finances::where('id', '=', $id)->update(
+        return FinancesModel::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'companies_id' => $allInputs['companies_id'],
@@ -61,7 +67,7 @@ class Finances extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $findFinancesById = Finances::where('id', '=', $id)->update(
+        $findFinancesById = FinancesModel::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -78,7 +84,7 @@ class Finances extends Model
      */
     public static function countFinances()
     {
-        return count(Finances::get());
+        return count(FinancesModel::get());
     }
 
     /**
@@ -89,7 +95,7 @@ class Finances extends Model
      */
     public static function trySearchFinancesByValue($type, $value, $paginationLimit = 10)
     {
-        return Finances::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return FinancesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 
     /**
@@ -97,6 +103,6 @@ class Finances extends Model
      */
     public function companies()
     {
-        return $this->belongsTo(Companies::class);
+        return $this->belongsTo(CompaniesModel::class);
     }
 }

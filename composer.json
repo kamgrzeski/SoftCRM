@@ -27,7 +27,8 @@
         "classmap": [
             "database/seeds",
             "database/factories",
-            "app/Services"
+            "app/Services",
+            "app/Models"
         ],
         "psr-4": {
             "App\\": "app/"

@@ -30,7 +30,7 @@
                                 {{ Form::label('full_name', 'Full name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('full_name', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'), 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('full_name', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'), 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -38,7 +38,7 @@
                                 {{ Form::label('phone', 'Phone') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
-                                    {{ Form::text('phone', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('phone', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -46,7 +46,7 @@
                                 {{ Form::label('budget', 'Budget') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
-                                    {{ Form::text('budget', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('budget', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -54,7 +54,7 @@
                                 {{ Form::label('city', 'City') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                    {{ Form::text('city', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('city', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -62,7 +62,7 @@
                                 {{ Form::label('country', 'Country') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                    {{ Form::text('country', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('country', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                                 {{ Form::label('email', 'Emial address') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                    {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -80,7 +80,7 @@
                                 {{ Form::label('priority', 'Priority') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-child"></i></span>
-                                    {{ Form::select('priority', \App\Services\helpersFncService::getPrioritySize(), null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')]) }}
+                                    {{ Form::select('priority', \App\Services\helpersFncService::getPrioritySize(), null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
@@ -88,7 +88,7 @@
                                 {{ Form::label('section', 'Section') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-feed"></i></span>
-                                    {{ Form::select('section', ['transport' => 'transport', 'logistic' => 'logistic', 'finances' => 'finances'], null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')]) }}
+                                    {{ Form::select('section', ['transport' => 'transport', 'logistic' => 'logistic', 'finances' => 'finances'], null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
@@ -96,7 +96,7 @@
                                 {{ Form::label('location', 'Location') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pie-chart"></i></span>
-                                    {{ Form::text('location', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('location', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -104,7 +104,7 @@
                                 {{ Form::label('zip', 'ZIP') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-registered"></i></span>
-                                    {{ Form::text('zip', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('zip', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 

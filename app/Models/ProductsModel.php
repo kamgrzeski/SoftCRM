@@ -1,13 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Mailing extends Model
+class ProductsModel extends Model
 {
-    protected $table = 'mailing';
+    /**
+     * table name
+     */
+    protected $table = 'products';
 
     /**
      * @param $allInputs
@@ -15,9 +18,12 @@ class Mailing extends Model
      */
     public static function insertRow($allInputs)
     {
-        return Mailing::insertGetId(
+        return ProductsModel::insertGetId(
             [
                 'name' => $allInputs['name'],
+                'category' => $allInputs['category'],
+                'count' => $allInputs['count'],
+                'price' => $allInputs['price'] * 100,
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
@@ -31,9 +37,12 @@ class Mailing extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Mailing::where('id', '=', $id)->update(
+        return ProductsModel::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
+                'category' => $allInputs['category'],
+                'count' => $allInputs['count'],
+                'price' => $allInputs['price'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
@@ -48,7 +57,10 @@ class Mailing extends Model
         switch ($rulesType) {
             case 'STORE':
                 return [
-                    'name' => 'required'
+                    'name' => 'required',
+                    'category' => 'required',
+                    'count' => 'required',
+                    'price' => 'required'
                 ];
         }
     }
@@ -60,12 +72,12 @@ class Mailing extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $findMailingById = Mailing::where('id', '=', $id)->update(
+        $findProductsById = ProductsModel::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
 
-        if ($findMailingById) {
+        if ($findProductsById) {
             return TRUE;
         } else {
             return FALSE;
@@ -75,9 +87,9 @@ class Mailing extends Model
     /**
      * @return int
      */
-    public static function countMailing()
+    public static function countProducts()
     {
-        return count(Mailing::get());
+        return count(ProductsModel::get());
     }
 
     /**
@@ -86,13 +98,8 @@ class Mailing extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchMailingByValue($type, $value, $paginationLimit = 10)
+    public static function trySearchProductsByValue($type, $value, $paginationLimit = 10)
     {
-        return Mailing::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
-    }
-
-    public static function addEmailToMailManager($allInputs)
-    {
-        die('coming soon');
+        return ProductsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 }

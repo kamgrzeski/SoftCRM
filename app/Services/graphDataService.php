@@ -8,12 +8,11 @@
 
 namespace App\Services;
 
-use App\Deals;
-use App\Finances;
-use App\Products;
-use App\Projects;
-use App\Sales;
-use App\Services;
+use App\Models\DealsModel;
+use App\Models\FinancesModel;
+use App\Models\ProductsModel;
+use App\Models\ProjectsModel;
+use App\Models\SalesModel;
 
 class graphDataService
 {
@@ -57,6 +56,9 @@ class graphDataService
         return false;
     }
 
+    /**
+     * @return mixed
+     */
     public function itemsCountGraphData() {
         $itemsCountGraphData = app()->chartjs
             ->name('cashTurnoverGraphData')
@@ -64,29 +66,29 @@ class graphDataService
             ->size(['width' => 400, 'height' => 200])
             ->datasets([
                 [
-                    "label" => "Products",
+                    "label" => "ProductsModel",
                     'backgroundColor' => ['rgba(227, 67, 51, 1)', 'rgba(54, 162, 235, 0.2)'],
-                    'data' => [Products::countProducts()]
+                    'data' => [ProductsModel::countProducts()]
                 ],
                 [
-                    "label" => "Sales",
+                    "label" => "SalesModel",
                     'backgroundColor' => ['rgba(228, 115, 45, 1)', 'rgba(54, 162, 235, 0.3)'],
-                    'data' => [Sales::countSales()]
+                    'data' => [SalesModel::countSales()]
                 ],
                 [
-                    "label" => "Finances",
+                    "label" => "FinancesModel",
                     'backgroundColor' => ['rgba(249, 195, 100, 1)', 'rgba(54, 162, 235, 0.3)'],
-                    'data' => [Finances::countFinances()]
+                    'data' => [FinancesModel::countFinances()]
                 ],
                 [
-                    "label" => "Projects",
+                    "label" => "ProjectsModel",
                     'backgroundColor' => ['rgba(151, 186, 241, 1)', 'rgba(54, 162, 235, 0.3)'],
-                    'data' => [Projects::countProjects()]
+                    'data' => [ProjectsModel::countProjects()]
                 ],
                 [
-                    "label" => "Deals",
+                    "label" => "DealsModel",
                     'backgroundColor' => ['rgba(92, 141, 93, 1)', 'rgba(54, 162, 235, 0.3)'],
-                    'data' => [Deals::countDeals()]
+                    'data' => [DealsModel::countDeals()]
                 ]
             ])
             ->options([]);

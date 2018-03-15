@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Language;
-use App\Settings;
+use App\Models\Language;
+use App\Models\SettingsModel;
+use App\Services\helpersFncService;
 use Axdlee\Config\Rewrite;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -40,7 +41,7 @@ class SettingsController extends Controller
     {
         $getAllInputFromRequest = Input::all();
 
-        $validator = Validator::make($getAllInputFromRequest, Settings::getRules('SETTINGS'));
+        $validator = Validator::make($getAllInputFromRequest, SettingsModel::getRules('SETTINGS'));
 
         if($validator->fails()) {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorSettingsStore'));
@@ -60,7 +61,7 @@ class SettingsController extends Controller
         $envEditor = DotenvEditor::setKey('ROLLBAR_TOKEN', $getAllInputFromRequest['rollbar_token']);
         $envEditor = DotenvEditor::save();
 
-        SystemLogsController::insertSystemLogs('Settings has been changed.', 200);
+        SystemLogsController::insertSystemLogs('SettingsModel has been changed.', 200);
 
         return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSettingsUpdate'));
     }

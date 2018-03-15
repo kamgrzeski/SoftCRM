@@ -1,19 +1,24 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Employees extends Model
+class EmployeesModel extends Model
 {
     /**
+     * table name
+     */
+    protected $table = 'employees';
+    /**
+     *
      * @param $allInputs
      * @return mixed
      */
     public static function insertRow($allInputs)
     {
-        return Employees::insertGetId(
+        return EmployeesModel::insertGetId(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
@@ -34,7 +39,7 @@ class Employees extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        return Employees::where('id', '=', $id)->update(
+        return EmployeesModel::where('id', '=', $id)->update(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
@@ -73,7 +78,7 @@ class Employees extends Model
      */
     public static function setActive($id, $activeType)
     {
-        $findEmployeesById = Employees::where('id', '=', $id)->update(
+        $findEmployeesById = EmployeesModel::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -87,7 +92,7 @@ class Employees extends Model
 
     public static function trySearchEmployeesByValue($type, $value, $paginationLimit = 10)
     {
-        return Employees::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return EmployeesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 
     /**
@@ -95,7 +100,7 @@ class Employees extends Model
      */
     public static function countEmployees()
     {
-        return count(Employees::get());
+        return count(EmployeesModel::get());
     }
 
     /**
@@ -103,7 +108,7 @@ class Employees extends Model
      */
     public function companies()
     {
-        return $this->hasMany(Companies::class);
+        return $this->hasMany(CompaniesModel::class);
     }
 
     /**
@@ -111,7 +116,7 @@ class Employees extends Model
      */
     public function deals()
     {
-        return $this->belongsTo(Deals::class);
+        return $this->belongsTo(DealsModel::class);
     }
 
     /**
@@ -119,7 +124,7 @@ class Employees extends Model
      */
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(ClientsModel::class);
     }
 
     /**
@@ -127,7 +132,7 @@ class Employees extends Model
      */
     public function contacts()
     {
-        return $this->hasMany(Contacts::class, 'employee_id');
+        return $this->hasMany(ContactsModel::class, 'employee_id');
     }
 
     /**
@@ -135,15 +140,15 @@ class Employees extends Model
      */
     public function tasks()
     {
-        return $this->hasMany(Tasks::class, 'employee_id');
+        return $this->hasMany(TasksModel::class, 'employee_id');
     }
 
     /**
      * @return float|int
      */
     public static function getEmployeesInLatestMonth() {
-        $employeesCount = Employees::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allEmployees = Employees::all()->count();
+        $employeesCount = EmployeesModel::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allEmployees = EmployeesModel::all()->count();
 
         $percentage = ($allEmployees / 100) * $employeesCount;
 
