@@ -66,27 +66,27 @@ class graphDataService
             ->size(['width' => 400, 'height' => 200])
             ->datasets([
                 [
-                    "label" => "ProductsModel",
+                    "label" => "Products",
                     'backgroundColor' => ['rgba(227, 67, 51, 1)', 'rgba(54, 162, 235, 0.2)'],
                     'data' => [ProductsModel::countProducts()]
                 ],
                 [
-                    "label" => "SalesModel",
+                    "label" => "Sales",
                     'backgroundColor' => ['rgba(228, 115, 45, 1)', 'rgba(54, 162, 235, 0.3)'],
                     'data' => [SalesModel::countSales()]
                 ],
                 [
-                    "label" => "FinancesModel",
+                    "label" => "Finances",
                     'backgroundColor' => ['rgba(249, 195, 100, 1)', 'rgba(54, 162, 235, 0.3)'],
                     'data' => [FinancesModel::countFinances()]
                 ],
                 [
-                    "label" => "ProjectsModel",
+                    "label" => "Projects",
                     'backgroundColor' => ['rgba(151, 186, 241, 1)', 'rgba(54, 162, 235, 0.3)'],
                     'data' => [ProjectsModel::countProjects()]
                 ],
                 [
-                    "label" => "DealsModel",
+                    "label" => "Deal",
                     'backgroundColor' => ['rgba(92, 141, 93, 1)', 'rgba(54, 162, 235, 0.3)'],
                     'data' => [DealsModel::countDeals()]
                 ]
