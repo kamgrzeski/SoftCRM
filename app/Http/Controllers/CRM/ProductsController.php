@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Language;
+use App\Models\Language;
 use App\Models\ProductsModel;
 use Validator;
 use Illuminate\Support\Facades\Input;

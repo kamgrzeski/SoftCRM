@@ -12,7 +12,7 @@ class FakerTasksSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        $employeeIds = \App\Employees::all()->pluck('id')->toArray();
+        $employeeIds = \App\Models\EmployeesModel::all()->pluck('id')->toArray();
         $rowRand = rand(30,100);
 
         for ($i = 0; $i<$rowRand; $i++) {

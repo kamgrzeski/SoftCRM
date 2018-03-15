@@ -12,8 +12,8 @@ class FakerContactsSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        $userIds = \App\Client::all()->pluck('id')->toArray();
-        $employeeIds = \App\Employees::all()->pluck('id')->toArray();
+        $userIds = \App\Models\ClientsModel::all()->pluck('id')->toArray();
+        $employeeIds = \App\Models\EmployeesModel::all()->pluck('id')->toArray();
         $rowRand = rand(30,100);
 
         for ($i = 0; $i<$rowRand; $i++) {

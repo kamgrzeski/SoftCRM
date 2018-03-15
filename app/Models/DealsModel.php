@@ -121,4 +121,12 @@ class DealsModel extends Model
 
         return $percentage;
     }
+
+    /**
+     * @return mixed
+     */
+    public static function getDeactivated()
+    {
+        return DealsModel::where('is_active', '=', 0)->count();
+    }
 }

@@ -176,4 +176,12 @@ class CompaniesModel extends Model
 
         return $percentage;
     }
+
+    /**
+     * @return mixed
+     */
+    public static function getDeactivated()
+    {
+        return CompaniesModel::where('is_active', '=', 0)->count();
+    }
 }

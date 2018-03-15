@@ -12,9 +12,9 @@ class FakerProjectsSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        $userIds = \App\Client::all()->pluck('id')->toArray();
-        $companiesIds = \App\Companies::all()->pluck('id')->toArray();
-        $dealsIds = \App\Deals::all()->pluck('id')->toArray();
+        $userIds = \App\Models\ClientsModel::all()->pluck('id')->toArray();
+        $companiesIds = \App\Models\CompaniesModel::all()->pluck('id')->toArray();
+        $dealsIds = \App\Models\DealsModel::all()->pluck('id')->toArray();
         $projectName = ['Geolides', 'noderston', 'ipader', 'KickSlider', 'maxim.safe', 'grunlog', 'ivier', 'easyntaxhl',
             'bbbles', 'abombl', 'yabbit', 'quireMobi', 'Redmondup', 'Typer', 'envil.it', 'kerbuildy', 'Audione', 'rotroll',
             'lighlight', 'Golias', 'Supernova'];

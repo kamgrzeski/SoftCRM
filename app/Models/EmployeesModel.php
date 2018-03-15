@@ -154,5 +154,13 @@ class EmployeesModel extends Model
 
         return $percentage;
     }
+
+    /**
+     * @return mixed
+     */
+    public static function getDeactivated()
+    {
+        return EmployeesModel::where('is_active', '=', 0)->count();
+    }
 }
 

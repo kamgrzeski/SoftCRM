@@ -10,7 +10,9 @@
             <div class="panel panel-primary text-center no-boder bg-color-green">
                     <div class="panel-body boxes">
                     <i class="fa fa-female fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Clients: {{ \App\Models\ClientsModel::countClients() ? : 0 }}</h3>
+                    <h3 style="padding:8px;font-size:18px">Clients: {{ \App\Models\ClientsModel::countClients() ? : 0 }}
+                        ({{ \App\Models\ClientsModel::getDeactivated() ? : 0 }})
+                    </h3>
                 </div>
                 <a href="{{ route('clients') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-green boxes-font">
@@ -23,7 +25,9 @@
             <div class="panel panel-primary text-center no-boder bg-color-blue">
                 <div class="panel-body boxes">
                     <i class="fa fa-compass fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Companies: {{ \App\Models\CompaniesModel::countCompanies() ? : 0 }} </h3>
+                    <h3 style="padding:8px;font-size:18px">Companies: {{ \App\Models\CompaniesModel::countCompanies() ? : 0 }}
+                        ({{ \App\Models\CompaniesModel::getDeactivated() ? : 0 }})
+                    </h3>
                 </div>
                 <a href="#" style="text-decoration: none">
                     <div class="panel-footer back-footer-blue boxes-font">
@@ -36,7 +40,9 @@
             <div class="panel panel-primary text-center no-boder bg-color-red">
                 <div class="panel-body boxes">
                     <i class="fa fa fa-users fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Employees: {{ \App\Models\EmployeesModel::countEmployees() ? : 0 }} </h3>
+                    <h3 style="padding:8px;font-size:18px">Employees: {{ \App\Models\EmployeesModel::countEmployees() ? : 0 }}
+                        ({{ \App\Models\EmployeesModel::getDeactivated() ? : 0 }})
+                    </h3>
                 </div>
                 <a href="{{ route('employees') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-red boxes-font">
@@ -49,7 +55,9 @@
             <div class="panel panel-primary text-center no-boder bg-color-brown">
                 <div class="panel-body boxes">
                     <i class="fa fa-paperclip fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Deals: {{ \App\Models\DealsModel::countDeals() ? : 0 }} </h3>
+                    <h3 style="padding:8px;font-size:18px">Deals: {{ \App\Models\DealsModel::countDeals() ? : 0 }}
+                        ({{ \App\Models\DealsModel::getDeactivated() ? : 0 }})
+                    </h3>
                 </div>
                 <a href="{{ route('deals') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-brown boxes-font">

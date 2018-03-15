@@ -12,7 +12,7 @@ class FakerFinancesSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        $companiesIds = \App\Companies::all()->pluck('id')->toArray();
+        $companiesIds = \App\Models\CompaniesModel::all()->pluck('id')->toArray();
         $rowRand = rand(30,100);
 
         for ($i = 0; $i<$rowRand; $i++) {

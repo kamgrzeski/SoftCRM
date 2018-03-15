@@ -150,4 +150,12 @@ class ClientsModel extends Model
 
         return $new_width;
     }
+
+    /**
+     * @return mixed
+     */
+    public static function getDeactivated()
+    {
+        return ClientsModel::where('is_active', '=', 0)->count();
+    }
 }
