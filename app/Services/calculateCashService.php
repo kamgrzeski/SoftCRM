@@ -9,6 +9,7 @@
 namespace App\Services;
 
 use App\Models\ProductsModel;
+use App\Models\SalesModel;
 use App\Models\TasksModel;
 use App\Tasks;
 use Carbon\Carbon;
@@ -23,15 +24,20 @@ class CalculateCashService
     public function countCashTurnover()
     {
         $products = ProductsModel::all();
+        $sales = SalesModel::all();
         $productSum = 0;
+        $salesSum = 0;
 
         foreach($products as $product) {
             $productSum += $product->price * $product->count;
+            foreach($sales as $sale) {
+                $salesSum += $product->price * $sale->quantity;
+            }
         }
 
-        $oficialSum = $productSum;
+        $officialSum = $productSum + $salesSum;
 
-        return Money::{config('crm_settings.currency')}($oficialSum);
+        return Money::{config('crm_settings.currency')}($officialSum);
     }
 
     /**
@@ -40,13 +46,19 @@ class CalculateCashService
     public function countTodayIncome()
     {
         $products = ProductsModel::whereDate('created_at', Carbon::today())->get();
+        $sales = SalesModel::whereDate('created_at', Carbon::today())->get();
         $productSum = 0;
+        $salesSum = 0;
 
         foreach($products as $product) {
             $productSum += $product->price * $product->count;
+
+            foreach($sales as $sale) {
+                $salesSum += $product->price * $sale->quantity;
+            }
         }
 
-        $todayIncome = $productSum;
+        $todayIncome = $productSum + $salesSum;
 
         return Money::{config('crm_settings.currency')}($todayIncome);
     }
@@ -57,13 +69,19 @@ class CalculateCashService
     public function countYesterdayIncome()
     {
         $products = ProductsModel::whereDate('created_at', Carbon::yesterday())->get();
+        $sales = SalesModel::whereDate('created_at', Carbon::yesterday())->get();
+        $salesSum = 0;
         $productSum = 0;
 
         foreach($products as $product) {
             $productSum += $product->price * $product->count;
+            foreach($sales as $sale) {
+                $salesSum += $product->price * $sale->quantity;
+            }
+
         }
 
-        $yesterdayIncome = $productSum;
+        $yesterdayIncome = $productSum + $salesSum;
 
         return Money::{config('crm_settings.currency')}($yesterdayIncome);
     }

@@ -93,6 +93,14 @@ class ProductsModel extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sales()
+    {
+        return $this->hasMany(SalesModel::class);
+    }
+
+    /**
      * @param $type
      * @param $value
      * @param int $paginationLimit

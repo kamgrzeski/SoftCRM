@@ -15,6 +15,10 @@ class CreateTableSales extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->integer('quantity');
+            $table->integer('price');
+            $table->unsignedInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
         });

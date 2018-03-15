@@ -121,6 +121,14 @@
                                 }
                             }
                         },
+                        'price': {
+                            'field': $('input[name=price]'),
+                            'validate': function (field, event) {
+                                if (!field.val()) {
+                                    throw "A price is required.";
+                                }
+                            }
+                        },
                         'count': {
                             'field': $('input[name=count]'),
                             'validate': function (field, event) {

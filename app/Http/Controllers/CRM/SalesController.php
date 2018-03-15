@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Models\Language;
+use App\Models\ProductsModel;
 use App\Models\SalesModel;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -44,7 +45,12 @@ class SalesController extends Controller
      */
     public function create()
     {
-        return View::make('crm.sales.create');
+    $dataOfProducts = ProductsModel::pluck('name', 'id');
+
+    return View::make('crm.sales.create')->with(
+        [
+        'dataOfProducts' => $dataOfProducts
+        ]);
     }
 
     /**

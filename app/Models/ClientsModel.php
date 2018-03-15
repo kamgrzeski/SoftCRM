@@ -120,7 +120,7 @@ class ClientsModel extends Model
      */
     public function companies()
     {
-        return $this->hasMany(CompaniesModel::class);
+        return $this->hasMany(CompaniesModel::class, 'id');
     }
 
     /**
@@ -128,7 +128,7 @@ class ClientsModel extends Model
      */
     public function employees()
     {
-        return $this->hasMany(Employees::class);
+        return $this->hasMany(EmployeesModel::class, 'id');
     }
 
     /**

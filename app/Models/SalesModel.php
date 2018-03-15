@@ -21,6 +21,8 @@ class SalesModel extends Model
         return SalesModel::insertGetId(
             [
                 'name' => $allInputs['name'],
+                'quantity' => $allInputs['quantity'],
+                'product_id' => $allInputs['product_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
@@ -37,6 +39,8 @@ class SalesModel extends Model
         return SalesModel::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
+                'quantity' => $allInputs['quantity'],
+                'product_id' => $allInputs['product_id'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
@@ -51,7 +55,9 @@ class SalesModel extends Model
         switch ($rulesType) {
             case 'STORE':
                 return [
-                    'name' => 'required'
+                    'name' => 'required',
+                    'quantity' => 'required',
+                    'product_id' => 'required',
                 ];
         }
     }
@@ -81,6 +87,14 @@ class SalesModel extends Model
     public static function countSales()
     {
         return count(SalesModel::get());
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function products()
+    {
+        return $this->belongsTo(ProductsModel::class, 'product_id');
     }
 
     /**

@@ -35,6 +35,26 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('employee_id', 'Assign product') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('employee_id', $dataOfProducts, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')]) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                <div class="form-group input-row">
+                                    {{ Form::label('quantity', 'Quantity') }}
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+                                        {{ Form::text('quantity', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
                         </div>
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Add sales', array('class' => 'btn btn-primary')) }}
@@ -86,6 +106,14 @@
                             'validate': function (field, event) {
                                 if (!field.val()) {
                                     throw "A name is required.";
+                                }
+                            }
+                        },
+                        'quantity': {
+                            'field': $('input[name=quantity]'),
+                            'validate': function (field, event) {
+                                if (!field.val()) {
+                                    throw "A quantity is required.";
                                 }
                             }
                         }
