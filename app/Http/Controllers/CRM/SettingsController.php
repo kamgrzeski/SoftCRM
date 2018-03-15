@@ -65,29 +65,14 @@ class SettingsController extends Controller
         return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSettingsUpdate'));
     }
 
-    /**
-     * @return array
-     */
     public function formatAllSystemLogs()
     {
-        $allLogs = Settings::all();
-        $tempArray = [];
+        $helpers = new helpersFncService();
 
-        foreach ($allLogs as $key => $result)
-        {
-            $tempArray[$key] = [
-                'id' => $result->id,
-                'user_id' => $result->user_id,
-                'actions' => $result->actions,
-                'city' => $result->city,
-                'country' => $result->country,
-                'ip_address' => $result->ip_address,
-                'date' => $result->date
-            ];
+        if($helpers) {
+            return $helpers->formatAllSystemLogs();
         }
 
-        $formatLogs = $tempArray;
-
-        return $formatLogs;
+        return false;
     }
 }

@@ -18,7 +18,7 @@ class Products extends Model
                 'name' => $allInputs['name'],
                 'category' => $allInputs['category'],
                 'count' => $allInputs['count'],
-                'price' => $allInputs['price'],
+                'price' => $allInputs['price'] * 100,
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]

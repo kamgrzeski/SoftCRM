@@ -1,4 +1,4 @@
-@extends('layouts.base')
+    @extends('layouts.base')
 
 @section('caption', 'Settings')
 
@@ -34,7 +34,7 @@
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('invoice_logo_link', 'Invoice logo (comping soon)') }}
-                                {{ Form::text('invoice_logo_link', config('crm_settings.invoice_logo_link'), array('class' => 'form-control', 'disabled')) }}
+                                {{ Form::text('invoice_logo_link', config('crm_settings.invoice_logo_link'), array('class' => 'form-control')) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('loading_circle', 'Loading circle') }}
