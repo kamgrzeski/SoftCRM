@@ -25,7 +25,7 @@ class FakerProjectsSeeder extends Seeder
                 'client_id' => $faker->randomElement($userIds),
                 'companies_id' => $faker->randomElement($companiesIds),
                 'deals_id' => $faker->randomElement($dealsIds),
-                'cost' => rand(1000,10000),
+                'cost' => rand(100,1000),
                 'start_date' => \Carbon\Carbon::now(),
                 'created_at' => $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now'),
                 'updated_at' => \Carbon\Carbon::now()

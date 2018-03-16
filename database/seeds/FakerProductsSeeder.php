@@ -22,7 +22,7 @@ class FakerProductsSeeder extends Seeder
                 'name' => $names[$i],
                 'category' => $faker->lastName,
                 'count' => rand(50,500),
-                'price' => rand(100,5000),
+                'price' => rand(10,1000),
                 'created_at' => $faker->dateTimeBetween($startDate = '-'.$i.' days', $endDate = 'now'),
                 'updated_at' => \Carbon\Carbon::now()
             ];

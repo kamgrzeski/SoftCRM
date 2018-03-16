@@ -41,6 +41,34 @@
                                 <td>{{ $finances->name }}</td>
                             </tr>
                             <tr>
+                                <th>Description</th>
+                                <td>{{ $finances->description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Category</th>
+                                <td>{{ $finances->category }}</td>
+                            </tr>
+                            <tr>
+                                <th>Type</th>
+                                <td>{{ $finances->type }}</td>
+                            </tr>
+                            <tr>
+                                <th>Gross</th>
+                                <td>{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($finances->gross) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Net</th>
+                                <td>{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($finances->net) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Vat</th>
+                                <td>{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($finances->vat) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date</th>
+                                <td>{{ $finances->date }}</td>
+                            </tr>
+                            <tr>
                                 <th>Assigned companies</th>
                                 <td>
                                     <a href="{{ URL::to('companies/' . $finances->companies->id) }}">{{ $finances->companies->name }}</a>

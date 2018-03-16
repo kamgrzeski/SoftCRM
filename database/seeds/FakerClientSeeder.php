@@ -20,7 +20,7 @@ class FakerClientSeeder extends Seeder
                 'phone' => $faker->phoneNumber,
                 'email' => $faker->companyEmail,
                 'section' => array_random($section),
-                'budget' => rand(1000, 100000),
+                'budget' => rand(100, 1000),
                 'location' => $faker->country,
                 'zip' => $faker->postcode,
                 'city' => $faker->city,

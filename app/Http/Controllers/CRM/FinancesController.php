@@ -57,13 +57,12 @@ class FinancesController extends Controller
     public function store()
     {
         $allInputs = Input::all();
-
         $validator = Validator::make($allInputs, FinancesModel::getRules('STORE'));
-
         if ($validator->fails()) {
             return Redirect::to('finances/create')->with('message_danger', $validator->errors());
         } else {
             if ($finance = FinancesModel::insertRow($allInputs)) {
+
                 SystemLogsController::insertSystemLogs('FinancesModel has been add with id: '. $finance, 200);
                 return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesStore'));
             } else {
@@ -97,12 +96,12 @@ class FinancesController extends Controller
     public function edit($id)
     {
         $dataOfFinances = FinancesModel::find($id);
-        $dataWithPluckOfCompaniess = CompaniesModel::pluck('name', 'id');
+        $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
 
         return View::make('crm.finances.edit')
             ->with([
                 'finances' => $dataOfFinances,
-                'companies' => $dataWithPluckOfCompaniess
+                'dataWithPluckOfCompanies' => $dataWithPluckOfCompanies
             ]);
     }
 

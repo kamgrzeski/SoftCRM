@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\financesService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,9 +20,19 @@ class FinancesModel extends Model
      */
     public static function insertRow($allInputs)
     {
+        $financesHelper = new financesService();
+        $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($allInputs['gross']);
+
         return FinancesModel::insertGetId(
             [
                 'name' => $allInputs['name'],
+                'description' => $allInputs['description'],
+                'category' => $allInputs['category'],
+                'type' => $allInputs['type'],
+                'gross' => $allInputs['gross'],
+                'net' => $dataToInsert['net'],
+                'vat' => $dataToInsert['vat'],
+                'date' => $allInputs['date'],
                 'companies_id' => $allInputs['companies_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
@@ -36,9 +47,19 @@ class FinancesModel extends Model
      */
     public static function updateRow($id, $allInputs)
     {
+        $financesHelper = new financesService();
+        $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($allInputs['gross']);
+
         return FinancesModel::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
+                'description' => $allInputs['description'],
+                'type' => $allInputs['type'],
+                'category' => $allInputs['category'],
+                'gross' => $allInputs['gross'],
+                'net' => $dataToInsert['net'],
+                'vat' => $dataToInsert['vat'],
+                'date' => $allInputs['date'],
                 'companies_id' => $allInputs['companies_id'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
@@ -56,6 +77,10 @@ class FinancesModel extends Model
                 return [
                     'name' => 'required',
                     'companies_id' => 'required',
+                    'description' => 'required',
+                    'type' => 'required',
+                    'gross' => 'required',
+                    'category' => 'required'
                 ];
         }
     }

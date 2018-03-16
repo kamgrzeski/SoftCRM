@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use App\Models\FinancesModel;
 use App\Models\ProductsModel;
 use App\Models\SalesModel;
 use App\Models\TasksModel;
@@ -25,17 +26,22 @@ class CalculateCashService
     {
         $products = ProductsModel::all();
         $sales = SalesModel::all();
+        $finances = FinancesModel::all();
+
         $productSum = 0;
         $salesSum = 0;
+        $financesSum = 0;
 
         foreach($products as $product) {
             $productSum += $product->price * $product->count;
             foreach($sales as $sale) {
                 $salesSum += $product->price * $sale->quantity;
             }
+            foreach($finances as $finance) {
+                $financesSum += $finance->net;
+            }
         }
-
-        $officialSum = $productSum + $salesSum;
+        $officialSum = $productSum + $salesSum + $financesSum;
 
         return Money::{config('crm_settings.currency')}($officialSum);
     }
@@ -47,18 +53,22 @@ class CalculateCashService
     {
         $products = ProductsModel::whereDate('created_at', Carbon::today())->get();
         $sales = SalesModel::whereDate('created_at', Carbon::today())->get();
+        $finances = FinancesModel::whereDate('created_at', Carbon::today())->get();
         $productSum = 0;
         $salesSum = 0;
+        $financesSum = 0;
 
         foreach($products as $product) {
             $productSum += $product->price * $product->count;
-
             foreach($sales as $sale) {
                 $salesSum += $product->price * $sale->quantity;
             }
+            foreach($finances as $finance) {
+                $financesSum += $finance->net;
+            }
         }
 
-        $todayIncome = $productSum + $salesSum;
+        $todayIncome = $productSum + $salesSum + $financesSum;
 
         return Money::{config('crm_settings.currency')}($todayIncome);
     }
@@ -70,18 +80,22 @@ class CalculateCashService
     {
         $products = ProductsModel::whereDate('created_at', Carbon::yesterday())->get();
         $sales = SalesModel::whereDate('created_at', Carbon::yesterday())->get();
+        $finances = FinancesModel::whereDate('created_at', Carbon::yesterday())->get();
         $salesSum = 0;
         $productSum = 0;
+        $financesSum = 0;
 
         foreach($products as $product) {
             $productSum += $product->price * $product->count;
             foreach($sales as $sale) {
                 $salesSum += $product->price * $sale->quantity;
             }
-
+            foreach($finances as $finance) {
+                $financesSum += $finance->net;
+            }
         }
 
-        $yesterdayIncome = $productSum + $salesSum;
+        $yesterdayIncome = $productSum + $salesSum + $financesSum;
 
         return Money::{config('crm_settings.currency')}($yesterdayIncome);
     }

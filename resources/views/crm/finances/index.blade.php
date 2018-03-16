@@ -42,7 +42,13 @@
                             <thead>
                             <tr>
                                 <th class="text-center">Name</th>
+                                <th class="text-center">Category</th>
+                                <th class="text-center">Type</th>
+                                <th class="text-center">Gross</th>
+                                <th class="text-center">Net</th>
+                                <th class="text-center">Vat</th>
                                 <th class="text-center">Assigned companies</th>
+                                <th class="text-center">Date</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center" style="width:200px">Action</th>
                             </tr>
@@ -51,9 +57,24 @@
                             @foreach($finances as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->name }}</td>
+                                    <td class="text-center">{{ $value->category }}</td>
+                                    <td class="text-center">{{ $value->type }}</td>
+                                    <td>
+                                        <button type="submit"
+                                                class="btn btn-default" style="background-color: rgba(130,113,243,0.22)">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($value->gross) }}</button>
+                                    </td>
+                                    <td>
+                                        <button type="submit"
+                                                class="btn btn-default" style="background-color: rgba(113,243,110,0.45)">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($value->net) }}</button>
+                                    </td>
+                                    <td>
+                                        <button type="submit"
+                                                class="btn btn-default" style="background-color: rgba(217,243,30,0.45)">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($value->vat) }}</button>
+                                    </td>
                                     <td class="text-center"><a
                                                 href="{{ URL::to('companies/' . $value->companies->id) }}">{{ $value->companies->name }}</a>
                                     </td>
+                                    <td class="text-center">{{ $value->date }}</td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)
                                             <input type="checkbox" data-on="Active" checked data-toggle="toggle"

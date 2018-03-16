@@ -56,8 +56,8 @@
                                     <td class="text-center">{{ $value->quantity }}</td>
                                     <td class="text-center">
                                         <button type="submit"class="btn btn-default">
-                                            ({{ \ClickNow\Money\Money::{config('crm_settings.currency')}
-                                            ($value->quantity * $value->products->price) }})
+                                            {{ \ClickNow\Money\Money::{config('crm_settings.currency')}
+                                            ($value->quantity * $value->products->price) }}
                                         </button>
                                     </td>
                                     <td class="text-center"><a

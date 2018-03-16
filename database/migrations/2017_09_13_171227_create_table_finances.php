@@ -15,6 +15,13 @@ class CreateTableFinances extends Migration
         Schema::create('finances', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('description');
+            $table->string('category');
+            $table->string('type');
+            $table->integer('gross');
+            $table->integer('net')->nullable()->default(0);
+            $table->integer('vat')->nullable()->default(0);
+            $table->date('date');
             $table->unsignedInteger('companies_id');
             $table->foreign('companies_id')->references('id')->on('companies');
             $table->boolean('is_active')->nullable()->default(1);

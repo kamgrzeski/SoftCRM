@@ -27,20 +27,73 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+                                    {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('companies_id', 'Assign companies') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('companies_id', $dataWithPluckOfCompanies, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
+                                </div>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group input-row">
-                                {{ Form::label('companies_id', 'Assigned company:') }}
+                                {{ Form::label('description', 'Description') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('companies_id', $companies, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'),
-                                    'placeholder' => 'Please select companies'])  }}
+                                    {{ Form::text('description', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('type', 'Type') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('type', ['Invoice', 'proforma invoice', 'advance', 'simple transfer'], null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')]) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('gross', 'Gross') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::text('gross', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                {{ Form::label('category', 'Category') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
+                                    {{ Form::select('category', ['steady income', 'large order', 'small order', 'one-off order'], null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')]) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ Form::label('date', 'Date') }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    {{ Form::date('date', \Carbon\Carbon::now(), array('class' => 'form-control', 'required', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                </div>
+                            </div>
+                        </div>
+
+
 
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Add finances', array('class' => 'btn btn-primary')) }}
