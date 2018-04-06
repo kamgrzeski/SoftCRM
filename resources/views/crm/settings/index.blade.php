@@ -54,6 +54,10 @@
                                 {{ Form::label('rollbar_token', 'Rollbar Token') }}
                                 {{ Form::text('rollbar_token', config('crm_settings.rollbar_token'), array('class' => 'form-control')) }}
                             </div>
+                            <div class="form-group input-row">
+                                {{ Form::label('stats', 'Statistic (left panel)') }}
+                                {{ Form::select('stats', [1 => 'Yes', 2 => 'No'], config('crm_settings.stats'), ['class' => 'form-control']) }}
+                            </div>
                         </div>
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Save settings', array('class' => 'btn btn-primary')) }}

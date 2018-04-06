@@ -61,6 +61,7 @@
                 <a href="{{ route('files') }}"><i class="fa fa-folder-open"></i>Files<span class="label label-files pull-right" style="margin-top:4px">{{ \App\Models\FilesModel::countFiles() ? : 0 }}</span></a>
             </li>
         </ul>
+        @if (Config::get('crm_settings.stats') == 1)
         <ul style="margin-top: 10px; color: #dee7f1;margin-left:-30px;font-size: 14px;">
             <h4>Informations</h4>
             <li><i class="fa fa-money" aria-hidden="true"></i> Today income:  {{ \App\Http\Controllers\DashboardController::countTodayIncome() }}</span></li>
@@ -72,6 +73,7 @@
             <li><i class="fa fa-cogs" aria-hidden="true"></i> Operations: {{ \App\Http\Controllers\DashboardController::countAllRowsInDb() }}</li>
             <li><i class="fa fa-book" aria-hidden="true"></i> System logs: {{ \App\Models\SystemLogsModel::countRows() ? : 0 }}</li>
         </ul>
+            @endif
     </div>
 
 </nav>

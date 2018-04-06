@@ -8,4 +8,5 @@ return [
     'invoice_logo_link' => 'http://i.imgur.com/t9G3rFM.png',
     'rollbar_token' => null,
     'loading_circle' => '0',
+    'stats' => '1',
 ];
