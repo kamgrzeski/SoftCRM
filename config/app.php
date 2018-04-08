@@ -170,6 +170,7 @@ return [
         Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
         Rollbar\Laravel\RollbarServiceProvider::class,
         Jackiedo\DotenvEditor\DotenvEditorServiceProvider::class,
+        Zalazdi\LaravelImap\Providers\LaravelServiceProvider::class,
         /*
          * Package Service Providers...
          */

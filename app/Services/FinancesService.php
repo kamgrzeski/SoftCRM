@@ -10,7 +10,7 @@ namespace App\Services;
 
 use Config;
 
-class financesService
+class FinancesService
 {
     /**
      * @param $gross

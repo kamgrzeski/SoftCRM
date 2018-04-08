@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Services\financesService;
+use App\Services\FinancesService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +20,7 @@ class FinancesModel extends Model
      */
     public static function insertRow($allInputs)
     {
-        $financesHelper = new financesService();
+        $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($allInputs['gross']);
 
         return FinancesModel::insertGetId(
@@ -47,7 +47,7 @@ class FinancesModel extends Model
      */
     public static function updateRow($id, $allInputs)
     {
-        $financesHelper = new financesService();
+        $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($allInputs['gross']);
 
         return FinancesModel::where('id', '=', $id)->update(

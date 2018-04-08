@@ -14,11 +14,11 @@ use App\Models\ProductsModel;
 use App\Models\ProjectsModel;
 use App\Models\SalesModel;
 
-class graphDataService
+class GraphDataService
 {
     public function taskGraphData() {
 
-        $cash = new calculateCashService();
+        $cash = new CalculateCashService();
 
         if($cash) {
             $taskGraphData = app()->chartjs

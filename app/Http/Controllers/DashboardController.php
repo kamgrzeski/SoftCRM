@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\CompaniesModel;
 use App\Models\ProductsModel;
 use App\Services\CalculateCashService;
-use App\Services\graphDataService;
-use App\Services\helpersFncService;
+use App\Services\GraphDataService;
+use App\Services\HelpersFncService;
 
 class DashboardController extends Controller
 {
@@ -41,7 +41,7 @@ class DashboardController extends Controller
 
     public function formatTasks()
     {
-        $helpers = new helpersFncService();
+        $helpers = new HelpersFncService();
 
         if($helpers) {
             return $helpers->formatTasks();
@@ -55,7 +55,7 @@ class DashboardController extends Controller
      */
     public static function countCashTurnover()
     {
-        $cash = new calculateCashService();
+        $cash = new CalculateCashService();
 
         if($cash) {
             return $cash->countCashTurnover();
@@ -69,7 +69,7 @@ class DashboardController extends Controller
      */
     public static function countTodayIncome()
     {
-        $cash = new calculateCashService();
+        $cash = new CalculateCashService();
 
         if($cash) {
             return $cash->countTodayIncome();
@@ -83,7 +83,7 @@ class DashboardController extends Controller
      */
     public static function countYesterdayIncome()
     {
-        $cash = new calculateCashService();
+        $cash = new CalculateCashService();
 
         if($cash) {
             return $cash->countYesterdayIncome();
@@ -97,7 +97,7 @@ class DashboardController extends Controller
      */
     public static function countAllRowsInDb()
     {
-        $cash = new calculateCashService();
+        $cash = new CalculateCashService();
 
         if($cash) {
             return $cash->countAllRowsInDb();
@@ -112,7 +112,7 @@ class DashboardController extends Controller
      */
     public function calculateTaskEveryMonth($isCompleted) {
 
-        $cash = new calculateCashService();
+        $cash = new CalculateCashService();
 
         if($cash) {
             return $cash->calculateTaskEveryMonth($isCompleted);
@@ -126,7 +126,7 @@ class DashboardController extends Controller
      */
     public function taskGraphData() {
 
-        $graph = new graphDataService();
+        $graph = new GraphDataService();
 
         if($graph) {
             return $graph->taskGraphData();
@@ -139,7 +139,7 @@ class DashboardController extends Controller
      * @return mixed
      */
     public function itemsCountGraphData() {
-        $graph = new graphDataService();
+        $graph = new GraphDataService();
 
         if($graph) {
             return $graph->itemsCountGraphData();

@@ -80,7 +80,7 @@
                                 {{ Form::label('priority', 'Priority') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-child"></i></span>
-                                    {{ Form::select('priority', \App\Services\helpersFncService::getPrioritySize(), null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')]) }}
+                                    {{ Form::select('priority', \App\Services\HelpersFncService::getPrioritySize(), null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 

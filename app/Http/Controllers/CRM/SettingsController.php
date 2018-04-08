@@ -5,7 +5,7 @@ namespace App\Http\Controllers\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\SettingsModel;
-use App\Services\helpersFncService;
+use App\Services\HelpersFncService;
 use Axdlee\Config\Rewrite;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -69,7 +69,7 @@ class SettingsController extends Controller
 
     public function formatAllSystemLogs()
     {
-        $helpers = new helpersFncService();
+        $helpers = new HelpersFncService();
 
         if($helpers) {
             return $helpers->formatAllSystemLogs();

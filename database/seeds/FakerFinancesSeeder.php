@@ -19,7 +19,7 @@ class FakerFinancesSeeder extends Seeder
 
         for ($i = 0; $i<$rowRand; $i++) {
             $rand = rand(800,2000);
-            $calculateFromFakeRand = new \App\Services\financesService();
+            $calculateFromFakeRand = new \App\Services\FinancesService();
 
             $data = $calculateFromFakeRand->calculateNetAndVatByGivenGross($rand);
 
