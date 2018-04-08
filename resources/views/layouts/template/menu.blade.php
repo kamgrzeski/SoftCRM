@@ -55,9 +55,6 @@
                 </ul>
             </li>
             <li>
-                <a href="{{ route('reports') }}"><i class="fa fa-file-text"></i>Reports<span class="label label-reports pull-right" style="margin-top:4px">{{ \App\Models\ReportsModel::countReports() ? : 0 }}</span></a>
-            </li>
-            <li>
                 <a href="{{ route('files') }}"><i class="fa fa-folder-open"></i>Files<span class="label label-files pull-right" style="margin-top:4px">{{ \App\Models\FilesModel::countFiles() ? : 0 }}</span></a>
             </li>
         </ul>

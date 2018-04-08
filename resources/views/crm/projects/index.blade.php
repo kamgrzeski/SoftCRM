@@ -37,7 +37,8 @@
                 </div>
                 <div class="panel-body">
                     <div class="table">
-                        <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example"
+                               data-sortable>
                             <thead>
                             <tr>
                                 <th class="text-center">Name</th>
@@ -54,40 +55,46 @@
                             @foreach($projects as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->name }}</td>
-                                    <td class="text-center"><a
-                                                href="{{ URL::to('client/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
+                                    <td class="text-center">
+                                        <a href="{{ URL::to('client/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
                                     </td>
-                                    <td class="text-center"><a
-                                                href="{{ URL::to('companies/' . $value->companies->id) }}">{{ $value->companies->name }}</a>
+                                    <td class="text-center">
+                                        <a href="{{ URL::to('companies/' . $value->companies->id) }}">{{ $value->companies->name }}</a>
                                     </td>
-                                    <td class="text-center"><a
-                                                href="{{ URL::to('deals/' . $value->deals->id) }}">{{ $value->deals->name }}</a>
+                                    <td class="text-center">
+                                        <a href="{{ URL::to('deals/' . $value->deals->id) }}">{{ $value->deals->name }}</a>
                                     </td>
-                                    <td class="text-center">{{ $value->cost }}</td>
+                                    <td>
+                                        <button type="submit"
+                                                class="btn btn-default">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($value->cost) }}</button>
+                                    </td>
                                     <td class="text-center">{{ $value->start_date }}</td>
 
                                     <td class="text-center">
-                                            @if($value->is_active == TRUE)
-                                                <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('projects/set-active/' . $value->id . '/0') }}")' checked>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @else
-                                                <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('projects/set-active/' . $value->id . '/1') }}")'>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @endif
+                                        @if($value->is_active == TRUE)
+                                            <label class="switch">
+                                                <input type="checkbox"
+                                                       onchange='window.location.assign("{{ URL::to('projects/set-active/' . $value->id . '/0') }}")'
+                                                       checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        @else
+                                            <label class="switch">
+                                                <input type="checkbox"
+                                                       onchange='window.location.assign("{{ URL::to('projects/set-active/' . $value->id . '/1') }}")'>
+                                                <span class="slider"></span>
+                                            </label>
+                                        @endif
                                     </td>
                                     <td class="text-right">
                                         <div class="btn-group">
                                             <a class="btn btn-small btn-primary"
                                                href="{{ URL::to('projects/' . $value->id) }}">More information</a>
-                                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+                                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span
+                                                        class="caret"></span></button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ URL::to('projects/' . $value->id . '/edit') }}">Edit</a></li>
+                                                <li><a href="{{ URL::to('projects/' . $value->id . '/edit') }}">Edit</a>
+                                                </li>
                                                 <li class="divider"></li>
                                                 <li><a href="#">Some option</a></li>
                                             </ul>

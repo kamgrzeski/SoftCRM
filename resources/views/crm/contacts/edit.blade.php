@@ -25,22 +25,23 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(array('url' => 'contacts')) }}
+                            {{ Form::model($contacts, array('route' => array('contacts.update', $contacts->id), 'method' => 'PUT')) }}
+
                             <div class="form-group input-row">
                                 {{ Form::label('client_id', 'Klient:') }}
-                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
+                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('employee_id', 'Assign employee:') }}
-                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
+                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('date', 'Date') }}
-                                {{ Form::date('date', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::date('date', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                             </div>
 
                         </div>

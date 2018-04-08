@@ -28,29 +28,29 @@
                             {{ Form::model($projects, array('route' => array('projects.update', $projects->id), 'method' => 'PUT')) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('client_id', 'Assign client') }}
-                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
+                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('cost', 'Cost') }}
-                                {{ Form::text('cost', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('cost', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('companies_id', 'Deal between company:') }}
-                                {{ Form::select('companies_id', $companies, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
+                                {{ Form::select('companies_id', $companies, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('deals_id', 'Deal:') }}
-                                {{ Form::select('deals_id', $deals, null, ['class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText')])  }}
+                                {{ Form::select('deals_id', $deals, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('start_date', 'Start Date') }}
-                                {{ Form::date('start_date', null, array('class' => 'form-control', 'placeholder' => \App\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::date('start_date', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">

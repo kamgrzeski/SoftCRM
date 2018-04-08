@@ -38,11 +38,15 @@
                             <tbody class="text-right">
                             <tr>
                                 <th>Assigned client</th>
-                                <td>{{ $contacts->client->full_name }}</td>
+                                <td>
+                                    <a href="{{ URL::to('client/' . $contacts->client->id) }}">{{ $contacts->client->full_name }}</a>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Assigned employee</th>
-                                <td>{{ $contacts->employees->full_name  }}</td>
+                                <td>
+                                    <a href="{{ URL::to('employees/' . $contacts->employees->id) }}">{{ $contacts->employees->full_name }}</a>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Contact</th>

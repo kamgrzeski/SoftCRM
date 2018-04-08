@@ -50,7 +50,9 @@
                             </tr>
                             <tr>
                                 <th>Assigned Product</th>
-                                <td>{{ $sales->products->name }}</td>
+                                <td>
+                                    <a href="{{ URL::to('products/' . $sales->products->id) }}">{{ $sales->products->name }}</a>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Status</th>

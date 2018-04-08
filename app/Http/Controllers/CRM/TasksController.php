@@ -95,7 +95,7 @@ class TasksController extends Controller
     public function edit($id)
     {
         $dataOfTasks = TasksModel::find($id);
-        $dataWithPluckOfEmployees = Employees::pluck('full_name', 'id');
+        $dataWithPluckOfEmployees = EmployeesModel::pluck('full_name', 'id');
         return View::make('crm.tasks.edit')
             ->with([
                 'tasks' => $dataOfTasks,

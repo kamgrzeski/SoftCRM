@@ -89,12 +89,6 @@ Route::get('/invoices/download/{id}', 'CRM\InvoicesController@getInvoice')->name
 Route::resource('invoices', 'CRM\InvoicesController');
 Route::post('invoices/search', ['as' => 'invoices/search',  'uses' => 'CRM\InvoicesController@search']);
 
-
-/* Reports */
-Route::get('/reports/set-active/{id}/{value}', 'CRM\ReportsController@isActiveFunction')->name('isActiveFunction');
-Route::resource('reports', 'CRM\ReportsController');
-Route::post('reports/search', ['as' => 'reports/search',  'uses' => 'CRM\ReportsController@search']);
-
 /* Settings */
 Route::resource('settings', 'CRM\SettingsController');
 Route::get('/settings', 'CRM\SettingsController@index')->name('settings');
