@@ -1,18 +1,23 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: kami
+ * Date: 31.05.2018
+ * Time: 17:07
+ */
 
-namespace App\Http\Controllers\CRM;
+namespace App\Services;
 
-use App\Http\Controllers\Controller;
 use App\Models\SystemLogsModel;
 
-class SystemLogsController extends Controller
+class SystemLogService
 {
     /**
      * @param $actions
      * @param int $statusCode
      * @return bool
      */
-    public static function insertSystemLogs($actions, $statusCode)
+    public function insertSystemLogs($actions, $statusCode)
     {
         $logs = new SystemLogsModel();
         if($logs->insertRow($actions, $statusCode)) {

@@ -16,7 +16,7 @@ class ClientsModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public function insertRow($allInputs)
     {
         return ClientsModel::insertGetId(
             [
@@ -40,7 +40,7 @@ class ClientsModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function updateRow($id, $allInputs)
+    public function updateRow($id, $allInputs)
     {
         return ClientsModel::where('id', '=', $id)->update(
             [
@@ -85,7 +85,7 @@ class ClientsModel extends Model
      * @param $activeType
      * @return bool
      */
-    public static function setActive($id, $activeType)
+    public function setActive($id, $activeType)
     {
         $findClientById = ClientsModel::where('id', '=', $id)->update(['is_active' => $activeType]);
 
@@ -157,5 +157,23 @@ class ClientsModel extends Model
     public static function getDeactivated()
     {
         return ClientsModel::where('is_active', '=', 0)->count();
+    }
+
+    /**
+     * @param $clientId
+     * @return mixed
+     */
+    public function findClientByGivenClientId($clientId)
+    {
+        return ClientsModel::find($clientId)->get();
+    }
+
+    /**
+     * @param $by
+     * @return ClientsModel[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function getClientSortedBy($by)
+    {
+        return ClientsModel::all()->sortByDesc($by);
     }
 }
