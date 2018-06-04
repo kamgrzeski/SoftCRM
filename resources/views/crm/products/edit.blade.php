@@ -28,21 +28,21 @@
                             {{ Form::model($products, array('route' => array('products.update', $products->id), 'method' => 'PUT')) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('category', 'Category') }}
-                                {{ Form::text('category', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('category', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('count', 'Count') }}
-                                {{ Form::text('count', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('count', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('price', 'Price') }}
-                                {{ Form::text('price', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('price', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">

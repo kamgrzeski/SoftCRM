@@ -36,7 +36,7 @@
                                 {{ Form::label('full_name', 'Full name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('full_name', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('full_name', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                                 </div>
                             </div>
 
@@ -44,7 +44,7 @@
                                 {{ Form::label('phone', 'Phone') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
-                                    {{ Form::text('phone', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('phone', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                                 </div>
                             </div>
 
@@ -52,7 +52,7 @@
                                 {{ Form::label('email', 'Email') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                    {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                                 </div>
                             </div>
 
@@ -60,7 +60,7 @@
                                 {{ Form::label('job', 'Job') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                                    {{ Form::text('job', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('job', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                                 </div>
                             </div>
                         </div>
@@ -70,14 +70,14 @@
                                 {{ Form::label('client_id', 'Assign client') }}
                                 <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                {{ Form::select('client_id', $dataOfClients, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'),
+                                {{ Form::select('client_id', $dataOfClients, null, ['class' => 'form-control', 'placeholder' => $inputText,
                                 'placeholder' => 'Please select client'])  }}
                             </div>
                         </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('note', 'Note') }}
-                                {{ Form::textarea('note', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::textarea('note', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                             </div>
                         </div>
 

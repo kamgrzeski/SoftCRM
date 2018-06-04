@@ -16,7 +16,7 @@ class ContactsModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public function insertRow($allInputs)
     {
         return ContactsModel::insertGetId(
             [
@@ -33,7 +33,7 @@ class ContactsModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function updateRow($id, $allInputs)
+    public function updateRow($id, $allInputs)
     {
         return ContactsModel::where('id', '=', $id)->update(
             [
@@ -47,7 +47,7 @@ class ContactsModel extends Model
      * @param $rulesType
      * @return array
      */
-    public static function getRules($rulesType)
+    public function getRules($rulesType)
     {
         switch ($rulesType) {
             case 'STORE':
@@ -65,7 +65,7 @@ class ContactsModel extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchContactsByValue($type, $value, $paginationLimit = 10)
+    public function trySearchContactsByValue($type, $value, $paginationLimit = 10)
     {
         return ClientsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }

@@ -17,11 +17,13 @@ class ClientController extends Controller
 {
     private $clientsModel;
     private $systemLogs;
+    private $language;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->clientsModel = new ClientsModel();
+        $this->language = new Language();
     }
 
     /**
@@ -54,7 +56,9 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return View::make('crm.client.create');
+        return View::make('crm.client.create')->with([
+            'inputText' => $this->language->getMessage('messages.InputText')
+        ]);
     }
 
     /**
@@ -66,16 +70,16 @@ class ClientController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, ClientsModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->clientsModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('client/create')->with('message_danger', $validator->errors());
         } else {
             if ($client = $this->clientsModel->insertRow($allInputs)) {
-                $this->systemLogs->insertSystemLogs('ClientsModel has been add with id: '. $client, 200);
-                return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
+                $this->systemLogs->insertSystemLogs('ClientsModel has been add with id: ' . $client, 200);
+                return Redirect::to('client')->with('message_success', $this->language->getMessage('messages.SuccessClientStore'));
             } else {
-                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorClientStore'));
+                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorClientStore'));
             }
         }
     }
@@ -103,7 +107,10 @@ class ClientController extends Controller
     public function edit($id)
     {
         return View::make('crm.client.edit')
-            ->with('client', $this->clientsModel->findClientByGivenClientId($id));
+            ->with([
+                'client', $this->clientsModel->findClientByGivenClientId($id),
+                 'inputText' => $this->language->getMessage('messages.InputText')
+            ]);
     }
 
     /**
@@ -116,15 +123,15 @@ class ClientController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, ClientsModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->clientsModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if ($this->clientsModel->updateRow($id, $allInputs)) {
-                return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientStore'));
+                return Redirect::to('client')->with('message_success', $this->language->getMessage('messages.SuccessClientStore'));
             } else {
-                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorClientStore'));
+                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorClientStore'));
             }
         }
     }
@@ -143,16 +150,16 @@ class ClientController extends Controller
         $countEmployees = $clientDetails->employees()->count();
 
         if ($countCompanies > 0) {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteCompanies'));
+            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.firstDeleteCompanies'));
         }
         if ($countEmployees > 0) {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.firstDeleteEmployees'));
+            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.firstDeleteEmployees'));
         }
 
         $clientDetails->delete();
         $this->systemLogs->insertSystemLogs('ClientsModel has been deleted with id: ' . $clientDetails->id, 200);
 
-        return Redirect::to('client')->with('message_success', Language::getMessage('messages.SuccessClientDelete'));
+        return Redirect::to('client')->with('message_success', $this->language->getMessage('messages.SuccessClientDelete'));
     }
 
     /**
@@ -166,9 +173,9 @@ class ClientController extends Controller
 
         if ($this->clientsModel->setActive($clientDetails->id, $value)) {
             $this->systemLogs->insertSystemLogs('ClientsModel has been enabled with id: ' . $clientDetails->id, 200);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessClientActive'));
+            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessClientActive'));
         } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.ClientIsActived'));
+            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ClientIsActived'));
         }
     }
 
@@ -178,11 +185,11 @@ class ClientController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findClientByValue = count(ClientsModel::trySearchClientByValue('full_name', $getValueInput, 10));
+        $findClientByValue = count($this->clientsModel->trySearchClientByValue('full_name', $getValueInput, 10));
         $dataOfClient = $this->getDataAndPagination();
 
         if (!$findClientByValue > 0) {
-            return redirect('client')->with('message_danger', Language::getMessage('messages.ThereIsNoClient'));
+            return redirect('client')->with('message_danger', $this->language->getMessage('messages.ThereIsNoClient'));
         } else {
             $dataOfClient += ['client_search' => $findClientByValue];
             Redirect::to('client/search')->with('message_success', 'Find ' . $findClientByValue . ' client!');

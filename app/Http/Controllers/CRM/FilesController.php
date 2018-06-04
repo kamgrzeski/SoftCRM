@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\CompaniesModel;
 use App\Models\FilesModel;
+use App\Models\FinancesModel;
 use App\Models\Language;
 use App\Services\SystemLogService;
 use Validator;
@@ -17,10 +18,14 @@ use Config;
 class FilesController extends Controller
 {
     private $systemLogs;
+    private $language;
+    private $filesModel;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
+        $this->language = new Language();
+        $this->filesModel = new FilesModel();
     }
 
     /**
@@ -54,7 +59,11 @@ class FilesController extends Controller
     public function create()
     {
         $dataOfCompanies = CompaniesModel::pluck('name', 'id');
-        return View::make('crm.files.create', compact('dataOfCompanies'));
+
+        return View::make('crm.files.create')->with([
+            'dataOfCompanies' => $dataOfCompanies,
+            'inputText' => $this->language->getMessage('messages.InputText')
+        ]);
     }
 
     /**
@@ -66,16 +75,16 @@ class FilesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, FilesModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->filesModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('files/create')->with('message_danger', $validator->errors());
         } else {
-            if ($file = FilesModel::insertRow($allInputs)) {
+            if ($file = $this->filesModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('File has been add with id: '. $file, 200);
-                return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesStore'));
+                return Redirect::to('files')->with('message_success', $this->language->getMessage('messages.SuccessFilesStore'));
             } else {
-                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesStore'));
+                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorFilesStore'));
             }
         }
     }
@@ -122,15 +131,15 @@ class FilesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, FilesModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->filesModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (FilesModel::updateRow($id, $allInputs)) {
-                return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesUpdate'));
+            if ($this->filesModel->updateRow($id, $allInputs)) {
+                return Redirect::to('files')->with('message_success', $this->language->getMessage('messages.SuccessFilesUpdate'));
             } else {
-                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesUpdate'));
+                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorFilesUpdate'));
             }
         }
     }
@@ -149,7 +158,7 @@ class FilesController extends Controller
 
         $this->systemLogs->insertSystemLogs('FilesModel has been deleted with id: ' . $dataOfFiles->id, 200);
 
-        return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesDelete'));
+        return Redirect::to('files')->with('message_success', $this->language->getMessage('messages.SuccessFilesDelete'));
     }
 
     /**
@@ -161,11 +170,11 @@ class FilesController extends Controller
     {
         $dataOfFiles = FilesModel::find($id);
 
-        if (FilesModel::setActive($dataOfFiles->id, $value)) {
+        if ($this->filesModel->setActive($dataOfFiles->id, $value)) {
             $this->systemLogs->insertSystemLogs('FilesModel has been enable with id: ' . $dataOfFiles->id, 200);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessFilesActive'));
+            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessFilesActive'));
         } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesActive'));
+            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorFilesActive'));
         }
     }
 
@@ -175,11 +184,11 @@ class FilesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findFilesByValue = count(FilesModel::trySearchFilesByValue('name', $getValueInput, 10));
+        $findFilesByValue = count($this->filesModel->trySearchFilesByValue('name', $getValueInput, 10));
         $dataOfFiles = $this->getDataAndPagination();
 
         if (!$findFilesByValue > 0) {
-            return redirect('files')->with('message_danger', Language::getMessage('messages.ThereIsNoFiles'));
+            return redirect('files')->with('message_danger', $this->language->getMessage('messages.ThereIsNoFiles'));
         } else {
             $dataOfFiles += ['files_search' => $findFilesByValue];
             Redirect::to('files/search')->with('message_success', 'Find ' . $findFilesByValue . ' files!');

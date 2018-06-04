@@ -16,10 +16,14 @@ use Config;
 class ProductsController extends Controller
 {
     private $systemLogs;
+    private $language;
+    private $productsModel;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
+        $this->language = new Language();
+        $this->productsModel = new ProductsModel();
     }
 
     /**
@@ -52,7 +56,9 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return View::make('crm.products.create');
+        return View::make('crm.products.create')->with([
+            'inputText' => $this->language->getMessage('messages.InputText')
+        ]);
     }
 
     /**
@@ -64,16 +70,16 @@ class ProductsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, ProductsModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->productsModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('products/create')->with('message_danger', $validator->errors());
         } else {
-            if ($product = ProductsModel::insertRow($allInputs)) {
+            if ($product = $this->productsModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Product has been add with id: '. $product, 200);
-                return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsStore'));
+                return Redirect::to('products')->with('message_success', $this->language->getMessage('messages.SuccessProductsStore'));
             } else {
-                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorProductsStore'));
+                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorProductsStore'));
             }
         }
     }
@@ -118,15 +124,15 @@ class ProductsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, ProductsModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->productsModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (ProductsModel::updateRow($id, $allInputs)) {
-                return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsStore'));
+            if ($this->productsModel->updateRow($id, $allInputs)) {
+                return Redirect::to('products')->with('message_success', $this->language->getMessage('messages.SuccessProductsStore'));
             } else {
-                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorProductsStore'));
+                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorProductsStore'));
             }
         }
     }
@@ -146,7 +152,7 @@ class ProductsController extends Controller
         $this->systemLogs->insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, 200);
 
 
-        return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsDelete'));
+        return Redirect::to('products')->with('message_success', $this->language->getMessage('messages.SuccessProductsDelete'));
     }
 
     /**
@@ -158,11 +164,11 @@ class ProductsController extends Controller
     {
         $productsDetails = ProductsModel::find($id);
 
-        if (ProductsModel::setActive($productsDetails->id, $value)) {
+        if ($this->productsModel->setActive($productsDetails->id, $value)) {
             $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $productsDetails->id, 200);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProductsActive'));
+            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessProductsActive'));
         } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.ProductsIsActived'));
+            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ProductsIsActived'));
         }
     }
 
@@ -172,11 +178,11 @@ class ProductsController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findProductsByValue = count(ProductsModel::trySearchProductsByValue('full_name', $getValueInput, 10));
+        $findProductsByValue = count($this->productsModel->trySearchProductsByValue('full_name', $getValueInput, 10));
         $dataOfProducts = $this->getDataAndPagination();
 
         if (!$findProductsByValue > 0) {
-            return redirect('products')->with('message_danger', Language::getMessage('messages.ThereIsNoProducts'));
+            return redirect('products')->with('message_danger', $this->language->getMessage('messages.ThereIsNoProducts'));
         } else {
             $dataOfProducts += ['products_search' => $findProductsByValue];
             Redirect::to('products/search')->with('message_success', 'Find ' . $findProductsByValue . ' products!');

@@ -19,10 +19,14 @@ use Config;
 class InvoicesController extends Controller
 {
     private $systemLogs;
+    private $language;
+    private $invoicesModel;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
+        $this->language = new Language();
+        $this->invoicesModel = new InvoicesModel();
     }
 
     /**
@@ -76,16 +80,16 @@ class InvoicesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, InvoicesModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->invoicesModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('invoices/create')->with('message_danger', $validator->errors());
         } else {
-            if ($invoice = InvoicesModel::insertRow($allInputs)) {
+            if ($invoice = $this->invoicesModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Invoice has been add with id: '. $invoice, 200);
-                return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesStore'));
+                return Redirect::to('invoices')->with('message_success', $this->language->getMessage('messages.SuccessInvoicesStore'));
             } else {
-                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorInvoicesStore'));
+                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorInvoicesStore'));
             }
         }
     }
@@ -103,6 +107,7 @@ class InvoicesController extends Controller
         return View::make('crm.invoices.show')
             ->with([
                 'invoices' => $dataOfInvoices,
+                'inputText' => $this->language->getMessage('messages.InputText')
             ]);
     }
 
@@ -130,15 +135,15 @@ class InvoicesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, InvoicesModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->invoicesModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (InvoicesModel::updateRow($id, $allInputs)) {
-                return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesStore'));
+            if ($this->invoicesModel->updateRow($id, $allInputs)) {
+                return Redirect::to('invoices')->with('message_success', $this->language->getMessage('messages.SuccessInvoicesStore'));
             } else {
-                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorInvoicesStore'));
+                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorInvoicesStore'));
             }
         }
     }
@@ -157,7 +162,7 @@ class InvoicesController extends Controller
 
         $this->systemLogs->insertSystemLogs('InvoicesModel has been deleted with id: ' . $invoicesDetails->id, 200);
 
-        return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesDelete'));
+        return Redirect::to('invoices')->with('message_success', $this->language->getMessage('messages.SuccessInvoicesDelete'));
     }
 
     /**
@@ -169,11 +174,11 @@ class InvoicesController extends Controller
     {
         $invoicesDetails = InvoicesModel::find($id);
 
-        if (InvoicesModel::setActive($invoicesDetails->id, $value)) {
+        if ($this->invoicesModel->setActive($invoicesDetails->id, $value)) {
             $this->systemLogs->insertSystemLogs('InvoicesModel has been enabled with id: ' . $invoicesDetails->id, 200);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessInvoicesActive'));
+            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessInvoicesActive'));
         } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.InvoicesIsActived'));
+            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.InvoicesIsActived'));
         }
     }
     /**
@@ -182,11 +187,11 @@ class InvoicesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findInvoicesByValue = count(InvoicesModel::trySearchInvoicesByValue('full_name', $getValueInput, 10));
+        $findInvoicesByValue = count($this->invoicesModel->trySearchInvoicesByValue('full_name', $getValueInput, 10));
         $dataOfInvoices = $this->getDataAndPagination();
 
         if (!$findInvoicesByValue > 0) {
-            return redirect('invoices')->with('message_danger', Language::getMessage('messages.ThereIsNoInvoices'));
+            return redirect('invoices')->with('message_danger', $this->language->getMessage('messages.ThereIsNoInvoices'));
         } else {
             $dataOfInvoices += ['invoices_search' => $findInvoicesByValue];
             Redirect::to('invoices/search')->with('message_success', 'Find ' . $findInvoicesByValue . ' invoices!');

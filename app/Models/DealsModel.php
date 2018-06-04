@@ -16,7 +16,7 @@ class DealsModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertGetId($allInputs)
+    public function insertGetId($allInputs)
     {
         return DealsModel::insert(
             [
@@ -35,7 +35,7 @@ class DealsModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function updateRow($id, $allInputs)
+    public function updateRow($id, $allInputs)
     {
         return DealsModel::where('id', '=', $id)->update(
             [
@@ -51,7 +51,7 @@ class DealsModel extends Model
      * @param $rulesType
      * @return array
      */
-    public static function getRules($rulesType)
+    public function getRules($rulesType)
     {
         switch ($rulesType) {
             case 'STORE':
@@ -69,7 +69,7 @@ class DealsModel extends Model
      * @param $activeType
      * @return bool
      */
-    public static function setActive($id, $activeType)
+    public function setActive($id, $activeType)
     {
         $findDealsById = DealsModel::where('id', '=', $id)->update(
             [
@@ -105,7 +105,7 @@ class DealsModel extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchDealsByValue($type, $value, $paginationLimit = 10)
+    public function trySearchDealsByValue($type, $value, $paginationLimit = 10)
     {
         return DealsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }

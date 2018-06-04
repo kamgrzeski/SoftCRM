@@ -62,7 +62,7 @@ class ClientsModel extends Model
      * @param $rulesType
      * @return array
      */
-    public static function getRules($rulesType)
+    public function getRules($rulesType)
     {
         switch ($rulesType) {
             case 'STORE':
@@ -102,7 +102,7 @@ class ClientsModel extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchClientByValue($type, $value, $paginationLimit = 10)
+    public function trySearchClientByValue($type, $value, $paginationLimit = 10)
     {
         return ClientsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }

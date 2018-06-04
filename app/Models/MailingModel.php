@@ -13,7 +13,7 @@ class MailingModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public function insertRow($allInputs)
     {
         return MailingModel::insertGetId(
             [
@@ -29,7 +29,7 @@ class MailingModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function updateRow($id, $allInputs)
+    public function updateRow($id, $allInputs)
     {
         return MailingModel::where('id', '=', $id)->update(
             [
@@ -43,7 +43,7 @@ class MailingModel extends Model
      * @param $rulesType
      * @return array
      */
-    public static function getRules($rulesType)
+    public function getRules($rulesType)
     {
         switch ($rulesType) {
             case 'STORE':
@@ -58,7 +58,7 @@ class MailingModel extends Model
      * @param $activeType
      * @return bool
      */
-    public static function setActive($id, $activeType)
+    public function setActive($id, $activeType)
     {
         $findMailingById = MailingModel::where('id', '=', $id)->update(
             [
@@ -86,7 +86,7 @@ class MailingModel extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchMailingByValue($type, $value, $paginationLimit = 10)
+    public function trySearchMailingByValue($type, $value, $paginationLimit = 10)
     {
         return MailingModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }

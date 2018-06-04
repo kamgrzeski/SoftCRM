@@ -17,10 +17,14 @@ use Config;
 class DealsController extends Controller
 {
     private $systemLogs;
+    private $language;
+    private $dealsModel;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
+        $this->language = new Language();
+        $this->dealsModel = new DealsModel();
     }
 
     /**
@@ -54,7 +58,11 @@ class DealsController extends Controller
     public function create()
     {
         $dataOfDeals = CompaniesModel::pluck('name', 'id');
-        return View::make('crm.deals.create', compact('dataOfDeals'));
+
+        return View::make('crm.deals.create')->with([
+            'dataOfDeals' => $dataOfDeals,
+            'inputText' => $this->language->getMessage('messages.InputText')
+        ]);
     }
 
     /**
@@ -66,16 +74,16 @@ class DealsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, DealsModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->dealsModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('deals/create')->with('message_danger', $validator->errors());
         } else {
-            if ($deal = DealsModel::insertRow($allInputs)) {
+            if ($deal = $this->dealsModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Deal has been add with id: '. $deal, 200);
-                return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsStore'));
+                return Redirect::to('deals')->with('message_success', $this->language->getMessage('messages.SuccessDealsStore'));
             } else {
-                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsStore'));
+                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorDealsStore'));
             }
         }
     }
@@ -122,15 +130,15 @@ class DealsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, DealsModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->dealsModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (DealsModel::updateRow($id, $allInputs)) {
-                return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsUpdate'));
+            if ($this->dealsModel->updateRow($id, $allInputs)) {
+                return Redirect::to('deals')->with('message_success', $this->language->getMessage('messages.SuccessDealsUpdate'));
             } else {
-                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsUpdate'));
+                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorDealsUpdate'));
             }
         }
     }
@@ -149,7 +157,7 @@ class DealsController extends Controller
 
         $this->systemLogs->insertSystemLogs('DealsModel has been deleted with id: ' .$dataOfDeals->id, 200);
 
-        return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsDelete'));
+        return Redirect::to('deals')->with('message_success', $this->language->getMessage('messages.SuccessDealsDelete'));
     }
 
     /**
@@ -161,11 +169,11 @@ class DealsController extends Controller
     {
         $dataOfDeals = DealsModel::find($id);
 
-        if (DealsModel::setActive($dataOfDeals->id, $value)) {
+        if ($this->dealsModel->setActive($dataOfDeals->id, $value)) {
             $this->systemLogs->insertSystemLogs('DealsModel has been enabled with id: ' .$dataOfDeals->id, 200);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessDealsActive'));
+            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessDealsActive'));
         } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsActive'));
+            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorDealsActive'));
         }
     }
 
@@ -175,11 +183,11 @@ class DealsController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findDealsByValue = count(DealsModel::trySearchDealsByValue('name', $getValueInput, 10));
+        $findDealsByValue = count($this->dealsModel->trySearchDealsByValue('name', $getValueInput, 10));
         $dataOfDeals = $this->getDataAndPagination();
 
         if (!$findDealsByValue > 0) {
-            return redirect('deals')->with('message_danger', Language::getMessage('messages.ThereIsNoDeals'));
+            return redirect('deals')->with('message_danger', $this->language->getMessage('messages.ThereIsNoDeals'));
         } else {
             $dataOfDeals += ['deals_search' => $findDealsByValue];
             Redirect::to('deals/search')->with('message_success', 'Find ' . $findDealsByValue . ' deals!');

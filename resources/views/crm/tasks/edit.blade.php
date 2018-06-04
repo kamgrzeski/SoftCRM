@@ -26,17 +26,17 @@
                             {{ Form::model($tasks, array('route' => array('tasks.update', $tasks->id), 'method' => 'PUT')) }}
                             <div class="form-group">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('duration', 'Duration') }}
-                                {{ Form::text('duration', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('duration', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('employee_id', 'Assign employee') }}
-                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
+                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'placeholder' => $inputText])  }}
                             </div>
                         </div>
 

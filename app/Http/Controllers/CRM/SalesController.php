@@ -17,10 +17,14 @@ use Config;
 class SalesController extends Controller
 {
     private $systemLogs;
+    private $language;
+    private $salesModel;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
+        $this->language = new Language();
+        $this->salesModel = new SalesModel();
     }
 
     /**
@@ -57,7 +61,8 @@ class SalesController extends Controller
 
         return View::make('crm.sales.create')->with(
             [
-            'dataOfProducts' => $dataOfProducts
+                'dataOfProducts' => $dataOfProducts,
+                'inputText' => $this->language->getMessage('messages.InputText')
             ]);
     }
 
@@ -70,16 +75,16 @@ class SalesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, SalesModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->salesModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('sales/create')->with('message_danger', $validator->errors());
         } else {
-            if ($sale = SalesModel::insertRow($allInputs)) {
-                $this->systemLogs->insertSystemLogs('SalesModel has been add with id: '. $sale, 200);
-                return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesStore'));
+            if ($sale = $this->salesModel->insertRow($allInputs)) {
+                $this->systemLogs->insertSystemLogs('SalesModel has been add with id: ' . $sale, 200);
+                return Redirect::to('sales')->with('message_success', $this->language->getMessage('messages.SuccessSalesStore'));
             } else {
-                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorSalesStore'));
+                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorSalesStore'));
             }
         }
     }
@@ -133,15 +138,15 @@ class SalesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, SalesModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->salesModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (SalesModel::updateRow($id, $allInputs)) {
-                return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesStore'));
+            if ($this->salesModel->updateRow($id, $allInputs)) {
+                return Redirect::to('sales')->with('message_success', $this->language->getMessage('messages.SuccessSalesStore'));
             } else {
-                return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorSalesStore'));
+                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorSalesStore'));
             }
         }
     }
@@ -160,7 +165,7 @@ class SalesController extends Controller
 
         $this->systemLogs->insertSystemLogs('SalesModel has been deleted with id: ' . $salesDetails->id, 200);
 
-        return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesDelete'));
+        return Redirect::to('sales')->with('message_success', $this->language->getMessage('messages.SuccessSalesDelete'));
     }
 
     /**
@@ -172,11 +177,11 @@ class SalesController extends Controller
     {
         $salesDetails = SalesModel::find($id);
 
-        if (SalesModel::setActive($salesDetails->id, $value)) {
+        if ($this->salesModel->setActive($salesDetails->id, $value)) {
             $this->systemLogs->insertSystemLogs('SalesModel has been enabled with id: ' . $salesDetails->id, 200);
-            return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSalesActive'));
+            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessSalesActive'));
         } else {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.SalesIsActived'));
+            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.SalesIsActived'));
         }
     }
 
@@ -190,7 +195,7 @@ class SalesController extends Controller
         $dataOfSales = $this->getDataAndPagination();
 
         if (!$findSalesByValue > 0) {
-            return redirect('sales')->with('message_danger', Language::getMessage('messages.ThereIsNoSales'));
+            return redirect('sales')->with('message_danger', $this->language->getMessage('messages.ThereIsNoSales'));
         } else {
             $dataOfSales += ['sales_search' => $findSalesByValue];
             Redirect::to('sales/search')->with('message_success', 'Find ' . $findSalesByValue . ' sales!');

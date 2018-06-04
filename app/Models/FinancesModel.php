@@ -18,7 +18,7 @@ class FinancesModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public function insertRow($allInputs)
     {
         $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($allInputs['gross']);
@@ -45,7 +45,7 @@ class FinancesModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function updateRow($id, $allInputs)
+    public function updateRow($id, $allInputs)
     {
         $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($allInputs['gross']);
@@ -70,7 +70,7 @@ class FinancesModel extends Model
      * @param $rulesType
      * @return array
      */
-    public static function getRules($rulesType)
+    public function getRules($rulesType)
     {
         switch ($rulesType) {
             case 'STORE':
@@ -90,7 +90,7 @@ class FinancesModel extends Model
      * @param $activeType
      * @return bool
      */
-    public static function setActive($id, $activeType)
+    public function setActive($id, $activeType)
     {
         $findFinancesById = FinancesModel::where('id', '=', $id)->update(
             [
@@ -118,7 +118,7 @@ class FinancesModel extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchFinancesByValue($type, $value, $paginationLimit = 10)
+    public function trySearchFinancesByValue($type, $value, $paginationLimit = 10)
     {
         return FinancesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }

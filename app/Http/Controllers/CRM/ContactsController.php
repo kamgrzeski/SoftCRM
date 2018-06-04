@@ -18,10 +18,14 @@ use Config;
 class ContactsController extends Controller
 {
     private $systemLogs;
+    private $language;
+    private $contactsModel;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
+        $this->language = new Language();
+        $this->contactsModel = new ContactsModel();
     }
 
     /**
@@ -59,7 +63,8 @@ class ContactsController extends Controller
         return View::make('crm.contacts.create')->with(
             [
                 'clients' => $dataOfClients,
-                'employees' => $dataOfEmployees
+                'employees' => $dataOfEmployees,
+                'inputText' => $this->language->getMessage('messages.InputText')
             ]);
     }
 
@@ -72,16 +77,16 @@ class ContactsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, ContactsModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->contactsModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('contacts/create')->with('message_danger', $validator->errors());
         } else {
-            if ($contact = ContactsModel::insertRow($allInputs)) {
+            if ($contact = $this->contactsModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Contact has been add with id: '. $contact, 200);
-                return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsStore'));
+                return Redirect::to('contacts')->with('message_success', $this->language->getMessage('messages.SuccessContactsStore'));
             } else {
-                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorContactsStore'));
+                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorContactsStore'));
             }
         }
     }
@@ -130,15 +135,15 @@ class ContactsController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, ContactsModel::getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->contactsModel->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if (ContactsModel::updateRow($id, $allInputs)) {
-                return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsUpdate'));
+            if ($this->contactsModel->updateRow($id, $allInputs)) {
+                return Redirect::to('contacts')->with('message_success', $this->language->getMessage('messages.SuccessContactsUpdate'));
             } else {
-                return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorContactsUpdate'));
+                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorContactsUpdate'));
             }
         }
     }
@@ -157,7 +162,7 @@ class ContactsController extends Controller
 
         $this->systemLogs->insertSystemLogs('ContactsModel has been deleted with id: ' . $dataOfContacts->id, 200);
 
-        return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsDelete'));
+        return Redirect::to('contacts')->with('message_success', $this->language->getMessage('messages.SuccessContactsDelete'));
     }
 
     /**
@@ -170,7 +175,7 @@ class ContactsController extends Controller
         $dataOfContacts = $this->getDataAndPagination();
 
         if (!$findDealsByValue > 0) {
-            return redirect('contacts')->with('message_danger', Language::getMessage('messages.ThereIsNoDeals'));
+            return redirect('contacts')->with('message_danger', $this->language->getMessage('messages.ThereIsNoDeals'));
         } else {
             $dataOfContacts += ['contacts_search' => $findDealsByValue];
             Redirect::to('contacts/search')->with('message_success', 'Find ' . $findDealsByValue . ' contacts!');

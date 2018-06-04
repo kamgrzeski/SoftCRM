@@ -18,10 +18,14 @@ use Config;
 class SettingsController extends Controller
 {
     private $systemLogs;
+    private $language;
+    private $settingsModel;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
+        $this->language = new Language();
+        $this->settingsModel = new SettingsModel();
     }
 
     /**
@@ -48,10 +52,10 @@ class SettingsController extends Controller
     {
         $getAllInputFromRequest = Input::all();
 
-        $validator = Validator::make($getAllInputFromRequest, SettingsModel::getRules('SETTINGS'));
+        $validator = Validator::make($getAllInputFromRequest,  $this->settingsModel->getRules('SETTINGS'));
 
         if($validator->fails()) {
-            return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorSettingsStore'));
+            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorSettingsStore'));
         }
 
         $writeConfig = new Rewrite;
@@ -71,7 +75,7 @@ class SettingsController extends Controller
 
         $this->systemLogs->insertSystemLogs('SettingsModel has been changed.', 200);
 
-        return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSettingsUpdate'));
+        return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessSettingsUpdate'));
     }
 
     public function formatAllSystemLogs()

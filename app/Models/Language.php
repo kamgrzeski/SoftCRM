@@ -11,7 +11,7 @@ class Language extends Model
      * @param $message
      * @return \Illuminate\Contracts\Translation\Translator|string
      */
-    public static function getMessage($message)
+    public function getMessage($message)
     {
         if (App::isLocale('en')) {
             return __($message);

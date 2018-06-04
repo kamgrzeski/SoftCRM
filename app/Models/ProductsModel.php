@@ -16,7 +16,7 @@ class ProductsModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public function insertRow($allInputs)
     {
         return ProductsModel::insertGetId(
             [
@@ -35,7 +35,7 @@ class ProductsModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function updateRow($id, $allInputs)
+    public function updateRow($id, $allInputs)
     {
         return ProductsModel::where('id', '=', $id)->update(
             [
@@ -52,7 +52,7 @@ class ProductsModel extends Model
      * @param $rulesType
      * @return array
      */
-    public static function getRules($rulesType)
+    public function getRules($rulesType)
     {
         switch ($rulesType) {
             case 'STORE':
@@ -70,7 +70,7 @@ class ProductsModel extends Model
      * @param $activeType
      * @return bool
      */
-    public static function setActive($id, $activeType)
+    public function setActive($id, $activeType)
     {
         $findProductsById = ProductsModel::where('id', '=', $id)->update(
             [
@@ -106,7 +106,7 @@ class ProductsModel extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchProductsByValue($type, $value, $paginationLimit = 10)
+    public function trySearchProductsByValue($type, $value, $paginationLimit = 10)
     {
         return ProductsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }

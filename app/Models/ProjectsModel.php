@@ -15,7 +15,7 @@ class ProjectsModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public function insertRow($allInputs)
     {
         return ProjectsModel::insertGetId(
             [
@@ -36,7 +36,7 @@ class ProjectsModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function updateRow($id, $allInputs)
+    public function updateRow($id, $allInputs)
     {
         return ProjectsModel::where('id', '=', $id)->update(
             [
@@ -55,7 +55,7 @@ class ProjectsModel extends Model
      * @param $rulesType
      * @return array
      */
-    public static function getRules($rulesType)
+    public function getRules($rulesType)
     {
         switch ($rulesType) {
             case 'STORE':
@@ -75,7 +75,7 @@ class ProjectsModel extends Model
      * @param $activeType
      * @return bool
      */
-    public static function setActive($id, $activeType)
+    public function setActive($id, $activeType)
     {
         $findProjectsById = ProjectsModel::where('id', '=', $id)->update(
             [

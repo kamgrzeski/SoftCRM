@@ -36,7 +36,7 @@
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::textarea('name', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::textarea('name', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                                 </div>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                                 {{ Form::label('employee_id', 'Assign employees') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('employee_id', $dataOfEmployees, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')]) }}
+                                    {{ Form::select('employee_id', $dataOfEmployees, null, ['class' => 'form-control', 'placeholder' => $inputText]) }}
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                                 {{ Form::label('duration', 'Duration') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::text('duration', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('duration', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                                 </div>
                             </div>
                         </div>

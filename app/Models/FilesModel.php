@@ -16,7 +16,7 @@ class FilesModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public function insertRow($allInputs)
     {
         return FilesModel::insertGetId(
             [
@@ -33,7 +33,7 @@ class FilesModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function updateRow($id, $allInputs)
+    public function updateRow($id, $allInputs)
     {
         return FilesModel::where('id', '=', $id)->update(
             [
@@ -48,7 +48,7 @@ class FilesModel extends Model
      * @param $rulesType
      * @return array
      */
-    public static function getRules($rulesType)
+    public function getRules($rulesType)
     {
         switch ($rulesType) {
             case 'STORE':
@@ -64,7 +64,7 @@ class FilesModel extends Model
      * @param $activeType
      * @return bool
      */
-    public static function setActive($id, $activeType)
+    public function setActive($id, $activeType)
     {
         $findFilesById = FilesModel::where('id', '=', $id)->update(
             [
@@ -100,7 +100,7 @@ class FilesModel extends Model
      * @param int $paginationLimit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function trySearchFilesByValue($type, $value, $paginationLimit = 10)
+    public function trySearchFilesByValue($type, $value, $paginationLimit = 10)
     {
         return FilesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }

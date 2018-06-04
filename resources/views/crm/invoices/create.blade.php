@@ -42,7 +42,7 @@
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                                 </div>
                             </div>
 
@@ -50,7 +50,7 @@
                                 {{ Form::label('notes', 'Notes') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-                                    {{ Form::text('notes', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('notes', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                                 </div>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                                 {{ Form::label('companies_id', 'Invoice between company:') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('companies_id', $dataOfCompanies, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
+                                    {{ Form::select('companies_id', $dataOfCompanies, null, ['class' => 'form-control', 'placeholder' => $inputText])  }}
                                 </div>
                             </div>
 
@@ -67,7 +67,7 @@
                                 {{ Form::label('client_id', 'Invoice between client:') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('client_id', $dataOfClient, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
+                                    {{ Form::select('client_id', $dataOfClient, null, ['class' => 'form-control', 'placeholder' => $inputText])  }}
                             </div>
                             </div>
                         </div>
@@ -85,14 +85,14 @@
                                 {{ Form::label('product_id', 'Choose product:') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('product_id', $dataOfProducts, null, ['class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText')])  }}
+                                    {{ Form::select('product_id', $dataOfProducts, null, ['class' => 'form-control', 'placeholder' => $inputText])  }}
                                 </div>
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('cost', 'Cost') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-money"></i></span>
-                                    {{ Form::text('cost', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('cost', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                                 </div>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                                 {{ Form::label('amount', 'Amount') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-eye"></i></span>
-                                    {{ Form::text('amount', null, array('class' => 'form-control', 'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('amount', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                                 </div>
                             </div>
                         </div>

@@ -16,7 +16,7 @@ class EmployeesModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public function insertRow($allInputs)
     {
         return EmployeesModel::insertGetId(
             [
@@ -37,7 +37,7 @@ class EmployeesModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function updateRow($id, $allInputs)
+    public function updateRow($id, $allInputs)
     {
         return EmployeesModel::where('id', '=', $id)->update(
             [
@@ -56,7 +56,7 @@ class EmployeesModel extends Model
      * @param $rulesType
      * @return array
      */
-    public static function getRules($rulesType)
+    public function getRules($rulesType)
     {
         switch ($rulesType) {
             case 'STORE':
@@ -76,7 +76,7 @@ class EmployeesModel extends Model
      * @param $activeType
      * @return bool
      */
-    public static function setActive($id, $activeType)
+    public function setActive($id, $activeType)
     {
         $findEmployeesById = EmployeesModel::where('id', '=', $id)->update(
             [
@@ -90,7 +90,7 @@ class EmployeesModel extends Model
         }
     }
 
-    public static function trySearchEmployeesByValue($type, $value, $paginationLimit = 10)
+    public function trySearchEmployeesByValue($type, $value, $paginationLimit = 10)
     {
         return EmployeesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }

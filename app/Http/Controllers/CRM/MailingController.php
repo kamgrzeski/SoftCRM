@@ -16,10 +16,14 @@ use Config;
 class MailingController extends Controller
 {
     private $systemLogs;
+    private $language;
+    private $mailingModel;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
+        $this->language = new Language();
+        $this->mailingModel = new MailingModel();
     }
 
     /**
@@ -54,11 +58,11 @@ class MailingController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findMailingByValue = count(MailingModel::trySearchMailingByValue('full_name', $getValueInput, 10));
+        $findMailingByValue = count($this->mailingModel->trySearchMailingByValue('full_name', $getValueInput, 10));
         $dataOfMailing = $this->getDataAndPagination();
 
         if (!$findMailingByValue > 0) {
-            return redirect('mailing')->with('message_danger', Language::getMessage('messages.ThereIsNoMailing'));
+            return redirect('mailing')->with('message_danger', $this->language->getMessage('messages.ThereIsNoMailing'));
         } else {
             $dataOfMailing += ['mailing_search' => $findMailingByValue];
             Redirect::to('mailing/search')->with('message_success', 'Find ' . $findMailingByValue . ' mailing!');

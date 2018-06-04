@@ -22,7 +22,7 @@
             {!! Form::text('search', null,
                                    array('required',
                                         'class'=>'form-control',
-                                        'placeholder' => \App\Models\Language::getMessage('messages.InputText'))) !!}
+                                        'placeholder' => $inputText)) !!}
             {!! Form::submit('Search',
                                        array('class'=>'btn btn-default')) !!}
             {!! Form::close() !!}

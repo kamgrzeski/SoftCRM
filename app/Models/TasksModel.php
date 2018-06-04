@@ -16,7 +16,7 @@ class TasksModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public function insertRow($allInputs)
     {
         return TasksModel::insertGetId(
             [
@@ -34,7 +34,7 @@ class TasksModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function updateRow($id, $allInputs)
+    public function updateRow($id, $allInputs)
     {
         return TasksModel::where('id', '=', $id)->update(
             [
@@ -50,7 +50,7 @@ class TasksModel extends Model
      * @param $rulesType
      * @return array
      */
-    public static function getRules($rulesType)
+    public function getRules($rulesType)
     {
         switch ($rulesType) {
             case 'STORE':
@@ -67,7 +67,7 @@ class TasksModel extends Model
      * @param $activeType
      * @return bool
      */
-    public static function setActive($id, $activeType)
+    public function setActive($id, $activeType)
     {
         $findTasksById = TasksModel::where('id', '=', $id)->update(
             [
@@ -87,7 +87,7 @@ class TasksModel extends Model
      * @return bool
      * @internal param $activeType
      */
-    public static function setCompleted($id, $completeType)
+    public function setCompleted($id, $completeType)
     {
         $findTasksById = TasksModel::where('id', '=', $id)->update(
             [
