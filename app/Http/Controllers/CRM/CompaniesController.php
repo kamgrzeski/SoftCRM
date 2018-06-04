@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClientsModel;
 use App\Models\CompaniesModel;
 use App\Models\Language;
+use App\Services\SystemLogService;
 use View;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -15,6 +16,13 @@ use Config;
 
 class CompaniesController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
+
     /**
      * @return array
      */
@@ -64,7 +72,7 @@ class CompaniesController extends Controller
             return Redirect::to('companies/create')->with('message_danger', $validator->errors());
         } else {
             if ($companie = CompaniesModel::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('CompaniesModel has been add with id: '. $companie, 200);
+                $this->systemLogs->insertSystemLogs('CompaniesModel has been add with id: '. $companie, 200);
                 return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorCompaniesStore'));
@@ -157,7 +165,7 @@ class CompaniesController extends Controller
 
         $dataOfCompanies->delete();
 
-        SystemLogsController::insertSystemLogs('CompaniesModel has been deleted with id: ' . $dataOfCompanies->id, 200);
+        $this->systemLogs->insertSystemLogs('CompaniesModel has been deleted with id: ' . $dataOfCompanies->id, 200);
 
         return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesDelete'));
     }
@@ -172,7 +180,7 @@ class CompaniesController extends Controller
         $dataOfCompanies = CompaniesModel::find($id);
 
         if (CompaniesModel::setActive($dataOfCompanies->id, $value)) {
-            SystemLogsController::insertSystemLogs('CompaniesModel has been enabled with id: ' . $dataOfCompanies->id, 200);
+            $this->systemLogs->insertSystemLogs('CompaniesModel has been enabled with id: ' . $dataOfCompanies->id, 200);
             return Redirect::to('companies')->with('message_success', Language::getMessage('messages.SuccessCompaniesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorCompaniesActive'));
@@ -188,7 +196,7 @@ class CompaniesController extends Controller
         $dataOfCompanies = CompaniesModel::find($id);
 
         if (CompaniesModel::setActive($dataOfCompanies->id, FALSE)) {
-            SystemLogsController::insertSystemLogs('CompaniesModel has been disabled with id: ' . $dataOfCompanies->id, 200);
+            $this->systemLogs->insertSystemLogs('CompaniesModel has been disabled with id: ' . $dataOfCompanies->id, 200);
             return Redirect::to('companies')->with('message_success', Language::getMessage('messages.CompaniesIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.CompaniesIsDeactivated'));

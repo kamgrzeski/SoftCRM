@@ -8,6 +8,7 @@ use App\Models\CompaniesModel;
 use App\Models\InvoicesModel;
 use App\Models\Language;
 use App\Models\ProductsModel;
+use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -17,6 +18,13 @@ use Config;
 
 class InvoicesController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
+
     /**
      * @return array
      */
@@ -74,7 +82,7 @@ class InvoicesController extends Controller
             return Redirect::to('invoices/create')->with('message_danger', $validator->errors());
         } else {
             if ($invoice = InvoicesModel::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Invoice has been add with id: '. $invoice, 200);
+                $this->systemLogs->insertSystemLogs('Invoice has been add with id: '. $invoice, 200);
                 return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorInvoicesStore'));
@@ -147,7 +155,7 @@ class InvoicesController extends Controller
         $invoicesDetails = InvoicesModel::find($id);
         $invoicesDetails->delete();
 
-        SystemLogsController::insertSystemLogs('InvoicesModel has been deleted with id: ' . $invoicesDetails->id, 200);
+        $this->systemLogs->insertSystemLogs('InvoicesModel has been deleted with id: ' . $invoicesDetails->id, 200);
 
         return Redirect::to('invoices')->with('message_success', Language::getMessage('messages.SuccessInvoicesDelete'));
     }
@@ -162,7 +170,7 @@ class InvoicesController extends Controller
         $invoicesDetails = InvoicesModel::find($id);
 
         if (InvoicesModel::setActive($invoicesDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('InvoicesModel has been enabled with id: ' . $invoicesDetails->id, 200);
+            $this->systemLogs->insertSystemLogs('InvoicesModel has been enabled with id: ' . $invoicesDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessInvoicesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.InvoicesIsActived'));

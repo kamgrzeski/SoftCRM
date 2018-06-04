@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CompaniesModel;
 use App\Models\DealsModel;
 use App\Models\Language;
+use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -15,6 +16,13 @@ use Config;
 
 class DealsController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
+
     /**
      * @return array
      */
@@ -64,7 +72,7 @@ class DealsController extends Controller
             return Redirect::to('deals/create')->with('message_danger', $validator->errors());
         } else {
             if ($deal = DealsModel::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Deal has been add with id: '. $deal, 200);
+                $this->systemLogs->insertSystemLogs('Deal has been add with id: '. $deal, 200);
                 return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsStore'));
@@ -139,7 +147,7 @@ class DealsController extends Controller
         $dataOfDeals = DealsModel::find($id);
         $dataOfDeals->delete();
 
-        SystemLogsController::insertSystemLogs('DealsModel has been deleted with id: ' .$dataOfDeals->id, 200);
+        $this->systemLogs->insertSystemLogs('DealsModel has been deleted with id: ' .$dataOfDeals->id, 200);
 
         return Redirect::to('deals')->with('message_success', Language::getMessage('messages.SuccessDealsDelete'));
     }
@@ -154,7 +162,7 @@ class DealsController extends Controller
         $dataOfDeals = DealsModel::find($id);
 
         if (DealsModel::setActive($dataOfDeals->id, $value)) {
-            SystemLogsController::insertSystemLogs('DealsModel has been enabled with id: ' .$dataOfDeals->id, 200);
+            $this->systemLogs->insertSystemLogs('DealsModel has been enabled with id: ' .$dataOfDeals->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessDealsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorDealsActive'));

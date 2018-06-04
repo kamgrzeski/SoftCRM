@@ -8,6 +8,7 @@ use App\Models\CompaniesModel;
 use App\Models\DealsModel;
 use App\Models\Language;
 use App\Models\ProjectsModel;
+use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -17,6 +18,13 @@ use Config;
 
 class ProjectsController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
+
     /**
      * @return array
      */
@@ -73,7 +81,7 @@ class ProjectsController extends Controller
             return Redirect::to('projects/create')->with('message_danger', $validator->errors());
         } else {
             if ($project = ProjectsModel::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Project has been add with id: '. $project, 200);
+                $this->systemLogs->insertSystemLogs('Project has been add with id: '. $project, 200);
                 return Redirect::to('projects')->with('message_success', Language::getMessage('messages.SuccessProjectsStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorProjectsStore'));
@@ -155,7 +163,7 @@ class ProjectsController extends Controller
         $projectsDetails = ProjectsModel::find($id);
         $projectsDetails->delete();
 
-        SystemLogsController::insertSystemLogs('ProjectsModel has been deleted with id: ' . $projectsDetails->id, 200);
+        $this->systemLogs->insertSystemLogs('ProjectsModel has been deleted with id: ' . $projectsDetails->id, 200);
 
         return Redirect::to('projects')->with('message_success', Language::getMessage('messages.SuccessProjectsDelete'));
     }
@@ -170,7 +178,7 @@ class ProjectsController extends Controller
         $projectsDetails = ProjectsModel::find($id);
 
         if (ProjectsModel::setActive($projectsDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('ProjectsModel has been enabled with id: ' . $projectsDetails->id, 200);
+            $this->systemLogs->insertSystemLogs('ProjectsModel has been enabled with id: ' . $projectsDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProjectsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProjectsIsActived'));

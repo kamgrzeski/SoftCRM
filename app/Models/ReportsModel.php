@@ -86,7 +86,7 @@ class ReportsModel extends Model
      */
     public static function countReports()
     {
-        return count(ReportsModel::get());
+        return ReportsModel::all()->count();
     }
 
     /**

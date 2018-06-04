@@ -77,7 +77,7 @@ class MailingModel extends Model
      */
     public static function countMailing()
     {
-        return count(MailingModel::get());
+        return MailingModel::all()->count();
     }
 
     /**

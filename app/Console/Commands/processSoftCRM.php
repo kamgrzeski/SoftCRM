@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\CRM\SystemLogsController;
+use App\Services\SystemLogService;
 use Illuminate\Console\Command;
 use Request;
 
@@ -57,6 +58,7 @@ class processSoftCRM extends Command
         $this->info('Everything looks perfect! Now you can start use SoftCRM!');
         $this->info('If you have any question please contact with me by email: kamil.grzechulskii@gmail.com');
 
-        SystemLogsController::insertSystemLogs('First usage of process-softcrm command', 200);
+        $systemLogs = new SystemLogService();
+        $systemLogs->insertSystemLogs('First usage of process-softcrm command', 200);
     }
 }

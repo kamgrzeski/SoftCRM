@@ -7,6 +7,7 @@ use App\Models\ClientsModel;
 use App\Models\ContactsModel;
 use App\Models\EmployeesModel;
 use App\Models\Language;
+use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -16,6 +17,13 @@ use Config;
 
 class ContactsController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
+
     /**
      * @return array
      */
@@ -70,7 +78,7 @@ class ContactsController extends Controller
             return Redirect::to('contacts/create')->with('message_danger', $validator->errors());
         } else {
             if ($contact = ContactsModel::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Contact has been add with id: '. $contact, 200);
+                $this->systemLogs->insertSystemLogs('Contact has been add with id: '. $contact, 200);
                 return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorContactsStore'));
@@ -147,7 +155,7 @@ class ContactsController extends Controller
         $dataOfContacts = ContactsModel::find($id);
         $dataOfContacts->delete();
 
-        SystemLogsController::insertSystemLogs('ContactsModel has been deleted with id: ' . $dataOfContacts->id, 200);
+        $this->systemLogs->insertSystemLogs('ContactsModel has been deleted with id: ' . $dataOfContacts->id, 200);
 
         return Redirect::to('contacts')->with('message_success', Language::getMessage('messages.SuccessContactsDelete'));
     }

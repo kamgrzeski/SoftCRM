@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\SettingsModel;
 use App\Services\HelpersFncService;
+use App\Services\SystemLogService;
 use Axdlee\Config\Rewrite;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -16,6 +17,12 @@ use Config;
 
 class SettingsController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
 
     /**
      * Show the application dashboard.
@@ -62,7 +69,7 @@ class SettingsController extends Controller
         $envEditor = DotenvEditor::setKey('ROLLBAR_TOKEN', $getAllInputFromRequest['rollbar_token']);
         $envEditor = DotenvEditor::save();
 
-        SystemLogsController::insertSystemLogs('SettingsModel has been changed.', 200);
+        $this->systemLogs->insertSystemLogs('SettingsModel has been changed.', 200);
 
         return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSettingsUpdate'));
     }

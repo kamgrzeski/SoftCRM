@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CompaniesModel;
 use App\Models\FilesModel;
 use App\Models\Language;
+use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -15,6 +16,13 @@ use Config;
 
 class FilesController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
+
     /**
      * @return array
      */
@@ -64,7 +72,7 @@ class FilesController extends Controller
             return Redirect::to('files/create')->with('message_danger', $validator->errors());
         } else {
             if ($file = FilesModel::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('File has been add with id: '. $file, 200);
+                $this->systemLogs->insertSystemLogs('File has been add with id: '. $file, 200);
                 return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesStore'));
@@ -139,7 +147,7 @@ class FilesController extends Controller
         $dataOfFiles = FilesModel::find($id);
         $dataOfFiles->delete();
 
-        SystemLogsController::insertSystemLogs('FilesModel has been deleted with id: ' . $dataOfFiles->id, 200);
+        $this->systemLogs->insertSystemLogs('FilesModel has been deleted with id: ' . $dataOfFiles->id, 200);
 
         return Redirect::to('files')->with('message_success', Language::getMessage('messages.SuccessFilesDelete'));
     }
@@ -154,7 +162,7 @@ class FilesController extends Controller
         $dataOfFiles = FilesModel::find($id);
 
         if (FilesModel::setActive($dataOfFiles->id, $value)) {
-            SystemLogsController::insertSystemLogs('FilesModel has been enable with id: ' . $dataOfFiles->id, 200);
+            $this->systemLogs->insertSystemLogs('FilesModel has been enable with id: ' . $dataOfFiles->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessFilesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFilesActive'));

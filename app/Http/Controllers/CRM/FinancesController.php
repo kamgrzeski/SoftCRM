@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CompaniesModel;
 use App\Models\FinancesModel;
 use App\Models\Language;
+use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -15,6 +16,12 @@ use Config;
 
 class FinancesController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
     /**
      * @return array
      */
@@ -63,7 +70,7 @@ class FinancesController extends Controller
         } else {
             if ($finance = FinancesModel::insertRow($allInputs)) {
 
-                SystemLogsController::insertSystemLogs('FinancesModel has been add with id: '. $finance, 200);
+                $this->systemLogs->insertSystemLogs('FinancesModel has been add with id: '. $finance, 200);
                 return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesStore'));
             } else {
                 return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFinancesStore'));
@@ -141,7 +148,7 @@ class FinancesController extends Controller
 
         $dataOfFinances->delete();
 
-        SystemLogsController::insertSystemLogs('FinancesModel has been deleted with id: ' . $dataOfFinances->id, 200);
+        $this->systemLogs->insertSystemLogs('FinancesModel has been deleted with id: ' . $dataOfFinances->id, 200);
 
         return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesDelete'));
     }
@@ -156,7 +163,7 @@ class FinancesController extends Controller
         $dataOfFinances = FinancesModel::find($id);
 
         if (FinancesModel::setActive($dataOfFinances->id, $value)) {
-            SystemLogsController::insertSystemLogs('FinancesModel has been enabled with id: ' . $dataOfFinances->id, 200);
+            $this->systemLogs->insertSystemLogs('FinancesModel has been enabled with id: ' . $dataOfFinances->id, 200);
             return Redirect::to('finances')->with('message_success', Language::getMessage('messages.SuccessFinancesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorFinancesActive'));

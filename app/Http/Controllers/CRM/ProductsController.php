@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\ProductsModel;
+use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -14,6 +15,13 @@ use Config;
 
 class ProductsController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
+
     /**
      * @return array
      */
@@ -62,7 +70,7 @@ class ProductsController extends Controller
             return Redirect::to('products/create')->with('message_danger', $validator->errors());
         } else {
             if ($product = ProductsModel::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Product has been add with id: '. $product, 200);
+                $this->systemLogs->insertSystemLogs('Product has been add with id: '. $product, 200);
                 return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorProductsStore'));
@@ -135,7 +143,7 @@ class ProductsController extends Controller
         $productsDetails = ProductsModel::find($id);
         $productsDetails->delete();
 
-        SystemLogsController::insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, 200);
+        $this->systemLogs->insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, 200);
 
 
         return Redirect::to('products')->with('message_success', Language::getMessage('messages.SuccessProductsDelete'));
@@ -151,7 +159,7 @@ class ProductsController extends Controller
         $productsDetails = ProductsModel::find($id);
 
         if (ProductsModel::setActive($productsDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('ProductsModel has been enabled with id: ' . $productsDetails->id, 200);
+            $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $productsDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessProductsActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ProductsIsActived'));

@@ -100,7 +100,7 @@ class EmployeesModel extends Model
      */
     public static function countEmployees()
     {
-        return count(EmployeesModel::get());
+        return EmployeesModel::all()->count();
     }
 
     /**

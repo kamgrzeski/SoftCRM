@@ -75,7 +75,7 @@ class ContactsModel extends Model
      */
     public static function countContacts()
     {
-        return count(ContactsModel::get());
+        return ContactsModel::all()->count();
     }
 
     /**

@@ -106,7 +106,7 @@ class TasksModel extends Model
      */
     public static function countTasks()
     {
-        return count(TasksModel::get());
+        return TasksModel::all()->count();
     }
 
     /**

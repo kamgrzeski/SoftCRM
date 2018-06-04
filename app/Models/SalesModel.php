@@ -89,11 +89,11 @@ class SalesModel extends Model
      */
     public static function countSales()
     {
-        return count(SalesModel::get());
+        return SalesModel::all()->count();
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function products()
     {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\ProductsModel;
 use App\Models\SalesModel;
+use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -15,6 +16,13 @@ use Config;
 
 class SalesController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
+
     /**
      * @return array
      */
@@ -68,7 +76,7 @@ class SalesController extends Controller
             return Redirect::to('sales/create')->with('message_danger', $validator->errors());
         } else {
             if ($sale = SalesModel::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('SalesModel has been add with id: '. $sale, 200);
+                $this->systemLogs->insertSystemLogs('SalesModel has been add with id: '. $sale, 200);
                 return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorSalesStore'));
@@ -150,7 +158,7 @@ class SalesController extends Controller
         $salesDetails = SalesModel::find($id);
         $salesDetails->delete();
 
-        SystemLogsController::insertSystemLogs('SalesModel has been deleted with id: ' . $salesDetails->id, 200);
+        $this->systemLogs->insertSystemLogs('SalesModel has been deleted with id: ' . $salesDetails->id, 200);
 
         return Redirect::to('sales')->with('message_success', Language::getMessage('messages.SuccessSalesDelete'));
     }
@@ -165,7 +173,7 @@ class SalesController extends Controller
         $salesDetails = SalesModel::find($id);
 
         if (SalesModel::setActive($salesDetails->id, $value)) {
-            SystemLogsController::insertSystemLogs('SalesModel has been enabled with id: ' . $salesDetails->id, 200);
+            $this->systemLogs->insertSystemLogs('SalesModel has been enabled with id: ' . $salesDetails->id, 200);
             return Redirect::back()->with('message_success', Language::getMessage('messages.SuccessSalesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.SalesIsActived'));

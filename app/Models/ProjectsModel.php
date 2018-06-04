@@ -94,7 +94,7 @@ class ProjectsModel extends Model
      */
     public static function countProjects()
     {
-        return count(ProjectsModel::get());
+        return ProjectsModel::all()->count();
     }
 
     /**

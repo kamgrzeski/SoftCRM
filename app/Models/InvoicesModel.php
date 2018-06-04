@@ -96,7 +96,7 @@ class InvoicesModel extends Model
      */
     public static function countInvoices()
     {
-        return count(InvoicesModel::get());
+        return InvoicesModel::all()->count();
     }
 
     /**

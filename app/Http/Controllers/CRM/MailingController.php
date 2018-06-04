@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClientsModel;
 use App\Models\Language;
 use App\Models\MailingModel;
+use App\Services\SystemLogService;
 use Validator;
 use View;
 use Request;
@@ -14,6 +15,13 @@ use Config;
 
 class MailingController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
+
     /**
      * @return array
      */

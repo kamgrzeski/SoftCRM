@@ -112,31 +112,7 @@ class ClientsModel extends Model
      */
     public static function countClients()
     {
-        return count(ClientsModel::get());
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function companies()
-    {
-        return $this->hasMany(CompaniesModel::class, 'id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function employees()
-    {
-        return $this->hasMany(EmployeesModel::class, 'id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function invoices()
-    {
-        return $this->hasMany(InvoicesModel::class, 'client_id');
+        return ClientsModel::all()->count();
     }
 
     /**
@@ -165,7 +141,7 @@ class ClientsModel extends Model
      */
     public function findClientByGivenClientId($clientId)
     {
-        return ClientsModel::find($clientId)->get();
+        return ClientsModel::find($clientId);
     }
 
     /**
@@ -175,5 +151,29 @@ class ClientsModel extends Model
     public function getClientSortedBy($by)
     {
         return ClientsModel::all()->sortByDesc($by);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function companies()
+    {
+        return $this->hasMany(CompaniesModel::class, 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function employees()
+    {
+        return $this->hasMany(EmployeesModel::class, 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invoices()
+    {
+        return $this->hasMany(InvoicesModel::class, 'client_id');
     }
 }

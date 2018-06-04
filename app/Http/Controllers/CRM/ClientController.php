@@ -15,9 +15,8 @@ use Config;
 
 class ClientController extends Controller
 {
-    private $systemLogs;
-
     private $clientsModel;
+    private $systemLogs;
 
     public function __construct()
     {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRM;
 use App\Models\ClientsModel;
 use App\Models\EmployeesModel;
 use App\Models\Language;
+use App\Services\SystemLogService;
 use Request;
 use App\Http\Controllers\Controller;
 use View;
@@ -15,6 +16,13 @@ use Config;
 
 class EmployeesController extends Controller
 {
+    private $systemLogs;
+
+    public function __construct()
+    {
+        $this->systemLogs = new SystemLogService();
+    }
+
     /**
      * @return array
      */
@@ -64,7 +72,7 @@ class EmployeesController extends Controller
             return Redirect::to('employees/create')->with('message_danger', $validator->errors());
         } else {
             if ($employee = EmployeesModel::insertRow($allInputs)) {
-                SystemLogsController::insertSystemLogs('Employees has been add with id: '. $employee, 200);
+                $this->systemLogs->insertSystemLogs('Employees has been add with id: '. $employee, 200);
                 return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesStore'));
             } else {
                 return Redirect::back()->with('message_success', Language::getMessage('messages.ErrorEmployeesStore'));
@@ -149,7 +157,7 @@ class EmployeesController extends Controller
 
         $dataOfEmployees->delete();
 
-        SystemLogsController::insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id, 200);
+        $this->systemLogs->insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id, 200);
 
         return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesDelete'));
     }
@@ -163,7 +171,7 @@ class EmployeesController extends Controller
     {
         $dataOfEmployees = EmployeesModel::find($id);
         if (EmployeesModel::setActive($dataOfEmployees->id, $value)) {
-            SystemLogsController::insertSystemLogs('Employees has been enabled with id: ' . $dataOfEmployees->id, 200);
+            $this->systemLogs->insertSystemLogs('Employees has been enabled with id: ' . $dataOfEmployees->id, 200);
             return Redirect::to('employees')->with('message_success', Language::getMessage('messages.SuccessEmployeesActive'));
         } else {
             return Redirect::back()->with('message_danger', Language::getMessage('messages.ErrorEmployeesActive'));

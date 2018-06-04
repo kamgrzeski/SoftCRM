@@ -114,7 +114,7 @@ class CompaniesModel extends Model
      */
     public static function countCompanies()
     {
-        return count(CompaniesModel::get());
+        return CompaniesModel::all()->count();
     }
 
     /**
