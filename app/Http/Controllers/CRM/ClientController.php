@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\ClientsModel;
 use App\Models\Language;
+use App\Services\ClientService;
 use App\Services\SystemLogService;
 use View;
 use Illuminate\Support\Facades\Input;
@@ -16,14 +17,22 @@ use Config;
 class ClientController extends Controller
 {
     private $clientsModel;
+
     private $systemLogs;
+
     private $language;
+
+    private $clientService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
+
         $this->clientsModel = new ClientsModel();
+
         $this->language = new Language();
+
+        $this->clientService = new ClientService();
     }
 
     /**
@@ -145,19 +154,13 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $clientDetails = $this->clientsModel->findClientByGivenClientId($id);
-        $countCompanies = $clientDetails->companies()->count();
-        $countEmployees = $clientDetails->employees()->count();
+        $checkForeign = $this->clientService->checkIfClientHaveForeignKey($id);
 
-        if ($countCompanies > 0) {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.firstDeleteCompanies'));
+        if(!empty($checkForeign)) {
+            return Redirect::back()->with('message_danger', $checkForeign);
+        } else {
+            $this->clientService->processDeleteRow($id);
         }
-        if ($countEmployees > 0) {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.firstDeleteEmployees'));
-        }
-
-        $clientDetails->delete();
-        $this->systemLogs->insertSystemLogs('ClientsModel has been deleted with id: ' . $clientDetails->id, 200);
 
         return Redirect::to('client')->with('message_success', $this->language->getMessage('messages.SuccessClientDelete'));
     }
@@ -169,13 +172,12 @@ class ClientController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $clientDetails = $this->clientsModel->findClientByGivenClientId($id);
+        $status = $this->clientService->processIsActive($id, $value);
 
-        if ($this->clientsModel->setActive($clientDetails->id, $value)) {
-            $this->systemLogs->insertSystemLogs('ClientsModel has been enabled with id: ' . $clientDetails->id, 200);
-            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessClientActive'));
+        if(!empty($status)) {
+            return $this->language->getMessage('messages.SuccessClientActive');
         } else {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ClientIsActived'));
+            return $this->language->getMessage('messages.ClientIsActived');
         }
     }
 
