@@ -83,7 +83,7 @@ class ContactsController extends Controller
             return Redirect::to('contacts/create')->with('message_danger', $validator->errors());
         } else {
             if ($contact = $this->contactsModel->insertRow($allInputs)) {
-                $this->systemLogs->insertSystemLogs('Contact has been add with id: '. $contact, 200);
+                $this->systemLogs->insertSystemLogs('Contact has been add with id: '. $contact, $this->systemLogs::successCode);
                 return Redirect::to('contacts')->with('message_success', $this->language->getMessage('messages.SuccessContactsStore'));
             } else {
                 return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorContactsStore'));
@@ -160,7 +160,7 @@ class ContactsController extends Controller
         $dataOfContacts = ContactsModel::find($id);
         $dataOfContacts->delete();
 
-        $this->systemLogs->insertSystemLogs('ContactsModel has been deleted with id: ' . $dataOfContacts->id, 200);
+        $this->systemLogs->insertSystemLogs('ContactsModel has been deleted with id: ' . $dataOfContacts->id, $this->systemLogs::successCode);
 
         return Redirect::to('contacts')->with('message_success', $this->language->getMessage('messages.SuccessContactsDelete'));
     }

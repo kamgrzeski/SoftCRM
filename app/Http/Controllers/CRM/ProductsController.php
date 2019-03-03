@@ -76,7 +76,7 @@ class ProductsController extends Controller
             return Redirect::to('products/create')->with('message_danger', $validator->errors());
         } else {
             if ($product = $this->productsModel->insertRow($allInputs)) {
-                $this->systemLogs->insertSystemLogs('Product has been add with id: '. $product, 200);
+                $this->systemLogs->insertSystemLogs('Product has been add with id: '. $product, $this->systemLogs::successCode);
                 return Redirect::to('products')->with('message_success', $this->language->getMessage('messages.SuccessProductsStore'));
             } else {
                 return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorProductsStore'));
@@ -149,7 +149,7 @@ class ProductsController extends Controller
         $productsDetails = ProductsModel::find($id);
         $productsDetails->delete();
 
-        $this->systemLogs->insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, 200);
+        $this->systemLogs->insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogs::successCode);
 
 
         return Redirect::to('products')->with('message_success', $this->language->getMessage('messages.SuccessProductsDelete'));
@@ -165,7 +165,7 @@ class ProductsController extends Controller
         $productsDetails = ProductsModel::find($id);
 
         if ($this->productsModel->setActive($productsDetails->id, $value)) {
-            $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $productsDetails->id, 200);
+            $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $productsDetails->id, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessProductsActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ProductsIsActived'));

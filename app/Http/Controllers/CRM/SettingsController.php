@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\SettingsModel;
 use App\Services\HelpersFncService;
+use App\Services\SettingsService;
 use App\Services\SystemLogService;
 use Axdlee\Config\Rewrite;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
-use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 use View;
 use Validator;
 use Config;
@@ -20,12 +20,16 @@ class SettingsController extends Controller
     private $systemLogs;
     private $language;
     private $settingsModel;
+    private $settingsService;
+    private $helpersService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
         $this->settingsModel = new SettingsModel();
+        $this->settingsService = new SettingsService();
+        $this->helpersService = new HelpersFncService();
     }
 
     /**
@@ -39,7 +43,7 @@ class SettingsController extends Controller
 
         return view('crm.settings.index')->with([
             'input' => $input,
-            'logs' => $this->formatAllSystemLogs()
+            'logs' => $this->helpersService->formatAllSystemLogs()
         ]);
     }
 
@@ -52,7 +56,7 @@ class SettingsController extends Controller
     {
         $getAllInputFromRequest = Input::all();
 
-        $validator = Validator::make($getAllInputFromRequest,  $this->settingsModel->getRules('SETTINGS'));
+        $validator = Validator::make($getAllInputFromRequest, $this->settingsService->loadRules());
 
         if($validator->fails()) {
             return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorSettingsStore'));
@@ -70,22 +74,10 @@ class SettingsController extends Controller
             'stats' => $getAllInputFromRequest['stats']
         ]);
 
-        $envEditor = DotenvEditor::setKey('ROLLBAR_TOKEN', $getAllInputFromRequest['rollbar_token']);
-        $envEditor = DotenvEditor::save();
+        $this->settingsService->saveEnvData($getAllInputFromRequest['rollbar_token']);
 
-        $this->systemLogs->insertSystemLogs('SettingsModel has been changed.', 200);
+        $this->systemLogs->insertSystemLogs('SettingsModel has been changed.', $this->systemLogs::successCode);
 
         return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessSettingsUpdate'));
-    }
-
-    public function formatAllSystemLogs()
-    {
-        $helpers = new HelpersFncService();
-
-        if($helpers) {
-            return $helpers->formatAllSystemLogs();
-        }
-
-        return false;
     }
 }

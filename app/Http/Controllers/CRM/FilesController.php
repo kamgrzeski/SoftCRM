@@ -81,7 +81,7 @@ class FilesController extends Controller
             return Redirect::to('files/create')->with('message_danger', $validator->errors());
         } else {
             if ($file = $this->filesModel->insertRow($allInputs)) {
-                $this->systemLogs->insertSystemLogs('File has been add with id: '. $file, 200);
+                $this->systemLogs->insertSystemLogs('File has been add with id: '. $file, $this->systemLogs::successCode);
                 return Redirect::to('files')->with('message_success', $this->language->getMessage('messages.SuccessFilesStore'));
             } else {
                 return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorFilesStore'));
@@ -156,7 +156,7 @@ class FilesController extends Controller
         $dataOfFiles = FilesModel::find($id);
         $dataOfFiles->delete();
 
-        $this->systemLogs->insertSystemLogs('FilesModel has been deleted with id: ' . $dataOfFiles->id, 200);
+        $this->systemLogs->insertSystemLogs('FilesModel has been deleted with id: ' . $dataOfFiles->id, $this->systemLogs::successCode);
 
         return Redirect::to('files')->with('message_success', $this->language->getMessage('messages.SuccessFilesDelete'));
     }
@@ -171,7 +171,7 @@ class FilesController extends Controller
         $dataOfFiles = FilesModel::find($id);
 
         if ($this->filesModel->setActive($dataOfFiles->id, $value)) {
-            $this->systemLogs->insertSystemLogs('FilesModel has been enable with id: ' . $dataOfFiles->id, 200);
+            $this->systemLogs->insertSystemLogs('FilesModel has been enable with id: ' . $dataOfFiles->id, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessFilesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorFilesActive'));
