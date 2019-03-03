@@ -70,8 +70,7 @@
                                 {{ Form::label('client_id', 'Assign client') }}
                                 <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                {{ Form::select('client_id', $dataOfClients, null, ['class' => 'form-control', 'placeholder' => $inputText,
-                                'placeholder' => 'Please select client'])  }}
+                                {{ Form::select('client_id', $dataOfClients, null, ['class' => 'form-control', 'placeholder' => $inputText])  }}
                             </div>
                         </div>
 

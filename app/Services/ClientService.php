@@ -10,6 +10,7 @@ namespace App\Services;
 
 use App\Models\ClientsModel;
 use App\Models\Language;
+use Config;
 
 class ClientService
 {
@@ -65,4 +66,63 @@ class ClientService
         }
     }
 
+    public function loadClientSortedBy(string $string)
+    {
+        return $this->clientsModel->getClientSortedBy($string);
+    }
+
+    public function loadPagination()
+    {
+        return $this->clientsModel::paginate(Config::get('crm_settings.pagination_size'));
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataAndPagination()
+    {
+        $dataWithClients = [
+            'client' => $this->loadClientSortedBy('created_at'),
+            'clientPaginate' => $this->loadPagination()
+        ];
+
+        return $dataWithClients;
+    }
+
+    public function findClient(int $id)
+    {
+        return $this->clientsModel->findClientByGivenClientId($id);
+    }
+
+    /**
+     * @param $rulesType
+     * @return array
+     */
+    public function getRules($rulesType)
+    {
+        switch ($rulesType) {
+            case 'STORE':
+                return [
+                    'full_name' => 'required|string',
+                    'phone' => 'required',
+                    'budget' => 'required',
+                    'section' => 'required',
+                    'email' => 'required|email',
+                    'location' => 'required',
+                    'zip' => 'required',
+                    'city' => 'required',
+                    'country' => 'required'
+                ];
+        }
+    }
+
+    public function loadRules()
+    {
+        return $this->clientsModel->getRules('STORE');
+    }
+
+    public function loadSearch($getValueInput)
+    {
+        return count($this->clientsModel->trySearchClientByValue('full_name', $getValueInput, 10));
+    }
 }

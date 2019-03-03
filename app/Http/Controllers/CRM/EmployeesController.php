@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRM;
 use App\Models\ClientsModel;
 use App\Models\EmployeesModel;
 use App\Models\Language;
+use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use Request;
 use App\Http\Controllers\Controller;
@@ -18,26 +19,13 @@ class EmployeesController extends Controller
 {
     private $systemLogs;
     private $language;
-    private $emolpoyeesModel;
+    private $employeesService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
-        $this->emolpoyeesModel = new EmployeesModel();
-    }
-
-    /**
-     * @return array
-     */
-    private function getDataAndPagination()
-    {
-        $dataOfEmployees = [
-            'employees' => EmployeesModel::all()->sortByDesc('created_at'),
-            'employeesPaginate' => EmployeesModel::paginate(Config::get('crm_settings.pagination_size'))
-        ];
-
-        return $dataOfEmployees;
+        $this->employeesService = new EmployeesService();
     }
 
     /**
@@ -47,7 +35,7 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        return View::make('crm.employees.index')->with($this->getDataAndPagination());
+        return View::make('crm.employees.index')->with($this->employeesService->getDataAndPagination());
     }
 
     /**
@@ -57,10 +45,8 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        $dataOfClients = ClientsModel::pluck('full_name', 'id');
-
         return View::make('crm.employees.create')->with([
-            'dataOfClients' => $dataOfClients,
+            'dataOfClients' => $this->employeesService->pluckData(),
             'inputText' => $this->language->getMessage('messages.InputText')
         ]);
     }
@@ -74,13 +60,13 @@ class EmployeesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, $this->emolpoyeesModel->getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->employeesService->loadRules());
 
         if ($validator->fails()) {
             return Redirect::to('employees/create')->with('message_danger', $validator->errors());
         } else {
             if ($employee = $this->emolpoyeesModel->insertRow($allInputs)) {
-                $this->systemLogs->insertSystemLogs('Employees has been add with id: '. $employee, 200);
+                $this->systemLogs->insertSystemLogs('Employees has been add with id: '. $employee, $this->systemLogs::successCode);
                 return Redirect::to('employees')->with('message_success', $this->language->getMessage('messages.SuccessEmployeesStore'));
             } else {
                 return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorEmployeesStore'));
@@ -96,9 +82,8 @@ class EmployeesController extends Controller
      */
     public function show($id)
     {
-        $dataOfEmployees = EmployeesModel::find($id);
         return View::make('crm.employees.show')
-            ->with('employees', $dataOfEmployees);
+            ->with('employees', $this->employeesService->loadEmployeeDetails($id));
     }
 
     /**
@@ -109,12 +94,11 @@ class EmployeesController extends Controller
      */
     public function edit($id)
     {
-        $dataOfEmployees = EmployeesModel::find($id);
         $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
 
         return View::make('crm.employees.edit')
             ->with([
-                'employees' => $dataOfEmployees,
+                'employees' =>  $this->employeesService->loadEmployeeDetails($id),
                 'clients' => $dataWithPluckOfClients
             ]);
     }
@@ -129,7 +113,7 @@ class EmployeesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, $this->emolpoyeesModel->getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->employeesService->loadRules());
 
         if ($validator->fails()) {
             return Redirect::to('employees')->with('message_danger', $validator->errors());
@@ -151,9 +135,9 @@ class EmployeesController extends Controller
      */
     public function destroy($id)
     {
-        $dataOfEmployees = EmployeesModel::find($id);
-        $countContacts = count($dataOfEmployees->contacts()->get());
-        $countTasks = count($dataOfEmployees->tasks()->get());
+        $dataOfEmployees = $this->employeesService->loadEmployeeDetails($id);
+        $countContacts = $this->employeesService->countEmployeeContacts($dataOfEmployees);
+        $countTasks = $this->employeesService->countEmployeeTasks($dataOfEmployees);
 
         if ($countContacts > 0) {
             return Redirect::back()->with('message_danger', $this->language->getMessage('messages.firstDeleteContacts'));
@@ -165,7 +149,7 @@ class EmployeesController extends Controller
 
         $dataOfEmployees->delete();
 
-        $this->systemLogs->insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id, 200);
+        $this->systemLogs->insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id, $this->systemLogs::successCode);
 
         return Redirect::to('employees')->with('message_success', $this->language->getMessage('messages.SuccessEmployeesDelete'));
     }
@@ -178,8 +162,8 @@ class EmployeesController extends Controller
     public function isActiveFunction($id, $value)
     {
         $dataOfEmployees = EmployeesModel::find($id);
-        if ($this->emolpoyeesModel->setActive($dataOfEmployees->id, $value)) {
-            $this->systemLogs->insertSystemLogs('Employees has been enabled with id: ' . $dataOfEmployees->id, 200);
+        if ($this->employeesService->loadIsActiveFunction($dataOfEmployees->id, $value)) {
+            $this->systemLogs->insertSystemLogs('Employees has been enabled with id: ' . $dataOfEmployees->id, $this->systemLogs::successCode);
             return Redirect::to('employees')->with('message_success', $this->language->getMessage('messages.SuccessEmployeesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorEmployeesActive'));
@@ -192,8 +176,8 @@ class EmployeesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findEmployeesByValue = count($this->emolpoyeesModel->trySearchEmployeesByValue('full_name', $getValueInput, 10));
-        $dataOfEmployees = $this->getDataAndPagination();
+        $findEmployeesByValue = $this->employeesService->loadSearch($getValueInput);
+        $dataOfEmployees = $this->employeesService->getDataAndPagination();
 
         if (!$findEmployeesByValue > 0) {
             return redirect('employees')->with('message_danger', $this->language->getMessage('messages.ThereIsNoEmployees'));

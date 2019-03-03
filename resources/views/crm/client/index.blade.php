@@ -121,7 +121,7 @@
                                         <td class="text-center">{{ $value->section }}</td>
                                         <td class="text-center">
                                             <button type="submit"
-                                                    class="btn btn-default">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($value->budget) }}</button>
+                                                    class="btn btn-default">{{ $value->budget }}</button>
                                         </td>
                                         <td class="text-center">
                                             @if($value->is_active == TRUE)

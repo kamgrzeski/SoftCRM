@@ -25,10 +25,10 @@
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <li class=""><a href="#profile" data-toggle="tab">Assigned companies <span
-                                        class="badge badge-warning">{{ count($clients->companies) }}</span></a>
+                                        class="badge badge-warning">{{ $clients->companiesCount }}</span></a>
                         </li>
                         <li class=""><a href="#messages" data-toggle="tab">Assigned employees <span
-                                        class="badge badge-warning">{{ count($clients->employees) }}</span></a>
+                                        class="badge badge-warning">{{ $clients->employeesCount }}</span></a>
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
@@ -64,7 +64,7 @@
                                     <th>Budget</th>
                                     <td>
                                         <button type="submit"
-                                                class="btn btn-default">{{ \ClickNow\Money\Money::{config('crm_settings.currency')}($clients->budget) }}</button>
+                                                class="btn btn-default">{{ $clients->formattedBudget }}</button>
                                     </td>
                                 </tr>
                                 <tr>

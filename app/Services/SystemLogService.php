@@ -12,6 +12,7 @@ use App\Models\SystemLogsModel;
 
 class SystemLogService
 {
+    const successCode = 201;
     /**
      * @param $actions
      * @param int $statusCode

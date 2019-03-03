@@ -16,36 +16,15 @@ use Config;
 
 class ClientController extends Controller
 {
-    private $clientsModel;
-
     private $systemLogs;
-
     private $language;
-
     private $clientService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-
-        $this->clientsModel = new ClientsModel();
-
         $this->language = new Language();
-
         $this->clientService = new ClientService();
-    }
-
-    /**
-     * @return array
-     */
-    private function getDataAndPagination()
-    {
-        $dataWithClients = [
-            'client' => $this->clientsModel->getClientSortedBy('created_at'),
-            'clientPaginate' => ClientsModel::paginate(Config::get('crm_settings.pagination_size'))
-        ];
-
-        return $dataWithClients;
     }
 
     /**
@@ -55,7 +34,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return View::make('crm.client.index')->with($this->getDataAndPagination());
+        return View::make('crm.client.index')->with($this->clientService->getDataAndPagination());
     }
 
     /**
@@ -79,13 +58,13 @@ class ClientController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, $this->clientsModel->getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->clientService->loadRules());
 
         if ($validator->fails()) {
             return Redirect::to('client/create')->with('message_danger', $validator->errors());
         } else {
             if ($client = $this->clientsModel->insertRow($allInputs)) {
-                $this->systemLogs->insertSystemLogs('ClientsModel has been add with id: ' . $client, 200);
+                $this->systemLogs->insertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogs::successCode);
                 return Redirect::to('client')->with('message_success', $this->language->getMessage('messages.SuccessClientStore'));
             } else {
                 return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorClientStore'));
@@ -103,7 +82,7 @@ class ClientController extends Controller
     {
         return View::make('crm.client.show')
             ->with([
-                'clients' => $this->clientsModel->findClientByGivenClientId($id),
+                'clients' => $this->clientService->findClient($id)
             ]);
     }
 
@@ -117,8 +96,8 @@ class ClientController extends Controller
     {
         return View::make('crm.client.edit')
             ->with([
-                'client', $this->clientsModel->findClientByGivenClientId($id),
-                 'inputText' => $this->language->getMessage('messages.InputText')
+                'client', $this->clientService->findClient($id),
+                'inputText' => $this->language->getMessage('messages.InputText')
             ]);
     }
 
@@ -132,7 +111,7 @@ class ClientController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, $this->clientsModel->getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->clientService->loadRules());
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
@@ -187,8 +166,8 @@ class ClientController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findClientByValue = count($this->clientsModel->trySearchClientByValue('full_name', $getValueInput, 10));
-        $dataOfClient = $this->getDataAndPagination();
+        $findClientByValue = $this->clientService->loadSearch($getValueInput);
+        $dataOfClient = $this->clientService->getDataAndPagination();
 
         if (!$findClientByValue > 0) {
             return redirect('client')->with('message_danger', $this->language->getMessage('messages.ThereIsNoClient'));

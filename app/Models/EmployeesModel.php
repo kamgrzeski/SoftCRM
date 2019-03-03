@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class EmployeesModel extends Model
 {
@@ -160,7 +161,33 @@ class EmployeesModel extends Model
      */
     public static function getDeactivated()
     {
-        return EmployeesModel::where('is_active', '=', 0)->count();
+        return self::where('is_active', '=', 0)->count();
+    }
+
+    public function getEmployees()
+    {
+        $query = self::all()->sortByDesc('created_at');
+
+        foreach($query as $key => $value) {
+            $query[$key]->is_active = $query[$key]->is_active  ? 'Active' : 'Deactive';
+            Arr::add($query[$key], 'taskCount', count($value->task));
+        }
+
+        return $query;
+    }
+
+    public function getEmployeeDetails(int $id)
+    {
+        $query = self::find($id);
+
+        Arr::add($query, 'taskCount', count($query->tasks));
+
+        return $query;
+    }
+
+    public function getEmployee()
+    {
+        return self::pluck('full_name', 'id');
     }
 }
 

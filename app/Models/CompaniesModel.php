@@ -62,30 +62,6 @@ class CompaniesModel extends Model
     }
 
     /**
-     * @param $rulesType
-     * @return array
-     */
-    public static function getRules($rulesType)
-    {
-        switch ($rulesType) {
-            case 'STORE':
-                return [
-                    'name' => 'required',
-                    'tax_number' => 'required|integer',
-                    'city' => 'required',
-                    'billing_address' => 'required',
-                    'country' => 'required',
-                    'postal_code' => 'required',
-                    'employees_size' => 'required|integer',
-                    'fax' => 'required',
-                    'description' => 'required',
-                    'phone' => 'required',
-                    'client_id' => 'required',
-                ];
-        }
-    }
-
-    /**
      * @param $id
      * @param $activeType
      * @return bool

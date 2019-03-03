@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use ClickNow\Money\Money;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class ClientsModel extends Model
 {
@@ -56,28 +58,6 @@ class ClientsModel extends Model
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
-    }
-
-    /**
-     * @param $rulesType
-     * @return array
-     */
-    public function getRules($rulesType)
-    {
-        switch ($rulesType) {
-            case 'STORE':
-                return [
-                    'full_name' => 'required|string',
-                    'phone' => 'required',
-                    'budget' => 'required',
-                    'section' => 'required',
-                    'email' => 'required|email',
-                    'location' => 'required',
-                    'zip' => 'required',
-                    'city' => 'required',
-                    'country' => 'required'
-                ];
-        }
     }
 
     /**
@@ -141,7 +121,13 @@ class ClientsModel extends Model
      */
     public function findClientByGivenClientId($clientId)
     {
-        return ClientsModel::find($clientId);
+        $query = ClientsModel::find($clientId);
+
+        Arr::add($query, 'companiesCount', count($query->companies));
+        Arr::add($query, 'employeesCount', count($query->employees));
+        Arr::add($query, 'formattedBudget', Money::{config('crm_settings.currency')}($query->budget));
+
+        return $query;
     }
 
     /**
@@ -150,7 +136,13 @@ class ClientsModel extends Model
      */
     public function getClientSortedBy($by)
     {
-        return ClientsModel::all()->sortByDesc($by);
+        $query = ClientsModel::all()->sortByDesc($by);
+
+        foreach($query as $key => $client) {
+            $query[$key]->budget = Money::{config('crm_settings.currency')}($client->budget);
+        }
+
+        return $query;
     }
 
     /**

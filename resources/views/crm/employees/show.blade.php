@@ -29,7 +29,7 @@
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <li class=""><a href="#profile" data-toggle="tab">Tasks <span
-                                        class="badge badge-warning">{{ count($employees->tasks) }}</span></a>
+                                        class="badge badge-warning">{{ $employees->taskCount }}</span></a>
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
@@ -73,7 +73,7 @@
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $employees->is_active ? 'Active' : 'Deactive' }}</td>
+                                    <td>{{ $employees->is_active }}</td>
                                 </tr>
                                 </tbody>
                             </table>

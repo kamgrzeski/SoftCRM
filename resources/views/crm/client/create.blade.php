@@ -30,7 +30,7 @@
                                 {{ Form::label('full_name', 'Full name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('full_name', null, array('class' => 'form-control', 'placeholder' => $inputText, 'placeholder' => $inputText)) }}
+                                    {{ Form::text('full_name', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
                                 </div>
                             </div>
 

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Models\ClientsModel;
 use App\Models\CompaniesModel;
 use App\Models\Language;
+use App\Services\CompaniesService;
 use App\Services\SystemLogService;
 use View;
 use Validator;
@@ -17,27 +17,14 @@ use Config;
 class CompaniesController extends Controller
 {
     private $systemLogs;
-    private $companiesModel;
+    private $companiesService;
     private $language;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->companiesModel = new CompaniesModel();
+        $this->companiesService = new CompaniesService();
         $this->language = new Language();
-    }
-
-    /**
-     * @return array
-     */
-    private function getDataAndPagination()
-    {
-        $dataOfCompanies = [
-            'companies' => CompaniesModel::all()->sortByDesc('created_at'),
-            'companiesPaginate' => CompaniesModel::paginate(Config::get('crm_settings.pagination_size'))
-        ];
-
-        return $dataOfCompanies;
     }
 
     /**
@@ -47,7 +34,7 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        return View::make('crm.companies.index')->with($this->getDataAndPagination());
+        return View::make('crm.companies.index')->with($this->companiesService->getDataAndPagination());
     }
 
     /**
@@ -57,10 +44,8 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        $dataWithPluckOfClient = ClientsModel::pluck('full_name', 'id');
-
         return View::make('crm.companies.create')->with([
-            'dataWithPluckOfClient' => $dataWithPluckOfClient,
+            'dataWithPluckOfClient' => $this->companiesService->pluckData(),
             'inputText' => $this->language->getMessage('messages.InputText')
         ]);
     }
@@ -74,13 +59,13 @@ class CompaniesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, $this->companiesModel->getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->companiesService->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::to('companies/create')->with('message_danger', $validator->errors());
         } else {
             if ($companie = CompaniesModel::insertRow($allInputs)) {
-                $this->systemLogs->insertSystemLogs('CompaniesModel has been add with id: '. $companie, 200);
+                $this->systemLogs->insertSystemLogs('CompaniesModel has been add with id: '. $companie, $this->systemLogs::successCode);
                 return Redirect::to('companies')->with('message_success', $this->language->getMessage('messages.SuccessCompaniesStore'));
             } else {
                 return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorCompaniesStore'));
@@ -96,11 +81,9 @@ class CompaniesController extends Controller
      */
     public function show($id)
     {
-        $dataOfCompanies = CompaniesModel::find($id);
-
         return View::make('crm.companies.show')
             ->with([
-                'companies' => $dataOfCompanies
+                'companies' => $this->companiesService->loadCompanie($id)
             ]);
     }
 
@@ -112,13 +95,10 @@ class CompaniesController extends Controller
      */
     public function edit($id)
     {
-        $dataOfCompanies = CompaniesModel::find($id);
-        $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
-
         return View::make('crm.companies.edit')
             ->with([
-                'companies' => $dataOfCompanies,
-                'clients' => $dataWithPluckOfClients
+                'companies' => $this->companiesService->loadCompanie($id),
+                'clients' => $this->companiesService->pluckData()
             ]);
     }
 
@@ -132,7 +112,7 @@ class CompaniesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, $this->companiesModel->getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->companiesService->getRules('STORE'));
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator->errors());
@@ -154,10 +134,11 @@ class CompaniesController extends Controller
      */
     public function destroy($id)
     {
-        $dataOfCompanies = CompaniesModel::find($id);
-        $countDeals = count($dataOfCompanies->deals()->get());
-        $countFiles = count($dataOfCompanies->files()->get());
-        $countInvoices = count($dataOfCompanies->invoices()->get());
+        $dataOfCompanies = $this->companiesService->loadCompanie($id);
+
+        $countDeals = $this->companiesService->countAssignedDeals($dataOfCompanies);
+        $countFiles = $this->companiesService->countAssignedFile($dataOfCompanies);
+        $countInvoices = $this->companiesService->countAssignedInvoice($dataOfCompanies);
 
         if ($countDeals > 0) {
             return Redirect::back()->with('message_danger', $this->language->getMessage('messages.firstDeleteDeals'));
@@ -173,7 +154,7 @@ class CompaniesController extends Controller
 
         $dataOfCompanies->delete();
 
-        $this->systemLogs->insertSystemLogs('CompaniesModel has been deleted with id: ' . $dataOfCompanies->id, 200);
+        $this->systemLogs->insertSystemLogs('CompaniesModel has been deleted with id: ' . $dataOfCompanies->id, $this->systemLogs::successCode);
 
         return Redirect::to('companies')->with('message_success', $this->language->getMessage('messages.SuccessCompaniesDelete'));
     }
@@ -185,10 +166,10 @@ class CompaniesController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $dataOfCompanies = CompaniesModel::find($id);
+        $dataOfCompanies = $this->companiesService->loadCompanie($id);
 
         if (CompaniesModel::setActive($dataOfCompanies->id, $value)) {
-            $this->systemLogs->insertSystemLogs('CompaniesModel has been enabled with id: ' . $dataOfCompanies->id, 200);
+            $this->systemLogs->insertSystemLogs('CompaniesModel has been enabled with id: ' . $dataOfCompanies->id, $this->systemLogs::successCode);
             return Redirect::to('companies')->with('message_success', $this->language->getMessage('messages.SuccessCompaniesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorCompaniesActive'));
@@ -201,10 +182,10 @@ class CompaniesController extends Controller
      */
     public function disable($id)
     {
-        $dataOfCompanies = CompaniesModel::find($id);
+        $dataOfCompanies = $this->companiesService->loadCompanie($id);
 
         if (CompaniesModel::setActive($dataOfCompanies->id, FALSE)) {
-            $this->systemLogs->insertSystemLogs('CompaniesModel has been disabled with id: ' . $dataOfCompanies->id, 200);
+            $this->systemLogs->insertSystemLogs('CompaniesModel has been disabled with id: ' . $dataOfCompanies->id, $this->systemLogs::successCode);
             return Redirect::to('companies')->with('message_success', $this->language->getMessage('messages.CompaniesIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', $this->language->getMessage('messages.CompaniesIsDeactivated'));
@@ -217,8 +198,8 @@ class CompaniesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findCompaniesByValue = count(CompaniesModel::trySearchCompaniesByValue('name', $getValueInput, 10));
-        $dataOfCompanies = $this->getDataAndPagination();
+        $findCompaniesByValue = $this->companiesService->loadSearch($getValueInput);
+        $dataOfCompanies = $this->companiesService->getDataAndPagination();
 
         if (!$findCompaniesByValue > 0) {
             return redirect('companies')->with('message_danger', $this->language->getMessage('messages.ThereIsNoCompanies'));
