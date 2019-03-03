@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CompaniesModel;
 use App\Models\FinancesModel;
 use App\Models\Language;
+use App\Services\FinancesService;
 use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -19,12 +20,14 @@ class FinancesController extends Controller
     private $systemLogs;
     private $language;
     private $financesModel;
+    private $financesService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
         $this->financesModel = new FinancesModel();
+        $this->financesService = new FinancesService();
     }
     /**
      * @return array

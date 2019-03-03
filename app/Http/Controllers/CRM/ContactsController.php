@@ -7,6 +7,7 @@ use App\Models\ClientsModel;
 use App\Models\ContactsModel;
 use App\Models\EmployeesModel;
 use App\Models\Language;
+use App\Services\ContactsService;
 use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -20,12 +21,14 @@ class ContactsController extends Controller
     private $systemLogs;
     private $language;
     private $contactsModel;
+    private $contactsService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
         $this->contactsModel = new ContactsModel();
+        $this->contactsService = new ContactsService();
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Models\EmployeesModel;
 use App\Models\Language;
 use App\Models\TasksModel;
 use App\Services\SystemLogService;
+use App\Services\TasksService;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -19,12 +20,14 @@ class TasksController extends Controller
     private $systemLogs;
     private $language;
     private $taskModel;
+    private $taskService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
         $this->taskModel = new TasksModel();
+        $this->taskService = new TasksService();
     }
 
     /**

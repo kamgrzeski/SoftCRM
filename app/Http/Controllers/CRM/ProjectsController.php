@@ -8,6 +8,7 @@ use App\Models\CompaniesModel;
 use App\Models\DealsModel;
 use App\Models\Language;
 use App\Models\ProjectsModel;
+use App\Services\ProjectsService;
 use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -21,12 +22,14 @@ class ProjectsController extends Controller
     private $systemLogs;
     private $language;
     private $projectsModel;
+    private $projectsService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
         $this->projectsModel = new ProjectsModel();
+        $this->projectsService = new ProjectsService();
     }
 
     /**

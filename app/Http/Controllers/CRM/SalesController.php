@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\ProductsModel;
 use App\Models\SalesModel;
+use App\Services\SalesService;
 use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -19,12 +20,14 @@ class SalesController extends Controller
     private $systemLogs;
     private $language;
     private $salesModel;
+    private $salesService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
         $this->salesModel = new SalesModel();
+        $this->salesService = new SalesService();
     }
 
     /**

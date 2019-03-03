@@ -7,6 +7,7 @@ use App\Models\CompaniesModel;
 use App\Models\FilesModel;
 use App\Models\FinancesModel;
 use App\Models\Language;
+use App\Services\FilesService;
 use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -20,12 +21,14 @@ class FilesController extends Controller
     private $systemLogs;
     private $language;
     private $filesModel;
+    private $filesService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
         $this->filesModel = new FilesModel();
+        $this->filesService = new FilesService();
     }
 
     /**

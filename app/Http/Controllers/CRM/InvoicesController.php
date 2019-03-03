@@ -8,6 +8,7 @@ use App\Models\CompaniesModel;
 use App\Models\InvoicesModel;
 use App\Models\Language;
 use App\Models\ProductsModel;
+use App\Services\InvoicesService;
 use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -21,12 +22,14 @@ class InvoicesController extends Controller
     private $systemLogs;
     private $language;
     private $invoicesModel;
+    private $invoicesService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
         $this->invoicesModel = new InvoicesModel();
+        $this->invoicesService = new InvoicesService();
     }
 
     /**

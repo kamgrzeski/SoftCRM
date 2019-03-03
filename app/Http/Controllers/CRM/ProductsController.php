@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\ProductsModel;
+use App\Services\ProductsService;
 use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -18,12 +19,14 @@ class ProductsController extends Controller
     private $systemLogs;
     private $language;
     private $productsModel;
+    private $productsService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
         $this->productsModel = new ProductsModel();
+        $this->productsService = new ProductsService();
     }
 
     /**

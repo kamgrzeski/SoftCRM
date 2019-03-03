@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CompaniesModel;
 use App\Models\DealsModel;
 use App\Models\Language;
+use App\Services\DealsService;
 use App\Services\SystemLogService;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -19,12 +20,14 @@ class DealsController extends Controller
     private $systemLogs;
     private $language;
     private $dealsModel;
+    private $dealsService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
         $this->dealsModel = new DealsModel();
+        $this->dealsService = new DealsService();
     }
 
     /**

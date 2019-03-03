@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClientsModel;
 use App\Models\Language;
 use App\Models\MailingModel;
+use App\Services\MailingService;
 use App\Services\SystemLogService;
 use Validator;
 use View;
@@ -18,12 +19,14 @@ class MailingController extends Controller
     private $systemLogs;
     private $language;
     private $mailingModel;
+    private $mailingService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
         $this->language = new Language();
         $this->mailingModel = new MailingModel();
+        $this->mailingService = new MailingService();
     }
 
     /**
