@@ -12,7 +12,7 @@
         "fx3costa/laravelchartjs": "^2.3",
         "fzaninotto/faker": "^1.7",
         "jackiedo/dotenv-editor": "^1.0",
-        "laravel/framework": "5.6.*",
+        "laravel/framework": "5.7.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.2.0",
         "mressex/laravel-auth-profile": "^1.0",
