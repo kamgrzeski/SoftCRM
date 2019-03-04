@@ -35,8 +35,8 @@ class FinancesController extends Controller
     private function getDataAndPagination()
     {
         $dataOfFinances = [
-            'finances' => FinancesModel::all()->sortByDesc('created_at'),
-            'financesPaginate' => FinancesModel::paginate(Config::get('crm_settings.pagination_size'))
+            'finances' => $this->financesService->getFinances(),
+            'financesPaginate' => $this->financesService->getPagination()
         ];
 
         return $dataOfFinances;
@@ -75,7 +75,7 @@ class FinancesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('finances/create')->with('message_danger', $validator->errors());
         } else {
-            if ($finance = $this->financesModel->insertRow($allInputs)) {
+            if ($finance = $this->financesService->execute($allInputs)) {
 
                 $this->systemLogs->insertSystemLogs('FinancesModel has been add with id: '. $finance, $this->systemLogs::successCode);
                 return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
@@ -93,11 +93,10 @@ class FinancesController extends Controller
      */
     public function show($id)
     {
-        $dataOfFinances = FinancesModel::find($id);
 
         return View::make('crm.finances.show')
             ->with([
-                'finances' => $dataOfFinances,
+                'finances' => $this->financesService->getFinance($id),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
@@ -110,12 +109,11 @@ class FinancesController extends Controller
      */
     public function edit($id)
     {
-        $dataOfFinances = FinancesModel::find($id);
         $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
 
         return View::make('crm.finances.edit')
             ->with([
-                'finances' => $dataOfFinances,
+                'finances' => $this->financesService->getFinance($id),
                 'dataWithPluckOfCompanies' => $dataWithPluckOfCompanies
             ]);
     }
@@ -135,7 +133,7 @@ class FinancesController extends Controller
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator->errors());
         } else {
-            if ($this->financesModel->updateRow($id, $allInputs)) {
+            if ($this->financesService->update($id, $allInputs)) {
                 return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
             } else {
                 return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorFinancesUpdate'));
@@ -152,7 +150,7 @@ class FinancesController extends Controller
      */
     public function destroy($id)
     {
-        $dataOfFinances = FinancesModel::find($id);
+        $dataOfFinances = $this->financesService->getFinance($id);
 
         $dataOfFinances->delete();
 
@@ -170,7 +168,7 @@ class FinancesController extends Controller
     {
         $dataOfFinances = FinancesModel::find($id);
 
-        if ($this->financesModel->setActive($dataOfFinances->id, $value)) {
+        if ($this->financesService->loadIsActiveFunction($dataOfFinances->$id, $value)) {
             $this->systemLogs->insertSystemLogs('FinancesModel has been enabled with id: ' . $dataOfFinances->id, $this->systemLogs::successCode);
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesActive'));
         } else {
@@ -184,7 +182,7 @@ class FinancesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findFinancesByValue = count($this->financesModel->trySearchFinancesByValue('name', $getValueInput, 10));
+        $findFinancesByValue = $this->financesService->loadSearch($getValueInput);
         $dataOfFinances = $this->getDataAndPagination();
 
         if (!$findFinancesByValue > 0) {

@@ -3,18 +3,43 @@
 namespace App\Services;
 
 use App\Models\DealsModel;
-use App\Models\Language;
 
 class DealsService
 {
-    private $language;
     private $dealsModel;
-    private $systemLogs;
 
     public function __construct()
     {
-        $this->language = new Language();
         $this->dealsModel = new DealsModel();
-        $this->systemLogs = new SystemLogService();
+    }
+
+    public function getDeals()
+    {
+        return DealsModel::all()->sortByDesc('created_at');
+    }
+
+    public function getPaginate()
+    {
+        return DealsModel::paginate(Config::get('crm_settings.pagination_size'));
+    }
+
+    public function execute($allInputs)
+    {
+        return $this->dealsModel->insertRow($allInputs);
+    }
+
+    public function getDeal(int $id)
+    {
+        return DealsModel::find($id);
+    }
+
+    public function update(int $id, $allInputs)
+    {
+        return $this->dealsModel->updateRow($id, $allInputs);
+    }
+
+    public function loadSearch($getValueInput)
+    {
+        return count($this->dealsModel->trySearchDealsByValue('name', $getValueInput, 10));
     }
 }

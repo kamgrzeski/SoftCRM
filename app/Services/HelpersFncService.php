@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use App\Models\SettingsModel;
 use App\Models\TasksModel;
 

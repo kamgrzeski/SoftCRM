@@ -8,22 +8,17 @@
 
 namespace App\Services;
 
-use App\Models\Language;
 use App\Models\SettingsModel;
 use Config;
 use Jackiedo\DotenvEditor\DotenvEditor;
 
 class SettingsService
 {
-    private $language;
     private $settingsModel;
-    private $systemLogs;
 
     public function __construct()
     {
-        $this->language = new Language();
         $this->settingsModel = new SettingsModel();
-        $this->systemLogs = new SystemLogService();
     }
 
     public function loadRules()

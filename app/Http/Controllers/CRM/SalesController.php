@@ -37,8 +37,8 @@ class SalesController extends Controller
     private function getDataAndPagination()
     {
         $dataWithSaless = [
-            'sales' => SalesModel::all()->sortByDesc('created_at'),
-            'salesPaginate' => SalesModel::paginate(Config::get('crm_settings.pagination_size'))
+            'sales' => $this->salesService->getSales(),
+            'salesPaginate' => $this->salesService->getPaginate()
         ];
 
         return $dataWithSaless;
@@ -74,7 +74,7 @@ class SalesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('sales/create')->with('message_danger', $validator->errors());
         } else {
-            if ($sale = $this->salesModel->insertRow($allInputs)) {
+            if ($sale = $this->salesService->execute($allInputs)) {
                 $this->systemLogs->insertSystemLogs('SalesModel has been add with id: ' . $sale, 200);
                 return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
             } else {
@@ -91,11 +91,9 @@ class SalesController extends Controller
      */
     public function show($id)
     {
-        $dataOfSales = SalesModel::find($id);
-
         return View::make('crm.sales.show')
             ->with([
-                'sales' => $dataOfSales,
+                'sales' => $this->salesService->getSale($id),
             ]);
     }
 
@@ -107,12 +105,11 @@ class SalesController extends Controller
      */
     public function edit($id)
     {
-        $salesDetails = SalesModel::find($id);
         $dataWithPluckOfProducts = ProductsModel::pluck('name', 'id');
 
         return View::make('crm.sales.edit')
             ->with([
-                'sales' => $salesDetails,
+                'sales' => $this->salesService->getSale($id),
                 'dataWithPluckOfProducts' => $dataWithPluckOfProducts
             ]);
     }
@@ -126,7 +123,7 @@ class SalesController extends Controller
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if ($this->salesModel->updateRow($id, $allInputs)) {
+            if ($this->salesService->update($id, $allInputs)) {
                 return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
             } else {
                 return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSalesStore'));
@@ -136,7 +133,7 @@ class SalesController extends Controller
 
     public function destroy($id)
     {
-        $salesDetails = SalesModel::find($id);
+        $salesDetails = $this->salesService->getSale($id);
         $salesDetails->delete();
 
         $this->systemLogs->insertSystemLogs('SalesModel has been deleted with id: ' . $salesDetails->id, 200);
@@ -148,7 +145,7 @@ class SalesController extends Controller
     {
         $salesDetails = SalesModel::find($id);
 
-        if ($this->salesModel->setActive($salesDetails->id, $value)) {
+        if ($this->salesService->loadIsActiveFunction($salesDetails->id, $value)) {
             $this->systemLogs->insertSystemLogs('SalesModel has been enabled with id: ' . $salesDetails->id, 200);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSalesActive'));
         } else {
@@ -159,7 +156,7 @@ class SalesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findSalesByValue = count(SalesModel::trySearchSalesByValue('full_name', $getValueInput, 10));
+        $findSalesByValue = $this->salesService->loadSearch($getValueInput);
         $dataOfSales = $this->getDataAndPagination();
 
         if (!$findSalesByValue > 0) {

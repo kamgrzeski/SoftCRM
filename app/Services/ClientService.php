@@ -9,24 +9,15 @@
 namespace App\Services;
 
 use App\Models\ClientsModel;
-use App\Models\Language;
 use Config;
 
 class ClientService
 {
-    private $language;
-
     private $clientsModel;
-
-    private $systemLogs;
 
     public function __construct()
     {
-        $this->language = new Language();
-
         $this->clientsModel = new ClientsModel();
-
-        $this->systemLogs = new SystemLogService();
     }
 
     public function checkIfClientHaveForeignKey($id)
@@ -37,10 +28,10 @@ class ClientService
         $countEmployees = $data->employees()->count();
 
         if ($countCompanies > 0) {
-            return $this->language->getMessage('messages.firstDeleteCompanies');
+            return $this->getMessage('messages.firstDeleteCompanies');
         }
         if ($countEmployees > 0) {
-            return $this->language->getMessage('messages.firstDeleteEmployees');
+            return $this->getMessage('messages.firstDeleteEmployees');
         }
 
         return true;
@@ -60,9 +51,9 @@ class ClientService
         $clientDetails = $this->clientsModel->findClientByGivenClientId($id);
 
         if ($this->clientsModel->setActive($clientDetails->id, $value)) {
-            return $this->language->getMessage('messages.SuccessClientActive');
+            return $this->getMessage('messages.SuccessClientActive');
         } else {
-            return $this->language->getMessage('messages.ClientIsActived');
+            return $this->getMessage('messages.ClientIsActived');
         }
     }
 
@@ -124,5 +115,15 @@ class ClientService
     public function loadSearch($getValueInput)
     {
         return count($this->clientsModel->trySearchClientByValue('full_name', $getValueInput, 10));
+    }
+
+    public function execute($allInputs)
+    {
+        return $this->clientsModel->insertRow($allInputs);
+    }
+
+    public function update($id, $allInputs)
+    {
+        return $this->clientsModel->updateRow($id, $allInputs);
     }
 }

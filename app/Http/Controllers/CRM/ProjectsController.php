@@ -39,8 +39,8 @@ class ProjectsController extends Controller
     private function getDataAndPagination()
     {
         $dataWithProjects = [
-            'projects' => ProjectsModel::all()->sortByDesc('created_at'),
-            'projectsPaginate' => ProjectsModel::paginate(Config::get('crm_settings.pagination_size'))
+            'projects' => $this->projectsService->getProjects(),
+            'projectsPaginate' => $this->projectsService->getPagination()
         ];
 
         return $dataWithProjects;
@@ -89,7 +89,7 @@ class ProjectsController extends Controller
         if ($validator->fails()) {
             return Redirect::to('projects/create')->with('message_danger', $validator->errors());
         } else {
-            if ($project = $this->projectsModel->insertRow($allInputs)) {
+            if ($project = $this->projectsService->execute($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Project has been add with id: '. $project, 200);
                 return Redirect::to('projects')->with('message_success', $this->getMessage('messages.SuccessProjectsStore'));
             } else {
@@ -106,11 +106,9 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        $dataOfProjects = ProjectsModel::find($id);
-
         return View::make('crm.projects.show')
             ->with([
-                'projects' => $dataOfProjects,
+                'projects' => $this->projectsService->getProject($id),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
@@ -123,15 +121,13 @@ class ProjectsController extends Controller
      */
     public function edit($id)
     {
-
-        $projectsDetails = ProjectsModel::find($id);
         $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
         $dataWithPluckOfDeals = DealsModel::pluck('name', 'id');
         $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
 
         return View::make('crm.projects.edit')
             ->with([
-                'projects' => $projectsDetails,
+                'projects' => $this->projectsService->getProject($id),
                 'clients' => $dataWithPluckOfClients,
                 'deals' => $dataWithPluckOfDeals,
                 'companies' => $dataWithPluckOfCompanies
@@ -153,7 +149,7 @@ class ProjectsController extends Controller
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if ($this->projectsModel->updateRow($id, $allInputs)) {
+            if ($this->projectsService->update($id, $allInputs)) {
                 return Redirect::to('projects')->with('message_success', $this->getMessage('messages.SuccessProjectsStore'));
             } else {
                 return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorProjectsStore'));
@@ -170,7 +166,7 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
-        $projectsDetails = ProjectsModel::find($id);
+        $projectsDetails = $this->projectsService->getProject($id);
         $projectsDetails->delete();
 
         $this->systemLogs->insertSystemLogs('ProjectsModel has been deleted with id: ' . $projectsDetails->id, 200);
@@ -185,9 +181,9 @@ class ProjectsController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $projectsDetails = ProjectsModel::find($id);
+        $projectsDetails = $this->projectsService->getProject($id);
 
-        if ($this->projectsModel->setActive($projectsDetails->id, $value)) {
+        if ($this->projectsService->loadIsActiveFunction($projectsDetails->id, $value)) {
             $this->systemLogs->insertSystemLogs('ProjectsModel has been enabled with id: ' . $projectsDetails->id, 200);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessProjectsActive'));
         } else {
@@ -201,7 +197,7 @@ class ProjectsController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findProjectsByValue = count(ProjectsModel::trySearchProjectsByValue('full_name', $getValueInput, 10));
+        $findProjectsByValue = $this->projectsService->loadSearch($getValueInput);
         $dataOfProjects = $this->getDataAndPagination();
 
         if (!$findProjectsByValue > 0) {

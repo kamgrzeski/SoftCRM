@@ -20,13 +20,11 @@ class FilesController extends Controller
     use Language;
 
     private $systemLogs;
-    private $filesModel;
     private $filesService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->filesModel = new FilesModel();
         $this->filesService = new FilesService();
     }
 
@@ -36,8 +34,8 @@ class FilesController extends Controller
     private function getDataAndPagination()
     {
         $dataOfFiles = [
-            'files' => FilesModel::all()->sortByDesc('created_at'),
-            'filesPaginate' => FilesModel::paginate(Config::get('crm_settings.pagination_size'))
+            'files' => $this->filesService->loadFiles(),
+            'filesPaginate' => $this->filesService->loadPaginate()
         ];
 
         return $dataOfFiles;
@@ -77,12 +75,12 @@ class FilesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, $this->filesModel->getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->filesService->loadRules());
 
         if ($validator->fails()) {
             return Redirect::to('files/create')->with('message_danger', $validator->errors());
         } else {
-            if ($file = $this->filesModel->insertRow($allInputs)) {
+            if ($file = $this->filesService->execute($allInputs)) {
                 $this->systemLogs->insertSystemLogs('File has been add with id: '. $file, $this->systemLogs::successCode);
                 return Redirect::to('files')->with('message_success', $this->getMessage('messages.SuccessFilesStore'));
             } else {
@@ -99,10 +97,8 @@ class FilesController extends Controller
      */
     public function show($id)
     {
-        $dataOfFiles = FilesModel::find($id);
-
         return View::make('crm.files.show')
-            ->with('files', $dataOfFiles);
+            ->with('files', $this->filesService->getFile($id));
     }
 
     /**
@@ -113,12 +109,11 @@ class FilesController extends Controller
      */
     public function edit($id)
     {
-        $dataOfFiles = FilesModel::find($id);
         $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
 
         return View::make('crm.files.edit')
             ->with([
-                'files' => $dataOfFiles,
+                'files' => $this->filesService->getFile($id),
                 'companies' => $dataWithPluckOfCompanies
             ]);
     }
@@ -133,12 +128,12 @@ class FilesController extends Controller
     {
         $allInputs = Input::all();
 
-        $validator = Validator::make($allInputs, $this->filesModel->getRules('STORE'));
+        $validator = Validator::make($allInputs, $this->filesService->loadRules());
 
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if ($this->filesModel->updateRow($id, $allInputs)) {
+            if ($this->filesService->update($id, $allInputs)) {
                 return Redirect::to('files')->with('message_success', $this->getMessage('messages.SuccessFilesUpdate'));
             } else {
                 return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFilesUpdate'));
@@ -155,7 +150,7 @@ class FilesController extends Controller
      */
     public function destroy($id)
     {
-        $dataOfFiles = FilesModel::find($id);
+        $dataOfFiles = $this->filesService->getFile($id);
         $dataOfFiles->delete();
 
         $this->systemLogs->insertSystemLogs('FilesModel has been deleted with id: ' . $dataOfFiles->id, $this->systemLogs::successCode);
@@ -172,7 +167,7 @@ class FilesController extends Controller
     {
         $dataOfFiles = FilesModel::find($id);
 
-        if ($this->filesModel->setActive($dataOfFiles->id, $value)) {
+        if ($this->filesService->loadIsActive($dataOfFiles->id, $value)) {
             $this->systemLogs->insertSystemLogs('FilesModel has been enable with id: ' . $dataOfFiles->id, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessFilesActive'));
         } else {
@@ -186,7 +181,7 @@ class FilesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findFilesByValue = count($this->filesModel->trySearchFilesByValue('name', $getValueInput, 10));
+        $findFilesByValue = $this->filesService->loadSearch($getValueInput);
         $dataOfFiles = $this->getDataAndPagination();
 
         if (!$findFilesByValue > 0) {

@@ -9,20 +9,15 @@
 namespace App\Services;
 
 use App\Models\CompaniesModel;
-use App\Models\Language;
 use Config;
 
 class CompaniesService
 {
-    private $language;
     private $companiesModel;
-    private $systemLogs;
 
     public function __construct()
     {
-        $this->language = new Language();
         $this->companiesModel = new CompaniesModel();
-        $this->systemLogs = new SystemLogService();
     }
 
     public function loadCompanies()
@@ -100,5 +95,20 @@ class CompaniesService
     public function countAssignedInvoice(CompaniesModel $dataOfCompanies)
     {
         return count($dataOfCompanies->invoices()->get());
+    }
+
+    public function execute($allInputs)
+    {
+        return $this->companiesModel->insertRow($allInputs);
+    }
+
+    public function update(int $id, $allInputs)
+    {
+        return $this->companiesModel->updateRow($id, $allInputs);
+    }
+
+    public function loadSetActiveFunction($id, $value)
+    {
+        return $this->companiesModel->setActive($id, $value);
     }
 }

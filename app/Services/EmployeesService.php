@@ -9,21 +9,15 @@
 namespace App\Services;
 
 use App\Models\EmployeesModel;
-use App\Models\Language;
 use Config;
-use phpDocumentor\Reflection\Types\This;
 
 class EmployeesService
 {
-    private $language;
     private $employeesModel;
-    private $systemLogs;
 
     public function __construct()
     {
-        $this->language = new Language();
         $this->employeesModel = new EmployeesModel();
-        $this->systemLogs = new SystemLogService();
     }
 
     public function loadEmployees()
@@ -82,5 +76,15 @@ class EmployeesService
     public function loadSearch($getValueInput)
     {
         return count($this->employeesModel->trySearchEmployeesByValue('full_name', $getValueInput, 10));
+    }
+
+    public function execute($allInputs)
+    {
+        return $this->employeesModel->insertRow($allInputs);
+    }
+
+    public function update(int $id, $allInputs)
+    {
+        return $this->employeesModel->updateRow($id, $allInputs);
     }
 }

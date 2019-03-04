@@ -35,8 +35,8 @@ class MailingController extends Controller
     private function getDataAndPagination()
     {
         $dataWithMailing = [
-            'mailing' => MailingModel::all()->sortByDesc('created_at'),
-            'mailingPaginate' => MailingModel::paginate(Config::get('crm_settings.pagination_size'))
+            'mailing' => $this->mailingService->getMailing(),
+            'mailingPaginate' => $this->mailingService->getPagination()
         ];
 
         return $dataWithMailing;
@@ -61,7 +61,7 @@ class MailingController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findMailingByValue = count($this->mailingModel->trySearchMailingByValue('full_name', $getValueInput, 10));
+        $findMailingByValue = $this->mailingService->loadSearch($getValueInput);
         $dataOfMailing = $this->getDataAndPagination();
 
         if (!$findMailingByValue > 0) {
@@ -76,6 +76,6 @@ class MailingController extends Controller
 
     public function sendEmailToThisEmailAddress($allInputs)
     {
-        MailingModel::addEmailToMailManager($allInputs);
+        $this->mailingService->loadAdminPanel($allInputs);
     }
 }

@@ -93,4 +93,9 @@ class ContactsModel extends Model
     {
         return $this->belongsTo(EmployeesModel::class, 'employee_id', 'id');
     }
+
+    public function getAllContacts()
+    {
+        return $this::all()->sortByDesc('created_at');
+    }
 }

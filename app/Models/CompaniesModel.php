@@ -16,7 +16,7 @@ class CompaniesModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function insertRow($allInputs)
+    public function insertRow($allInputs)
     {
         return CompaniesModel::insertGetId(
             [
@@ -42,7 +42,7 @@ class CompaniesModel extends Model
      * @param $allInputs
      * @return mixed
      */
-    public static function updateRow($id, $allInputs)
+    public function updateRow($id, $allInputs)
     {
         return CompaniesModel::where('id', '=', $id)->update(
             [
@@ -66,7 +66,7 @@ class CompaniesModel extends Model
      * @param $activeType
      * @return bool
      */
-    public static function setActive($id, $activeType)
+    public function setActive($id, $activeType)
     {
         $findCompaniesById = CompaniesModel::where('id', '=', $id)->update(
             [

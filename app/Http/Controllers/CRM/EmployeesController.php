@@ -65,7 +65,7 @@ class EmployeesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('employees/create')->with('message_danger', $validator->errors());
         } else {
-            if ($employee = $this->emolpoyeesModel->insertRow($allInputs)) {
+            if ($employee = $this->employeesService->execute($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Employees has been add with id: '. $employee, $this->systemLogs::successCode);
                 return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
             } else {
@@ -118,7 +118,7 @@ class EmployeesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('employees')->with('message_danger', $validator->errors());
         } else {
-            if ($this->emolpoyeesModel->updateRow($id, $allInputs)) {
+            if ($this->employeesService->update($id, $allInputs)) {
                 return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesUpdate'));
             } else {
                 return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesUpdate'));

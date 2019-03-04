@@ -8,10 +8,18 @@
 
 namespace App\Services;
 
+use App\Models\FinancesModel;
 use Config;
 
 class FinancesService
 {
+    private $financesModel;
+
+    public function __construct()
+    {
+        $this->financesModel = new FinancesModel();
+    }
+
     /**
      * @param $gross
      * @return array
@@ -29,5 +37,40 @@ class FinancesService
             'net' => $net,
             'vat' => $vat,
         ];
+    }
+
+    public function getFinances()
+    {
+        return $this->financesModel::all()->sortByDesc('created_at');
+    }
+
+    public function getPagination()
+    {
+        return $this->financesModel::paginate(Config::get('crm_settings.pagination_size'));
+    }
+
+    public function execute($allInputs)
+    {
+        return $this->financesModel->insertRow($allInputs);
+    }
+
+    public function getFinance(int $id)
+    {
+        return $this->financesModel::find($id);
+    }
+
+    public function update(int $id, $allInputs)
+    {
+        return $this->financesModel->updateRow($id, $allInputs);
+    }
+
+    public function loadIsActiveFunction($id, $value)
+    {
+        return $this->financesModel->setActive($id, $value);
+    }
+
+    public function loadSearch($getValueInput)
+    {
+        return count($this->financesModel->trySearchFinancesByValue('name', $getValueInput, 10));
     }
 }

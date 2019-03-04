@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\ClientsModel;
 use App\Models\ContactsModel;
 use App\Models\EmployeesModel;
-use App\Models\Language;
 use App\Services\ContactsService;
 use App\Services\SystemLogService;
+use App\Traits\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -18,15 +18,15 @@ use Config;
 
 class ContactsController extends Controller
 {
+    use Language;
+
     private $systemLogs;
-    private $language;
     private $contactsModel;
     private $contactsService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->language = new Language();
         $this->contactsModel = new ContactsModel();
         $this->contactsService = new ContactsService();
     }
@@ -37,8 +37,8 @@ class ContactsController extends Controller
     private function getDataAndPagination()
     {
         $dataOfContacts = [
-            'contacts' => ContactsModel::all()->sortByDesc('created_at'),
-            'contactsPaginate' => ContactsModel::paginate(Config::get('crm_settings.pagination_size'))
+            'contacts' => $this->contactsService->getContacts(),
+            'contactsPaginate' => $this->contactsService->getPaginate()
         ];
 
         return $dataOfContacts;
@@ -85,7 +85,7 @@ class ContactsController extends Controller
         if ($validator->fails()) {
             return Redirect::to('contacts/create')->with('message_danger', $validator->errors());
         } else {
-            if ($contact = $this->contactsModel->insertRow($allInputs)) {
+            if ($contact = $this->contactsService->execute($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Contact has been add with id: '. $contact, $this->systemLogs::successCode);
                 return Redirect::to('contacts')->with('message_success', $this->getMessage('messages.SuccessContactsStore'));
             } else {
@@ -102,10 +102,8 @@ class ContactsController extends Controller
      */
     public function show($id)
     {
-        $dataOfContacts = ContactsModel::find($id);
-
         return View::make('crm.contacts.show')
-            ->with('contacts', $dataOfContacts);
+            ->with('contacts', $this->contactsService->getContact($id));
     }
 
     /**
@@ -116,7 +114,7 @@ class ContactsController extends Controller
      */
     public function edit($id)
     {
-        $dataOfContacts = ContactsModel::find($id);
+        $dataOfContacts = $this->contactsService->getContact($id);
         $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
         $dataWithPluckOfEmployees = EmployeesModel::pluck('full_name', 'id');
 
@@ -160,7 +158,7 @@ class ContactsController extends Controller
      */
     public function destroy($id)
     {
-        $dataOfContacts = ContactsModel::find($id);
+        $dataOfContacts = $this->contactsService->getContact($id);
         $dataOfContacts->delete();
 
         $this->systemLogs->insertSystemLogs('ContactsModel has been deleted with id: ' . $dataOfContacts->id, $this->systemLogs::successCode);
@@ -174,7 +172,7 @@ class ContactsController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findDealsByValue = count(ContactsModel::trySearchContactsByValue('full_name', $getValueInput, 10));
+        $findDealsByValue = $this->contactsService->loadSearch($getValueInput);
         $dataOfContacts = $this->getDataAndPagination();
 
         if (!$findDealsByValue > 0) {

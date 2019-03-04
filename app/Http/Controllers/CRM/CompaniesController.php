@@ -4,9 +4,9 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Models\CompaniesModel;
-use App\Models\Language;
 use App\Services\CompaniesService;
 use App\Services\SystemLogService;
+use App\Traits\Language;
 use View;
 use Validator;
 use Illuminate\Support\Facades\Input;
@@ -16,6 +16,8 @@ use Config;
 
 class CompaniesController extends Controller
 {
+    use Language;
+
     private $systemLogs;
     private $companiesService;
     private $language;
@@ -24,7 +26,6 @@ class CompaniesController extends Controller
     {
         $this->systemLogs = new SystemLogService();
         $this->companiesService = new CompaniesService();
-        $this->language = new Language();
     }
 
     /**
@@ -64,7 +65,7 @@ class CompaniesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('companies/create')->with('message_danger', $validator->errors());
         } else {
-            if ($companie = CompaniesModel::insertRow($allInputs)) {
+            if ($companie = $this->companiesService->execute($allInputs)) {
                 $this->systemLogs->insertSystemLogs('CompaniesModel has been add with id: '. $companie, $this->systemLogs::successCode);
                 return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesStore'));
             } else {
@@ -117,7 +118,7 @@ class CompaniesController extends Controller
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator->errors());
         } else {
-            if (CompaniesModel::updateRow($id, $allInputs)) {
+            if ($this->companiesService->update($id, $allInputs)) {
                 return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesUpdate'));
             } else {
                 return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorCompaniesUpdate'));
@@ -166,10 +167,8 @@ class CompaniesController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $dataOfCompanies = $this->companiesService->loadCompanie($id);
-
-        if (CompaniesModel::setActive($dataOfCompanies->id, $value)) {
-            $this->systemLogs->insertSystemLogs('CompaniesModel has been enabled with id: ' . $dataOfCompanies->id, $this->systemLogs::successCode);
+        if ($this->companiesService->loadSetActiveFunction($id, $value)) {
+            $this->systemLogs->insertSystemLogs('CompaniesModel has been enabled with id: ' . $id, $this->systemLogs::successCode);
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesActive'));
@@ -182,10 +181,8 @@ class CompaniesController extends Controller
      */
     public function disable($id)
     {
-        $dataOfCompanies = $this->companiesService->loadCompanie($id);
-
-        if (CompaniesModel::setActive($dataOfCompanies->id, FALSE)) {
-            $this->systemLogs->insertSystemLogs('CompaniesModel has been disabled with id: ' . $dataOfCompanies->id, $this->systemLogs::successCode);
+        if ($this->companiesService->loadSetActiveFunction($id, FALSE)) {
+            $this->systemLogs->insertSystemLogs('CompaniesModel has been disabled with id: ' . $id, $this->systemLogs::successCode);
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.CompaniesIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.CompaniesIsDeactivated'));

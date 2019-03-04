@@ -36,8 +36,8 @@ class ProductsController extends Controller
     private function getDataAndPagination()
     {
         $dataWithProducts = [
-            'products' => ProductsModel::all()->sortByDesc('created_at'),
-            'productsPaginate' => ProductsModel::paginate(Config::get('crm_settings.pagination_size'))
+            'products' => $this->productsService->getProducts(),
+            'productsPaginate' => $this->productsService->getPagination()
         ];
 
         return $dataWithProducts;
@@ -79,7 +79,7 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return Redirect::to('products/create')->with('message_danger', $validator->errors());
         } else {
-            if ($product = $this->productsModel->insertRow($allInputs)) {
+            if ($product = $this->productsService->execute($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Product has been add with id: '. $product, $this->systemLogs::successCode);
                 return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
             } else {
@@ -96,11 +96,9 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $dataOfProducts = ProductsModel::find($id);
-
         return View::make('crm.products.show')
             ->with([
-                'products' => $dataOfProducts,
+                'products' => $this->productsService->getProduct($id),
             ]);
     }
 
@@ -112,10 +110,8 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        $productsDetails = ProductsModel::find($id);
-
         return View::make('crm.products.edit')
-            ->with('products', $productsDetails);
+            ->with('products', $this->productsService->getProduct($id));
     }
 
     /**
@@ -133,7 +129,7 @@ class ProductsController extends Controller
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if ($this->productsModel->updateRow($id, $allInputs)) {
+            if ($this->productsService->update($id, $allInputs)) {
                 return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
             } else {
                 return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorProductsStore'));
@@ -150,7 +146,7 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        $productsDetails = ProductsModel::find($id);
+        $productsDetails = $this->productsService->getProduct($id);
         $productsDetails->delete();
 
         $this->systemLogs->insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogs::successCode);
@@ -166,9 +162,9 @@ class ProductsController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $productsDetails = ProductsModel::find($id);
+        $productsDetails = $this->productsService->getProduct($id);
 
-        if ($this->productsModel->setActive($productsDetails->id, $value)) {
+        if ($this->productsService->loadIsActiveFunction($productsDetails->id, $value)) {
             $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $productsDetails->id, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessProductsActive'));
         } else {
@@ -182,7 +178,7 @@ class ProductsController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findProductsByValue = count($this->productsModel->trySearchProductsByValue('full_name', $getValueInput, 10));
+        $findProductsByValue = $this->productsService->loadSearch($getValueInput);
         $dataOfProducts = $this->getDataAndPagination();
 
         if (!$findProductsByValue > 0) {

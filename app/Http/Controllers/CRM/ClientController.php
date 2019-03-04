@@ -62,7 +62,7 @@ class ClientController extends Controller
         if ($validator->fails()) {
             return Redirect::to('client/create')->with('message_danger', $validator->errors());
         } else {
-            if ($client = $this->clientsModel->insertRow($allInputs)) {
+            if ($client = $this->clientService->execute($allInputs)) {
                 $this->systemLogs->insertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogs::successCode);
                 return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
             } else {
@@ -115,7 +115,7 @@ class ClientController extends Controller
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if ($this->clientsModel->updateRow($id, $allInputs)) {
+            if ($this->clientService->update($id, $allInputs)) {
                 return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
             } else {
                 return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorClientStore'));
@@ -141,22 +141,6 @@ class ClientController extends Controller
         }
 
         return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientDelete'));
-    }
-
-    /**
-     * @param $id
-     * @param $value
-     * @return mixed
-     */
-    public function isActiveFunction($id, $value)
-    {
-        $status = $this->clientService->processIsActive($id, $value);
-
-        if(!empty($status)) {
-            return $this->getMessage('messages.SuccessClientActive');
-        } else {
-            return $this->getMessage('messages.ClientIsActived');
-        }
     }
 
     /**

@@ -2,19 +2,49 @@
 
 namespace App\Services;
 
-use App\Models\Language;
 use App\Models\ProjectsModel;
 
 class ProjectsService
 {
-    private $language;
     private $projectsModel;
-    private $systemLogs;
 
     public function __construct()
     {
-        $this->language = new Language();
         $this->projectsModel = new ProjectsModel();
-        $this->systemLogs = new SystemLogService();
+    }
+
+    public function getProjects()
+    {
+        return $this->projectsModel::all()->sortByDesc('created_at');
+    }
+
+    public function getPagination()
+    {
+        return $this->projectsModel::paginate(Config::get('crm_settings.pagination_size'));
+    }
+
+    public function execute($allInputs)
+    {
+        return $this->projectsModel->insertRow($allInputs);
+    }
+
+    public function getProject(int $id)
+    {
+        return $this->projectsModel::find($id);;
+    }
+
+    public function update($id, $allInputs)
+    {
+        return $this->projectsModel->updateRow($id, $allInputs);
+    }
+
+    public function loadIsActiveFunction($id, $value)
+    {
+        return $this->projectsModel->setActive($id, $value);
+    }
+
+    public function loadSearch($getValueInput)
+    {
+        return count($this->projectsModel::trySearchProjectsByValue('full_name', $getValueInput, 10));
     }
 }

@@ -2,19 +2,40 @@
 
 namespace App\Services;
 
-use App\Models\Language;
+use App\Models\ContactsModel;
 use Config;
 
 class ContactsService
 {
-    private $language;
     private $contactsModel;
-    private $systemLogs;
 
     public function __construct()
     {
-        $this->language = new Language();
-        $this->contactsModel = new ContactsService();
-        $this->systemLogs = new SystemLogService();
+        $this->contactsModel = new ContactsModel();
+    }
+
+    public function getContacts()
+    {
+        return $this->contactsModel->getAllContacts();
+    }
+
+    public function getPaginate()
+    {
+        return $this->contactsModel::paginate(Config::get('crm_settings.pagination_size'));
+    }
+
+    public function execute($allInputs)
+    {
+        return $this->contactsModel->insertRow($allInputs);
+    }
+
+    public function getContact(int $id)
+    {
+        return $this->contactsModel::find($id);
+    }
+
+    public function loadSearch($getValueInput)
+    {
+        return count($this->contactsModel::trySearchContactsByValue('full_name', $getValueInput, 10));
     }
 }

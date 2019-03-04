@@ -2,19 +2,34 @@
 
 namespace App\Services;
 
-use App\Models\Language;
 use App\Models\MailingModel;
 
 class MailingService
 {
-    private $language;
     private $mailingModel;
-    private $systemLogs;
 
     public function __construct()
     {
-        $this->language = new Language();
         $this->mailingModel = new MailingModel();
-        $this->systemLogs = new SystemLogService();
+    }
+
+    public function getMailing()
+    {
+        return MailingModel::all()->sortByDesc('created_at');
+    }
+
+    public function getPagination()
+    {
+        return MailingModel::paginate(Config::get('crm_settings.pagination_size'));
+    }
+
+    public function loadSearch($getValueInput)
+    {
+        return count($this->mailingModel->trySearchMailingByValue('full_name', $getValueInput, 10));;
+    }
+
+    public function loadAdminPanel($allInputs)
+    {
+        return $this->mailingModel::addEmailToMailManager($allInputs);
     }
 }

@@ -38,8 +38,8 @@ class InvoicesController extends Controller
     private function getDataAndPagination()
     {
         $dataWithInvoices = [
-            'invoices' => InvoicesModel::all()->sortByDesc('created_at'),
-            'invoicesPaginate' => InvoicesModel::paginate(Config::get('crm_settings.pagination_size'))
+            'invoices' => $this->invoicesService->getInvoices(),
+            'invoicesPaginate' => $this->invoicesService->getPagination()
         ];
 
         return $dataWithInvoices;
@@ -88,7 +88,7 @@ class InvoicesController extends Controller
         if ($validator->fails()) {
             return Redirect::to('invoices/create')->with('message_danger', $validator->errors());
         } else {
-            if ($invoice = $this->invoicesModel->insertRow($allInputs)) {
+            if ($invoice = $this->invoicesService->execute($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Invoice has been add with id: '. $invoice, $this->systemLogs::successCode);
                 return Redirect::to('invoices')->with('message_success', $this->getMessage('messages.SuccessInvoicesStore'));
             } else {
@@ -105,11 +105,10 @@ class InvoicesController extends Controller
      */
     public function show($id)
     {
-        $dataOfInvoices = InvoicesModel::find($id);
 
         return View::make('crm.invoices.show')
             ->with([
-                'invoices' => $dataOfInvoices,
+                'invoices' => $this->invoicesService->getInvoice($id),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
@@ -122,10 +121,8 @@ class InvoicesController extends Controller
      */
     public function edit($id)
     {
-        $invoicesDetails = InvoicesModel::find($id);
-
         return View::make('crm.invoices.edit')
-            ->with('invoices', $invoicesDetails);
+            ->with('invoices', $this->invoicesService->getInvoice($id));
     }
 
     /**
@@ -143,7 +140,7 @@ class InvoicesController extends Controller
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if ($this->invoicesModel->updateRow($id, $allInputs)) {
+            if ($this->invoicesService->update($id, $allInputs)) {
                 return Redirect::to('invoices')->with('message_success', $this->getMessage('messages.SuccessInvoicesStore'));
             } else {
                 return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorInvoicesStore'));
@@ -160,7 +157,7 @@ class InvoicesController extends Controller
      */
     public function destroy($id)
     {
-        $invoicesDetails = InvoicesModel::find($id);
+        $invoicesDetails = $this->invoicesService->getInvoice($id);
         $invoicesDetails->delete();
 
         $this->systemLogs->insertSystemLogs('InvoicesModel has been deleted with id: ' . $invoicesDetails->id, $this->systemLogs::successCode);
@@ -177,7 +174,7 @@ class InvoicesController extends Controller
     {
         $invoicesDetails = InvoicesModel::find($id);
 
-        if ($this->invoicesModel->setActive($invoicesDetails->id, $value)) {
+        if ($this->invoicesService->loadIsActiveFunction($invoicesDetails->id, $value)) {
             $this->systemLogs->insertSystemLogs('InvoicesModel has been enabled with id: ' . $invoicesDetails->id, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessInvoicesActive'));
         } else {
@@ -190,7 +187,7 @@ class InvoicesController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findInvoicesByValue = count($this->invoicesModel->trySearchInvoicesByValue('full_name', $getValueInput, 10));
+        $findInvoicesByValue = $this->invoicesService->loadSearch($getValueInput);
         $dataOfInvoices = $this->getDataAndPagination();
 
         if (!$findInvoicesByValue > 0) {

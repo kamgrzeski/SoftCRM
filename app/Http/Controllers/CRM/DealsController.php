@@ -5,9 +5,9 @@ namespace App\Http\Controllers\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\CompaniesModel;
 use App\Models\DealsModel;
-use App\Models\Language;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
+use App\Traits\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -17,15 +17,15 @@ use Config;
 
 class DealsController extends Controller
 {
+    use Language;
+
     private $systemLogs;
-    private $language;
     private $dealsModel;
     private $dealsService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->language = new Language();
         $this->dealsModel = new DealsModel();
         $this->dealsService = new DealsService();
     }
@@ -36,8 +36,8 @@ class DealsController extends Controller
     private function getDataAndPagination()
     {
         $dataOfDeals = [
-            'deals' => DealsModel::all()->sortByDesc('created_at'),
-            'dealsPaginate' => DealsModel::paginate(Config::get('crm_settings.pagination_size'))
+            'deals' => $this->dealsService->getDeals(),
+            'dealsPaginate' => $this->dealsService->getPaginate()
         ];
 
         return $dataOfDeals;
@@ -82,7 +82,7 @@ class DealsController extends Controller
         if ($validator->fails()) {
             return Redirect::to('deals/create')->with('message_danger', $validator->errors());
         } else {
-            if ($deal = $this->dealsModel->insertRow($allInputs)) {
+            if ($deal = $this->dealsService->execute($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Deal has been add with id: '. $deal, $this->systemLogs::successCode);
                 return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsStore'));
             } else {
@@ -99,10 +99,8 @@ class DealsController extends Controller
      */
     public function show($id)
     {
-        $dataOfDeals = DealsModel::find($id);
-
-        return View::make('crm.deals.show')
-            ->with('deals', $dataOfDeals);
+       return View::make('crm.deals.show')
+            ->with('deals', $this->dealsService->getDeal($id));
     }
 
     /**
@@ -113,12 +111,11 @@ class DealsController extends Controller
      */
     public function edit($id)
     {
-        $dataOfDeals = DealsModel::find($id);
         $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
 
         return View::make('crm.deals.edit')
             ->with([
-                'deals' => $dataOfDeals,
+                'deals' => $this->dealsService->getDeal($id),
                 'companies' => $dataWithPluckOfCompanies
             ]);
     }
@@ -138,7 +135,7 @@ class DealsController extends Controller
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator);
         } else {
-            if ($this->dealsModel->updateRow($id, $allInputs)) {
+            if ($this->dealsService->update($id, $allInputs)) {
                 return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsUpdate'));
             } else {
                 return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsUpdate'));
@@ -155,7 +152,7 @@ class DealsController extends Controller
      */
     public function destroy($id)
     {
-        $dataOfDeals = DealsModel::find($id);
+        $dataOfDeals = $this->dealsService->getDeal($id);
         $dataOfDeals->delete();
 
         $this->systemLogs->insertSystemLogs('DealsModel has been deleted with id: ' .$dataOfDeals->id, $this->systemLogs::successCode);
@@ -186,7 +183,7 @@ class DealsController extends Controller
     public function search()
     {
         $getValueInput = Request::input('search');
-        $findDealsByValue = count($this->dealsModel->trySearchDealsByValue('name', $getValueInput, 10));
+        $findDealsByValue = $this->dealsService->loadSearch($getValueInput);
         $dataOfDeals = $this->getDataAndPagination();
 
         if (!$findDealsByValue > 0) {
