@@ -4,10 +4,10 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClientsModel;
-use App\Models\Language;
 use App\Models\MailingModel;
 use App\Services\MailingService;
 use App\Services\SystemLogService;
+use App\Traits\Language;
 use Validator;
 use View;
 use Request;
@@ -16,15 +16,15 @@ use Config;
 
 class MailingController extends Controller
 {
+    use Language;
+
     private $systemLogs;
-    private $language;
     private $mailingModel;
     private $mailingService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->language = new Language();
         $this->mailingModel = new MailingModel();
         $this->mailingService = new MailingService();
     }
@@ -65,7 +65,7 @@ class MailingController extends Controller
         $dataOfMailing = $this->getDataAndPagination();
 
         if (!$findMailingByValue > 0) {
-            return redirect('mailing')->with('message_danger', $this->language->getMessage('messages.ThereIsNoMailing'));
+            return redirect('mailing')->with('message_danger', $this->getMessage('messages.ThereIsNoMailing'));
         } else {
             $dataOfMailing += ['mailing_search' => $findMailingByValue];
             Redirect::to('mailing/search')->with('message_success', 'Find ' . $findMailingByValue . ' mailing!');

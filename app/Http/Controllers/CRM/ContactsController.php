@@ -67,7 +67,7 @@ class ContactsController extends Controller
             [
                 'clients' => $dataOfClients,
                 'employees' => $dataOfEmployees,
-                'inputText' => $this->language->getMessage('messages.InputText')
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
@@ -87,9 +87,9 @@ class ContactsController extends Controller
         } else {
             if ($contact = $this->contactsModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Contact has been add with id: '. $contact, $this->systemLogs::successCode);
-                return Redirect::to('contacts')->with('message_success', $this->language->getMessage('messages.SuccessContactsStore'));
+                return Redirect::to('contacts')->with('message_success', $this->getMessage('messages.SuccessContactsStore'));
             } else {
-                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorContactsStore'));
+                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorContactsStore'));
             }
         }
     }
@@ -144,9 +144,9 @@ class ContactsController extends Controller
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if ($this->contactsModel->updateRow($id, $allInputs)) {
-                return Redirect::to('contacts')->with('message_success', $this->language->getMessage('messages.SuccessContactsUpdate'));
+                return Redirect::to('contacts')->with('message_success', $this->getMessage('messages.SuccessContactsUpdate'));
             } else {
-                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorContactsUpdate'));
+                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorContactsUpdate'));
             }
         }
     }
@@ -165,7 +165,7 @@ class ContactsController extends Controller
 
         $this->systemLogs->insertSystemLogs('ContactsModel has been deleted with id: ' . $dataOfContacts->id, $this->systemLogs::successCode);
 
-        return Redirect::to('contacts')->with('message_success', $this->language->getMessage('messages.SuccessContactsDelete'));
+        return Redirect::to('contacts')->with('message_success', $this->getMessage('messages.SuccessContactsDelete'));
     }
 
     /**
@@ -178,7 +178,7 @@ class ContactsController extends Controller
         $dataOfContacts = $this->getDataAndPagination();
 
         if (!$findDealsByValue > 0) {
-            return redirect('contacts')->with('message_danger', $this->language->getMessage('messages.ThereIsNoDeals'));
+            return redirect('contacts')->with('message_danger', $this->getMessage('messages.ThereIsNoDeals'));
         } else {
             $dataOfContacts += ['contacts_search' => $findDealsByValue];
             Redirect::to('contacts/search')->with('message_success', 'Find ' . $findDealsByValue . ' contacts!');

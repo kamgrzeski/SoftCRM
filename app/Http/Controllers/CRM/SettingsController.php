@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Models\Language;
 use App\Models\SettingsModel;
 use App\Services\HelpersFncService;
 use App\Services\SettingsService;
 use App\Services\SystemLogService;
+use App\Traits\Language;
 use Axdlee\Config\Rewrite;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -17,8 +17,9 @@ use Config;
 
 class SettingsController extends Controller
 {
+    use Language;
+
     private $systemLogs;
-    private $language;
     private $settingsModel;
     private $settingsService;
     private $helpersService;
@@ -26,7 +27,6 @@ class SettingsController extends Controller
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->language = new Language();
         $this->settingsModel = new SettingsModel();
         $this->settingsService = new SettingsService();
         $this->helpersService = new HelpersFncService();
@@ -59,7 +59,7 @@ class SettingsController extends Controller
         $validator = Validator::make($getAllInputFromRequest, $this->settingsService->loadRules());
 
         if($validator->fails()) {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorSettingsStore'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSettingsStore'));
         }
 
         $writeConfig = new Rewrite;
@@ -78,6 +78,6 @@ class SettingsController extends Controller
 
         $this->systemLogs->insertSystemLogs('SettingsModel has been changed.', $this->systemLogs::successCode);
 
-        return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessSettingsUpdate'));
+        return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSettingsUpdate'));
     }
 }

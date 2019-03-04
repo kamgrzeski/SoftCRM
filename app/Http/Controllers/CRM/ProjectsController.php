@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\ClientsModel;
 use App\Models\CompaniesModel;
 use App\Models\DealsModel;
-use App\Models\Language;
 use App\Models\ProjectsModel;
 use App\Services\ProjectsService;
 use App\Services\SystemLogService;
+use App\Traits\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -19,6 +19,8 @@ use Config;
 
 class ProjectsController extends Controller
 {
+    use Language;
+
     private $systemLogs;
     private $language;
     private $projectsModel;
@@ -27,7 +29,6 @@ class ProjectsController extends Controller
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->language = new Language();
         $this->projectsModel = new ProjectsModel();
         $this->projectsService = new ProjectsService();
     }
@@ -70,7 +71,7 @@ class ProjectsController extends Controller
                 'dataOfClients' => $dataOfClients,
                 'dataOfCompanies' => $dataOfCompanies,
                 'dataOfDeals' => $dataOfDeals,
-                'inputText' => $this->language->getMessage('messages.InputText')
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
@@ -90,9 +91,9 @@ class ProjectsController extends Controller
         } else {
             if ($project = $this->projectsModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Project has been add with id: '. $project, 200);
-                return Redirect::to('projects')->with('message_success', $this->language->getMessage('messages.SuccessProjectsStore'));
+                return Redirect::to('projects')->with('message_success', $this->getMessage('messages.SuccessProjectsStore'));
             } else {
-                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorProjectsStore'));
+                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorProjectsStore'));
             }
         }
     }
@@ -110,7 +111,7 @@ class ProjectsController extends Controller
         return View::make('crm.projects.show')
             ->with([
                 'projects' => $dataOfProjects,
-                'inputText' => $this->language->getMessage('messages.InputText')
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
@@ -153,9 +154,9 @@ class ProjectsController extends Controller
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if ($this->projectsModel->updateRow($id, $allInputs)) {
-                return Redirect::to('projects')->with('message_success', $this->language->getMessage('messages.SuccessProjectsStore'));
+                return Redirect::to('projects')->with('message_success', $this->getMessage('messages.SuccessProjectsStore'));
             } else {
-                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorProjectsStore'));
+                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorProjectsStore'));
             }
         }
     }
@@ -174,7 +175,7 @@ class ProjectsController extends Controller
 
         $this->systemLogs->insertSystemLogs('ProjectsModel has been deleted with id: ' . $projectsDetails->id, 200);
 
-        return Redirect::to('projects')->with('message_success', $this->language->getMessage('messages.SuccessProjectsDelete'));
+        return Redirect::to('projects')->with('message_success', $this->getMessage('messages.SuccessProjectsDelete'));
     }
 
     /**
@@ -188,9 +189,9 @@ class ProjectsController extends Controller
 
         if ($this->projectsModel->setActive($projectsDetails->id, $value)) {
             $this->systemLogs->insertSystemLogs('ProjectsModel has been enabled with id: ' . $projectsDetails->id, 200);
-            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessProjectsActive'));
+            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessProjectsActive'));
         } else {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ProjectsIsActived'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ProjectsIsActived'));
         }
     }
 
@@ -204,7 +205,7 @@ class ProjectsController extends Controller
         $dataOfProjects = $this->getDataAndPagination();
 
         if (!$findProjectsByValue > 0) {
-            return redirect('projects')->with('message_danger', $this->language->getMessage('messages.ThereIsNoProjects'));
+            return redirect('projects')->with('message_danger', $this->getMessage('messages.ThereIsNoProjects'));
         } else {
             $dataOfProjects += ['projects_search' => $findProjectsByValue];
             Redirect::to('projects/search')->with('message_success', 'Find ' . $findProjectsByValue . ' projects!');

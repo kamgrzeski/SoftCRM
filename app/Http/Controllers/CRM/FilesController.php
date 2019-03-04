@@ -5,10 +5,9 @@ namespace App\Http\Controllers\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\CompaniesModel;
 use App\Models\FilesModel;
-use App\Models\FinancesModel;
-use App\Models\Language;
 use App\Services\FilesService;
 use App\Services\SystemLogService;
+use App\Traits\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -18,15 +17,15 @@ use Config;
 
 class FilesController extends Controller
 {
+    use Language;
+
     private $systemLogs;
-    private $language;
     private $filesModel;
     private $filesService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->language = new Language();
         $this->filesModel = new FilesModel();
         $this->filesService = new FilesService();
     }
@@ -65,7 +64,7 @@ class FilesController extends Controller
 
         return View::make('crm.files.create')->with([
             'dataOfCompanies' => $dataOfCompanies,
-            'inputText' => $this->language->getMessage('messages.InputText')
+            'inputText' => $this->getMessage('messages.InputText')
         ]);
     }
 
@@ -85,9 +84,9 @@ class FilesController extends Controller
         } else {
             if ($file = $this->filesModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('File has been add with id: '. $file, $this->systemLogs::successCode);
-                return Redirect::to('files')->with('message_success', $this->language->getMessage('messages.SuccessFilesStore'));
+                return Redirect::to('files')->with('message_success', $this->getMessage('messages.SuccessFilesStore'));
             } else {
-                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorFilesStore'));
+                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFilesStore'));
             }
         }
     }
@@ -140,9 +139,9 @@ class FilesController extends Controller
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if ($this->filesModel->updateRow($id, $allInputs)) {
-                return Redirect::to('files')->with('message_success', $this->language->getMessage('messages.SuccessFilesUpdate'));
+                return Redirect::to('files')->with('message_success', $this->getMessage('messages.SuccessFilesUpdate'));
             } else {
-                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorFilesUpdate'));
+                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFilesUpdate'));
             }
         }
     }
@@ -161,7 +160,7 @@ class FilesController extends Controller
 
         $this->systemLogs->insertSystemLogs('FilesModel has been deleted with id: ' . $dataOfFiles->id, $this->systemLogs::successCode);
 
-        return Redirect::to('files')->with('message_success', $this->language->getMessage('messages.SuccessFilesDelete'));
+        return Redirect::to('files')->with('message_success', $this->getMessage('messages.SuccessFilesDelete'));
     }
 
     /**
@@ -175,9 +174,9 @@ class FilesController extends Controller
 
         if ($this->filesModel->setActive($dataOfFiles->id, $value)) {
             $this->systemLogs->insertSystemLogs('FilesModel has been enable with id: ' . $dataOfFiles->id, $this->systemLogs::successCode);
-            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessFilesActive'));
+            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessFilesActive'));
         } else {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorFilesActive'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFilesActive'));
         }
     }
 
@@ -191,7 +190,7 @@ class FilesController extends Controller
         $dataOfFiles = $this->getDataAndPagination();
 
         if (!$findFilesByValue > 0) {
-            return redirect('files')->with('message_danger', $this->language->getMessage('messages.ThereIsNoFiles'));
+            return redirect('files')->with('message_danger', $this->getMessage('messages.ThereIsNoFiles'));
         } else {
             $dataOfFiles += ['files_search' => $findFilesByValue];
             Redirect::to('files/search')->with('message_success', 'Find ' . $findFilesByValue . ' files!');

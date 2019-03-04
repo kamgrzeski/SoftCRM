@@ -1,16 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
-class Language extends Model
+trait Language
 {
-    /**
-     * @param $message
-     * @return \Illuminate\Contracts\Translation\Translator|string
-     */
     public function getMessage($message)
     {
         if (App::isLocale('en')) {

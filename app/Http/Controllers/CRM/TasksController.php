@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Models\EmployeesModel;
-use App\Models\Language;
 use App\Models\TasksModel;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
+use App\Traits\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -17,15 +16,15 @@ use Config;
 
 class TasksController extends Controller
 {
+    use Language;
+
     private $systemLogs;
-    private $language;
     private $taskModel;
     private $taskService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->language = new Language();
         $this->taskModel = new TasksModel();
         $this->taskService = new TasksService();
     }
@@ -64,7 +63,7 @@ class TasksController extends Controller
 
         return View::make('crm.tasks.create')->with([
             'dataOfEmployees' => $dataOfEmployees,
-            'inputText' => $this->language->getMessage('messages.InputText')
+            'inputText' => $this->getMessage('messages.InputText')
         ]);
     }
 
@@ -84,9 +83,9 @@ class TasksController extends Controller
         } else {
             if ($task = $this->taskModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Task has been add with id: '. $task, $this->systemLogs::successCode);
-                return Redirect::to('tasks')->with('message_success', $this->language->getMessage('messages.SuccessTasksStore'));
+                return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksStore'));
             } else {
-                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorTasksStore'));
+                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksStore'));
             }
         }
     }
@@ -138,9 +137,9 @@ class TasksController extends Controller
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if ($this->taskModel->updateRow($id, $allInputs)) {
-                return Redirect::to('tasks')->with('message_success', $this->language->getMessage('messages.SuccessTasksUpdate'));
+                return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksUpdate'));
             } else {
-                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorTasksUpdate'));
+                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksUpdate'));
             }
         }
     }
@@ -156,7 +155,7 @@ class TasksController extends Controller
     {
         $dataOfTasks = TasksModel::find($id);
         if($dataOfTasks->completed == 0) {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.CantDeleteUnompletedTask'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.CantDeleteUnompletedTask'));
         } else {
             $dataOfTasks->delete();
 
@@ -164,7 +163,7 @@ class TasksController extends Controller
 
         }
 
-        return Redirect::to('tasks')->with('message_success', $this->language->getMessage('messages.SuccessTasksDelete'));
+        return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksDelete'));
     }
 
     /**
@@ -178,9 +177,9 @@ class TasksController extends Controller
 
         if ($this->taskModel->setActive($dataOfTasks->id, $value)) {
             $this->systemLogs->insertSystemLogs('Tasks has been enabled with id: ' . $dataOfTasks->id, $this->systemLogs::successCode);
-            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessTasksActive'));
+            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessTasksActive'));
         } else {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorTasksActive'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksActive'));
         }
     }
 
@@ -194,7 +193,7 @@ class TasksController extends Controller
         $dataOfTasks = $this->getDataAndPagination();
 
         if (!$findTasksByValue > 0) {
-            return redirect('tasks')->with('message_danger', $this->language->getMessage('messages.ThereIsNoTasks'));
+            return redirect('tasks')->with('message_danger', $this->getMessage('messages.ThereIsNoTasks'));
         } else {
             $dataOfTasks += ['tasks_search' => $findTasksByValue];
             Redirect::to('tasks/search')->with('message_success', 'Find ' . $findTasksByValue . ' deals!');
@@ -209,9 +208,9 @@ class TasksController extends Controller
 
         if ($this->taskModel->setCompleted($dataOfTasks->id, TRUE)) {
             $this->systemLogs->insertSystemLogs('Tasks has been completed with id: ' . $dataOfTasks->id, $this->systemLogs::successCode);
-            return Redirect::back()->with('message_success', $this->language->getMessage('messages.TasksCompleted'));
+            return Redirect::back()->with('message_success', $this->getMessage('messages.TasksCompleted'));
         } else {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.TasksIsNotCompleted'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.TasksIsNotCompleted'));
         }
     }
 
@@ -223,9 +222,9 @@ class TasksController extends Controller
 
         if ($this->taskModel->setCompleted($dataOfTasks->id, FALSE)) {
             $this->systemLogs->insertSystemLogs('Tasks has been uncompleted with id: ' . $dataOfTasks->id, $this->systemLogs::successCode);
-            return Redirect::back()->with('message_success', $this->language->getMessage('messages.TasksunCompleted'));
+            return Redirect::back()->with('message_success', $this->getMessage('messages.TasksunCompleted'));
         } else {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.TasksIsNotunCompleted'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.TasksIsNotunCompleted'));
         }
     }
 }

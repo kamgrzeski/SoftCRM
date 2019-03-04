@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Models\Language;
 use App\Models\ProductsModel;
 use App\Models\SalesModel;
 use App\Services\SalesService;
 use App\Services\SystemLogService;
+use App\Traits\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -17,6 +17,8 @@ use Config;
 
 class SalesController extends Controller
 {
+    use Language;
+    
     private $systemLogs;
     private $language;
     private $salesModel;
@@ -25,7 +27,6 @@ class SalesController extends Controller
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->language = new Language();
         $this->salesModel = new SalesModel();
         $this->salesService = new SalesService();
     }
@@ -52,12 +53,7 @@ class SalesController extends Controller
     {
         return View::make('crm.sales.index')->with($this->getDataAndPagination());
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
+    
     public function create()
     {
         $dataOfProducts = ProductsModel::pluck('name', 'id');
@@ -65,15 +61,10 @@ class SalesController extends Controller
         return View::make('crm.sales.create')->with(
             [
                 'dataOfProducts' => $dataOfProducts,
-                'inputText' => $this->language->getMessage('messages.InputText')
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
     public function store()
     {
         $allInputs = Input::all();
@@ -85,9 +76,9 @@ class SalesController extends Controller
         } else {
             if ($sale = $this->salesModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('SalesModel has been add with id: ' . $sale, 200);
-                return Redirect::to('sales')->with('message_success', $this->language->getMessage('messages.SuccessSalesStore'));
+                return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
             } else {
-                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorSalesStore'));
+                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorSalesStore'));
             }
         }
     }
@@ -116,11 +107,6 @@ class SalesController extends Controller
      */
     public function edit($id)
     {
-//        $salesDetails = SalesModel::find($id);
-//
-//        return View::make('crm.sales.edit')
-//            ->with('sales', $salesDetails);
-
         $salesDetails = SalesModel::find($id);
         $dataWithPluckOfProducts = ProductsModel::pluck('name', 'id');
 
@@ -131,12 +117,6 @@ class SalesController extends Controller
             ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
     public function update($id)
     {
         $allInputs = Input::all();
@@ -147,20 +127,13 @@ class SalesController extends Controller
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if ($this->salesModel->updateRow($id, $allInputs)) {
-                return Redirect::to('sales')->with('message_success', $this->language->getMessage('messages.SuccessSalesStore'));
+                return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
             } else {
-                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorSalesStore'));
+                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSalesStore'));
             }
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     * @throws \Exception
-     */
     public function destroy($id)
     {
         $salesDetails = SalesModel::find($id);
@@ -168,29 +141,21 @@ class SalesController extends Controller
 
         $this->systemLogs->insertSystemLogs('SalesModel has been deleted with id: ' . $salesDetails->id, 200);
 
-        return Redirect::to('sales')->with('message_success', $this->language->getMessage('messages.SuccessSalesDelete'));
+        return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesDelete'));
     }
 
-    /**
-     * @param $id
-     * @param $value
-     * @return mixed
-     */
     public function isActiveFunction($id, $value)
     {
         $salesDetails = SalesModel::find($id);
 
         if ($this->salesModel->setActive($salesDetails->id, $value)) {
             $this->systemLogs->insertSystemLogs('SalesModel has been enabled with id: ' . $salesDetails->id, 200);
-            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessSalesActive'));
+            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSalesActive'));
         } else {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.SalesIsActived'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.SalesIsActived'));
         }
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function search()
     {
         $getValueInput = Request::input('search');
@@ -198,7 +163,7 @@ class SalesController extends Controller
         $dataOfSales = $this->getDataAndPagination();
 
         if (!$findSalesByValue > 0) {
-            return redirect('sales')->with('message_danger', $this->language->getMessage('messages.ThereIsNoSales'));
+            return redirect('sales')->with('message_danger', $this->getMessage('messages.ThereIsNoSales'));
         } else {
             $dataOfSales += ['sales_search' => $findSalesByValue];
             Redirect::to('sales/search')->with('message_success', 'Find ' . $findSalesByValue . ' sales!');

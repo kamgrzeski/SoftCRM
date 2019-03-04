@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Models\Language;
 use App\Models\ProductsModel;
 use App\Services\ProductsService;
 use App\Services\SystemLogService;
+use App\Traits\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -16,6 +16,8 @@ use Config;
 
 class ProductsController extends Controller
 {
+    use Language;
+
     private $systemLogs;
     private $language;
     private $productsModel;
@@ -24,7 +26,6 @@ class ProductsController extends Controller
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->language = new Language();
         $this->productsModel = new ProductsModel();
         $this->productsService = new ProductsService();
     }
@@ -60,7 +61,7 @@ class ProductsController extends Controller
     public function create()
     {
         return View::make('crm.products.create')->with([
-            'inputText' => $this->language->getMessage('messages.InputText')
+            'inputText' => $this->getMessage('messages.InputText')
         ]);
     }
 
@@ -80,9 +81,9 @@ class ProductsController extends Controller
         } else {
             if ($product = $this->productsModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('Product has been add with id: '. $product, $this->systemLogs::successCode);
-                return Redirect::to('products')->with('message_success', $this->language->getMessage('messages.SuccessProductsStore'));
+                return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
             } else {
-                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorProductsStore'));
+                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorProductsStore'));
             }
         }
     }
@@ -133,9 +134,9 @@ class ProductsController extends Controller
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if ($this->productsModel->updateRow($id, $allInputs)) {
-                return Redirect::to('products')->with('message_success', $this->language->getMessage('messages.SuccessProductsStore'));
+                return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
             } else {
-                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorProductsStore'));
+                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorProductsStore'));
             }
         }
     }
@@ -155,7 +156,7 @@ class ProductsController extends Controller
         $this->systemLogs->insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogs::successCode);
 
 
-        return Redirect::to('products')->with('message_success', $this->language->getMessage('messages.SuccessProductsDelete'));
+        return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsDelete'));
     }
 
     /**
@@ -169,9 +170,9 @@ class ProductsController extends Controller
 
         if ($this->productsModel->setActive($productsDetails->id, $value)) {
             $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $productsDetails->id, $this->systemLogs::successCode);
-            return Redirect::back()->with('message_success', $this->language->getMessage('messages.SuccessProductsActive'));
+            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessProductsActive'));
         } else {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ProductsIsActived'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ProductsIsActived'));
         }
     }
 
@@ -185,7 +186,7 @@ class ProductsController extends Controller
         $dataOfProducts = $this->getDataAndPagination();
 
         if (!$findProductsByValue > 0) {
-            return redirect('products')->with('message_danger', $this->language->getMessage('messages.ThereIsNoProducts'));
+            return redirect('products')->with('message_danger', $this->getMessage('messages.ThereIsNoProducts'));
         } else {
             $dataOfProducts += ['products_search' => $findProductsByValue];
             Redirect::to('products/search')->with('message_success', 'Find ' . $findProductsByValue . ' products!');

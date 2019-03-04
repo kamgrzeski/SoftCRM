@@ -5,9 +5,9 @@ namespace App\Http\Controllers\CRM;
 use App\Http\Controllers\Controller;
 use App\Models\CompaniesModel;
 use App\Models\FinancesModel;
-use App\Models\Language;
 use App\Services\FinancesService;
 use App\Services\SystemLogService;
+use App\Traits\Language;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
@@ -17,15 +17,15 @@ use Config;
 
 class FinancesController extends Controller
 {
+    use Language;
+
     private $systemLogs;
-    private $language;
     private $financesModel;
     private $financesService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->language = new Language();
         $this->financesModel = new FinancesModel();
         $this->financesService = new FinancesService();
     }
@@ -78,9 +78,9 @@ class FinancesController extends Controller
             if ($finance = $this->financesModel->insertRow($allInputs)) {
 
                 $this->systemLogs->insertSystemLogs('FinancesModel has been add with id: '. $finance, $this->systemLogs::successCode);
-                return Redirect::to('finances')->with('message_success', $this->language->getMessage('messages.SuccessFinancesStore'));
+                return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
             } else {
-                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorFinancesStore'));
+                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesStore'));
             }
         }
     }
@@ -98,7 +98,7 @@ class FinancesController extends Controller
         return View::make('crm.finances.show')
             ->with([
                 'finances' => $dataOfFinances,
-                'inputText' => $this->language->getMessage('messages.InputText')
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
@@ -136,9 +136,9 @@ class FinancesController extends Controller
             return Redirect::back()->with('message_danger', $validator->errors());
         } else {
             if ($this->financesModel->updateRow($id, $allInputs)) {
-                return Redirect::to('finances')->with('message_success', $this->language->getMessage('messages.SuccessFinancesUpdate'));
+                return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
             } else {
-                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorFinancesUpdate'));
+                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorFinancesUpdate'));
             }
         }
     }
@@ -158,7 +158,7 @@ class FinancesController extends Controller
 
         $this->systemLogs->insertSystemLogs('FinancesModel has been deleted with id: ' . $dataOfFinances->id, $this->systemLogs::successCode);
 
-        return Redirect::to('finances')->with('message_success', $this->language->getMessage('messages.SuccessFinancesDelete'));
+        return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesDelete'));
     }
 
     /**
@@ -172,9 +172,9 @@ class FinancesController extends Controller
 
         if ($this->financesModel->setActive($dataOfFinances->id, $value)) {
             $this->systemLogs->insertSystemLogs('FinancesModel has been enabled with id: ' . $dataOfFinances->id, $this->systemLogs::successCode);
-            return Redirect::to('finances')->with('message_success', $this->language->getMessage('messages.SuccessFinancesActive'));
+            return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesActive'));
         } else {
-            return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorFinancesActive'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesActive'));
         }
     }
 
@@ -188,7 +188,7 @@ class FinancesController extends Controller
         $dataOfFinances = $this->getDataAndPagination();
 
         if (!$findFinancesByValue > 0) {
-            return redirect('finances')->with('message_danger', $this->language->getMessage('messages.ThereIsNoFinances'));
+            return redirect('finances')->with('message_danger', $this->getMessage('messages.ThereIsNoFinances'));
         } else {
             $dataOfFinances += ['finances_search' => $findFinancesByValue];
             Redirect::to('finances/search')->with('message_success', 'Find ' . $findFinancesByValue . ' finances!');

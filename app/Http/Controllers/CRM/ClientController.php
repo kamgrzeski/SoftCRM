@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Models\ClientsModel;
-use App\Models\Language;
 use App\Services\ClientService;
 use App\Services\SystemLogService;
+use App\Traits\Language;
 use View;
 use Illuminate\Support\Facades\Input;
 use Validator;
@@ -16,14 +15,14 @@ use Config;
 
 class ClientController extends Controller
 {
+    use Language;
+
     private $systemLogs;
-    private $language;
     private $clientService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->language = new Language();
         $this->clientService = new ClientService();
     }
 
@@ -45,7 +44,7 @@ class ClientController extends Controller
     public function create()
     {
         return View::make('crm.client.create')->with([
-            'inputText' => $this->language->getMessage('messages.InputText')
+            'inputText' => $this->getMessage('messages.InputText')
         ]);
     }
 
@@ -65,9 +64,9 @@ class ClientController extends Controller
         } else {
             if ($client = $this->clientsModel->insertRow($allInputs)) {
                 $this->systemLogs->insertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogs::successCode);
-                return Redirect::to('client')->with('message_success', $this->language->getMessage('messages.SuccessClientStore'));
+                return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
             } else {
-                return Redirect::back()->with('message_success', $this->language->getMessage('messages.ErrorClientStore'));
+                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorClientStore'));
             }
         }
     }
@@ -97,7 +96,7 @@ class ClientController extends Controller
         return View::make('crm.client.edit')
             ->with([
                 'client', $this->clientService->findClient($id),
-                'inputText' => $this->language->getMessage('messages.InputText')
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
@@ -117,9 +116,9 @@ class ClientController extends Controller
             return Redirect::back()->with('message_danger', $validator);
         } else {
             if ($this->clientsModel->updateRow($id, $allInputs)) {
-                return Redirect::to('client')->with('message_success', $this->language->getMessage('messages.SuccessClientStore'));
+                return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
             } else {
-                return Redirect::back()->with('message_danger', $this->language->getMessage('messages.ErrorClientStore'));
+                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorClientStore'));
             }
         }
     }
@@ -141,7 +140,7 @@ class ClientController extends Controller
             $this->clientService->processDeleteRow($id);
         }
 
-        return Redirect::to('client')->with('message_success', $this->language->getMessage('messages.SuccessClientDelete'));
+        return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientDelete'));
     }
 
     /**
@@ -154,9 +153,9 @@ class ClientController extends Controller
         $status = $this->clientService->processIsActive($id, $value);
 
         if(!empty($status)) {
-            return $this->language->getMessage('messages.SuccessClientActive');
+            return $this->getMessage('messages.SuccessClientActive');
         } else {
-            return $this->language->getMessage('messages.ClientIsActived');
+            return $this->getMessage('messages.ClientIsActived');
         }
     }
 
@@ -170,7 +169,7 @@ class ClientController extends Controller
         $dataOfClient = $this->clientService->getDataAndPagination();
 
         if (!$findClientByValue > 0) {
-            return redirect('client')->with('message_danger', $this->language->getMessage('messages.ThereIsNoClient'));
+            return redirect('client')->with('message_danger', $this->getMessage('messages.ThereIsNoClient'));
         } else {
             $dataOfClient += ['client_search' => $findClientByValue];
             Redirect::to('client/search')->with('message_success', 'Find ' . $findClientByValue . ' client!');
