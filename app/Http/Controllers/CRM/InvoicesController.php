@@ -172,10 +172,8 @@ class InvoicesController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $invoicesDetails = InvoicesModel::find($id);
-
-        if ($this->invoicesService->loadIsActiveFunction($invoicesDetails->id, $value)) {
-            $this->systemLogs->insertSystemLogs('InvoicesModel has been enabled with id: ' . $invoicesDetails->id, $this->systemLogs::successCode);
+        if ($this->invoicesService->loadIsActiveFunction($id, $value)) {
+            $this->systemLogs->insertSystemLogs('InvoicesModel has been enabled with id: ' . $id, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessInvoicesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.InvoicesIsActived'));

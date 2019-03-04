@@ -161,9 +161,8 @@ class EmployeesController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $dataOfEmployees = EmployeesModel::find($id);
-        if ($this->employeesService->loadIsActiveFunction($dataOfEmployees->id, $value)) {
-            $this->systemLogs->insertSystemLogs('Employees has been enabled with id: ' . $dataOfEmployees->id, $this->systemLogs::successCode);
+        if ($this->employeesService->loadIsActiveFunction($id, $value)) {
+            $this->systemLogs->insertSystemLogs('Employees has been enabled with id: ' . $id, $this->systemLogs::successCode);
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesActive'));

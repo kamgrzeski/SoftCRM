@@ -143,6 +143,7 @@ class ClientController extends Controller
         return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientDelete'));
     }
 
+
     /**
      * @return \Illuminate\Http\RedirectResponse
      */

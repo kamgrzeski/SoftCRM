@@ -181,10 +181,8 @@ class ProjectsController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $projectsDetails = $this->projectsService->getProject($id);
-
-        if ($this->projectsService->loadIsActiveFunction($projectsDetails->id, $value)) {
-            $this->systemLogs->insertSystemLogs('ProjectsModel has been enabled with id: ' . $projectsDetails->id, 200);
+        if ($this->projectsService->loadIsActiveFunction($id, $value)) {
+            $this->systemLogs->insertSystemLogs('ProjectsModel has been enabled with id: ' . $id, 200);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessProjectsActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ProjectsIsActived'));

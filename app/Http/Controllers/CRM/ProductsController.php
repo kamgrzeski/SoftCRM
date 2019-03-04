@@ -162,10 +162,8 @@ class ProductsController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $productsDetails = $this->productsService->getProduct($id);
-
-        if ($this->productsService->loadIsActiveFunction($productsDetails->id, $value)) {
-            $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $productsDetails->id, $this->systemLogs::successCode);
+        if ($this->productsService->loadIsActiveFunction($id, $value)) {
+            $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $id, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessProductsActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ProductsIsActived'));

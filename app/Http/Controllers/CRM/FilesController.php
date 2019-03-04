@@ -165,10 +165,8 @@ class FilesController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $dataOfFiles = FilesModel::find($id);
-
-        if ($this->filesService->loadIsActive($dataOfFiles->id, $value)) {
-            $this->systemLogs->insertSystemLogs('FilesModel has been enable with id: ' . $dataOfFiles->id, $this->systemLogs::successCode);
+        if ($this->filesService->loadIsActive($id, $value)) {
+            $this->systemLogs->insertSystemLogs('FilesModel has been enable with id: ' . $id, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessFilesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFilesActive'));

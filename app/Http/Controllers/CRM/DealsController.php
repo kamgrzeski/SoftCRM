@@ -167,10 +167,8 @@ class DealsController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $dataOfDeals = DealsModel::find($id);
-
-        if ($this->dealsModel->setActive($dataOfDeals->id, $value)) {
-            $this->systemLogs->insertSystemLogs('DealsModel has been enabled with id: ' .$dataOfDeals->id, $this->systemLogs::successCode);
+        if ($this->dealsModel->setActive($id, $value)) {
+            $this->systemLogs->insertSystemLogs('DealsModel has been enabled with id: ' .$id, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessDealsActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsActive'));

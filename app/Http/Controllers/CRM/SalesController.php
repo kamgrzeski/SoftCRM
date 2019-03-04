@@ -143,10 +143,8 @@ class SalesController extends Controller
 
     public function isActiveFunction($id, $value)
     {
-        $salesDetails = SalesModel::find($id);
-
-        if ($this->salesService->loadIsActiveFunction($salesDetails->id, $value)) {
-            $this->systemLogs->insertSystemLogs('SalesModel has been enabled with id: ' . $salesDetails->id, 200);
+        if ($this->salesService->loadIsActiveFunction($id, $value)) {
+            $this->systemLogs->insertSystemLogs('SalesModel has been enabled with id: ' . $id, 200);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSalesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.SalesIsActived'));

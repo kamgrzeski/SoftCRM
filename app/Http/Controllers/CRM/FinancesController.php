@@ -166,10 +166,8 @@ class FinancesController extends Controller
      */
     public function isActiveFunction($id, $value)
     {
-        $dataOfFinances = FinancesModel::find($id);
-
-        if ($this->financesService->loadIsActiveFunction($dataOfFinances->$id, $value)) {
-            $this->systemLogs->insertSystemLogs('FinancesModel has been enabled with id: ' . $dataOfFinances->id, $this->systemLogs::successCode);
+        if ($this->financesService->loadIsActiveFunction($id, $value)) {
+            $this->systemLogs->insertSystemLogs('FinancesModel has been enabled with id: ' . $id, $this->systemLogs::successCode);
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesActive'));
