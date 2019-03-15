@@ -33,9 +33,4 @@ class ContactsService
     {
         return $this->contactsModel::find($id);
     }
-
-    public function loadSearch($getValueInput)
-    {
-        return count($this->contactsModel::trySearchContactsByValue('full_name', $getValueInput, 10));
-    }
 }

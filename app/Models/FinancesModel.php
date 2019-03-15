@@ -8,22 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class FinancesModel extends Model
 {
-
-    /**
-     * table name
-     */
     protected $table = 'finances';
 
-    /**
-     * @param $allInputs
-     * @return mixed
-     */
+    public function companies()
+    {
+        return $this->belongsTo(CompaniesModel::class);
+    }
+
     public function insertRow($allInputs)
     {
         $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($allInputs['gross']);
 
-        return FinancesModel::insertGetId(
+        return self::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'description' => $allInputs['description'],
@@ -40,17 +37,12 @@ class FinancesModel extends Model
         );
     }
 
-    /**
-     * @param $id
-     * @param $allInputs
-     * @return mixed
-     */
     public function updateRow($id, $allInputs)
     {
         $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($allInputs['gross']);
 
-        return FinancesModel::where('id', '=', $id)->update(
+        return self::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'description' => $allInputs['description'],
@@ -66,33 +58,9 @@ class FinancesModel extends Model
             ]);
     }
 
-    /**
-     * @param $rulesType
-     * @return array
-     */
-    public function getRules($rulesType)
-    {
-        switch ($rulesType) {
-            case 'STORE':
-                return [
-                    'name' => 'required',
-                    'companies_id' => 'required',
-                    'description' => 'required',
-                    'type' => 'required',
-                    'gross' => 'required',
-                    'category' => 'required'
-                ];
-        }
-    }
-
-    /**
-     * @param $id
-     * @param $activeType
-     * @return bool
-     */
     public function setActive($id, $activeType)
     {
-        $findFinancesById = FinancesModel::where('id', '=', $id)->update(
+        $findFinancesById = self::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -104,30 +72,8 @@ class FinancesModel extends Model
         }
     }
 
-    /**
-     * @return int
-     */
     public static function countFinances()
     {
-        return count(FinancesModel::get());
-    }
-
-    /**
-     * @param $type
-     * @param $value
-     * @param int $paginationLimit
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    public function trySearchFinancesByValue($type, $value, $paginationLimit = 10)
-    {
-        return FinancesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function companies()
-    {
-        return $this->belongsTo(CompaniesModel::class);
+        return count(self::get());
     }
 }

@@ -15,12 +15,36 @@ class ClientsModel extends Model
     protected $table = 'clients';
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function companies()
+    {
+        return $this->hasMany(CompaniesModel::class, 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function employees()
+    {
+        return $this->hasMany(EmployeesModel::class, 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invoices()
+    {
+        return $this->hasMany(InvoicesModel::class, 'client_id');
+    }
+
+    /**
      * @param $allInputs
      * @return mixed
      */
     public function insertRow($allInputs)
     {
-        return ClientsModel::insertGetId(
+        return self::insertGetId(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
@@ -44,7 +68,7 @@ class ClientsModel extends Model
      */
     public function updateRow($id, $allInputs)
     {
-        return ClientsModel::where('id', '=', $id)->update(
+        return self::where('id', '=', $id)->update(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
@@ -67,7 +91,7 @@ class ClientsModel extends Model
      */
     public function setActive($id, $activeType)
     {
-        $findClientById = ClientsModel::where('id', '=', $id)->update(['is_active' => $activeType]);
+        $findClientById = self::where('id', '=', $id)->update(['is_active' => $activeType]);
 
         if ($findClientById) {
             return TRUE;
@@ -77,30 +101,19 @@ class ClientsModel extends Model
     }
 
     /**
-     * @param $type
-     * @param $value
-     * @param int $paginationLimit
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    public function trySearchClientByValue($type, $value, $paginationLimit = 10)
-    {
-        return ClientsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
-    }
-
-    /**
      * @return int
      */
     public static function countClients()
     {
-        return ClientsModel::all()->count();
+        return self::all()->count();
     }
 
     /**
      * @return float|int
      */
     public static function getClientsInLatestMonth() {
-        $clientCount = ClientsModel::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allClient = ClientsModel::all()->count();
+        $clientCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allClient = self::all()->count();
 
         $new_width = ($allClient / 100) * $clientCount;
 
@@ -112,7 +125,7 @@ class ClientsModel extends Model
      */
     public static function getDeactivated()
     {
-        return ClientsModel::where('is_active', '=', 0)->count();
+        return self::where('is_active', '=', 0)->count();
     }
 
     /**
@@ -121,7 +134,7 @@ class ClientsModel extends Model
      */
     public function findClientByGivenClientId($clientId)
     {
-        $query = ClientsModel::find($clientId);
+        $query = self::find($clientId);
 
         Arr::add($query, 'companiesCount', count($query->companies));
         Arr::add($query, 'employeesCount', count($query->employees));
@@ -136,36 +149,12 @@ class ClientsModel extends Model
      */
     public function getClientSortedBy($by)
     {
-        $query = ClientsModel::all()->sortByDesc($by);
+        $query = self::all()->sortByDesc($by);
 
         foreach($query as $key => $client) {
             $query[$key]->budget = Money::{config('crm_settings.currency')}($client->budget);
         }
 
         return $query;
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function companies()
-    {
-        return $this->hasMany(CompaniesModel::class, 'id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function employees()
-    {
-        return $this->hasMany(EmployeesModel::class, 'id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function invoices()
-    {
-        return $this->hasMany(InvoicesModel::class, 'client_id');
     }
 }

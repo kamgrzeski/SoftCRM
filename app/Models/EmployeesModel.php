@@ -8,18 +8,36 @@ use Illuminate\Support\Arr;
 
 class EmployeesModel extends Model
 {
-    /**
-     * table name
-     */
     protected $table = 'employees';
-    /**
-     *
-     * @param $allInputs
-     * @return mixed
-     */
+
+    public function companies()
+    {
+        return $this->hasMany(CompaniesModel::class);
+    }
+
+    public function deals()
+    {
+        return $this->belongsTo(DealsModel::class);
+    }
+
+    public function client()
+    {
+        return $this->belongsTo(ClientsModel::class);
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany(ContactsModel::class, 'employee_id');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(TasksModel::class, 'employee_id');
+    }
+
     public function insertRow($allInputs)
     {
-        return EmployeesModel::insertGetId(
+        return self::insertGetId(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
@@ -40,7 +58,7 @@ class EmployeesModel extends Model
      */
     public function updateRow($id, $allInputs)
     {
-        return EmployeesModel::where('id', '=', $id)->update(
+        return self::where('id', '=', $id)->update(
             [
                 'full_name' => $allInputs['full_name'],
                 'phone' => $allInputs['phone'],
@@ -53,33 +71,9 @@ class EmployeesModel extends Model
             ]);
     }
 
-    /**
-     * @param $rulesType
-     * @return array
-     */
-    public function getRules($rulesType)
-    {
-        switch ($rulesType) {
-            case 'STORE':
-                return [
-                    'full_name' => 'required',
-                    'phone' => 'required',
-                    'email' => 'required',
-                    'job' => 'required',
-                    'note' => 'required',
-                    'client_id' => 'required'
-                ];
-        }
-    }
-
-    /**
-     * @param $id
-     * @param $activeType
-     * @return bool
-     */
     public function setActive($id, $activeType)
     {
-        $findEmployeesById = EmployeesModel::where('id', '=', $id)->update(
+        $findEmployeesById = self::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -91,74 +85,20 @@ class EmployeesModel extends Model
         }
     }
 
-    public function trySearchEmployeesByValue($type, $value, $paginationLimit = 10)
-    {
-        return EmployeesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
-    }
-
-    /**
-     * @return int
-     */
     public static function countEmployees()
     {
-        return EmployeesModel::all()->count();
+        return self::all()->count();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function companies()
-    {
-        return $this->hasMany(CompaniesModel::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function deals()
-    {
-        return $this->belongsTo(DealsModel::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function client()
-    {
-        return $this->belongsTo(ClientsModel::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function contacts()
-    {
-        return $this->hasMany(ContactsModel::class, 'employee_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function tasks()
-    {
-        return $this->hasMany(TasksModel::class, 'employee_id');
-    }
-
-    /**
-     * @return float|int
-     */
     public static function getEmployeesInLatestMonth() {
-        $employeesCount = EmployeesModel::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allEmployees = EmployeesModel::all()->count();
+        $employeesCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allEmployees = self::all()->count();
 
         $percentage = ($allEmployees / 100) * $employeesCount;
 
         return $percentage;
     }
 
-    /**
-     * @return mixed
-     */
     public static function getDeactivated()
     {
         return self::where('is_active', '=', 0)->count();

@@ -43,11 +43,6 @@ class ProductsService
         return $this->productsModel->setActive($id, $value);
     }
 
-    public function loadSearch($getValueInput)
-    {
-        return count($this->productsModel->trySearchProductsByValue('full_name', $getValueInput, 10));
-    }
-
     public function loadProductsByCreatedAt()
     {
         return $this->productsModel->getProductsByCreatedAt();

@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ClientStoreRequest;
 use App\Services\ClientService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
-use View;
-use Illuminate\Support\Facades\Input;
-use Validator;
-use Request;
 use Illuminate\Support\Facades\Redirect;
 use Config;
+use Request;
+use View;
 
 class ClientController extends Controller
 {
@@ -26,21 +25,12 @@ class ClientController extends Controller
         $this->clientService = new ClientService();
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return View::make('crm.client.index')->with($this->clientService->getDataAndPagination());
+        return View::make('crm.client.index')
+            ->with($this->clientService->getDataAndPagination());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         return View::make('crm.client.create')->with([
@@ -48,118 +38,57 @@ class ClientController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->clientService->loadRules());
-
-        if ($validator->fails()) {
-            return Redirect::to('client/create')->with('message_danger', $validator->errors());
-        } else {
-            if ($client = $this->clientService->execute($allInputs)) {
-                $this->systemLogs->insertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogs::successCode);
-                return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
-            } else {
-                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorClientStore'));
-            }
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
+    public function show($clientId)
     {
         return View::make('crm.client.show')
             ->with([
-                'clients' => $this->clientService->findClient($id)
+                'clients' => $this->clientService->findClient($clientId)
             ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit($clientId)
     {
         return View::make('crm.client.edit')
             ->with([
-                'client', $this->clientService->findClient($id),
+                'client', $this->clientService->findClient($clientId),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update($id)
+    public function store(ClientStoreRequest $request)
     {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->clientService->loadRules());
-
-        if ($validator->fails()) {
-            return Redirect::back()->with('message_danger', $validator);
+        if ($client = $this->clientService->execute($request->validated())) {
+            $this->systemLogs->insertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogs::successCode);
+            return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
         } else {
-            if ($this->clientService->update($id, $allInputs)) {
-                return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
-            } else {
-                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorClientStore'));
-            }
+            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorClientStore'));
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     * @throws \Exception
-     */
-    public function destroy($id)
+    public function update(Request $request, int $clientId)
     {
-        $checkForeign = $this->clientService->checkIfClientHaveForeignKey($id);
+        if ($this->clientService->update($clientId, $request->all())) {
+            return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
+        } else {
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorClientStore'));
+        }
+    }
+
+    public function destroy($clientId)
+    {
+        $checkForeign = $this->clientService->checkIfClientHaveForeignKey($clientId);
 
         if(!empty($checkForeign)) {
             return Redirect::back()->with('message_danger', $checkForeign);
         } else {
-            $this->clientService->processDeleteRow($id);
+            $this->clientService->processDeleteRow($clientId);
         }
 
         return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientDelete'));
     }
 
-
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function search()
     {
-        $getValueInput = Request::input('search');
-        $findClientByValue = $this->clientService->loadSearch($getValueInput);
-        $dataOfClient = $this->clientService->getDataAndPagination();
-
-        if (!$findClientByValue > 0) {
-            return redirect('client')->with('message_danger', $this->getMessage('messages.ThereIsNoClient'));
-        } else {
-            $dataOfClient += ['client_search' => $findClientByValue];
-            Redirect::to('client/search')->with('message_success', 'Find ' . $findClientByValue . ' client!');
-        }
-
-        return View::make('crm.client.index')->with($dataOfClient);
+        return true; // TODO
     }
 }

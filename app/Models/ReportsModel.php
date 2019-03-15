@@ -7,19 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReportsModel extends Model
 {
-
-    /**
-     * table name
-     */
     protected $table = 'reports';
 
-    /**
-     * @param $allInputs
-     * @return mixed
-     */
     public static function insertRow($allInputs)
     {
-        return ReportsModel::insertGetId(
+        return self::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'companies_id' => $allInputs['companies_id'],
@@ -30,14 +22,9 @@ class ReportsModel extends Model
         );
     }
 
-    /**
-     * @param $id
-     * @param $allInputs
-     * @return mixed
-     */
     public static function updateRow($id, $allInputs)
     {
-        return ReportsModel::where('id', '=', $id)->update(
+        return self::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'companies_id' => $allInputs['companies_id'],
@@ -47,29 +34,9 @@ class ReportsModel extends Model
             ]);
     }
 
-    /**
-     * @param $rulesType
-     * @return array
-     */
-    public static function getRules($rulesType)
-    {
-        switch ($rulesType) {
-            case 'STORE':
-                return [
-                    'name' => 'required',
-                    'companies_id' => 'required',
-                ];
-        }
-    }
-
-    /**
-     * @param $id
-     * @param $activeType
-     * @return bool
-     */
     public static function setActive($id, $activeType)
     {
-        $findReportsById = ReportsModel::where('id', '=', $id)->update(
+        $findReportsById = self::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -81,22 +48,13 @@ class ReportsModel extends Model
         }
     }
 
-    /**
-     * @return int
-     */
     public static function countReports()
     {
-        return ReportsModel::all()->count();
+        return self::all()->count();
     }
 
-    /**
-     * @param $type
-     * @param $value
-     * @param int $paginationLimit
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
     public static function trySearchReportsByValue($type, $value, $paginationLimit = 10)
     {
-        return ReportsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 }

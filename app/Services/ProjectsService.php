@@ -42,9 +42,4 @@ class ProjectsService
     {
         return $this->projectsModel->setActive($id, $value);
     }
-
-    public function loadSearch($getValueInput)
-    {
-        return count($this->projectsModel::trySearchProjectsByValue('full_name', $getValueInput, 10));
-    }
 }

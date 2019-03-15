@@ -43,11 +43,6 @@ class TasksService
         return $this->tasksModel->setActive($id, $value);
     }
 
-    public function loadSearch($getValueInput)
-    {
-        return count($this->tasksModel->trySearchTasksByValue('name', $getValueInput, 10));
-    }
-
     public function loadIsCompletedFunction($id, $value)
     {
         return $this->tasksModel->setCompleted($id, $value);

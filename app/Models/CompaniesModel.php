@@ -12,10 +12,39 @@ class CompaniesModel extends Model
      */
     protected $table = 'companies';
 
+    public function client()
+    {
+        return $this->belongsTo(ClientsModel::class);
+    }
+
+    public function deals()
+    {
+        return $this->hasMany(DealsModel::class);
+    }
+
     /**
-     * @param $allInputs
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    public function employees_size()
+    {
+        return $this->belongsTo(employees_size::class);
+    }
+
+    public function finances()
+    {
+        return $this->hasMany(FinancesModel::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(InvoicesModel::class);
+    }
+
+    public function files()
+    {
+        return $this->hasMany(FilesModel::class);
+    }
+
     public function insertRow($allInputs)
     {
         return self::insertGetId(
@@ -37,11 +66,6 @@ class CompaniesModel extends Model
         );
     }
 
-    /**
-     * @param $id
-     * @param $allInputs
-     * @return mixed
-     */
     public function updateRow($id, $allInputs)
     {
         return self::where('id', '=', $id)->update(
@@ -61,11 +85,6 @@ class CompaniesModel extends Model
             ]);
     }
 
-    /**
-     * @param $id
-     * @param $activeType
-     * @return bool
-     */
     public function setActive($id, $activeType)
     {
         $findCompaniesById = self::where('id', '=', $id)->update(
@@ -80,70 +99,11 @@ class CompaniesModel extends Model
         }
     }
 
-    public static function trySearchCompaniesByValue($type, $value, $paginationLimit = 10)
-    {
-        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
-    }
-
-    /**
-     * @return int
-     */
     public static function countCompanies()
     {
         return self::all()->count();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function client()
-    {
-        return $this->belongsTo(ClientsModel::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function deals()
-    {
-        return $this->hasMany(DealsModel::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function employees_size()
-    {
-        return $this->belongsTo(employees_size::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function finances()
-    {
-        return $this->hasMany(FinancesModel::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function invoices()
-    {
-        return $this->hasMany(InvoicesModel::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function files()
-    {
-        return $this->hasMany(FilesModel::class);
-    }
-
-    /**
-     * @return float|int
-     */
     public static function getCompaniesInLatestMonth() {
         $companiesCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
         $allCompanies = self::all()->count();
@@ -153,9 +113,6 @@ class CompaniesModel extends Model
         return $percentage;
     }
 
-    /**
-     * @return mixed
-     */
     public static function getDeactivated()
     {
         return self::where('is_active', '=', 0)->count();

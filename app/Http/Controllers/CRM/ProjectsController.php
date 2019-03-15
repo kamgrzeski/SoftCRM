@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProjectsStoreRequest;
 use App\Models\ClientsModel;
 use App\Models\CompaniesModel;
 use App\Models\DealsModel;
@@ -10,7 +11,6 @@ use App\Models\ProjectsModel;
 use App\Services\ProjectsService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
-use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
 use Request;
@@ -33,9 +33,6 @@ class ProjectsController extends Controller
         $this->projectsService = new ProjectsService();
     }
 
-    /**
-     * @return array
-     */
     private function getDataAndPagination()
     {
         $dataWithProjects = [
@@ -46,21 +43,11 @@ class ProjectsController extends Controller
         return $dataWithProjects;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return View::make('crm.projects.index')->with($this->getDataAndPagination());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         $dataOfClients = ClientsModel::pluck('full_name', 'id');
@@ -75,51 +62,16 @@ class ProjectsController extends Controller
             ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->projectsModel->getRules('STORE'));
-
-        if ($validator->fails()) {
-            return Redirect::to('projects/create')->with('message_danger', $validator->errors());
-        } else {
-            if ($project = $this->projectsService->execute($allInputs)) {
-                $this->systemLogs->insertSystemLogs('Project has been add with id: '. $project, 200);
-                return Redirect::to('projects')->with('message_success', $this->getMessage('messages.SuccessProjectsStore'));
-            } else {
-                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorProjectsStore'));
-            }
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
+    public function show($projectId)
     {
         return View::make('crm.projects.show')
             ->with([
-                'projects' => $this->projectsService->getProject($id),
+                'projects' => $this->projectsService->getProject($projectId),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit($projectId)
     {
         $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
         $dataWithPluckOfDeals = DealsModel::pluck('name', 'id');
@@ -127,46 +79,35 @@ class ProjectsController extends Controller
 
         return View::make('crm.projects.edit')
             ->with([
-                'projects' => $this->projectsService->getProject($id),
+                'projects' => $this->projectsService->getProject($projectId),
                 'clients' => $dataWithPluckOfClients,
                 'deals' => $dataWithPluckOfDeals,
                 'companies' => $dataWithPluckOfCompanies
             ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update($id)
+    public function store(ProjectsStoreRequest $request)
     {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->projectsModel->getRules('STORE'));
-
-        if ($validator->fails()) {
-            return Redirect::back()->with('message_danger', $validator);
+        if ($project = $this->projectsService->execute($request->validated())) {
+            $this->systemLogs->insertSystemLogs('Project has been add with id: '. $project, 200);
+            return Redirect::to('projects')->with('message_success', $this->getMessage('messages.SuccessProjectsStore'));
         } else {
-            if ($this->projectsService->update($id, $allInputs)) {
-                return Redirect::to('projects')->with('message_success', $this->getMessage('messages.SuccessProjectsStore'));
-            } else {
-                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorProjectsStore'));
-            }
+            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorProjectsStore'));
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     * @throws \Exception
-     */
-    public function destroy($id)
+    public function update(Request $request, int $projectId)
     {
-        $projectsDetails = $this->projectsService->getProject($id);
+        if ($this->projectsService->update($projectId, $request->all())) {
+            return Redirect::to('projects')->with('message_success', $this->getMessage('messages.SuccessProjectsStore'));
+        } else {
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorProjectsStore'));
+        }
+    }
+
+    public function destroy($projectId)
+    {
+        $projectsDetails = $this->projectsService->getProject($projectId);
         $projectsDetails->delete();
 
         $this->systemLogs->insertSystemLogs('ProjectsModel has been deleted with id: ' . $projectsDetails->id, 200);
@@ -174,37 +115,18 @@ class ProjectsController extends Controller
         return Redirect::to('projects')->with('message_success', $this->getMessage('messages.SuccessProjectsDelete'));
     }
 
-    /**
-     * @param $id
-     * @param $value
-     * @return mixed
-     */
-    public function isActiveFunction($id, $value)
+    public function isActiveFunction($projectId, $value)
     {
-        if ($this->projectsService->loadIsActiveFunction($id, $value)) {
-            $this->systemLogs->insertSystemLogs('ProjectsModel has been enabled with id: ' . $id, 200);
+        if ($this->projectsService->loadIsActiveFunction($projectId, $value)) {
+            $this->systemLogs->insertSystemLogs('ProjectsModel has been enabled with id: ' . $projectId, 200);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessProjectsActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ProjectsIsActived'));
         }
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function search()
     {
-        $getValueInput = Request::input('search');
-        $findProjectsByValue = $this->projectsService->loadSearch($getValueInput);
-        $dataOfProjects = $this->getDataAndPagination();
-
-        if (!$findProjectsByValue > 0) {
-            return redirect('projects')->with('message_danger', $this->getMessage('messages.ThereIsNoProjects'));
-        } else {
-            $dataOfProjects += ['projects_search' => $findProjectsByValue];
-            Redirect::to('projects/search')->with('message_success', 'Find ' . $findProjectsByValue . ' projects!');
-        }
-
-        return View::make('crm.projects.index')->with($dataOfProjects);
+        return true; // TODO
     }
 }

@@ -7,15 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductsModel extends Model
 {
-    /**
-     * table name
-     */
     protected $table = 'products';
 
-    /**
-     * @param $allInputs
-     * @return mixed
-     */
+    public function sales()
+    {
+        return $this->hasMany(SalesModel::class);
+    }
+
     public function insertRow($allInputs)
     {
         return self::insertGetId(
@@ -30,11 +28,6 @@ class ProductsModel extends Model
         );
     }
 
-    /**
-     * @param $id
-     * @param $allInputs
-     * @return mixed
-     */
     public function updateRow($id, $allInputs)
     {
         return self::where('id', '=', $id)->update(
@@ -48,28 +41,6 @@ class ProductsModel extends Model
             ]);
     }
 
-    /**
-     * @param $rulesType
-     * @return array
-     */
-    public function getRules($rulesType)
-    {
-        switch ($rulesType) {
-            case 'STORE':
-                return [
-                    'name' => 'required',
-                    'category' => 'required',
-                    'count' => 'required',
-                    'price' => 'required'
-                ];
-        }
-    }
-
-    /**
-     * @param $id
-     * @param $activeType
-     * @return bool
-     */
     public function setActive($id, $activeType)
     {
         $findProductsById = self::where('id', '=', $id)->update(
@@ -84,28 +55,11 @@ class ProductsModel extends Model
         }
     }
 
-    /**
-     * @return int
-     */
     public static function countProducts()
     {
-        return count(self::get());
+        return self::get()->count();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function sales()
-    {
-        return $this->hasMany(SalesModel::class);
-    }
-
-    /**
-     * @param $type
-     * @param $value
-     * @param int $paginationLimit
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
     public function trySearchProductsByValue($type, $value, $paginationLimit = 10)
     {
         return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);

@@ -23,11 +23,6 @@ class MailingService
         return MailingModel::paginate(Config::get('crm_settings.pagination_size'));
     }
 
-    public function loadSearch($getValueInput)
-    {
-        return count($this->mailingModel->trySearchMailingByValue('full_name', $getValueInput, 10));;
-    }
-
     public function loadAdminPanel($allInputs)
     {
         return $this->mailingModel::addEmailToMailManager($allInputs);

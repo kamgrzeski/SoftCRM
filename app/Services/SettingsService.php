@@ -21,11 +21,6 @@ class SettingsService
         $this->settingsModel = new SettingsModel();
     }
 
-    public function loadRules()
-    {
-        return $this->settingsModel->getRules('SETTINGS');
-    }
-
     public function saveEnvData($RollbarToken)
     {
         DotenvEditor::setKey('ROLLBAR_TOKEN', $RollbarToken);

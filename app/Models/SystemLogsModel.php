@@ -24,16 +24,11 @@ class SystemLogsModel extends Model
         }
     }
 
-    /**
-     * @param $actions
-     * @param $statusCode
-     * @return bool
-     */
     public function insertRow($actions, $statusCode)
     {
         $userInformation = $this->getUserInformation();
 
-        return SystemLogsModel::insert(
+        return self::insert(
             [
                 'user_id' => Auth::id(),
                 'actions' => $actions,
@@ -46,9 +41,6 @@ class SystemLogsModel extends Model
         );
     }
 
-    /**
-     * @return mixed
-     */
     public function getUserInformation()
     {
         $geo = unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$this->ip"));
@@ -56,12 +48,9 @@ class SystemLogsModel extends Model
         return $geo;
     }
 
-    /**
-     * @return int
-     */
     public static function countRows()
     {
-        return SystemLogsModel::all()->count();
+        return self::all()->count();
     }
 
 

@@ -7,18 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class FilesModel extends Model
 {
-    /**
-     * table name
-     */
     protected $table = 'files';
 
-    /**
-     * @param $allInputs
-     * @return mixed
-     */
     public function insertRow($allInputs)
     {
-        return FilesModel::insertGetId(
+        return self::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'companies_id' => $allInputs['companies_id'],
@@ -28,14 +21,9 @@ class FilesModel extends Model
         );
     }
 
-    /**
-     * @param $id
-     * @param $allInputs
-     * @return mixed
-     */
     public function updateRow($id, $allInputs)
     {
-        return FilesModel::where('id', '=', $id)->update(
+        return self::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'companies_id' => $allInputs['companies_id'],
@@ -44,29 +32,9 @@ class FilesModel extends Model
             ]);
     }
 
-    /**
-     * @param $rulesType
-     * @return array
-     */
-    public function getRules($rulesType)
-    {
-        switch ($rulesType) {
-            case 'STORE':
-                return [
-                    'name' => 'required',
-                    'companies_id' => 'required',
-                ];
-        }
-    }
-
-    /**
-     * @param $id
-     * @param $activeType
-     * @return bool
-     */
     public function setActive($id, $activeType)
     {
-        $findFilesById = FilesModel::where('id', '=', $id)->update(
+        $findFilesById = self::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -78,30 +46,18 @@ class FilesModel extends Model
         }
     }
 
-    /**
-     * @return int
-     */
     public static function countFiles()
     {
-        return count(FilesModel::get());
+        return count(self::get());
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function companies()
     {
         return $this->belongsTo(CompaniesModel::class);
     }
 
-    /**
-     * @param $type
-     * @param $value
-     * @param int $paginationLimit
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
     public function trySearchFilesByValue($type, $value, $paginationLimit = 10)
     {
-        return FilesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 }

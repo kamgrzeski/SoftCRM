@@ -7,17 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProjectsModel extends Model
 {
-    /**
-     * table name
-     */
     protected $table = 'projects';
-    /**
-     * @param $allInputs
-     * @return mixed
-     */
+
     public function insertRow($allInputs)
     {
-        return ProjectsModel::insertGetId(
+        return self::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'client_id' => $allInputs['client_id'],
@@ -31,14 +25,9 @@ class ProjectsModel extends Model
         );
     }
 
-    /**
-     * @param $id
-     * @param $allInputs
-     * @return mixed
-     */
     public function updateRow($id, $allInputs)
     {
-        return ProjectsModel::where('id', '=', $id)->update(
+        return self::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'client_id' => $allInputs['client_id'],
@@ -51,33 +40,9 @@ class ProjectsModel extends Model
             ]);
     }
 
-    /**
-     * @param $rulesType
-     * @return array
-     */
-    public function getRules($rulesType)
-    {
-        switch ($rulesType) {
-            case 'STORE':
-                return [
-                    'name' => 'required',
-                    'client_id' => 'required',
-                    'companies_id' => 'required',
-                    'deals_id' => 'required',
-                    'start_date' => 'required',
-                    'cost' => 'required'
-                ];
-        }
-    }
-
-    /**
-     * @param $id
-     * @param $activeType
-     * @return bool
-     */
     public function setActive($id, $activeType)
     {
-        $findProjectsById = ProjectsModel::where('id', '=', $id)->update(
+        $findProjectsById = self::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -89,47 +54,28 @@ class ProjectsModel extends Model
         }
     }
 
-    /**
-     * @return int
-     */
     public static function countProjects()
     {
-        return ProjectsModel::all()->count();
+        return self::all()->count();
     }
 
-    /**
-     * @param $type
-     * @param $value
-     * @param int $paginationLimit
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
     public static function trySearchProjectsByValue($type, $value, $paginationLimit = 10)
     {
-        return ProjectsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function client()
     {
         return $this->belongsTo(ClientsModel::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function companies()
     {
         return $this->belongsTo(CompaniesModel::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function deals()
     {
         return $this->belongsTo(DealsModel::class);
     }
-
 }

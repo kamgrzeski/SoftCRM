@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FinancesStoreRequest;
 use App\Models\CompaniesModel;
 use App\Models\FinancesModel;
 use App\Services\FinancesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
-use Validator;
-use Illuminate\Support\Facades\Input;
 use View;
 use Request;
 Use Illuminate\Support\Facades\Redirect;
@@ -29,9 +28,7 @@ class FinancesController extends Controller
         $this->financesModel = new FinancesModel();
         $this->financesService = new FinancesService();
     }
-    /**
-     * @return array
-     */
+
     private function getDataAndPagination()
     {
         $dataOfFinances = [
@@ -42,115 +39,60 @@ class FinancesController extends Controller
         return $dataOfFinances;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return View::make('crm.finances.index')->with($this->getDataAndPagination());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
         return View::make('crm.finances.create', compact('dataWithPluckOfCompanies'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        $allInputs = Input::all();
-        $validator = Validator::make($allInputs, $this->financesModel->getRules('STORE'));
-        if ($validator->fails()) {
-            return Redirect::to('finances/create')->with('message_danger', $validator->errors());
-        } else {
-            if ($finance = $this->financesService->execute($allInputs)) {
-
-                $this->systemLogs->insertSystemLogs('FinancesModel has been add with id: '. $finance, $this->systemLogs::successCode);
-                return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
-            } else {
-                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesStore'));
-            }
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
+    
+    public function show($companieId)
     {
 
         return View::make('crm.finances.show')
             ->with([
-                'finances' => $this->financesService->getFinance($id),
+                'finances' => $this->financesService->getFinance($companieId),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit($companieId)
     {
         $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
 
         return View::make('crm.finances.edit')
             ->with([
-                'finances' => $this->financesService->getFinance($id),
+                'finances' => $this->financesService->getFinance($companieId),
                 'dataWithPluckOfCompanies' => $dataWithPluckOfCompanies
             ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update($id)
+    public function store(FinancesStoreRequest $request)
     {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->financesModel->getRules('STORE'));
-
-        if ($validator->fails()) {
-            return Redirect::back()->with('message_danger', $validator->errors());
+        if ($finance = $this->financesService->execute($request->validated())) {
+            $this->systemLogs->insertSystemLogs('FinancesModel has been add with id: '. $finance, $this->systemLogs::successCode);
+            return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
         } else {
-            if ($this->financesService->update($id, $allInputs)) {
-                return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
-            } else {
-                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorFinancesUpdate'));
-            }
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesStore'));
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     * @throws \Exception
-     */
-    public function destroy($id)
+    public function update(Request $request, $companieId)
     {
-        $dataOfFinances = $this->financesService->getFinance($id);
+        if ($this->financesService->update($companieId, $request->all())) {
+            return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
+        } else {
+            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorFinancesUpdate'));
+        }
+    }
+
+    public function destroy($companieId)
+    {
+        $dataOfFinances = $this->financesService->getFinance($companieId);
 
         $dataOfFinances->delete();
 
@@ -159,37 +101,18 @@ class FinancesController extends Controller
         return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesDelete'));
     }
 
-    /**
-     * @param $id
-     * @param $value
-     * @return mixed
-     */
-    public function isActiveFunction($id, $value)
+    public function isActiveFunction($companieId, $value)
     {
-        if ($this->financesService->loadIsActiveFunction($id, $value)) {
-            $this->systemLogs->insertSystemLogs('FinancesModel has been enabled with id: ' . $id, $this->systemLogs::successCode);
+        if ($this->financesService->loadIsActiveFunction($companieId, $value)) {
+            $this->systemLogs->insertSystemLogs('FinancesModel has been enabled with id: ' . $companieId, $this->systemLogs::successCode);
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesActive'));
         }
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function search()
     {
-        $getValueInput = Request::input('search');
-        $findFinancesByValue = $this->financesService->loadSearch($getValueInput);
-        $dataOfFinances = $this->getDataAndPagination();
-
-        if (!$findFinancesByValue > 0) {
-            return redirect('finances')->with('message_danger', $this->getMessage('messages.ThereIsNoFinances'));
-        } else {
-            $dataOfFinances += ['finances_search' => $findFinancesByValue];
-            Redirect::to('finances/search')->with('message_success', 'Find ' . $findFinancesByValue . ' finances!');
-        }
-
-        return View::make('crm.finances.index')->with($dataOfFinances);
+        return true; // TODO
     }
 }

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Models\CompaniesModel;
+use App\Http\Requests\CompaniesStoreRequest;
 use App\Services\CompaniesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
 use View;
-use Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Request;
@@ -28,21 +27,11 @@ class CompaniesController extends Controller
         $this->companiesService = new CompaniesService();
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return View::make('crm.companies.index')->with($this->companiesService->getDataAndPagination());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         return View::make('crm.companies.create')->with([
@@ -51,65 +40,34 @@ class CompaniesController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->companiesService->getRules('STORE'));
-
-        if ($validator->fails()) {
-            return Redirect::to('companies/create')->with('message_danger', $validator->errors());
-        } else {
-            if ($companie = $this->companiesService->execute($allInputs)) {
-                $this->systemLogs->insertSystemLogs('CompaniesModel has been add with id: '. $companie, $this->systemLogs::successCode);
-                return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesStore'));
-            } else {
-                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesStore'));
-            }
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
+    public function show($companieId)
     {
         return View::make('crm.companies.show')
             ->with([
-                'companies' => $this->companiesService->loadCompanie($id)
+                'companies' => $this->companiesService->loadCompanie($companieId)
             ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit($companieId)
     {
         return View::make('crm.companies.edit')
             ->with([
-                'companies' => $this->companiesService->loadCompanie($id),
+                'companies' => $this->companiesService->loadCompanie($companieId),
                 'clients' => $this->companiesService->pluckData()
             ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update($id)
+    public function store(CompaniesStoreRequest $request)
+    {
+        if ($companie = $this->companiesService->execute($request->validated())) {
+            $this->systemLogs->insertSystemLogs('CompaniesModel has been add with id: '. $companie, $this->systemLogs::successCode);
+            return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesStore'));
+        } else {
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesStore'));
+        }
+    }
+
+    public function update(Request $request, int $companieId)
     {
         $allInputs = Input::all();
 
@@ -118,7 +76,7 @@ class CompaniesController extends Controller
         if ($validator->fails()) {
             return Redirect::back()->with('message_danger', $validator->errors());
         } else {
-            if ($this->companiesService->update($id, $allInputs)) {
+            if ($this->companiesService->update($companieId, $request->all())) {
                 return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesUpdate'));
             } else {
                 return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorCompaniesUpdate'));
@@ -126,16 +84,9 @@ class CompaniesController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     * @throws \Exception
-     */
-    public function destroy($id)
+    public function destroy($companieId)
     {
-        $dataOfCompanies = $this->companiesService->loadCompanie($id);
+        $dataOfCompanies = $this->companiesService->loadCompanie($companieId);
 
         $countDeals = $this->companiesService->countAssignedDeals($dataOfCompanies);
         $countFiles = $this->companiesService->countAssignedFile($dataOfCompanies);
@@ -160,51 +111,28 @@ class CompaniesController extends Controller
         return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesDelete'));
     }
 
-    /**
-     * @param $id
-     * @param $value
-     * @return mixed
-     */
-    public function isActiveFunction($id, $value)
+    public function isActiveFunction($companieId, $value)
     {
-        if ($this->companiesService->loadSetActiveFunction($id, $value)) {
-            $this->systemLogs->insertSystemLogs('CompaniesModel has been enabled with id: ' . $id, $this->systemLogs::successCode);
+        if ($this->companiesService->loadSetActiveFunction($companieId, $value)) {
+            $this->systemLogs->insertSystemLogs('CompaniesModel has been enabled with id: ' . $companieId, $this->systemLogs::successCode);
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesActive'));
         }
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function disable($id)
+    public function disable($companieId)
     {
-        if ($this->companiesService->loadSetActiveFunction($id, FALSE)) {
-            $this->systemLogs->insertSystemLogs('CompaniesModel has been disabled with id: ' . $id, $this->systemLogs::successCode);
+        if ($this->companiesService->loadSetActiveFunction($companieId, FALSE)) {
+            $this->systemLogs->insertSystemLogs('CompaniesModel has been disabled with id: ' . $companieId, $this->systemLogs::successCode);
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.CompaniesIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.CompaniesIsDeactivated'));
         }
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function search()
     {
-        $getValueInput = Request::input('search');
-        $findCompaniesByValue = $this->companiesService->loadSearch($getValueInput);
-        $dataOfCompanies = $this->companiesService->getDataAndPagination();
-
-        if (!$findCompaniesByValue > 0) {
-            return redirect('companies')->with('message_danger', $this->getMessage('messages.ThereIsNoCompanies'));
-        } else {
-            $dataOfCompanies += ['companies_search' => $findCompaniesByValue];
-            Redirect::to('companies/search')->with('message_success', 'Find ' . $findCompaniesByValue . ' companies!');
-        }
-
-        return View::make('crm.companies.index')->with($dataOfCompanies);
+        return true; // TODO
     }
 }

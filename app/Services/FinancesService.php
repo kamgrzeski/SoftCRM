@@ -68,9 +68,4 @@ class FinancesService
     {
         return $this->financesModel->setActive($id, $value);
     }
-
-    public function loadSearch($getValueInput)
-    {
-        return count($this->financesModel->trySearchFinancesByValue('name', $getValueInput, 10));
-    }
 }

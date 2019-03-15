@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ContactsStoreRequest;
 use App\Models\ClientsModel;
 use App\Models\ContactsModel;
 use App\Models\EmployeesModel;
 use App\Services\ContactsService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
-use Validator;
 use Illuminate\Support\Facades\Input;
 use View;
 use Request;
@@ -31,9 +31,6 @@ class ContactsController extends Controller
         $this->contactsService = new ContactsService();
     }
 
-    /**
-     * @return array
-     */
     private function getDataAndPagination()
     {
         $dataOfContacts = [
@@ -44,21 +41,11 @@ class ContactsController extends Controller
         return $dataOfContacts;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return View::make('crm.contacts.index')->with($this->getDataAndPagination());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         $dataOfClients = ClientsModel::pluck('full_name', 'id');
@@ -71,50 +58,25 @@ class ContactsController extends Controller
             ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
+    public function store(ContactsStoreRequest $request)
     {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->contactsModel->getRules('STORE'));
-
-        if ($validator->fails()) {
-            return Redirect::to('contacts/create')->with('message_danger', $validator->errors());
+        if ($contact = $this->contactsService->execute($request->validated())) {
+            $this->systemLogs->insertSystemLogs('Contact has been add with id: '. $contact, $this->systemLogs::successCode);
+            return Redirect::to('contacts')->with('message_success', $this->getMessage('messages.SuccessContactsStore'));
         } else {
-            if ($contact = $this->contactsService->execute($allInputs)) {
-                $this->systemLogs->insertSystemLogs('Contact has been add with id: '. $contact, $this->systemLogs::successCode);
-                return Redirect::to('contacts')->with('message_success', $this->getMessage('messages.SuccessContactsStore'));
-            } else {
-                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorContactsStore'));
-            }
+            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorContactsStore'));
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
+    public function show($contactId)
     {
         return View::make('crm.contacts.show')
-            ->with('contacts', $this->contactsService->getContact($id));
+            ->with('contacts', $this->contactsService->getContact($contactId));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit($contactId)
     {
-        $dataOfContacts = $this->contactsService->getContact($id);
+        $dataOfContacts = $this->contactsService->getContact($contactId);
         $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
         $dataWithPluckOfEmployees = EmployeesModel::pluck('full_name', 'id');
 
@@ -126,39 +88,18 @@ class ContactsController extends Controller
             ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update($id)
+    public function update(Request $request, int $contactId)
     {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->contactsModel->getRules('STORE'));
-
-        if ($validator->fails()) {
-            return Redirect::back()->with('message_danger', $validator);
+        if ($this->contactsModel->updateRow($contactId, $request->all())) {
+            return Redirect::to('contacts')->with('message_success', $this->getMessage('messages.SuccessContactsUpdate'));
         } else {
-            if ($this->contactsModel->updateRow($id, $allInputs)) {
-                return Redirect::to('contacts')->with('message_success', $this->getMessage('messages.SuccessContactsUpdate'));
-            } else {
-                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorContactsUpdate'));
-            }
+            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorContactsUpdate'));
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     * @throws \Exception
-     */
-    public function destroy($id)
+    public function destroy($contactId)
     {
-        $dataOfContacts = $this->contactsService->getContact($id);
+        $dataOfContacts = $this->contactsService->getContact($contactId);
         $dataOfContacts->delete();
 
         $this->systemLogs->insertSystemLogs('ContactsModel has been deleted with id: ' . $dataOfContacts->id, $this->systemLogs::successCode);
@@ -166,22 +107,8 @@ class ContactsController extends Controller
         return Redirect::to('contacts')->with('message_success', $this->getMessage('messages.SuccessContactsDelete'));
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function search()
     {
-        $getValueInput = Request::input('search');
-        $findDealsByValue = $this->contactsService->loadSearch($getValueInput);
-        $dataOfContacts = $this->getDataAndPagination();
-
-        if (!$findDealsByValue > 0) {
-            return redirect('contacts')->with('message_danger', $this->getMessage('messages.ThereIsNoDeals'));
-        } else {
-            $dataOfContacts += ['contacts_search' => $findDealsByValue];
-            Redirect::to('contacts/search')->with('message_success', 'Find ' . $findDealsByValue . ' contacts!');
-        }
-
-        return View::make('crm.contacts.index')->with($dataOfContacts);
+        return true; // TODO
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\InvoicesStoreRequest;
 use App\Models\ClientsModel;
 use App\Models\CompaniesModel;
 use App\Models\InvoicesModel;
@@ -10,12 +11,11 @@ use App\Models\ProductsModel;
 use App\Services\InvoicesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
-use Validator;
-use Illuminate\Support\Facades\Input;
 use View;
 use Request;
 Use Illuminate\Support\Facades\Redirect;
 use Config;
+use Response;
 
 class InvoicesController extends Controller
 {
@@ -32,9 +32,6 @@ class InvoicesController extends Controller
         $this->invoicesService = new InvoicesService();
     }
 
-    /**
-     * @return array
-     */
     private function getDataAndPagination()
     {
         $dataWithInvoices = [
@@ -45,21 +42,11 @@ class InvoicesController extends Controller
         return $dataWithInvoices;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return View::make('crm.invoices.index')->with($this->getDataAndPagination());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         $dataOfCompanies = CompaniesModel::pluck('name', 'id');
@@ -74,90 +61,44 @@ class InvoicesController extends Controller
             ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->invoicesModel->getRules('STORE'));
-
-        if ($validator->fails()) {
-            return Redirect::to('invoices/create')->with('message_danger', $validator->errors());
-        } else {
-            if ($invoice = $this->invoicesService->execute($allInputs)) {
-                $this->systemLogs->insertSystemLogs('Invoice has been add with id: '. $invoice, $this->systemLogs::successCode);
-                return Redirect::to('invoices')->with('message_success', $this->getMessage('messages.SuccessInvoicesStore'));
-            } else {
-                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorInvoicesStore'));
-            }
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
+    public function show($invoiceId)
     {
 
         return View::make('crm.invoices.show')
             ->with([
-                'invoices' => $this->invoicesService->getInvoice($id),
+                'invoices' => $this->invoicesService->getInvoice($invoiceId),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit($invoiceId)
     {
         return View::make('crm.invoices.edit')
-            ->with('invoices', $this->invoicesService->getInvoice($id));
+            ->with('invoices', $this->invoicesService->getInvoice($invoiceId));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update($id)
+    public function store(InvoicesStoreRequest $request)
     {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->invoicesModel->getRules('STORE'));
-
-        if ($validator->fails()) {
-            return Redirect::back()->with('message_danger', $validator);
+        if ($invoice = $this->invoicesService->execute($request->validated())) {
+            $this->systemLogs->insertSystemLogs('Invoice has been add with id: '. $invoice, $this->systemLogs::successCode);
+            return Redirect::to('invoices')->with('message_success', $this->getMessage('messages.SuccessInvoicesStore'));
         } else {
-            if ($this->invoicesService->update($id, $allInputs)) {
-                return Redirect::to('invoices')->with('message_success', $this->getMessage('messages.SuccessInvoicesStore'));
-            } else {
-                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorInvoicesStore'));
-            }
+            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorInvoicesStore'));
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     * @throws \Exception
-     */
-    public function destroy($id)
+    public function update(Request $request, int $invoiceId)
     {
-        $invoicesDetails = $this->invoicesService->getInvoice($id);
+        if ($this->invoicesService->update($invoiceId, $request->all())) {
+            return Redirect::to('invoices')->with('message_success', $this->getMessage('messages.SuccessInvoicesStore'));
+        } else {
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorInvoicesStore'));
+        }
+    }
+
+    public function destroy($invoiceId)
+    {
+        $invoicesDetails = $this->invoicesService->getInvoice($invoiceId);
         $invoicesDetails->delete();
 
         $this->systemLogs->insertSystemLogs('InvoicesModel has been deleted with id: ' . $invoicesDetails->id, $this->systemLogs::successCode);
@@ -165,36 +106,18 @@ class InvoicesController extends Controller
         return Redirect::to('invoices')->with('message_success', $this->getMessage('messages.SuccessInvoicesDelete'));
     }
 
-    /**
-     * @param $id
-     * @param $value
-     * @return mixed
-     */
-    public function isActiveFunction($id, $value)
+    public function isActiveFunction($invoiceId, $value)
     {
-        if ($this->invoicesService->loadIsActiveFunction($id, $value)) {
-            $this->systemLogs->insertSystemLogs('InvoicesModel has been enabled with id: ' . $id, $this->systemLogs::successCode);
+        if ($this->invoicesService->loadIsActiveFunction($invoiceId, $value)) {
+            $this->systemLogs->insertSystemLogs('InvoicesModel has been enabled with id: ' . $invoiceId, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessInvoicesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.InvoicesIsActived'));
         }
     }
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
+
     public function search()
     {
-        $getValueInput = Request::input('search');
-        $findInvoicesByValue = $this->invoicesService->loadSearch($getValueInput);
-        $dataOfInvoices = $this->getDataAndPagination();
-
-        if (!$findInvoicesByValue > 0) {
-            return redirect('invoices')->with('message_danger', $this->getMessage('messages.ThereIsNoInvoices'));
-        } else {
-            $dataOfInvoices += ['invoices_search' => $findInvoicesByValue];
-            Redirect::to('invoices/search')->with('message_success', 'Find ' . $findInvoicesByValue . ' invoices!');
-        }
-
-        return View::make('crm.invoices.index')->with($dataOfInvoices);
+        return true; // TODO
     }
 }

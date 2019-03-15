@@ -8,17 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class TasksModel extends Model
 {
-    /**
-     * table name
-     */
     protected $table = 'tasks';
-    /**
-     * @param $allInputs
-     * @return mixed
-     */
+
+    public function employees()
+    {
+        return $this->belongsTo(EmployeesModel::class, 'employee_id');
+    }
+
     public function insertRow($allInputs)
     {
-        return TasksModel::insertGetId(
+        return self::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'employee_id' => $allInputs['employee_id'],
@@ -29,14 +28,9 @@ class TasksModel extends Model
         );
     }
 
-    /**
-     * @param $id
-     * @param $allInputs
-     * @return mixed
-     */
     public function updateRow($id, $allInputs)
     {
-        return TasksModel::where('id', '=', $id)->update(
+        return self::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'employee_id' => $allInputs['employee_id'],
@@ -46,30 +40,9 @@ class TasksModel extends Model
             ]);
     }
 
-    /**
-     * @param $rulesType
-     * @return array
-     */
-    public function getRules($rulesType)
-    {
-        switch ($rulesType) {
-            case 'STORE':
-                return [
-                    'name' => 'required',
-                    'employee_id' => 'required',
-                    'duration' => 'required'
-                ];
-        }
-    }
-
-    /**
-     * @param $id
-     * @param $activeType
-     * @return bool
-     */
     public function setActive($id, $activeType)
     {
-        $findTasksById = TasksModel::where('id', '=', $id)->update(
+        $findTasksById = self::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -81,15 +54,9 @@ class TasksModel extends Model
         }
     }
 
-    /**
-     * @param $id
-     * @param $completeType
-     * @return bool
-     * @internal param $activeType
-     */
     public function setCompleted($id, $completeType)
     {
-        $findTasksById = TasksModel::where('id', '=', $id)->update(
+        $findTasksById = self::where('id', '=', $id)->update(
             [
                 'completed' => $completeType
             ]);
@@ -101,42 +68,21 @@ class TasksModel extends Model
         }
     }
 
-    /**
-     * @return int
-     */
     public static function countTasks()
     {
-        return TasksModel::all()->count();
+        return self::all()->count();
     }
 
-    /**
-     * @param $type
-     * @param $value
-     * @param int $paginationLimit
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
     public static function trySearchTasksByValue($type, $value, $paginationLimit = 10)
     {
-        return TasksModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function employees()
-    {
-        return $this->belongsTo(EmployeesModel::class, 'employee_id');
-    }
-
-    /**
-     * @param $isCompleted
-     * @return mixed
-     */
     public static function getAllCompletedAndUncompletedTasks($isCompleted)
     {
-        $tasks = TasksModel::where('completed', '=', $isCompleted)->count();
+        $tasks = self::where('completed', '=', $isCompleted)->count();
 
-        $taskAll = TasksModel::all()->count();
+        $taskAll = self::all()->count();
 
         $percentage = round(($tasks / $taskAll) * 100);
 

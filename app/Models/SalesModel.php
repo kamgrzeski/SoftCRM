@@ -8,14 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class SalesModel extends Model
 {
-    /**
-     * table name
-     */
     protected $table = 'sales';
-    /**
-     * @param $allInputs
-     * @return mixed
-     */
+
     public function insertRow($allInputs)
     {
         return SalesModel::insertGetId(
@@ -30,11 +24,6 @@ class SalesModel extends Model
         );
     }
 
-    /**
-     * @param $id
-     * @param $allInputs
-     * @return mixed
-     */
     public function updateRow($id, $allInputs)
     {
         return SalesModel::where('id', '=', $id)->update(
@@ -48,28 +37,6 @@ class SalesModel extends Model
             ]);
     }
 
-    /**
-     * @param $rulesType
-     * @return array
-     */
-    public function getRules($rulesType)
-    {
-        switch ($rulesType) {
-            case 'STORE':
-                return [
-                    'name' => 'required',
-                    'quantity' => 'required',
-                    'product_id' => 'required',
-                    'date_of_payment' => 'required',
-                ];
-        }
-    }
-
-    /**
-     * @param $id
-     * @param $activeType
-     * @return bool
-     */
     public function setActive($id, $activeType)
     {
         $findSalesById = SalesModel::where('id', '=', $id)->update(
@@ -84,28 +51,16 @@ class SalesModel extends Model
         }
     }
 
-    /**
-     * @return int
-     */
     public static function countSales()
     {
         return SalesModel::all()->count();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function products()
     {
         return $this->belongsTo(ProductsModel::class, 'product_id');
     }
 
-    /**
-     * @param $type
-     * @param $value
-     * @param int $paginationLimit
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
     public static function trySearchSalesByValue($type, $value, $paginationLimit = 10)
     {
         return SalesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);

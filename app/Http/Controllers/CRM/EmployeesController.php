@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Http\Requests\EmployeesStoreRequest;
 use App\Models\ClientsModel;
-use App\Models\EmployeesModel;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
 use Request;
 use App\Http\Controllers\Controller;
 use View;
-use Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Config;
@@ -28,21 +27,11 @@ class EmployeesController extends Controller
         $this->employeesService = new EmployeesService();
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return View::make('crm.employees.index')->with($this->employeesService->getDataAndPagination());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         return View::make('crm.employees.create')->with([
@@ -51,91 +40,45 @@ class EmployeesController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->employeesService->loadRules());
-
-        if ($validator->fails()) {
-            return Redirect::to('employees/create')->with('message_danger', $validator->errors());
-        } else {
-            if ($employee = $this->employeesService->execute($allInputs)) {
-                $this->systemLogs->insertSystemLogs('Employees has been add with id: '. $employee, $this->systemLogs::successCode);
-                return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
-            } else {
-                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));
-            }
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
+    public function show($employeeId)
     {
         return View::make('crm.employees.show')
-            ->with('employees', $this->employeesService->loadEmployeeDetails($id));
+            ->with('employees', $this->employeesService->loadEmployeeDetails($employeeId));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit($employeeId)
     {
         $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
 
         return View::make('crm.employees.edit')
             ->with([
-                'employees' =>  $this->employeesService->loadEmployeeDetails($id),
+                'employees' =>  $this->employeesService->loadEmployeeDetails($employeeId),
                 'clients' => $dataWithPluckOfClients
             ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update($id)
+    public function store(EmployeesStoreRequest $request)
     {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->employeesService->loadRules());
-
-        if ($validator->fails()) {
-            return Redirect::to('employees')->with('message_danger', $validator->errors());
+        if ($employee = $this->employeesService->execute($request->validated())) {
+            $this->systemLogs->insertSystemLogs('Employees has been add with id: '. $employee, $this->systemLogs::successCode);
+            return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
         } else {
-            if ($this->employeesService->update($id, $allInputs)) {
-                return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesUpdate'));
-            } else {
-                return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesUpdate'));
-            }
+            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     * @throws \Exception
-     */
-    public function destroy($id)
+    public function update(Request $request, int $employeeId)
     {
-        $dataOfEmployees = $this->employeesService->loadEmployeeDetails($id);
+        if ($this->employeesService->update($employeeId, $request->all())) {
+            return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesUpdate'));
+        } else {
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesUpdate'));
+        }
+    }
+
+    public function destroy($employeeId)
+    {
+        $dataOfEmployees = $this->employeesService->loadEmployeeDetails($employeeId);
         $countContacts = $this->employeesService->countEmployeeContacts($dataOfEmployees);
         $countTasks = $this->employeesService->countEmployeeTasks($dataOfEmployees);
 
@@ -154,38 +97,19 @@ class EmployeesController extends Controller
         return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesDelete'));
     }
 
-    /**
-     * @param $id
-     * @param $value
-     * @return mixed
-     */
-    public function isActiveFunction($id, $value)
+    public function isActiveFunction($employeeId, $value)
     {
-        if ($this->employeesService->loadIsActiveFunction($id, $value)) {
-            $this->systemLogs->insertSystemLogs('Employees has been enabled with id: ' . $id, $this->systemLogs::successCode);
+        if ($this->employeesService->loadIsActiveFunction($employeeId, $value)) {
+            $this->systemLogs->insertSystemLogs('Employees has been enabled with id: ' . $employeeId, $this->systemLogs::successCode);
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesActive'));
         }
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function search()
     {
-        $getValueInput = Request::input('search');
-        $findEmployeesByValue = $this->employeesService->loadSearch($getValueInput);
-        $dataOfEmployees = $this->employeesService->getDataAndPagination();
-
-        if (!$findEmployeesByValue > 0) {
-            return redirect('employees')->with('message_danger', $this->getMessage('messages.ThereIsNoEmployees'));
-        } else {
-            $dataOfEmployees += ['employees_search' => $findEmployeesByValue];
-            Redirect::to('employees/search')->with('message_success', 'Find ' . $findEmployeesByValue . ' employees!');
-        }
-
-        return View::make('crm.employees.index')->with($dataOfEmployees);
+        return true; // TODO
     }
 }
 

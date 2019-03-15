@@ -42,9 +42,4 @@ class SalesService
     {
         return $this->salesModel->setActive($id, $value);
     }
-
-    public function loadSearch($getValueInput)
-    {
-        return count($this->salesModel::trySearchSalesByValue('full_name', $getValueInput, 10));
-    }
 }

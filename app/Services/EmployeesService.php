@@ -48,11 +48,6 @@ class EmployeesService
         return $this->employeesModel::pluck('full_name', 'id');
     }
 
-    public function loadRules()
-    {
-        return $this->employeesModel->getRules('STORE');
-    }
-
     public function loadEmployeeDetails(int $id)
     {
         return $this->employeesModel->getEmployeeDetails($id);
@@ -71,11 +66,6 @@ class EmployeesService
     public function loadIsActiveFunction(int $id, int $value)
     {
         return $this->employeesModel->setActive($id, $value);
-    }
-
-    public function loadSearch($getValueInput)
-    {
-        return count($this->employeesModel->trySearchEmployeesByValue('full_name', $getValueInput, 10));
     }
 
     public function execute($allInputs)

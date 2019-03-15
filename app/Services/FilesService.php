@@ -23,11 +23,6 @@ class FilesService
         return $this->filesModel::paginate(Config::get('crm_settings.pagination_size'));
     }
 
-    public function loadRules()
-    {
-        return $this->filesModel->getRules('STORE');
-    }
-
     public function execute($allInputs)
     {
         return $this->filesModel->insertRow($allInputs);
@@ -46,10 +41,5 @@ class FilesService
     public function loadIsActive($id, $value)
     {
         return $this->filesModel->setActive($id, $value);
-    }
-
-    public function loadSearch($getValueInput)
-    {
-        return count($this->filesModel->trySearchFilesByValue('name', $getValueInput, 10));
     }
 }

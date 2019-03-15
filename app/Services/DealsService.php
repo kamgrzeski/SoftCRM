@@ -37,9 +37,4 @@ class DealsService
     {
         return $this->dealsModel->updateRow($id, $allInputs);
     }
-
-    public function loadSearch($getValueInput)
-    {
-        return count($this->dealsModel->trySearchDealsByValue('name', $getValueInput, 10));
-    }
 }

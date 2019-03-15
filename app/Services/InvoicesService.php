@@ -42,9 +42,4 @@ class InvoicesService
     {
         return $this->invoicesModel->setActive($id, $value);
     }
-
-    public function loadSearch($getValueInput)
-    {
-        return count($this->invoicesModel->trySearchInvoicesByValue('full_name', $getValueInput, 10));
-    }
 }

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SettingsStoreRequest;
 use App\Models\SettingsModel;
 use App\Services\HelpersFncService;
 use App\Services\SettingsService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
 use Axdlee\Config\Rewrite;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use View;
 use Validator;
@@ -32,11 +32,6 @@ class SettingsController extends Controller
         $this->helpersService = new HelpersFncService();
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $input = config('crm_settings.temp');
@@ -47,34 +42,23 @@ class SettingsController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
+    public function store(SettingsStoreRequest $request)
     {
-        $getAllInputFromRequest = Input::all();
-
-        $validator = Validator::make($getAllInputFromRequest, $this->settingsService->loadRules());
-
-        if($validator->fails()) {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSettingsStore'));
-        }
+        $validatedData = $request->validated();
 
         $writeConfig = new Rewrite;
         $writeConfig->toFile(base_path() . '/config/crm_settings.php', [
-            'pagination_size' => $getAllInputFromRequest['pagination_size'],
-            'currency' => $getAllInputFromRequest['currency'],
-            'priority_size' => $getAllInputFromRequest['priority_size'],
-            'invoice_tax' => $getAllInputFromRequest['invoice_tax'],
-            'invoice_logo_link' => $getAllInputFromRequest['invoice_logo_link'],
-            'rollbar_token' => $getAllInputFromRequest['rollbar_token'],
-            'loading_circle' => $getAllInputFromRequest['loading_circle'],
-            'stats' => $getAllInputFromRequest['stats']
+            'pagination_size' => $validatedData['pagination_size'],
+            'currency' => $validatedData['currency'],
+            'priority_size' => $validatedData['priority_size'],
+            'invoice_tax' => $validatedData['invoice_tax'],
+            'invoice_logo_link' => $validatedData['invoice_logo_link'],
+            'rollbar_token' => $validatedData['rollbar_token'],
+            'loading_circle' => $validatedData['loading_circle'],
+            'stats' => $validatedData['stats']
         ]);
 
-        $this->settingsService->saveEnvData($getAllInputFromRequest['rollbar_token']);
+        $this->settingsService->saveEnvData($validatedData['rollbar_token']);
 
         $this->systemLogs->insertSystemLogs('SettingsModel has been changed.', $this->systemLogs::successCode);
 
