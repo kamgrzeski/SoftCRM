@@ -53,14 +53,13 @@ class ProjectsController extends Controller
 
     public function create()
     {
-        $dataOfClients = ClientsModel::pluck('full_name', 'id');
-        $dataOfCompanies = CompaniesModel::pluck('name', 'id');
-        $dataOfDeals = DealsModel::pluck('name', 'id');
+        $dataForView = $this->projectsService->collectDataForView();
+
         return View::make('crm.projects.create')->with(
             [
-                'dataOfClients' => $dataOfClients,
-                'dataOfCompanies' => $dataOfCompanies,
-                'dataOfDeals' => $dataOfDeals,
+                'dataOfClients' => $dataForView->clients,
+                'dataOfCompanies' => $dataForView->companies,
+                'dataOfDeals' => $dataForView->deals,
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
@@ -76,16 +75,14 @@ class ProjectsController extends Controller
 
     public function edit($projectId)
     {
-        $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
-        $dataWithPluckOfDeals = DealsModel::pluck('name', 'id');
-        $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
+        $dataForView = $this->projectsService->collectDataForView();
 
         return View::make('crm.projects.edit')
             ->with([
                 'projects' => $this->projectsService->getProject($projectId),
-                'clients' => $dataWithPluckOfClients,
-                'deals' => $dataWithPluckOfDeals,
-                'companies' => $dataWithPluckOfCompanies
+                'clients' => $dataForView->clients,
+                'deals' => $dataForView->deals,
+                'companies' => $dataForView->companies
             ]);
     }
 

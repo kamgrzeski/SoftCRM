@@ -43,4 +43,9 @@ class FilesService
     {
         return $this->filesModel->setActive($id, $value);
     }
+
+    public function getPluckCompanies()
+    {
+        return $this->filesModel->getPluckCompanies();
+    }
 }

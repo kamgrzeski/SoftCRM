@@ -4,7 +4,6 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FilesStoreRequest;
-use App\Models\CompaniesModel;
 use App\Services\FilesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
@@ -43,10 +42,8 @@ class FilesController extends Controller
 
     public function create()
     {
-        $dataOfCompanies = CompaniesModel::pluck('name', 'id');
-
         return View::make('crm.files.create')->with([
-            'dataOfCompanies' => $dataOfCompanies,
+            'dataOfCompanies' => $this->filesService->getPluckCompanies(),
             'inputText' => $this->getMessage('messages.InputText')
         ]);
     }
@@ -59,12 +56,10 @@ class FilesController extends Controller
 
     public function edit($fileId)
     {
-        $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
-
         return View::make('crm.files.edit')
             ->with([
                 'files' => $this->filesService->getFile($fileId),
-                'companies' => $dataWithPluckOfCompanies
+                'companies' => $this->filesService->getPluckCompanies()
             ]);
     }
 

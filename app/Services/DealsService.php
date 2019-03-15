@@ -38,4 +38,9 @@ class DealsService
     {
         return $this->dealsModel->updateRow($id, $allInputs);
     }
+
+    public function pluckCompanies()
+    {
+        return $this->dealsModel->getPluckCompanies();
+    }
 }

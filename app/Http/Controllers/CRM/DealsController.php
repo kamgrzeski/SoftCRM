@@ -4,7 +4,6 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DealsStoreRequest;
-use App\Models\CompaniesModel;
 use App\Models\DealsModel;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
@@ -46,10 +45,8 @@ class DealsController extends Controller
 
     public function create()
     {
-        $dataOfDeals = CompaniesModel::pluck('name', 'id');
-
         return View::make('crm.deals.create')->with([
-            'dataOfDeals' => $dataOfDeals,
+            'dataOfDeals' => $this->dealsService->pluckCompanies(),
             'inputText' => $this->getMessage('messages.InputText')
         ]);
     }
@@ -62,12 +59,10 @@ class DealsController extends Controller
 
     public function edit($dealId)
     {
-        $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
-
         return View::make('crm.deals.edit')
             ->with([
                 'deals' => $this->dealsService->getDeal($dealId),
-                'companies' => $dataWithPluckOfCompanies
+                'companies' => $this->dealsService->pluckCompanies()
             ]);
     }
 

@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\ClientsModel;
 use App\Models\ContactsModel;
+use App\Models\EmployeesModel;
 use Config;
 
 class ContactsService
@@ -32,5 +34,13 @@ class ContactsService
     public function getContact(int $id)
     {
         return $this->contactsModel::find($id);
+    }
+
+    public function collectDataForView()
+    {
+        return (object)[
+            'dataOfClients' => ClientsModel::pluck('full_name', 'id'),
+            'dataOfEmployees' => EmployeesModel::pluck('full_name', 'id')
+        ];
     }
 }

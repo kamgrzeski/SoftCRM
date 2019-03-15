@@ -60,4 +60,9 @@ class FilesModel extends Model
     {
         return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
+
+    public function getPluckCompanies()
+    {
+        return self::pluck('name', 'id');
+    }
 }

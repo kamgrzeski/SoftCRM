@@ -4,9 +4,7 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactsStoreRequest;
-use App\Models\ClientsModel;
 use App\Models\ContactsModel;
-use App\Models\EmployeesModel;
 use App\Services\ContactsService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
@@ -47,12 +45,12 @@ class ContactsController extends Controller
 
     public function create()
     {
-        $dataOfClients = ClientsModel::pluck('full_name', 'id');
-        $dataOfEmployees = EmployeesModel::pluck('full_name', 'id');
+        $dataForView = $this->contactsService->collectDataForView();
+
         return View::make('crm.contacts.create')->with(
             [
-                'clients' => $dataOfClients,
-                'employees' => $dataOfEmployees,
+                'clients' => $dataForView->dataOfClients,
+                'employees' => $dataForView->ataOfEmployees,
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
@@ -76,14 +74,13 @@ class ContactsController extends Controller
     public function edit($contactId)
     {
         $dataOfContacts = $this->contactsService->getContact($contactId);
-        $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
-        $dataWithPluckOfEmployees = EmployeesModel::pluck('full_name', 'id');
+        $dataForView = $this->contactsService->collectDataForView();
 
         return View::make('crm.contacts.edit')
             ->with([
                 'contacts' => $dataOfContacts,
-                'clients' => $dataWithPluckOfClients,
-                'employees' => $dataWithPluckOfEmployees
+                'clients' => $dataForView->dataWithPluckOfClients,
+                'employees' => $dataForView->dataWithPluckOfEmployees
             ]);
     }
 

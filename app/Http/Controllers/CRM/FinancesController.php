@@ -4,7 +4,6 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FinancesStoreRequest;
-use App\Models\CompaniesModel;
 use App\Models\FinancesModel;
 use App\Services\FinancesService;
 use App\Services\SystemLogService;
@@ -48,7 +47,7 @@ class FinancesController extends Controller
     {
         return View::make('crm.finances.create')
             ->with([
-                'dataWithPluckOfCompanies' => CompaniesModel::pluck('name', 'id'),
+                'dataWithPluckOfCompanies' => $this->financesService->pluckCompanies(),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
@@ -64,12 +63,10 @@ class FinancesController extends Controller
 
     public function edit($companieId)
     {
-        $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
-
         return View::make('crm.finances.edit')
             ->with([
                 'finances' => $this->financesService->getFinance($companieId),
-                'dataWithPluckOfCompanies' => $dataWithPluckOfCompanies
+                'dataWithPluckOfCompanies' => $this->financesService->pluckCompanies()
             ]);
     }
 

@@ -129,5 +129,10 @@ class EmployeesModel extends Model
     {
         return self::pluck('full_name', 'id');
     }
+
+    public function getClients()
+    {
+        return self::pluck('full_name', 'id');
+    }
 }
 

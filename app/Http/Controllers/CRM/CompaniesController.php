@@ -8,7 +8,6 @@ use App\Services\CompaniesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
 use View;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Config;
@@ -69,18 +68,10 @@ class CompaniesController extends Controller
 
     public function update(Request $request, int $companieId)
     {
-        $allInputs = Input::all();
-
-        $validator = Validator::make($allInputs, $this->companiesService->getRules('STORE'));
-
-        if ($validator->fails()) {
-            return Redirect::back()->with('message_danger', $validator->errors());
+        if ($this->companiesService->update($companieId, $request->all())) {
+            return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesUpdate'));
         } else {
-            if ($this->companiesService->update($companieId, $request->all())) {
-                return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesUpdate'));
-            } else {
-                return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorCompaniesUpdate'));
-            }
+            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorCompaniesUpdate'));
         }
     }
 

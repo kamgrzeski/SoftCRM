@@ -76,4 +76,9 @@ class FinancesModel extends Model
     {
         return count(self::get());
     }
+
+    public function getPluckCompanies()
+    {
+        return CompaniesModel::pluck('name', 'id');
+    }
 }

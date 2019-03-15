@@ -72,4 +72,9 @@ class DealsModel extends Model
     {
         return self::where('is_active', '=', 0)->count();
     }
+
+    public function getPluckCompanies()
+    {
+        return self::pluck('name', 'id');
+    }
 }

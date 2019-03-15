@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Requests\EmployeesStoreRequest;
-use App\Models\ClientsModel;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
@@ -47,12 +46,10 @@ class EmployeesController extends Controller
 
     public function edit($employeeId)
     {
-        $dataWithPluckOfClients = ClientsModel::pluck('full_name', 'id');
-
         return View::make('crm.employees.edit')
             ->with([
                 'employees' =>  $this->employeesService->loadEmployeeDetails($employeeId),
-                'clients' => $dataWithPluckOfClients
+                'clients' => $this->employeesService->getPluckClients()
             ]);
     }
 

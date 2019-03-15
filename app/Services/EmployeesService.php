@@ -77,4 +77,9 @@ class EmployeesService
     {
         return $this->employeesModel->updateRow($id, $allInputs);
     }
+
+    public function getPluckClients()
+    {
+        return $this->employeesModel->getClients();
+    }
 }

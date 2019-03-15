@@ -68,4 +68,9 @@ class FinancesService
     {
         return $this->financesModel->setActive($id, $value);
     }
+
+    public function pluckCompanies()
+    {
+        return $this->financesModel->getPluckCompanies();
+    }
 }

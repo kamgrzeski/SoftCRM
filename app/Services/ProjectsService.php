@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\ClientsModel;
+use App\Models\CompaniesModel;
+use App\Models\DealsModel;
 use App\Models\ProjectsModel;
 use Config;
 
@@ -42,5 +45,16 @@ class ProjectsService
     public function loadIsActiveFunction($id, $value)
     {
         return $this->projectsModel->setActive($id, $value);
+    }
+
+    public function collectDataForView()
+    {
+        return (object)
+        [
+            'clients' => ClientsModel::pluck('full_name', 'id'),
+            'companies' => CompaniesModel::pluck('name', 'id'),
+            'deals' => DealsModel::pluck('name', 'id'),
+            'projects' => ProjectsModel::pluck('name', 'id')
+        ];
     }
 }
