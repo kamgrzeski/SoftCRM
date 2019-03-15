@@ -18,7 +18,7 @@ class ProductsModel extends Model
      */
     public function insertRow($allInputs)
     {
-        return ProductsModel::insertGetId(
+        return self::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'category' => $allInputs['category'],
@@ -37,7 +37,7 @@ class ProductsModel extends Model
      */
     public function updateRow($id, $allInputs)
     {
-        return ProductsModel::where('id', '=', $id)->update(
+        return self::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'category' => $allInputs['category'],
@@ -72,7 +72,7 @@ class ProductsModel extends Model
      */
     public function setActive($id, $activeType)
     {
-        $findProductsById = ProductsModel::where('id', '=', $id)->update(
+        $findProductsById = self::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -89,7 +89,7 @@ class ProductsModel extends Model
      */
     public static function countProducts()
     {
-        return count(ProductsModel::get());
+        return count(self::get());
     }
 
     /**
@@ -108,6 +108,11 @@ class ProductsModel extends Model
      */
     public function trySearchProductsByValue($type, $value, $paginationLimit = 10)
     {
-        return ProductsModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+    }
+
+    public function getProductsByCreatedAt()
+    {
+        return self::all()->sortBy('created_at', 0, true)->slice(0, 5);
     }
 }

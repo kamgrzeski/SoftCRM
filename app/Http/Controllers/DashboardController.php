@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CompaniesModel;
-use App\Models\ProductsModel;
 use App\Services\CalculateCashService;
+use App\Services\CompaniesService;
 use App\Services\GraphDataService;
 use App\Services\HelpersFncService;
+use App\Services\ProductsService;
 
 class DashboardController extends Controller
 {
+    private $companieService;
+    private $productsService;
+    private $helpersFncService;
+
     /**
      * Create a new controller instance.
      *
@@ -17,6 +21,10 @@ class DashboardController extends Controller
      */
     public function __construct()
     {
+        $this->companieService = new CompaniesService();
+        $this->productsService = new ProductsService();
+        $this->helpersFncService = new HelpersFncService();
+
         $this->middleware('auth');
     }
 
@@ -27,27 +35,18 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $dataWithAllCompanies = CompaniesModel::all()->sortBy('created_at', 0, true)->slice(0, 5);
-        $dataWithAllProducts = ProductsModel::all()->sortBy('created_at', 0, true)->slice(0, 5);
-
         return view('index')->with([
-            'dataWithAllTasks' => $this->formatTasks(),
-            'dataWithAllCompanies' => $dataWithAllCompanies,
-            'dataWithAllProducts' => $dataWithAllProducts,
+            'dataWithAllTasks' => $this->processFormatTasks(),
+            'dataWithAllCompanies' => $this->companieService->loadCompaniesByCreatedAt(),
+            'dataWithAllProducts' => $this->productsService->loadProductsByCreatedAt(),
             'tasksGraphData' => $this->taskGraphData(),
             'itemsCountGraphData' => $this->itemsCountGraphData()
         ]);
     }
 
-    public function formatTasks()
+    public function processFormatTasks()
     {
-        $helpers = new HelpersFncService();
-
-        if($helpers) {
-            return $helpers->formatTasks();
-        }
-
-        return false;
+        $this->helpersFncService->formatTasks();
     }
 
     /**

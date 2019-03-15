@@ -18,7 +18,7 @@ class CompaniesModel extends Model
      */
     public function insertRow($allInputs)
     {
-        return CompaniesModel::insertGetId(
+        return self::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'tax_number' => $allInputs['tax_number'],
@@ -44,7 +44,7 @@ class CompaniesModel extends Model
      */
     public function updateRow($id, $allInputs)
     {
-        return CompaniesModel::where('id', '=', $id)->update(
+        return self::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'tax_number' => $allInputs['tax_number'],
@@ -68,7 +68,7 @@ class CompaniesModel extends Model
      */
     public function setActive($id, $activeType)
     {
-        $findCompaniesById = CompaniesModel::where('id', '=', $id)->update(
+        $findCompaniesById = self::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -82,7 +82,7 @@ class CompaniesModel extends Model
 
     public static function trySearchCompaniesByValue($type, $value, $paginationLimit = 10)
     {
-        return CompaniesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 
     /**
@@ -90,7 +90,7 @@ class CompaniesModel extends Model
      */
     public static function countCompanies()
     {
-        return CompaniesModel::all()->count();
+        return self::all()->count();
     }
 
     /**
@@ -145,8 +145,8 @@ class CompaniesModel extends Model
      * @return float|int
      */
     public static function getCompaniesInLatestMonth() {
-        $companiesCount = CompaniesModel::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allCompanies = CompaniesModel::all()->count();
+        $companiesCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allCompanies = self::all()->count();
 
         $percentage = ($allCompanies / 100) * $companiesCount;
 
@@ -158,6 +158,11 @@ class CompaniesModel extends Model
      */
     public static function getDeactivated()
     {
-        return CompaniesModel::where('is_active', '=', 0)->count();
+        return self::where('is_active', '=', 0)->count();
+    }
+
+    public function getCompaniesSortedByCreatedAt()
+    {
+        return self::all()->sortBy('created_at', 0, true)->slice(0, 5);
     }
 }

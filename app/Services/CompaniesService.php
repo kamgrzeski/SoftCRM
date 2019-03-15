@@ -111,4 +111,9 @@ class CompaniesService
     {
         return $this->companiesModel->setActive($id, $value);
     }
+
+    public function loadCompaniesByCreatedAt()
+    {
+        return $this->companiesModel->getCompaniesSortedByCreatedAt();
+    }
 }
