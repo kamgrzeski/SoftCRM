@@ -4,10 +4,6 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectsStoreRequest;
-use App\Models\ClientsModel;
-use App\Models\CompaniesModel;
-use App\Models\DealsModel;
-use App\Models\ProjectsModel;
 use App\Services\ProjectsService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
@@ -28,7 +24,6 @@ class ProjectsController extends Controller
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->projectsModel = new ProjectsModel();
         $this->projectsService = new ProjectsService();
     }
 
@@ -115,7 +110,7 @@ class ProjectsController extends Controller
         return Redirect::to('projects')->with('message_success', $this->getMessage('messages.SuccessProjectsDelete'));
     }
 
-    public function isActiveFunction($projectId, $value)
+    public function processSetIsActive($projectId, $value)
     {
         if ($this->projectsService->loadIsActiveFunction($projectId, $value)) {
             $this->systemLogs->insertSystemLogs('ProjectsModel has been enabled with id: ' . $projectId, 200);

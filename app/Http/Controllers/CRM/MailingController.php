@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Models\ClientsModel;
-use App\Models\MailingModel;
 use App\Services\MailingService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
@@ -22,15 +20,18 @@ class MailingController extends Controller
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->mailingModel = new MailingModel();
         $this->mailingService = new MailingService();
     }
 
     public function index()
     {
-        $clientEmails = ClientsModel::All();
-        return View::make('crm.mailing.index')->with([
-            'clientEmails' => $clientEmails]);
+        $clientEmails = $this->mailingService->getClientMails();
+
+        return View::make('crm.mailing.index')->with(
+            [
+            'clientEmails' => $clientEmails
+            ]
+        );
     }
 
     public function search()

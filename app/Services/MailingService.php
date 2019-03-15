@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ClientsModel;
 use App\Models\MailingModel;
 
 class MailingService
@@ -26,5 +27,10 @@ class MailingService
     public function loadAdminPanel($allInputs)
     {
         return $this->mailingModel::addEmailToMailManager($allInputs);
+    }
+
+    public function getClientMails()
+    {
+        return ClientsModel::all();
     }
 }

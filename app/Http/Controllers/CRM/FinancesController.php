@@ -4,7 +4,6 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FinancesStoreRequest;
-use App\Models\FinancesModel;
 use App\Services\FinancesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
@@ -18,13 +17,11 @@ class FinancesController extends Controller
     use Language;
 
     private $systemLogs;
-    private $financesModel;
     private $financesService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->financesModel = new FinancesModel();
         $this->financesService = new FinancesService();
     }
 
@@ -100,7 +97,7 @@ class FinancesController extends Controller
         return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesDelete'));
     }
 
-    public function isActiveFunction($companieId, $value)
+    public function processSetIsActive($companieId, $value)
     {
         if ($this->financesService->loadIsActiveFunction($companieId, $value)) {
             $this->systemLogs->insertSystemLogs('FinancesModel has been enabled with id: ' . $companieId, $this->systemLogs::successCode);

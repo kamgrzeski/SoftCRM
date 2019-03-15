@@ -78,7 +78,7 @@ class CompaniesService
         return $this->companiesModel->updateRow($id, $allInputs);
     }
 
-    public function loadSetActiveFunction($id, $value)
+    public function loadSetActive($id, $value)
     {
         return $this->companiesModel->setActive($id, $value);
     }

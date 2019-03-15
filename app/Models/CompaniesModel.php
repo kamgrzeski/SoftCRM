@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CompaniesModel extends Model
 {
-    /**
-     * table name
-     */
     protected $table = 'companies';
 
     public function client()
@@ -22,9 +19,6 @@ class CompaniesModel extends Model
         return $this->hasMany(DealsModel::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function employees_size()
     {
         return $this->belongsTo(employees_size::class);

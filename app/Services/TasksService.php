@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\EmployeesModel;
 use App\Models\TasksModel;
 use Config;
 
@@ -47,5 +48,10 @@ class TasksService
     public function loadIsCompletedFunction($id, $value)
     {
         return $this->tasksModel->setCompleted($id, $value);
+    }
+
+    public function pluckEmployees()
+    {
+        return EmployeesModel::pluck('full_name', 'id');
     }
 }

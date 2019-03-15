@@ -4,8 +4,6 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TasksStoreRequest;
-use App\Models\EmployeesModel;
-use App\Models\TasksModel;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
 use App\Traits\Language;
@@ -19,13 +17,11 @@ class TasksController extends Controller
     use Language;
 
     private $systemLogs;
-    private $taskModel;
     private $taskService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->taskModel = new TasksModel();
         $this->taskService = new TasksService();
     }
 
@@ -46,10 +42,8 @@ class TasksController extends Controller
 
     public function create()
     {
-        $dataOfEmployees = EmployeesModel::pluck('full_name', 'id');
-
         return View::make('crm.tasks.create')->with([
-            'dataOfEmployees' => $dataOfEmployees,
+            'dataOfEmployees' => $this->taskService->pluckEmployees(),
             'inputText' => $this->getMessage('messages.InputText')
         ]);
     }
@@ -62,12 +56,10 @@ class TasksController extends Controller
 
     public function edit($taskId)
     {
-        $dataWithPluckOfEmployees = EmployeesModel::pluck('full_name', 'id');
-
         return View::make('crm.tasks.edit')
             ->with([
                 'tasks' => $this->taskService->getTask($taskId),
-                'employees' => $dataWithPluckOfEmployees
+                'employees' => $this->taskService->pluckEmployees()
             ]);
     }
 
@@ -106,7 +98,7 @@ class TasksController extends Controller
         return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksDelete'));
     }
 
-    public function isActiveFunction($taskId, $value)
+    public function processSetIsActive($taskId, $value)
     {
         if ($this->taskService->loadIsActiveFunction($taskId, $value)) {
             $this->systemLogs->insertSystemLogs('Tasks has been enabled with id: ' . $taskId, $this->systemLogs::successCode);

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ProductsModel;
 use App\Models\SalesModel;
 use Config;
 
@@ -42,5 +43,10 @@ class SalesService
     public function loadIsActiveFunction($id, $value)
     {
         return $this->salesModel->setActive($id, $value);
+    }
+
+    public function getProducts()
+    {
+        return ProductsModel::pluck('name', 'id');
     }
 }

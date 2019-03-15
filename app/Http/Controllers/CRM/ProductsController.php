@@ -4,7 +4,6 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductsStoreRequest;
-use App\Models\ProductsModel;
 use App\Services\ProductsService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
@@ -19,13 +18,11 @@ class ProductsController extends Controller
 
     private $systemLogs;
     private $language;
-    private $productsModel;
     private $productsService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->productsModel = new ProductsModel();
         $this->productsService = new ProductsService();
     }
 
@@ -95,7 +92,7 @@ class ProductsController extends Controller
         return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsDelete'));
     }
 
-    public function isActiveFunction($productId, $value)
+    public function processSetIsActive($productId, $value)
     {
         if ($this->productsService->loadIsActiveFunction($productId, $value)) {
             $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $productId, $this->systemLogs::successCode);

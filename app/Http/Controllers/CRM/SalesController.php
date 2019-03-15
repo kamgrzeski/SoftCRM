@@ -4,8 +4,6 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SalesStoreRequest;
-use App\Models\ProductsModel;
-use App\Models\SalesModel;
 use App\Services\SalesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
@@ -20,13 +18,11 @@ class SalesController extends Controller
     
     private $systemLogs;
     private $language;
-    private $salesModel;
     private $salesService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->salesModel = new SalesModel();
         $this->salesService = new SalesService();
     }
 
@@ -47,11 +43,9 @@ class SalesController extends Controller
     
     public function create()
     {
-        $dataOfProducts = ProductsModel::pluck('name', 'id');
-
         return View::make('crm.sales.create')->with(
             [
-                'dataOfProducts' => $dataOfProducts,
+                'dataOfProducts' => $this->salesService->getProducts(),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
@@ -66,12 +60,10 @@ class SalesController extends Controller
 
     public function edit($saleId)
     {
-        $dataWithPluckOfProducts = ProductsModel::pluck('name', 'id');
-
         return View::make('crm.sales.edit')
             ->with([
                 'sales' => $this->salesService->getSale($saleId),
-                'dataWithPluckOfProducts' => $dataWithPluckOfProducts
+                'dataWithPluckOfProducts' => $this->salesService->getProducts()
             ]);
     }
 
@@ -104,7 +96,7 @@ class SalesController extends Controller
         return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesDelete'));
     }
 
-    public function isActiveFunction($saleId, $value)
+    public function processSetIsActive($saleId, $value)
     {
         if ($this->salesService->loadIsActiveFunction($saleId, $value)) {
             $this->systemLogs->insertSystemLogs('SalesModel has been enabled with id: ' . $saleId, 200);

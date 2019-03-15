@@ -4,10 +4,6 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InvoicesStoreRequest;
-use App\Models\ClientsModel;
-use App\Models\CompaniesModel;
-use App\Models\InvoicesModel;
-use App\Models\ProductsModel;
 use App\Services\InvoicesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
@@ -28,7 +24,6 @@ class InvoicesController extends Controller
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->invoicesModel = new InvoicesModel();
         $this->invoicesService = new InvoicesService();
     }
 
@@ -49,22 +44,19 @@ class InvoicesController extends Controller
 
     public function create()
     {
-        $dataOfCompanies = CompaniesModel::pluck('name', 'id');
-        $dataOfClient = ClientsModel::pluck('full_name', 'id');
-        $dataOfProducts = ProductsModel::pluck('name', 'id');
+       $dataForView = $this->invoicesService->collectDataForView();
 
         return View::make('crm.invoices.create')->with(
             [
-                'dataOfCompanies' => $dataOfCompanies,
-                'dataOfClient' => $dataOfClient,
-                'dataOfProducts' => $dataOfProducts,
+                'dataOfCompanies' => $dataForView->dataOfCompanies,
+                'dataOfClient' => $dataForView->dataOfClient,
+                'dataOfProducts' => $dataForView->dataOfProducts,
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
     public function show($invoiceId)
     {
-
         return View::make('crm.invoices.show')
             ->with([
                 'invoices' => $this->invoicesService->getInvoice($invoiceId),
@@ -107,7 +99,7 @@ class InvoicesController extends Controller
         return Redirect::to('invoices')->with('message_success', $this->getMessage('messages.SuccessInvoicesDelete'));
     }
 
-    public function isActiveFunction($invoiceId, $value)
+    public function processSetIsActive($invoiceId, $value)
     {
         if ($this->invoicesService->loadIsActiveFunction($invoiceId, $value)) {
             $this->systemLogs->insertSystemLogs('InvoicesModel has been enabled with id: ' . $invoiceId, $this->systemLogs::successCode);

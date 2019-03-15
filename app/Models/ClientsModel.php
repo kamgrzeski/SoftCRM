@@ -9,39 +9,23 @@ use Illuminate\Support\Arr;
 
 class ClientsModel extends Model
 {
-    /**
-     * table name
-     */
     protected $table = 'clients';
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function companies()
     {
         return $this->hasMany(CompaniesModel::class, 'id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function employees()
     {
         return $this->hasMany(EmployeesModel::class, 'id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function invoices()
     {
         return $this->hasMany(InvoicesModel::class, 'client_id');
     }
 
-    /**
-     * @param $allInputs
-     * @return mixed
-     */
     public function insertRow($allInputs)
     {
         return self::insertGetId(
@@ -61,11 +45,6 @@ class ClientsModel extends Model
         );
     }
 
-    /**
-     * @param $id
-     * @param $allInputs
-     * @return mixed
-     */
     public function updateRow($id, $allInputs)
     {
         return self::where('id', '=', $id)->update(
@@ -84,11 +63,6 @@ class ClientsModel extends Model
             ]);
     }
 
-    /**
-     * @param $id
-     * @param $activeType
-     * @return bool
-     */
     public function setActive($id, $activeType)
     {
         $findClientById = self::where('id', '=', $id)->update(['is_active' => $activeType]);
@@ -100,17 +74,11 @@ class ClientsModel extends Model
         }
     }
 
-    /**
-     * @return int
-     */
     public static function countClients()
     {
         return self::all()->count();
     }
 
-    /**
-     * @return float|int
-     */
     public static function getClientsInLatestMonth() {
         $clientCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
         $allClient = self::all()->count();
@@ -120,18 +88,11 @@ class ClientsModel extends Model
         return $new_width;
     }
 
-    /**
-     * @return mixed
-     */
     public static function getDeactivated()
     {
         return self::where('is_active', '=', 0)->count();
     }
 
-    /**
-     * @param $clientId
-     * @return mixed
-     */
     public function findClientByGivenClientId($clientId)
     {
         $query = self::find($clientId);
@@ -143,10 +104,6 @@ class ClientsModel extends Model
         return $query;
     }
 
-    /**
-     * @param $by
-     * @return ClientsModel[]|\Illuminate\Database\Eloquent\Collection
-     */
     public function getClientSortedBy($by)
     {
         $query = self::all()->sortByDesc($by);

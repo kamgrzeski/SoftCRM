@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\ClientsModel;
+use App\Models\CompaniesModel;
 use App\Models\InvoicesModel;
+use App\Models\ProductsModel;
 use Config;
 
 class InvoicesService
@@ -42,5 +45,14 @@ class InvoicesService
     public function loadIsActiveFunction($id, $value)
     {
         return $this->invoicesModel->setActive($id, $value);
+    }
+
+    public function collectDataForView()
+    {
+        return (object)[
+            'dataOfCompanies' => CompaniesModel::pluck('name', 'id'),
+            'dataOfClient' => ClientsModel::pluck('full_name', 'id'),
+            'dataOfProducts' => ProductsModel::pluck('name', 'id')
+        ];
     }
 }

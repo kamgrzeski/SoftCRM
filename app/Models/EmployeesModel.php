@@ -51,11 +51,6 @@ class EmployeesModel extends Model
         );
     }
 
-    /**
-     * @param $id
-     * @param $allInputs
-     * @return mixed
-     */
     public function updateRow($id, $allInputs)
     {
         return self::where('id', '=', $id)->update(

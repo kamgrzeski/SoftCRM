@@ -92,7 +92,7 @@ class FilesController extends Controller
         return Redirect::to('files')->with('message_success', $this->getMessage('messages.SuccessFilesDelete'));
     }
 
-    public function isActiveFunction($fileId, $value)
+    public function processSetIsActive($fileId, $value)
     {
         if ($this->filesService->loadIsActive($fileId, $value)) {
             $this->systemLogs->insertSystemLogs('FilesModel has been enable with id: ' . $fileId, $this->systemLogs::successCode);

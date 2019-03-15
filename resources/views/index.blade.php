@@ -154,7 +154,7 @@
                                 </a>
                             @endforeach
                         @else
-                            There is no tasks.
+                            There is no products.
                         @endif
                     </div>
                     <div class="text-right">

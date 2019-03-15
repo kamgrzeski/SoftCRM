@@ -85,13 +85,9 @@ class CompaniesController extends Controller
 
         if ($countDeals > 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteDeals'));
-        }
-
-        if ($countFiles > 0) {
+        } elseif ($countFiles > 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteFiles'));
-        }
-
-        if ($countInvoices > 0) {
+        } elseif ($countInvoices > 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteInvoices'));
         }
 
@@ -102,9 +98,9 @@ class CompaniesController extends Controller
         return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesDelete'));
     }
 
-    public function isActiveFunction($companieId, $value)
+    public function processSetIsActive($companieId, $value)
     {
-        if ($this->companiesService->loadSetActiveFunction($companieId, $value)) {
+        if ($this->companiesService->loadSetActive($companieId, $value)) {
             $this->systemLogs->insertSystemLogs('CompaniesModel has been enabled with id: ' . $companieId, $this->systemLogs::successCode);
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesActive'));
         } else {
@@ -114,7 +110,7 @@ class CompaniesController extends Controller
 
     public function disable($companieId)
     {
-        if ($this->companiesService->loadSetActiveFunction($companieId, FALSE)) {
+        if ($this->companiesService->loadSetActive($companieId, FALSE)) {
             $this->systemLogs->insertSystemLogs('CompaniesModel has been disabled with id: ' . $companieId, $this->systemLogs::successCode);
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.CompaniesIsNowDeactivated'));
         } else {

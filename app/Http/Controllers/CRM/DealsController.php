@@ -95,7 +95,7 @@ class DealsController extends Controller
         return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsDelete'));
     }
 
-    public function isActiveFunction($dealId, $value)
+    public function processSetIsActive($dealId, $value)
     {
         if ($this->dealsModel->setActive($dealId, $value)) {
             $this->systemLogs->insertSystemLogs('DealsModel has been enabled with id: ' .$dealId, $this->systemLogs::successCode);

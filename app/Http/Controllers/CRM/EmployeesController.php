@@ -80,9 +80,7 @@ class EmployeesController extends Controller
 
         if ($countContacts > 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteContacts'));
-        }
-
-        if ($countTasks > 0) {
+        } elseif ($countTasks > 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteTasks'));
         }
 
@@ -93,7 +91,7 @@ class EmployeesController extends Controller
         return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesDelete'));
     }
 
-    public function isActiveFunction($employeeId, $value)
+    public function processSetIsActive($employeeId, $value)
     {
         if ($this->employeesService->loadIsActiveFunction($employeeId, $value)) {
             $this->systemLogs->insertSystemLogs('Employees has been enabled with id: ' . $employeeId, $this->systemLogs::successCode);

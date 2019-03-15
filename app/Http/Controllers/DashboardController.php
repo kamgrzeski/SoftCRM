@@ -36,17 +36,12 @@ class DashboardController extends Controller
     public function index()
     {
         return view('index')->with([
-            'dataWithAllTasks' => $this->processFormatTasks(),
+            'dataWithAllTasks' => $this->helpersFncService->formatTasks(),
             'dataWithAllCompanies' => $this->companieService->loadCompaniesByCreatedAt(),
             'dataWithAllProducts' => $this->productsService->loadProductsByCreatedAt(),
             'tasksGraphData' => $this->taskGraphData(),
             'itemsCountGraphData' => $this->itemsCountGraphData()
         ]);
-    }
-
-    public function processFormatTasks()
-    {
-        $this->helpersFncService->formatTasks();
     }
 
     /**
