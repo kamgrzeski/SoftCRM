@@ -9,7 +9,6 @@ use App\Services\MailingService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
 use View;
-use Request;
 use Config;
 
 class MailingController extends Controller

@@ -10,9 +10,8 @@ use App\Models\EmployeesModel;
 use App\Services\ContactsService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
-use Illuminate\Support\Facades\Input;
 use View;
-use Request;
+use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 use Config;
 

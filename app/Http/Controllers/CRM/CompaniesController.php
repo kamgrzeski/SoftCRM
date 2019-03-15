@@ -10,7 +10,7 @@ use App\Traits\Language;
 use View;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
-use Request;
+use Illuminate\Http\Request;
 use Config;
 
 class CompaniesController extends Controller

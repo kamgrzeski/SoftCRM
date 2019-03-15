@@ -7,10 +7,9 @@ use App\Models\ClientsModel;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
-use Request;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use View;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Config;
 

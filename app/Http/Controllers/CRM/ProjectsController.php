@@ -11,9 +11,8 @@ use App\Models\ProjectsModel;
 use App\Services\ProjectsService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
-use Illuminate\Support\Facades\Input;
 use View;
-use Request;
+use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 use Config;
 
@@ -45,7 +44,11 @@ class ProjectsController extends Controller
 
     public function index()
     {
-        return View::make('crm.projects.index')->with($this->getDataAndPagination());
+        return View::make('crm.projects.index')->with(
+            [
+                'projects' => $this->getDataAndPagination(),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]);
     }
 
     public function create()

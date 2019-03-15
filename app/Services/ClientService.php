@@ -9,10 +9,13 @@
 namespace App\Services;
 
 use App\Models\ClientsModel;
+use App\Traits\Language;
 use Config;
 
 class ClientService
 {
+    use Language;
+
     private $clientsModel;
 
     public function __construct()

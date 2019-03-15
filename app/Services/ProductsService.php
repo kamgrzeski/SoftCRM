@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ProductsModel;
+use Config;
 
 class ProductsService
 {

@@ -29,7 +29,7 @@ class FinancesModel extends Model
                 'gross' => $allInputs['gross'],
                 'net' => $dataToInsert['net'],
                 'vat' => $dataToInsert['vat'],
-                'date' => $allInputs['date'],
+                'date' => $allInputs['date'] ?? Carbon::now(),
                 'companies_id' => $allInputs['companies_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1

@@ -14,7 +14,6 @@ class InvoicesModel extends Model
         return self::insertGetId(
             [
                 'name' => $allInputs['name'],
-                'items' => $allInputs['items'],
                 'cost' => $allInputs['cost'],
                 'companies_id' => $allInputs['companies_id'],
                 'client_id' => $allInputs['client_id'],

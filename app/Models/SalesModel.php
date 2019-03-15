@@ -12,21 +12,22 @@ class SalesModel extends Model
 
     public function insertRow($allInputs)
     {
-        return SalesModel::insertGetId(
+        return self::insertGetId(
             [
                 'name' => $allInputs['name'],
                 'quantity' => $allInputs['quantity'],
                 'date_of_payment' => $allInputs['date_of_payment'],
                 'product_id' => $allInputs['product_id'],
                 'created_at' => Carbon::now(),
-                'is_active' => 1
+                'is_active' => 1,
+                'price' => 0
             ]
         );
     }
 
     public function updateRow($id, $allInputs)
     {
-        return SalesModel::where('id', '=', $id)->update(
+        return self::where('id', '=', $id)->update(
             [
                 'name' => $allInputs['name'],
                 'quantity' => $allInputs['quantity'],
@@ -39,7 +40,7 @@ class SalesModel extends Model
 
     public function setActive($id, $activeType)
     {
-        $findSalesById = SalesModel::where('id', '=', $id)->update(
+        $findSalesById = self::where('id', '=', $id)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -53,7 +54,7 @@ class SalesModel extends Model
 
     public static function countSales()
     {
-        return SalesModel::all()->count();
+        return self::all()->count();
     }
 
     public function products()
@@ -63,6 +64,6 @@ class SalesModel extends Model
 
     public static function trySearchSalesByValue($type, $value, $paginationLimit = 10)
     {
-        return SalesModel::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 }

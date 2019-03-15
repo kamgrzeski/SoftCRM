@@ -12,7 +12,7 @@ use App\Services\InvoicesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
 use View;
-use Request;
+use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 use Config;
 use Response;
@@ -57,7 +57,8 @@ class InvoicesController extends Controller
             [
                 'dataOfCompanies' => $dataOfCompanies,
                 'dataOfClient' => $dataOfClient,
-                'dataOfProducts' => $dataOfProducts
+                'dataOfProducts' => $dataOfProducts,
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 

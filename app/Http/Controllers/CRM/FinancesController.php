@@ -10,7 +10,7 @@ use App\Services\FinancesService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
 use View;
-use Request;
+use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 use Config;
 
@@ -46,13 +46,15 @@ class FinancesController extends Controller
 
     public function create()
     {
-        $dataWithPluckOfCompanies = CompaniesModel::pluck('name', 'id');
-        return View::make('crm.finances.create', compact('dataWithPluckOfCompanies'));
+        return View::make('crm.finances.create')
+            ->with([
+                'dataWithPluckOfCompanies' => CompaniesModel::pluck('name', 'id'),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]);
     }
     
     public function show($companieId)
     {
-
         return View::make('crm.finances.show')
             ->with([
                 'finances' => $this->financesService->getFinance($companieId),

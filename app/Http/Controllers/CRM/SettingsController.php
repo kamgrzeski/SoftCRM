@@ -61,7 +61,6 @@ class SettingsController extends Controller
         $this->settingsService->saveEnvData($validatedData['rollbar_token']);
 
         $this->systemLogs->insertSystemLogs('SettingsModel has been changed.', $this->systemLogs::successCode);
-
         return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSettingsUpdate'));
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\DealsModel;
+use Config;
 
 class DealsService
 {
@@ -25,7 +26,7 @@ class DealsService
 
     public function execute($allInputs)
     {
-        return $this->dealsModel->insertRow($allInputs);
+        return $this->dealsModel->insertGetId($allInputs);
     }
 
     public function getDeal(int $id)

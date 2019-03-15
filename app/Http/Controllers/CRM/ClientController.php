@@ -7,9 +7,9 @@ use App\Http\Requests\ClientStoreRequest;
 use App\Services\ClientService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Config;
-use Request;
 use View;
 
 class ClientController extends Controller
@@ -50,7 +50,7 @@ class ClientController extends Controller
     {
         return View::make('crm.client.edit')
             ->with([
-                'client', $this->clientService->findClient($clientId),
+                'client' => $this->clientService->findClient($clientId),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
