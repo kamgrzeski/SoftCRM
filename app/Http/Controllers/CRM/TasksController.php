@@ -24,12 +24,12 @@ class TasksController extends Controller
         $this->taskService = new TasksService();
     }
 
-    public function index()
+    public function processListOfTasks()
     {
         return View::make('crm.tasks.index')->with($this->taskService->loadDataAndPagination());
     }
 
-    public function create()
+    public function showCreateForm()
     {
         return View::make('crm.tasks.create')->with([
             'dataOfEmployees' => $this->taskService->pluckEmployees(),
@@ -37,13 +37,13 @@ class TasksController extends Controller
         ]);
     }
 
-    public function show(int $taskId)
+    public function viewTasksDetails(int $taskId)
     {
         return View::make('crm.tasks.show')
             ->with('tasks', $this->taskService->loadTask($taskId));
     }
 
-    public function edit(int $taskId)
+    public function showUpdateForm(int $taskId)
     {
         return View::make('crm.tasks.edit')
             ->with([
@@ -53,7 +53,7 @@ class TasksController extends Controller
             ]);
     }
 
-    public function store(TasksStoreRequest $request)
+    public function processCreateTasks(TasksStoreRequest $request)
     {
         if ($task = $this->taskService->execute($request->validated())) {
             $this->systemLogs->insertSystemLogs('Task has been add with id: '. $task, $this->systemLogs::successCode);
@@ -63,7 +63,7 @@ class TasksController extends Controller
         }
     }
 
-    public function update(Request $request, int $taskId)
+    public function processUpdateTasks(Request $request, int $taskId)
     {
         if ($this->taskService->update($taskId, $request->all())) {
             return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksUpdate'));
@@ -72,7 +72,7 @@ class TasksController extends Controller
         }
     }
 
-    public function destroy($taskId)
+    public function processDeleteTasks($taskId)
     {
         $dataOfTasks = $this->taskService->loadTask($taskId);
 
@@ -91,7 +91,7 @@ class TasksController extends Controller
     {
         if ($this->taskService->loadIsActiveFunction($taskId, $value)) {
             $this->systemLogs->insertSystemLogs('Tasks has been enabled with id: ' . $taskId, $this->systemLogs::successCode);
-            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessTasksActive'));
+            return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksActive'));
         }

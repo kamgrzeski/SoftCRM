@@ -117,7 +117,7 @@
                     Ation will delete permanently this companies.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(array('url' => 'companies/' . $companies->id, 'class' => 'pull-right')) }}
+                    {{ Form::open(array('url' => 'companies/delete/' . $companies->id, 'class' => 'pull-right')) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                     {{ Form::submit('Delete this companie', array('class' => 'btn btn-small btn-danger')) }}
                     {{ Form::close() }}

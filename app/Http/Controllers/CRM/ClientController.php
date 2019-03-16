@@ -24,62 +24,56 @@ class ClientController extends Controller
         $this->clientService = new ClientService();
     }
 
-    public function index()
+    public function processListOfClients()
     {
         return View::make('crm.client.index')
             ->with($this->clientService->loadDataAndPagination());
     }
 
-    public function create()
+    public function showCreateForm()
     {
-        return View::make('crm.client.create')->with(
-            [
-                'inputText' => $this->getMessage('messages.InputText')
-            ]
-        );
+        return View::make('crm.client.create')->with([
+            'inputText' => $this->getMessage('messages.InputText')
+        ]);
     }
 
-    public function show(int $clientId)
+    public function viewClientDetails(int $clientId)
     {
         return View::make('crm.client.show')
-            ->with(
-                [
-                    'clients' => $this->clientService->loadClientDetails($clientId)
-                ]
-            );
+            ->with([
+                'clients' => $this->clientService->loadClientDetails($clientId)
+            ]);
     }
 
-    public function edit($clientId)
+    public function showUpdateForm(int $clientId)
     {
         return View::make('crm.client.edit')
-            ->with(
-                [
-                    'client' => $this->clientService->loadClientDetails($clientId),
-                    'inputText' => $this->getMessage('messages.InputText')
-                ]
-            );
+            ->with([
+                'client' => $this->clientService->loadClientDetails($clientId),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]);
     }
 
-    public function store(ClientStoreRequest $request)
+    public function processCreateClient(ClientStoreRequest $request)
     {
         if ($client = $this->clientService->execute($request->validated())) {
             $this->systemLogsService->insertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogsService::successCode);
-            return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
+            return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorClientStore'));
         }
     }
 
-    public function update(Request $request, int $clientId)
+    public function processUpdateClient(Request $request, int $clientId)
     {
         if ($this->clientService->update($clientId, $request->all())) {
-            return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientUpdate'));
+            return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientUpdate'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorClientStore'));
         }
     }
 
-    public function destroy(int $clientId)
+    public function processDeleteClient(int $clientId)
     {
         $clientAssigned = $this->clientService->checkIfClientHaveAssignedEmployeeOrCompanie($clientId);
 
@@ -89,13 +83,13 @@ class ClientController extends Controller
             $this->clientService->loadDeleteClient($clientId);
         }
 
-        return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientDelete'));
+        return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientDelete'));
     }
 
     public function processSetIsActive(int $clientId, bool $value)
     {
         if ($this->clientService->processIsActive($clientId, $value)) {
-            return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientActive'));
+            return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ClientIsActived'));
         }

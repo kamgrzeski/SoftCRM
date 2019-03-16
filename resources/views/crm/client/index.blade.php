@@ -20,7 +20,7 @@
                 </div>
             @endif
 
-            <a href="{{ URL::to('client/create') }}">
+            <a href="{{ URL::to('clients/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add client</button>
             </a>
             <br><br>
@@ -58,13 +58,13 @@
                                             @if($value->is_active == TRUE)
                                                 <label class="switch">
                                                     <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('client/set-active/' . $value->id . '/0') }}")' checked>
+                                                           onchange='window.location.assign("{{ URL::to('clients/set-active/' . $value->id . '/0') }}")' checked>
                                                     <span class="slider"></span>
                                                 </label>
                                             @else
                                                 <label class="switch">
                                                     <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('client/set-active/' . $value->id . '/1') }}")'>
+                                                           onchange='window.location.assign("{{ URL::to('clients/set-active/' . $value->id . '/1') }}")'>
                                                     <span class="slider"></span>
                                                 </label>
                                             @endif
@@ -72,10 +72,10 @@
 
                                         <td class="text-right">
                                             <a class="btn btn-small btn-success small-btn"
-                                               href="{{ URL::to('client/' . $value->id) }}">More information</a>
+                                               href="{{ URL::to('clients/form/update/' . $value->id) }}">More information</a>
 
                                             <a class="btn btn-small btn-info"
-                                               href="{{ URL::to('client/' . $value->id . '/edit') }}">Edit</a>
+                                               href="{{ URL::to('clients/form/update/' . $value->id ) }}">Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -120,13 +120,13 @@
                                             @if($value->is_active == TRUE)
                                                 <label class="switch">
                                                     <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('client/set-active/' . $value->id . '/0') }}")' checked>
+                                                           onchange='window.location.assign("{{ URL::to('clients/set-active/' . $value->id . '/0') }}")' checked>
                                                     <span class="slider"></span>
                                                 </label>
                                             @else
                                                 <label class="switch">
                                                     <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('client/set-active/' . $value->id . '/1') }}")'>
+                                                           onchange='window.location.assign("{{ URL::to('clients/set-active/' . $value->id . '/1') }}")'>
                                                     <span class="slider"></span>
                                                 </label>
                                             @endif
@@ -134,10 +134,10 @@
                                         <td class="text-right">
                                             <div class="btn-group">
                                                 <a class="btn btn-small btn-primary"
-                                                   href="{{ URL::to('client/' . $value->id) }}">More information</a>
+                                                   href="{{ URL::to('clients/view/' . $value->id) }}">More information</a>
                                                 <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="{{ URL::to('client/' . $value->id . '/edit') }}">Edit</a></li>
+                                                    <li><a href="{{ URL::to('clients/form/update/' . $value->id) }}">Edit</a></li>
                                                     <li class="divider"></li>
                                                     <li><a href="#">Some option</a></li>
                                                 </ul>

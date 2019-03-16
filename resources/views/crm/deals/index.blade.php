@@ -20,7 +20,7 @@
                     <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
-            <a href="{{ URL::to('deals/create') }}">
+            <a href="{{ URL::to('deals/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add deals</button>
             </a>
             <br><br>
@@ -69,10 +69,10 @@
                                     <td class="text-right">
                                         <div class="btn-group">
                                             <a class="btn btn-small btn-primary"
-                                               href="{{ URL::to('deals/' . $value->id) }}">More information</a>
+                                               href="{{ URL::to('deals/view/' . $value->id) }}">More information</a>
                                             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ URL::to('deals/' . $value->id . '/edit') }}">Edit</a></li>
+                                                <li><a href="{{ URL::to('deals/form/update/' . $value->id) }}">Edit</a></li>
                                                 <li class="divider"></li>
                                                 <li><a href="#">Some option</a></li>
                                             </ul>

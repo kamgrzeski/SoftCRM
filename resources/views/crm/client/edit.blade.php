@@ -23,7 +23,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::model($client, array('route' => array('client.update', $client->id), 'method' => 'PUT')) }}
+                            {{ Form::model($client, array('route' => array('processUpdateClient', $client->id), 'method' => 'PUT')) }}
                             <div class="form-group  input-row">
                                 {{ Form::label('full_name', 'Full name') }}
                                 {{ Form::text('full_name', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}

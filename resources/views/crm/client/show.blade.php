@@ -93,7 +93,7 @@
                                         <td>{{ $companies->tax_number }}</td>
                                         <td>{{ $companies->phone }}</td>
                                         <td>
-                                            {{ Form::open(array('url' => 'employees/' . $companies->id, 'class' => 'pull-right')) }}
+                                            {{ Form::open(array('url' => 'clients/delete/' . $companies->id, 'class' => 'pull-right')) }}
                                             {{ Form::hidden('_method', 'DELETE') }}
                                             {{ Form::submit('Delete this companies', array('class' => 'btn btn-danger btn-sm')) }}
                                             {{ Form::close() }}
@@ -123,7 +123,7 @@
                                         <td>{{ $employees->email }}</td>
                                         <td>{{ $employees->job }}</td>
                                         <td>
-                                            {{ Form::open(array('url' => 'employees/' . $employees->id, 'class' => 'pull-right')) }}
+                                            {{ Form::open(array('url' => 'employees/delete/' . $employees->id, 'class' => 'pull-right')) }}
                                             {{ Form::hidden('_method', 'DELETE') }}
                                             {{ Form::submit('Delete this employee', array('class' => 'btn btn-danger btn-sm')) }}
                                             {{ Form::close() }}
@@ -150,7 +150,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 15px;">Close</button>
-                    {{ Form::open(array('url' => 'client/' . $clients->id, 'class' => 'pull-right')) }}
+                    {{ Form::open(array('url' => 'clients/delete/' . $clients->id, 'class' => 'pull-right')) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                     {{ Form::submit('Delete this client', array('class' => 'btn btn-small btn-danger')) }}
                     {{ Form::close() }}

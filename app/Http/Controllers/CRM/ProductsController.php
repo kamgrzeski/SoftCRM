@@ -25,19 +25,19 @@ class ProductsController extends Controller
         $this->productsService = new ProductsService();
     }
 
-    public function index()
+    public function processListOfProducts()
     {
         return View::make('crm.products.index')->with($this->productsService->loadDataAndPagination());
     }
 
-    public function create()
+    public function showCreateForm()
     {
         return View::make('crm.products.create')->with([
             'inputText' => $this->getMessage('messages.InputText')
         ]);
     }
     
-    public function show(int $productId)
+    public function viewProductsDetails(int $productId)
     {
         return View::make('crm.products.show')
             ->with([
@@ -45,13 +45,13 @@ class ProductsController extends Controller
             ]);
     }
 
-    public function edit(int $productId)
+    public function showUpdateForm(int $productId)
     {
         return View::make('crm.products.edit')
             ->with('products', $this->productsService->loadProduct($productId));
     }
     
-    public function store(ProductsStoreRequest $request)
+    public function processCreateProducts(ProductsStoreRequest $request)
     {
         if ($product = $this->productsService->execute($request->validated())) {
             $this->systemLogs->insertSystemLogs('Product has been add with id: '. $product, $this->systemLogs::successCode);
@@ -61,7 +61,7 @@ class ProductsController extends Controller
         }
     }
 
-    public function update(Request $request, int $productId)
+    public function processUpdateProducts(Request $request, int $productId)
     {
         if ($this->productsService->update($productId, $request->all())) {
             return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
@@ -70,7 +70,7 @@ class ProductsController extends Controller
         }
     }
 
-    public function destroy(int $productId)
+    public function processDeleteProducts(int $productId)
     {
         $clientAssigned = $this->productsService->checkIfProductHaveAssignedSale($productId);
 
@@ -90,7 +90,7 @@ class ProductsController extends Controller
     {
         if ($this->productsService->loadIsActiveFunction($productId, $value)) {
             $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $productId, $this->systemLogs::successCode);
-            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessProductsActive'));
+            return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ProductsIsActived'));
         }

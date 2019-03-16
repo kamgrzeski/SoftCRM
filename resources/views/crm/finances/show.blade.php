@@ -98,7 +98,7 @@
                     Ation will delete permanently this finances.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(array('url' => 'finances/' . $finances->id, 'class' => 'pull-right')) }}
+                    {{ Form::open(array('url' => 'finances/delete/' . $finances->id, 'class' => 'pull-right')) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                     {{ Form::submit('Delete this finances', array('class' => 'btn btn-small btn-danger')) }}
                     {{ Form::close() }}

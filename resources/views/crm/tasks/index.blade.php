@@ -19,7 +19,7 @@
                     <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
-            <a href="{{ URL::to('tasks/create') }}">
+            <a href="{{ URL::to('tasks/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add tasks</button>
             </a>
             <br>
@@ -79,9 +79,9 @@
                                                 </a>
                                             @endif
                                             <a class="btn btn-small btn-success small-btn"
-                                               href="{{ URL::to('tasks/' . $value->id) }}">More information</a>
+                                               href="{{ URL::to('tasks/view/' . $value->id) }}">More information</a>
                                             <a class="btn btn-small btn-info small-btn"
-                                               href="{{ URL::to('tasks/' . $value->id . '/edit') }}">Edit</a>
+                                               href="{{ URL::to('tasks/form/update/' . $value->id) }}">Edit</a>
                                         </td>
                                     </tr>
                                 @endif

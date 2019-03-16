@@ -24,12 +24,12 @@ class FinancesController extends Controller
         $this->financesService = new FinancesService();
     }
 
-    public function index()
+    public function processListOfFinances()
     {
         return View::make('crm.finances.index')->with($this->financesService->loadDataAndPagination());
     }
 
-    public function create()
+    public function showCreateForm()
     {
         return View::make('crm.finances.create')
             ->with([
@@ -38,7 +38,7 @@ class FinancesController extends Controller
             ]);
     }
     
-    public function show($financeId)
+    public function viewFinancesDetails($financeId)
     {
         return View::make('crm.finances.show')
             ->with([
@@ -47,7 +47,7 @@ class FinancesController extends Controller
             ]);
     }
 
-    public function edit($financeId)
+    public function showUpdateForm($financeId)
     {
         return View::make('crm.finances.edit')
             ->with([
@@ -57,7 +57,7 @@ class FinancesController extends Controller
             ]);
     }
 
-    public function store(FinancesStoreRequest $request)
+    public function processCreateFinances(FinancesStoreRequest $request)
     {
         if ($finance = $this->financesService->execute($request->validated())) {
             $this->systemLogs->insertSystemLogs('FinancesModel has been add with id: '. $finance, $this->systemLogs::successCode);
@@ -67,7 +67,7 @@ class FinancesController extends Controller
         }
     }
 
-    public function update(Request $request, $financeId)
+    public function processUpdateFinances(Request $request, $financeId)
     {
         if ($this->financesService->update($financeId, $request->all())) {
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
@@ -76,7 +76,7 @@ class FinancesController extends Controller
         }
     }
 
-    public function destroy($financeId)
+    public function processDeleteFinances($financeId)
     {
         $dataOfFinances = $this->financesService->loadFinance($financeId);
 

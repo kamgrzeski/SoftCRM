@@ -34,12 +34,12 @@ class DealsController extends Controller
         return $dataOfDeals;
     }
 
-    public function index()
+    public function processListOfDeals()
     {
         return View::make('crm.deals.index')->with($this->getDataAndPagination());
     }
 
-    public function create()
+    public function showCreateForm()
     {
         return View::make('crm.deals.create')->with([
             'dataOfDeals' => $this->dealsService->pluckCompanies(),
@@ -47,13 +47,13 @@ class DealsController extends Controller
         ]);
     }
 
-    public function show(int $dealId)
+    public function viewDealsDetails(int $dealId)
     {
         return View::make('crm.deals.show')
             ->with('deals', $this->dealsService->loadDeal($dealId));
     }
 
-    public function edit(int $dealId)
+    public function showUpdateForm(int $dealId)
     {
         return View::make('crm.deals.edit')
             ->with([
@@ -63,7 +63,7 @@ class DealsController extends Controller
             ]);
     }
 
-    public function store(DealsStoreRequest $request)
+    public function processCreateDeals(DealsStoreRequest $request)
     {
         if ($deal = $this->dealsService->execute($request->validated())) {
             $this->systemLogs->insertSystemLogs('Deal has been add with id: '. $deal, $this->systemLogs::successCode);
@@ -73,7 +73,7 @@ class DealsController extends Controller
         }
     }
 
-    public function update(Request $request, int $dealId)
+    public function processUpdateDeals(Request $request, int $dealId)
     {
         if ($this->dealsService->update($dealId, $request->all())) {
             return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsUpdate'));
@@ -82,7 +82,7 @@ class DealsController extends Controller
         }
     }
 
-    public function destroy(int $dealId)
+    public function processDeleteDeals(int $dealId)
     {
         $dataOfDeals = $this->dealsService->loadDeal($dealId);
         $dataOfDeals->delete();
@@ -96,7 +96,7 @@ class DealsController extends Controller
     {
         if ($this->dealsService->loadSetActive($dealId, $value)) {
             $this->systemLogs->insertSystemLogs('DealsModel has been enabled with id: ' .$dealId, $this->systemLogs::successCode);
-            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessDealsActive'));
+            return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsActive'));
         }

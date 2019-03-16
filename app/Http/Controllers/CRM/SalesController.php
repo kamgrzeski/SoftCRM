@@ -25,12 +25,12 @@ class SalesController extends Controller
         $this->salesService = new SalesService();
     }
 
-    public function index()
+    public function processListOfSales()
     {
         return View::make('crm.sales.index')->with($this->salesService->loadDataAndPagination());
     }
     
-    public function create()
+    public function showCreateForm()
     {
         return View::make('crm.sales.create')->with(
             [
@@ -39,7 +39,7 @@ class SalesController extends Controller
             ]);
     }
     
-    public function show($saleId)
+    public function viewSalesDetails($saleId)
     {
         return View::make('crm.sales.show')
             ->with([
@@ -47,7 +47,7 @@ class SalesController extends Controller
             ]);
     }
 
-    public function edit($saleId)
+    public function showUpdateForm($saleId)
     {
         return View::make('crm.sales.edit')
             ->with([
@@ -57,7 +57,7 @@ class SalesController extends Controller
             ]);
     }
 
-    public function store(SalesStoreRequest $request)
+    public function processCreateSales(SalesStoreRequest $request)
     {
         if ($sale = $this->salesService->execute($request->validated())) {
             $this->systemLogs->insertSystemLogs('SalesModel has been add with id: ' . $sale, $this->systemLogs::successCode);
@@ -67,7 +67,7 @@ class SalesController extends Controller
         }
     }
 
-    public function update(Request $request, int $saleId)
+    public function processUpdateSales(Request $request, int $saleId)
     {
         if ($this->salesService->update($saleId, $request->all())) {
             return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
@@ -76,7 +76,7 @@ class SalesController extends Controller
         }
     }
 
-    public function destroy(int $saleId)
+    public function processDeleteSales(int $saleId)
     {
         $salesDetails = $this->salesService->loadSale($saleId);
         $salesDetails->delete();
@@ -90,7 +90,7 @@ class SalesController extends Controller
     {
         if ($this->salesService->loadIsActiveFunction($saleId, $value)) {
             $this->systemLogs->insertSystemLogs('SalesModel has been enabled with id: ' . $saleId, $this->systemLogs::successCode);
-            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSalesActive'));
+            return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.SalesIsActived'));
         }

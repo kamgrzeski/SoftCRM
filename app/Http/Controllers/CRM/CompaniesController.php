@@ -25,12 +25,12 @@ class CompaniesController extends Controller
         $this->companiesService = new CompaniesService();
     }
 
-    public function index()
+    public function processListOfCompanies()
     {
         return View::make('crm.companies.index')->with($this->companiesService->loadDataAndPagination());
     }
 
-    public function create()
+    public function showCreateForm()
     {
         return View::make('crm.companies.create')->with([
             'dataWithPluckOfClient' => $this->companiesService->pluckData(),
@@ -38,7 +38,7 @@ class CompaniesController extends Controller
         ]);
     }
 
-    public function show(int $companieId)
+    public function viewCompaniesDetails(int $companieId)
     {
         return View::make('crm.companies.show')
             ->with([
@@ -46,7 +46,7 @@ class CompaniesController extends Controller
             ]);
     }
 
-    public function edit(int $companieId)
+    public function showUpdateForm(int $companieId)
     {
         return View::make('crm.companies.edit')
             ->with([
@@ -56,7 +56,7 @@ class CompaniesController extends Controller
             ]);
     }
 
-    public function store(CompaniesStoreRequest $request)
+    public function processCreateCompanies(CompaniesStoreRequest $request)
     {
         if ($companie = $this->companiesService->execute($request->validated())) {
             $this->systemLogs->insertSystemLogs('CompaniesModel has been add with id: '. $companie, $this->systemLogs::successCode);
@@ -66,7 +66,7 @@ class CompaniesController extends Controller
         }
     }
 
-    public function update(Request $request, int $companieId)
+    public function processUpdateCompanies(Request $request, int $companieId)
     {
         if ($this->companiesService->update($companieId, $request->all())) {
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesUpdate'));
@@ -75,7 +75,7 @@ class CompaniesController extends Controller
         }
     }
 
-    public function destroy(int $companieId)
+    public function processDeleteCompanies(int $companieId)
     {
         $dataOfCompanies = $this->companiesService->loadCompanie($companieId);
 

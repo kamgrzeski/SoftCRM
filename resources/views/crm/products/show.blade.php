@@ -76,7 +76,7 @@
                     Action will delete permanently this products.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(array('url' => 'products/' . $products->id, 'class' => 'pull-right')) }}
+                    {{ Form::open(array('url' => 'products/delete/' . $products->id, 'class' => 'pull-right')) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                     {{ Form::submit('Delete this product', array('class' => 'btn btn-small btn-danger')) }}
                     {{ Form::close() }}

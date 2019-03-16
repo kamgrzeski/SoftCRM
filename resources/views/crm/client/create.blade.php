@@ -25,7 +25,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(array('url' => 'client')) }}
+                            {{ Form::open(array('route' => 'processCreateClient')) }}
                             <div class="form-group  input-row">
                                 {{ Form::label('full_name', 'Full name') }}
                                 <div class="input-group">

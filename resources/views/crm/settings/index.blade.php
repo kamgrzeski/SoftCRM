@@ -22,7 +22,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
-                        {{ Form::open(array('url' => 'settings')) }}
+                        {{ Form::open(array('route' => 'processCreateSettings')) }}
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('pagination_size', 'Pagination size') }}

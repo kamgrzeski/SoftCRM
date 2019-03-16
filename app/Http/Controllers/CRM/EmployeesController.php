@@ -24,12 +24,12 @@ class EmployeesController extends Controller
         $this->employeesService = new EmployeesService();
     }
 
-    public function index()
+    public function processListOfEmployees()
     {
         return View::make('crm.employees.index')->with($this->employeesService->loadDataAndPagination());
     }
 
-    public function create()
+    public function showCreateForm()
     {
         return View::make('crm.employees.create')->with([
             'dataOfClients' => $this->employeesService->pluckData(),
@@ -37,13 +37,13 @@ class EmployeesController extends Controller
         ]);
     }
 
-    public function show($employeeId)
+    public function viewEmployeeDetails($employeeId)
     {
         return View::make('crm.employees.show')
             ->with('employees', $this->employeesService->loadEmployeeDetails($employeeId));
     }
 
-    public function edit($employeeId)
+    public function showUpdateForm($employeeId)
     {
         return View::make('crm.employees.edit')
             ->with([
@@ -53,7 +53,7 @@ class EmployeesController extends Controller
             ]);
     }
 
-    public function store(EmployeesStoreRequest $request)
+    public function processCreateEmployee(EmployeesStoreRequest $request)
     {
         if ($employee = $this->employeesService->execute($request->validated())) {
             $this->systemLogs->insertSystemLogs('Employees has been add with id: '. $employee, $this->systemLogs::successCode);
@@ -63,7 +63,7 @@ class EmployeesController extends Controller
         }
     }
 
-    public function update(Request $request, int $employeeId)
+    public function processUpdateEmployee(Request $request, int $employeeId)
     {
         if ($this->employeesService->update($employeeId, $request->all())) {
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesUpdate'));
@@ -72,7 +72,7 @@ class EmployeesController extends Controller
         }
     }
 
-    public function destroy($employeeId)
+    public function processDeleteEmployee($employeeId)
     {
         $dataOfEmployees = $this->employeesService->loadEmployeeDetails($employeeId);
         $countTasks = $this->employeesService->countEmployeeTasks($dataOfEmployees);

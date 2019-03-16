@@ -32,7 +32,7 @@ class SettingsController extends Controller
         $this->helpersService = new HelpersFncService();
     }
 
-    public function index()
+    public function processListOfSettings()
     {
         $input = config('crm_settings.temp');
 
@@ -42,7 +42,7 @@ class SettingsController extends Controller
         ]);
     }
 
-    public function store(SettingsStoreRequest $request)
+    public function processCreateSettings(SettingsStoreRequest $request)
     {
         $validatedData = $request->validated();
 
