@@ -10,7 +10,6 @@ use App\Traits\Language;
 use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
-use Config;
 
 class SalesController extends Controller
 {
@@ -26,26 +25,16 @@ class SalesController extends Controller
         $this->salesService = new SalesService();
     }
 
-    private function getDataAndPagination()
-    {
-        $dataWithSaless = [
-            'sales' => $this->salesService->getSales(),
-            'salesPaginate' => $this->salesService->getPaginate()
-        ];
-
-        return $dataWithSaless;
-    }
-
     public function index()
     {
-        return View::make('crm.sales.index')->with($this->getDataAndPagination());
+        return View::make('crm.sales.index')->with($this->salesService->loadDataAndPagination());
     }
     
     public function create()
     {
         return View::make('crm.sales.create')->with(
             [
-                'dataOfProducts' => $this->salesService->getProducts(),
+                'dataOfProducts' => $this->salesService->loadProducts(),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
@@ -54,7 +43,7 @@ class SalesController extends Controller
     {
         return View::make('crm.sales.show')
             ->with([
-                'sales' => $this->salesService->getSale($saleId),
+                'sales' => $this->salesService->loadSale($saleId),
             ]);
     }
 
@@ -62,15 +51,16 @@ class SalesController extends Controller
     {
         return View::make('crm.sales.edit')
             ->with([
-                'sales' => $this->salesService->getSale($saleId),
-                'dataWithPluckOfProducts' => $this->salesService->getProducts()
+                'sales' => $this->salesService->loadSale($saleId),
+                'dataWithPluckOfProducts' => $this->salesService->loadProducts(),
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
     public function store(SalesStoreRequest $request)
     {
         if ($sale = $this->salesService->execute($request->validated())) {
-            $this->systemLogs->insertSystemLogs('SalesModel has been add with id: ' . $sale, 200);
+            $this->systemLogs->insertSystemLogs('SalesModel has been add with id: ' . $sale, $this->systemLogs::successCode);
             return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorSalesStore'));
@@ -86,28 +76,23 @@ class SalesController extends Controller
         }
     }
 
-    public function destroy($saleId)
+    public function destroy(int $saleId)
     {
-        $salesDetails = $this->salesService->getSale($saleId);
+        $salesDetails = $this->salesService->loadSale($saleId);
         $salesDetails->delete();
 
-        $this->systemLogs->insertSystemLogs('SalesModel has been deleted with id: ' . $salesDetails->id, 200);
+        $this->systemLogs->insertSystemLogs('SalesModel has been deleted with id: ' . $salesDetails->id, $this->systemLogs::successCode);
 
         return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesDelete'));
     }
 
-    public function processSetIsActive($saleId, $value)
+    public function processSetIsActive(int $saleId, bool $value)
     {
         if ($this->salesService->loadIsActiveFunction($saleId, $value)) {
-            $this->systemLogs->insertSystemLogs('SalesModel has been enabled with id: ' . $saleId, 200);
+            $this->systemLogs->insertSystemLogs('SalesModel has been enabled with id: ' . $saleId, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSalesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.SalesIsActived'));
         }
-    }
-
-    public function search()
-    {
-        return true; // TODO
     }
 }

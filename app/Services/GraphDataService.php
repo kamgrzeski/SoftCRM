@@ -11,7 +11,6 @@ namespace App\Services;
 use App\Models\DealsModel;
 use App\Models\FinancesModel;
 use App\Models\ProductsModel;
-use App\Models\ProjectsModel;
 use App\Models\SalesModel;
 
 class GraphDataService
@@ -79,11 +78,6 @@ class GraphDataService
                     "label" => "Finances",
                     'backgroundColor' => ['rgba(249, 195, 100, 1)', 'rgba(54, 162, 235, 0.3)'],
                     'data' => [FinancesModel::countFinances()]
-                ],
-                [
-                    "label" => "Projects",
-                    'backgroundColor' => ['rgba(151, 186, 241, 1)', 'rgba(54, 162, 235, 0.3)'],
-                    'data' => [ProjectsModel::countProjects()]
                 ],
                 [
                     "label" => "Deal",

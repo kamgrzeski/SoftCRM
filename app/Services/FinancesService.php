@@ -20,10 +20,16 @@ class FinancesService
         $this->financesModel = new FinancesModel();
     }
 
-    /**
-     * @param $gross
-     * @return array
-     */
+    public function execute($requestedData)
+    {
+        return $this->financesModel->storeFinance($requestedData);
+    }
+
+    public function update(int $financeId, $requestedData)
+    {
+        return $this->financesModel->updateFinance($financeId, $requestedData);
+    }
+
     public function calculateNetAndVatByGivenGross($gross)
     {
         $getTaxValueFromConfig = Config::get('crm_settings.invoice_tax')  / 100;
@@ -39,38 +45,38 @@ class FinancesService
         ];
     }
 
-    public function getFinances()
+    public function loadFinances()
     {
-        return $this->financesModel::all()->sortByDesc('created_at');
+        return $this->financesModel->getFinancesSortedByCreatedAt();
     }
 
-    public function getPagination()
+    public function loadPagination()
     {
-        return $this->financesModel::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->financesModel->getPaginate();
     }
 
-    public function execute($allInputs)
+    public function loadFinance(int $financeId)
     {
-        return $this->financesModel->insertRow($allInputs);
+        return $this->financesModel::find($financeId);
     }
 
-    public function getFinance(int $id)
+    public function loadIsActiveFunction($financeId, $value)
     {
-        return $this->financesModel::find($id);
-    }
-
-    public function update(int $id, $allInputs)
-    {
-        return $this->financesModel->updateRow($id, $allInputs);
-    }
-
-    public function loadIsActiveFunction($id, $value)
-    {
-        return $this->financesModel->setActive($id, $value);
+        return $this->financesModel->setActive($financeId, $value);
     }
 
     public function pluckCompanies()
     {
         return $this->financesModel->getPluckCompanies();
+    }
+
+    public function loadDataAndPagination()
+    {
+        $dataOfFinances = [
+            'finances' => $this->loadFinances(),
+            'financesPaginate' => $this->loadPagination()
+        ];
+
+        return $dataOfFinances;
     }
 }

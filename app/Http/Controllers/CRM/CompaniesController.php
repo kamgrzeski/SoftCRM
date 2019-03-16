@@ -10,7 +10,6 @@ use App\Traits\Language;
 use View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
-use Config;
 
 class CompaniesController extends Controller
 {
@@ -28,7 +27,7 @@ class CompaniesController extends Controller
 
     public function index()
     {
-        return View::make('crm.companies.index')->with($this->companiesService->getDataAndPagination());
+        return View::make('crm.companies.index')->with($this->companiesService->loadDataAndPagination());
     }
 
     public function create()
@@ -39,7 +38,7 @@ class CompaniesController extends Controller
         ]);
     }
 
-    public function show($companieId)
+    public function show(int $companieId)
     {
         return View::make('crm.companies.show')
             ->with([
@@ -47,12 +46,13 @@ class CompaniesController extends Controller
             ]);
     }
 
-    public function edit($companieId)
+    public function edit(int $companieId)
     {
         return View::make('crm.companies.edit')
             ->with([
                 'companies' => $this->companiesService->loadCompanie($companieId),
-                'clients' => $this->companiesService->pluckData()
+                'clients' => $this->companiesService->pluckData(),
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
@@ -75,20 +75,14 @@ class CompaniesController extends Controller
         }
     }
 
-    public function destroy($companieId)
+    public function destroy(int $companieId)
     {
         $dataOfCompanies = $this->companiesService->loadCompanie($companieId);
 
         $countDeals = $this->companiesService->countAssignedDeals($dataOfCompanies);
-        $countFiles = $this->companiesService->countAssignedFile($dataOfCompanies);
-        $countInvoices = $this->companiesService->countAssignedInvoice($dataOfCompanies);
 
         if ($countDeals > 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteDeals'));
-        } elseif ($countFiles > 0) {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteFiles'));
-        } elseif ($countInvoices > 0) {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteInvoices'));
         }
 
         $dataOfCompanies->delete();
@@ -98,7 +92,7 @@ class CompaniesController extends Controller
         return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesDelete'));
     }
 
-    public function processSetIsActive($companieId, $value)
+    public function processSetIsActive(int $companieId, bool $value)
     {
         if ($this->companiesService->loadSetActive($companieId, $value)) {
             $this->systemLogs->insertSystemLogs('CompaniesModel has been enabled with id: ' . $companieId, $this->systemLogs::successCode);
@@ -106,20 +100,5 @@ class CompaniesController extends Controller
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesActive'));
         }
-    }
-
-    public function disable($companieId)
-    {
-        if ($this->companiesService->loadSetActive($companieId, FALSE)) {
-            $this->systemLogs->insertSystemLogs('CompaniesModel has been disabled with id: ' . $companieId, $this->systemLogs::successCode);
-            return Redirect::to('companies')->with('message_success', $this->getMessage('messages.CompaniesIsNowDeactivated'));
-        } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.CompaniesIsDeactivated'));
-        }
-    }
-
-    public function search()
-    {
-        return true; // TODO
     }
 }

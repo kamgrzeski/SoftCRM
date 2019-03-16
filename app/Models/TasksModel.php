@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-
+use Config;
 
 class TasksModel extends Model
 {
@@ -15,34 +15,34 @@ class TasksModel extends Model
         return $this->belongsTo(EmployeesModel::class, 'employee_id');
     }
 
-    public function insertRow($allInputs)
+    public function storeTask(array $requestedData)
     {
         return self::insertGetId(
             [
-                'name' => $allInputs['name'],
-                'employee_id' => $allInputs['employee_id'],
-                'duration' => $allInputs['duration'],
+                'name' => $requestedData['name'],
+                'employee_id' => $requestedData['employee_id'],
+                'duration' => $requestedData['duration'],
                 'is_active' => 1,
                 'created_at' => Carbon::now()
             ]
         );
     }
 
-    public function updateRow($id, $allInputs)
+    public function updateTask(int $taskId, array $requestedData)
     {
-        return self::where('id', '=', $id)->update(
+        return self::where('id', '=', $taskId)->update(
             [
-                'name' => $allInputs['name'],
-                'employee_id' => $allInputs['employee_id'],
-                'duration' => $allInputs['duration'],
+                'name' => $requestedData['name'],
+                'employee_id' => $requestedData['employee_id'],
+                'duration' => $requestedData['duration'],
                 'is_active' => 1,
                 'updated_at' => Carbon::now()
             ]);
     }
 
-    public function setActive($id, $activeType)
+    public function setActive(int $taskId, $activeType)
     {
-        $findTasksById = self::where('id', '=', $id)->update(
+        $findTasksById = self::where('id', '=', $taskId)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -54,9 +54,9 @@ class TasksModel extends Model
         }
     }
 
-    public function setCompleted($id, $completeType)
+    public function setCompleted(int $taskId, $completeType)
     {
-        $findTasksById = self::where('id', '=', $id)->update(
+        $findTasksById = self::where('id', '=', $taskId)->update(
             [
                 'completed' => $completeType
             ]);
@@ -87,5 +87,20 @@ class TasksModel extends Model
         $percentage = round(($tasks / $taskAll) * 100);
 
         return $tasks . ' (' . $percentage .  '%)';
+    }
+
+    public function getTask(int $taskId)
+    {
+        return self::find($taskId);
+    }
+
+    public function getTasks()
+    {
+        return self::all()->sortByDesc('created_at');
+    }
+
+    public function getPaginate()
+    {
+        return self::paginate(Config::get('crm_settings.pagination_size'));
     }
 }

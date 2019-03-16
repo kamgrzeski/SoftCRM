@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use View;
 use Illuminate\Support\Facades\Redirect;
-use Config;
 
 class EmployeesController extends Controller
 {
@@ -27,7 +26,7 @@ class EmployeesController extends Controller
 
     public function index()
     {
-        return View::make('crm.employees.index')->with($this->employeesService->getDataAndPagination());
+        return View::make('crm.employees.index')->with($this->employeesService->loadDataAndPagination());
     }
 
     public function create()
@@ -49,7 +48,8 @@ class EmployeesController extends Controller
         return View::make('crm.employees.edit')
             ->with([
                 'employees' =>  $this->employeesService->loadEmployeeDetails($employeeId),
-                'clients' => $this->employeesService->getPluckClients()
+                'clients' => $this->employeesService->loadPluckClients(),
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
@@ -75,12 +75,9 @@ class EmployeesController extends Controller
     public function destroy($employeeId)
     {
         $dataOfEmployees = $this->employeesService->loadEmployeeDetails($employeeId);
-        $countContacts = $this->employeesService->countEmployeeContacts($dataOfEmployees);
         $countTasks = $this->employeesService->countEmployeeTasks($dataOfEmployees);
 
-        if ($countContacts > 0) {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteContacts'));
-        } elseif ($countTasks > 0) {
+        if ($countTasks > 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteTasks'));
         }
 
@@ -99,11 +96,6 @@ class EmployeesController extends Controller
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesActive'));
         }
-    }
-
-    public function search()
-    {
-        return true; // TODO
     }
 }
 

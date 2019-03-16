@@ -13,16 +13,16 @@ use App\Models\SystemLogsModel;
 class SystemLogService
 {
     const successCode = 201;
-    /**
-     * @param $actions
-     * @param int $statusCode
-     * @return bool
-     */
+
+    private $systemLogsModel;
+
+    public function __construct()
+    {
+        $this->systemLogsModel = new SystemLogsModel();
+    }
+
     public function insertSystemLogs($actions, $statusCode)
     {
-        $logs = new SystemLogsModel();
-        if($logs->insertRow($actions, $statusCode)) {
-            return true;
-        }
+        return $this->systemLogsModel->insertRow($actions, $statusCode);
     }
 }

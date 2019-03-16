@@ -68,7 +68,6 @@ return [
     'EmployeesIsNowDeactivated' => 'Employee has been deactivated.',
     'EmployeesIsDeactivated' => 'Employee has been already deactivated.',
     'firstDeleteTasks' => 'Cannot delete, have assigned tasks.',
-    'firstDeleteContacts' => 'Cannot delete, have assigned contacts.',
 
     /** Tasks Messages **/
     'TasksCompleted' => 'Task successfully completed.',
@@ -76,22 +75,9 @@ return [
     'SuccessTasksDelete' => 'Task has been deleted.',
     'SuccessTasksStore' => 'Task has been added.',
     'SuccessTasksUpdate' => 'Task has been updated.',
+    'SuccessTasksActive' => 'Task has been active.',
     'ThereIsNoTasks' => 'A task with this name doesn\'t exist.',
     'CantDeleteUnompletedTask' => 'Task hasn\'t been completed yet.',
-
-    /** Files Messages **/
-    'SuccessFilesStore' => 'File has been added.',
-    'SuccessFilesDelete' => 'File has been deleted.',
-    'SuccessFilesUpdate' => 'File has been updated.',
-
-    /** Mailing Messages **/
-    'SuccessMailingStore' => 'Mailing has been added.',
-    'SuccessMailingDelete' => 'Mailing has been deleted.',
-    'SuccessMailingUpdate' => 'Mailing has been updated.',
-    'SuccessMailingActive' => 'Mailing has been active.',
-    'ErrorMailingActive' => 'Mailing hasn\'t been active yet.',
-    'MailingIsNowDeactivated' => 'Mailing has been deactivated.',
-    'MailingIsDeactivated' => 'Mailing has been already deactivated.',
 
     /** Sales Messages **/
     'SuccessSalesStore' => 'Sales has been added.',
@@ -137,4 +123,5 @@ return [
     'ErrorProductsActive' => 'Products hasn\'t been active yet.',
     'ProductsIsNowDeactivated' => 'Products has been deactivated.',
     'ProductsIsDeactivated' => 'Products has been already deactivated.',
+    'firstDeleteSales' => 'Cannot delete, have assigned sales.'
 ];

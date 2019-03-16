@@ -10,7 +10,6 @@ use App\Traits\Language;
 use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
-use Config;
 
 class FinancesController extends Controller
 {
@@ -25,19 +24,9 @@ class FinancesController extends Controller
         $this->financesService = new FinancesService();
     }
 
-    private function getDataAndPagination()
-    {
-        $dataOfFinances = [
-            'finances' => $this->financesService->getFinances(),
-            'financesPaginate' => $this->financesService->getPagination()
-        ];
-
-        return $dataOfFinances;
-    }
-
     public function index()
     {
-        return View::make('crm.finances.index')->with($this->getDataAndPagination());
+        return View::make('crm.finances.index')->with($this->financesService->loadDataAndPagination());
     }
 
     public function create()
@@ -49,21 +38,22 @@ class FinancesController extends Controller
             ]);
     }
     
-    public function show($companieId)
+    public function show($financeId)
     {
         return View::make('crm.finances.show')
             ->with([
-                'finances' => $this->financesService->getFinance($companieId),
+                'finances' => $this->financesService->loadFinance($financeId),
                 'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
-    public function edit($companieId)
+    public function edit($financeId)
     {
         return View::make('crm.finances.edit')
             ->with([
-                'finances' => $this->financesService->getFinance($companieId),
-                'dataWithPluckOfCompanies' => $this->financesService->pluckCompanies()
+                'finances' => $this->financesService->loadFinance($financeId),
+                'dataWithPluckOfCompanies' => $this->financesService->pluckCompanies(),
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
@@ -77,18 +67,18 @@ class FinancesController extends Controller
         }
     }
 
-    public function update(Request $request, $companieId)
+    public function update(Request $request, $financeId)
     {
-        if ($this->financesService->update($companieId, $request->all())) {
+        if ($this->financesService->update($financeId, $request->all())) {
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorFinancesUpdate'));
         }
     }
 
-    public function destroy($companieId)
+    public function destroy($financeId)
     {
-        $dataOfFinances = $this->financesService->getFinance($companieId);
+        $dataOfFinances = $this->financesService->loadFinance($financeId);
 
         $dataOfFinances->delete();
 
@@ -97,18 +87,13 @@ class FinancesController extends Controller
         return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesDelete'));
     }
 
-    public function processSetIsActive($companieId, $value)
+    public function processSetIsActive($financeId, $value)
     {
-        if ($this->financesService->loadIsActiveFunction($companieId, $value)) {
-            $this->systemLogs->insertSystemLogs('FinancesModel has been enabled with id: ' . $companieId, $this->systemLogs::successCode);
+        if ($this->financesService->loadIsActiveFunction($financeId, $value)) {
+            $this->systemLogs->insertSystemLogs('FinancesModel has been enabled with id: ' . $financeId, $this->systemLogs::successCode);
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesActive'));
         }
-    }
-
-    public function search()
-    {
-        return true; // TODO
     }
 }

@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\ProductsModel;
 use App\Models\SalesModel;
-use Config;
 
 class SalesService
 {
@@ -15,38 +14,48 @@ class SalesService
         $this->salesModel = new SalesModel();
     }
 
-    public function getSales()
+    public function execute($requestedData)
     {
-        return $this->salesModel::all()->sortByDesc('created_at');
+        return $this->salesModel->storeTask($requestedData);
     }
 
-    public function getPaginate()
+    public function update($saleId, $requestedData)
     {
-        return $this->salesModel::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->salesModel->updateTask($saleId, $requestedData);
     }
 
-    public function execute($allInputs)
+    public function loadSales()
     {
-        return $this->salesModel->insertRow($allInputs);
+        return $this->salesModel->getSalesSortedByCreatedAt();
     }
 
-    public function getSale(int $id)
+    public function loadPaginate()
     {
-        return $this->salesModel::find($id);
+        return $this->salesModel->getPaginate();
     }
 
-    public function update($id, $allInputs)
+    public function loadSale(int $saleId)
     {
-        return $this->salesModel->updateRow($id, $allInputs);
+        return $this->salesModel::find($saleId);
     }
 
-    public function loadIsActiveFunction($id, $value)
+    public function loadIsActiveFunction($saleId, $value)
     {
-        return $this->salesModel->setActive($id, $value);
+        return $this->salesModel->setActive($saleId, $value);
     }
 
-    public function getProducts()
+    public function loadProducts()
     {
         return ProductsModel::pluck('name', 'id');
+    }
+
+    public function loadDataAndPagination()
+    {
+        $dataWithSales = [
+            'sales' => $this->loadSales(),
+            'salesPaginate' => $this->loadPaginate()
+        ];
+
+        return $dataWithSales;
     }
 }

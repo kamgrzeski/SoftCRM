@@ -10,7 +10,6 @@ namespace App\Services;
 
 use App\Models\ClientsModel;
 use App\Traits\Language;
-use Config;
 
 class ClientService
 {
@@ -23,12 +22,22 @@ class ClientService
         $this->clientsModel = new ClientsModel();
     }
 
-    public function checkIfClientHaveForeignKey($id)
+    public function execute(array $requestedData)
     {
-        $data = $this->clientsModel->findClientByGivenClientId($id);
+        return $this->clientsModel->storeClient($requestedData);
+    }
 
-        $countCompanies = $data->companies()->count();
-        $countEmployees = $data->employees()->count();
+    public function update(int $clientId, array $requestedData)
+    {
+        return $this->clientsModel->updateClient($clientId, $requestedData);
+    }
+
+    public function checkIfClientHaveAssignedEmployeeOrCompanie(int $clientId)
+    {
+        $client = $this->clientsModel->findClientByGivenClientId($clientId);
+
+        $countCompanies = $client->companies()->count();
+        $countEmployees = $client->employees()->count();
 
         if ($countCompanies > 0) {
             return $this->getMessage('messages.firstDeleteCompanies');
@@ -40,18 +49,18 @@ class ClientService
         return true;
     }
 
-    public function processDeleteRow($id)
+    public function loadDeleteClient(int $clientId)
     {
-        $data = $this->clientsModel->findClientByGivenClientId($id);
+        $data = $this->clientsModel->findClientByGivenClientId($clientId);
 
         return $data->delete();
     }
 
-    public function processIsActive($id, $value)
+    public function processIsActive(int $clientId, bool $value)
     {
-        $clientDetails = $this->clientsModel->findClientByGivenClientId($id);
+        $clientDetails = $this->clientsModel->findClientByGivenClientId($clientId);
 
-        if ($this->clientsModel->setActive($clientDetails->id, $value)) {
+        if ($this->clientsModel->setClientActive($clientDetails->id, $value)) {
             return $this->getMessage('messages.SuccessClientActive');
         } else {
             return $this->getMessage('messages.ClientIsActived');
@@ -63,36 +72,18 @@ class ClientService
         return $this->clientsModel->getClientSortedBy($string);
     }
 
-    public function loadPagination()
-    {
-        return $this->clientsModel::paginate(Config::get('crm_settings.pagination_size'));
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataAndPagination()
+    public function loadDataAndPagination()
     {
         $dataWithClients = [
             'client' => $this->loadClientSortedBy('created_at'),
-            'clientPaginate' => $this->loadPagination()
+            'clientPaginate' => $this->clientsModel->getPaginate()
         ];
 
         return $dataWithClients;
     }
 
-    public function findClient(int $id)
+    public function loadClientDetails(int $clientId)
     {
-        return $this->clientsModel->findClientByGivenClientId($id);
-    }
-
-    public function execute($allInputs)
-    {
-        return $this->clientsModel->insertRow($allInputs);
-    }
-
-    public function update($id, $allInputs)
-    {
-        return $this->clientsModel->updateRow($id, $allInputs);
+        return $this->clientsModel->findClientByGivenClientId($clientId);
     }
 }

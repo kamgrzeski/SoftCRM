@@ -10,7 +10,6 @@ use App\Traits\Language;
 use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
-use Config;
 
 class ProductsController extends Controller
 {
@@ -26,19 +25,9 @@ class ProductsController extends Controller
         $this->productsService = new ProductsService();
     }
 
-    private function getDataAndPagination()
-    {
-        $dataWithProducts = [
-            'products' => $this->productsService->getProducts(),
-            'productsPaginate' => $this->productsService->getPagination()
-        ];
-
-        return $dataWithProducts;
-    }
-
     public function index()
     {
-        return View::make('crm.products.index')->with($this->getDataAndPagination());
+        return View::make('crm.products.index')->with($this->productsService->loadDataAndPagination());
     }
 
     public function create()
@@ -48,18 +37,18 @@ class ProductsController extends Controller
         ]);
     }
     
-    public function show($productId)
+    public function show(int $productId)
     {
         return View::make('crm.products.show')
             ->with([
-                'products' => $this->productsService->getProduct($productId),
+                'products' => $this->productsService->loadProduct($productId),
             ]);
     }
 
-    public function edit($productId)
+    public function edit(int $productId)
     {
         return View::make('crm.products.edit')
-            ->with('products', $this->productsService->getProduct($productId));
+            ->with('products', $this->productsService->loadProduct($productId));
     }
     
     public function store(ProductsStoreRequest $request)
@@ -81,18 +70,23 @@ class ProductsController extends Controller
         }
     }
 
-    public function destroy($productId)
+    public function destroy(int $productId)
     {
-        $productsDetails = $this->productsService->getProduct($productId);
-        $productsDetails->delete();
+        $clientAssigned = $this->productsService->checkIfProductHaveAssignedSale($productId);
+
+        if (!empty($clientAssigned)) {
+            return Redirect::back()->with('message_danger', $clientAssigned);
+        } else {
+            $productsDetails = $this->productsService->loadProduct($productId);
+            $productsDetails->delete();
+        }
 
         $this->systemLogs->insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogs::successCode);
-
 
         return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsDelete'));
     }
 
-    public function processSetIsActive($productId, $value)
+    public function processSetIsActive(int $productId, bool $value)
     {
         if ($this->productsService->loadIsActiveFunction($productId, $value)) {
             $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $productId, $this->systemLogs::successCode);
@@ -100,10 +94,5 @@ class ProductsController extends Controller
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ProductsIsActived'));
         }
-    }
-
-    public function search()
-    {
-        return true; // TODO
     }
 }

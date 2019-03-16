@@ -9,34 +9,34 @@ class ReportsModel extends Model
 {
     protected $table = 'reports';
 
-    public static function insertRow($allInputs)
+    public static function storeReport($requestedData)
     {
         return self::insertGetId(
             [
-                'name' => $allInputs['name'],
-                'companies_id' => $allInputs['companies_id'],
-                'clients_id' => $allInputs['clients_id'],
+                'name' => $requestedData['name'],
+                'companies_id' => $requestedData['companies_id'],
+                'clients_id' => $requestedData['clients_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
     }
 
-    public static function updateRow($id, $allInputs)
+    public static function updateReport($reportId, $requestedData)
     {
-        return self::where('id', '=', $id)->update(
+        return self::where('id', '=', $reportId)->update(
             [
-                'name' => $allInputs['name'],
-                'companies_id' => $allInputs['companies_id'],
-                'clients_id' => $allInputs['clients_id'],
+                'name' => $requestedData['name'],
+                'companies_id' => $requestedData['companies_id'],
+                'clients_id' => $requestedData['clients_id'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }
 
-    public static function setActive($id, $activeType)
+    public static function setActive($reportId, $activeType)
     {
-        $findReportsById = self::where('id', '=', $id)->update(
+        $findReportsById = self::where('id', '=', $reportId)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -51,10 +51,5 @@ class ReportsModel extends Model
     public static function countReports()
     {
         return self::all()->count();
-    }
-
-    public static function trySearchReportsByValue($type, $value, $paginationLimit = 10)
-    {
-        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Services\FinancesService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Config;
 
 class FinancesModel extends Model
 {
@@ -15,52 +16,52 @@ class FinancesModel extends Model
         return $this->belongsTo(CompaniesModel::class);
     }
 
-    public function insertRow($allInputs)
+    public function storeFinance($requestedData)
     {
         $financesHelper = new FinancesService();
-        $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($allInputs['gross']);
+        $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($requestedData['gross']);
 
         return self::insertGetId(
             [
-                'name' => $allInputs['name'],
-                'description' => $allInputs['description'],
-                'category' => $allInputs['category'],
-                'type' => $allInputs['type'],
-                'gross' => $allInputs['gross'],
+                'name' => $requestedData['name'],
+                'description' => $requestedData['description'],
+                'category' => $requestedData['category'],
+                'type' => $requestedData['type'],
+                'gross' => $requestedData['gross'],
                 'net' => $dataToInsert['net'],
                 'vat' => $dataToInsert['vat'],
-                'date' => $allInputs['date'] ?? Carbon::now(),
-                'companies_id' => $allInputs['companies_id'],
+                'date' => $requestedData['date'] ?? Carbon::now(),
+                'companies_id' => $requestedData['companies_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
     }
 
-    public function updateRow($id, $allInputs)
+    public function updateFinance($financeId, $requestedData)
     {
         $financesHelper = new FinancesService();
-        $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($allInputs['gross']);
+        $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($requestedData['gross']);
 
-        return self::where('id', '=', $id)->update(
+        return self::where('id', '=', $financeId)->update(
             [
-                'name' => $allInputs['name'],
-                'description' => $allInputs['description'],
-                'type' => $allInputs['type'],
-                'category' => $allInputs['category'],
-                'gross' => $allInputs['gross'],
+                'name' => $requestedData['name'],
+                'description' => $requestedData['description'],
+                'type' => $requestedData['type'],
+                'category' => $requestedData['category'],
+                'gross' => $requestedData['gross'],
                 'net' => $dataToInsert['net'],
                 'vat' => $dataToInsert['vat'],
-                'date' => $allInputs['date'],
-                'companies_id' => $allInputs['companies_id'],
+                'date' => $requestedData['date'],
+                'companies_id' => $requestedData['companies_id'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }
 
-    public function setActive($id, $activeType)
+    public function setActive($financeId, $activeType)
     {
-        $findFinancesById = self::where('id', '=', $id)->update(
+        $findFinancesById = self::where('id', '=', $financeId)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -74,11 +75,21 @@ class FinancesModel extends Model
 
     public static function countFinances()
     {
-        return count(self::get());
+        return self::get()->count();
     }
 
     public function getPluckCompanies()
     {
         return CompaniesModel::pluck('name', 'id');
+    }
+
+    public function getFinancesSortedByCreatedAt()
+    {
+        return self::all()->sortByDesc('created_at');
+    }
+
+    public function getPaginate()
+    {
+        return self::paginate(Config::get('crm_settings.pagination_size'));
     }
 }

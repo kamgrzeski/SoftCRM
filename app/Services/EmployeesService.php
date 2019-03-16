@@ -20,6 +20,16 @@ class EmployeesService
         $this->employeesModel = new EmployeesModel();
     }
 
+    public function execute($requestedData)
+    {
+        return $this->employeesModel->insertEmployee($requestedData);
+    }
+
+    public function update(int $employeeId, $requestedData)
+    {
+        return $this->employeesModel->updateEmployee($employeeId, $requestedData);
+    }
+
     public function loadEmployees()
     {
         return $this->employeesModel->getEmployees();
@@ -33,7 +43,7 @@ class EmployeesService
     /**
      * @return array
      */
-    public function getDataAndPagination()
+    public function loadDataAndPagination()
     {
         $dataOfEmployees = [
             'employees' => $this->loadEmployees(),
@@ -48,37 +58,27 @@ class EmployeesService
         return $this->employeesModel::pluck('full_name', 'id');
     }
 
-    public function loadEmployeeDetails(int $id)
+    public function loadEmployeeDetails(int $employeeId)
     {
-        return $this->employeesModel->getEmployeeDetails($id);
+        return $this->employeesModel->getEmployeeDetails($employeeId);
     }
 
-    public function countEmployeeContacts(EmployeesModel $dataOfEmployees)
+    public function countEmployeeContacts($dataOfEmployees)
     {
-        return count($dataOfEmployees->contacts()->get());
+        return $dataOfEmployees->contacts()->get()->count();
     }
 
-    public function countEmployeeTasks(EmployeesModel $dataOfEmployees)
+    public function countEmployeeTasks($dataOfEmployees)
     {
-        return count($dataOfEmployees->tasks()->get());
+        return $dataOfEmployees->tasks()->get()->count();
     }
 
-    public function loadIsActiveFunction(int $id, int $value)
+    public function loadIsActiveFunction(int $employeeId, int $value)
     {
-        return $this->employeesModel->setActive($id, $value);
+        return $this->employeesModel->setActive($employeeId, $value);
     }
 
-    public function execute($allInputs)
-    {
-        return $this->employeesModel->insertRow($allInputs);
-    }
-
-    public function update(int $id, $allInputs)
-    {
-        return $this->employeesModel->updateRow($id, $allInputs);
-    }
-
-    public function getPluckClients()
+    public function loadPluckClients()
     {
         return $this->employeesModel->getClients();
     }

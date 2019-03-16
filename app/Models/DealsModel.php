@@ -4,40 +4,46 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Config;
 
 class DealsModel extends Model
 {
     protected $table = 'deals';
 
-    public function insertGetId($allInputs)
+    public function companies()
+    {
+        return $this->belongsTo(CompaniesModel::class);
+    }
+
+    public function insertDeal($requestedData)
     {
         return self::insert(
             [
-                'name' => $allInputs['name'],
-                'start_time' => $allInputs['start_time'],
-                'end_time' => $allInputs['end_time'],
-                'companies_id' => $allInputs['companies_id'],
+                'name' => $requestedData['name'],
+                'start_time' => $requestedData['start_time'],
+                'end_time' => $requestedData['end_time'],
+                'companies_id' => $requestedData['companies_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
     }
 
-    public function updateRow($id, $allInputs)
+    public function updateDeal($dealId, $requestedData)
     {
-        return self::where('id', '=', $id)->update(
+        return self::where('id', '=', $dealId)->update(
             [
-                'name' => $allInputs['name'],
-                'start_time' => $allInputs['start_time'],
-                'end_time' => $allInputs['end_time'],
-                'companies_id' => $allInputs['companies_id'],
+                'name' => $requestedData['name'],
+                'start_time' => $requestedData['start_time'],
+                'end_time' => $requestedData['end_time'],
+                'companies_id' => $requestedData['companies_id'],
                 'is_active' => 1
             ]);
     }
 
-    public function setActive($id, $activeType)
+    public function setActive($dealId, $activeType)
     {
-        $findDealsById = self::where('id', '=', $id)->update(
+        $findDealsById = self::where('id', '=', $dealId)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -51,12 +57,7 @@ class DealsModel extends Model
 
     public static function countDeals()
     {
-        return count(self::get());
-    }
-
-    public function companies()
-    {
-        return $this->belongsTo(CompaniesModel::class);
+        return self::get()->count();
     }
 
     public static function getDealsInLatestMonth() {
@@ -76,5 +77,15 @@ class DealsModel extends Model
     public function getPluckCompanies()
     {
         return self::pluck('name', 'id');
+    }
+
+    public function getPaginate()
+    {
+        return self::paginate(Config::get('crm_settings.pagination_size'));
+    }
+
+    public function getDeal(int $dealId)
+    {
+        return self::find($dealId);
     }
 }

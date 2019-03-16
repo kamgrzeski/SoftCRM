@@ -28,7 +28,7 @@ class SystemLogsModel extends Model
     {
         $userInformation = $this->getUserInformation();
 
-        return self::insert(
+        self::insert(
             [
                 'user_id' => Auth::id(),
                 'actions' => $actions,

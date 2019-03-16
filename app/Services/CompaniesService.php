@@ -9,7 +9,6 @@
 namespace App\Services;
 
 use App\Models\CompaniesModel;
-use Config;
 
 class CompaniesService
 {
@@ -20,6 +19,16 @@ class CompaniesService
         $this->companiesModel = new CompaniesModel();
     }
 
+    public function execute($requestedData)
+    {
+        return $this->companiesModel->insertCompanie($requestedData);
+    }
+
+    public function update(int $companieId, $requestedData)
+    {
+        return $this->companiesModel->updateCompanie($companieId, $requestedData);
+    }
+
     public function loadCompanies()
     {
         return $this->companiesModel::all()->sortByDesc('created_at');
@@ -27,13 +36,13 @@ class CompaniesService
 
     public function loadPagination()
     {
-        return $this->companiesModel::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->companiesModel->getPaginate();
     }
 
     /**
      * @return array
      */
-    public function getDataAndPagination()
+    public function loadDataAndPagination()
     {
         $dataOfCompanies = [
             'companies' => $this->loadCompanies(),
@@ -48,9 +57,9 @@ class CompaniesService
         return $this->companiesModel::pluck('name', 'id');
     }
 
-    public function loadCompanie(int $id)
+    public function loadCompanie(int $companieId)
     {
-        return $this->companiesModel::find($id);
+        return $this->companiesModel::find($companieId);
     }
 
     public function countAssignedDeals(CompaniesModel $dataOfCompanies)
@@ -63,24 +72,9 @@ class CompaniesService
         return count($dataOfCompanies->files()->get());
     }
 
-    public function countAssignedInvoice(CompaniesModel $dataOfCompanies)
+    public function loadSetActive($companieId, $value)
     {
-        return count($dataOfCompanies->invoices()->get());
-    }
-
-    public function execute($allInputs)
-    {
-        return $this->companiesModel->insertRow($allInputs);
-    }
-
-    public function update(int $id, $allInputs)
-    {
-        return $this->companiesModel->updateRow($id, $allInputs);
-    }
-
-    public function loadSetActive($id, $value)
-    {
-        return $this->companiesModel->setActive($id, $value);
+        return $this->companiesModel->setActive($companieId, $value);
     }
 
     public function loadCompaniesByCreatedAt()

@@ -25,50 +25,45 @@ class EmployeesModel extends Model
         return $this->belongsTo(ClientsModel::class);
     }
 
-    public function contacts()
-    {
-        return $this->hasMany(ContactsModel::class, 'employee_id');
-    }
-
     public function tasks()
     {
         return $this->hasMany(TasksModel::class, 'employee_id');
     }
 
-    public function insertRow($allInputs)
+    public function insertEmployee($requestedData)
     {
         return self::insertGetId(
             [
-                'full_name' => $allInputs['full_name'],
-                'phone' => $allInputs['phone'],
-                'email' => $allInputs['email'],
-                'job' => $allInputs['job'],
-                'note' => $allInputs['note'],
-                'client_id' => $allInputs['client_id'],
+                'full_name' => $requestedData['full_name'],
+                'phone' => $requestedData['phone'],
+                'email' => $requestedData['email'],
+                'job' => $requestedData['job'],
+                'note' => $requestedData['note'],
+                'client_id' => $requestedData['client_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
     }
 
-    public function updateRow($id, $allInputs)
+    public function updateEmployee($employeeId, $requestedData)
     {
-        return self::where('id', '=', $id)->update(
+        return self::where('id', '=', $employeeId)->update(
             [
-                'full_name' => $allInputs['full_name'],
-                'phone' => $allInputs['phone'],
-                'email' => $allInputs['email'],
-                'job' => $allInputs['job'],
-                'note' => $allInputs['note'],
-                'client_id' => $allInputs['client_id'],
+                'full_name' => $requestedData['full_name'],
+                'phone' => $requestedData['phone'],
+                'email' => $requestedData['email'],
+                'job' => $requestedData['job'],
+                'note' => $requestedData['note'],
+                'client_id' => $requestedData['client_id'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }
 
-    public function setActive($id, $activeType)
+    public function setActive($employeeId, $activeType)
     {
-        $findEmployeesById = self::where('id', '=', $id)->update(
+        $findEmployeesById = self::where('id', '=', $employeeId)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -111,9 +106,9 @@ class EmployeesModel extends Model
         return $query;
     }
 
-    public function getEmployeeDetails(int $id)
+    public function getEmployeeDetails(int $employeeId)
     {
-        $query = self::find($id);
+        $query = self::find($employeeId);
 
         Arr::add($query, 'taskCount', count($query->tasks));
 

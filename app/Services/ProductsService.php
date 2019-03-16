@@ -3,10 +3,13 @@
 namespace App\Services;
 
 use App\Models\ProductsModel;
+use App\Traits\Language;
 use Config;
 
 class ProductsService
 {
+    use Language;
+
     private $productsModel;
 
     public function __construct()
@@ -14,38 +17,58 @@ class ProductsService
         $this->productsModel = new ProductsModel();
     }
 
-    public function getProducts()
+    public function execute($requestedData)
     {
-        return ProductsModel::all()->sortByDesc('created_at');
+        return $this->productsModel->storeProduct($requestedData);
     }
 
-    public function getPagination()
+    public function update(int $productId, $requestedData)
     {
-        return ProductsModel::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->productsModel->updateProduct($productId, $requestedData);
     }
 
-    public function execute($allInputs)
+    public function loadProducts()
     {
-        return $this->productsModel->insertRow($allInputs);
+        return $this->productsModel->getProducts();
     }
 
-    public function getProduct(int $id)
+    public function loadPagination()
     {
-        return ProductsModel::find($id);
+        return $this->productsModel->getPaginate();
+    }
+    public function loadProduct(int $productId)
+    {
+        return $this->productsModel->getProduct($productId);
     }
 
-    public function update(int $id, $allInputs)
+    public function loadIsActiveFunction($productId, $value)
     {
-        return $this->productsModel->updateRow($id, $allInputs);
-    }
-
-    public function loadIsActiveFunction($id, $value)
-    {
-        return $this->productsModel->setActive($id, $value);
+        return $this->productsModel->setActive($productId, $value);
     }
 
     public function loadProductsByCreatedAt()
     {
         return $this->productsModel->getProductsByCreatedAt();
+    }
+
+    public function loadDataAndPagination()
+    {
+        $dataWithProducts = [
+            'products' => $this->loadProducts(),
+            'productsPaginate' => $this->loadPagination()
+        ];
+
+        return $dataWithProducts;
+    }
+
+    public function checkIfProductHaveAssignedSale(int $productId)
+    {
+        $product = $this->productsModel->findClientByGivenClientId($productId);
+
+        $countSales = $product->sales()->count();
+
+        if ($countSales > 0) {
+            return $this->getMessage('messages.firstDeleteSales');
+        }
     }
 }

@@ -4,35 +4,31 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DealsStoreRequest;
-use App\Models\DealsModel;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
 use App\Traits\Language;
 use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
-use Config;
 
 class DealsController extends Controller
 {
     use Language;
 
     private $systemLogs;
-    private $dealsModel;
     private $dealsService;
 
     public function __construct()
     {
         $this->systemLogs = new SystemLogService();
-        $this->dealsModel = new DealsModel();
         $this->dealsService = new DealsService();
     }
 
     private function getDataAndPagination()
     {
         $dataOfDeals = [
-            'deals' => $this->dealsService->getDeals(),
-            'dealsPaginate' => $this->dealsService->getPaginate()
+            'deals' => $this->dealsService->loadDeals(),
+            'dealsPaginate' => $this->dealsService->loadPaginate()
         ];
 
         return $dataOfDeals;
@@ -51,18 +47,19 @@ class DealsController extends Controller
         ]);
     }
 
-    public function show($dealId)
+    public function show(int $dealId)
     {
         return View::make('crm.deals.show')
-            ->with('deals', $this->dealsService->getDeal($dealId));
+            ->with('deals', $this->dealsService->loadDeal($dealId));
     }
 
-    public function edit($dealId)
+    public function edit(int $dealId)
     {
         return View::make('crm.deals.edit')
             ->with([
-                'deals' => $this->dealsService->getDeal($dealId),
-                'companies' => $this->dealsService->pluckCompanies()
+                'deals' => $this->dealsService->loadDeal($dealId),
+                'companies' => $this->dealsService->pluckCompanies(),
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
@@ -85,9 +82,9 @@ class DealsController extends Controller
         }
     }
 
-    public function destroy($dealId)
+    public function destroy(int $dealId)
     {
-        $dataOfDeals = $this->dealsService->getDeal($dealId);
+        $dataOfDeals = $this->dealsService->loadDeal($dealId);
         $dataOfDeals->delete();
 
         $this->systemLogs->insertSystemLogs('DealsModel has been deleted with id: ' .$dataOfDeals->id, $this->systemLogs::successCode);
@@ -95,19 +92,13 @@ class DealsController extends Controller
         return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsDelete'));
     }
 
-    public function processSetIsActive($dealId, $value)
+    public function processSetIsActive(int $dealId, bool $value)
     {
-        if ($this->dealsModel->setActive($dealId, $value)) {
+        if ($this->dealsService->loadSetActive($dealId, $value)) {
             $this->systemLogs->insertSystemLogs('DealsModel has been enabled with id: ' .$dealId, $this->systemLogs::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessDealsActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsActive'));
         }
-    }
-
-
-    public function search()
-    {
-        return true; // TODO
     }
 }

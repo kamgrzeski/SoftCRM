@@ -10,7 +10,6 @@ use App\Traits\Language;
 use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
-use Config;
 
 class TasksController extends Controller
 {
@@ -25,19 +24,9 @@ class TasksController extends Controller
         $this->taskService = new TasksService();
     }
 
-    private function getDataAndPagination()
-    {
-        $dataOfTasks = [
-            'tasks' => $this->taskService->getTasks(),
-            'tasksPaginate' => $this->taskService->getPaginate()
-        ];
-
-        return $dataOfTasks;
-    }
-
     public function index()
     {
-        return View::make('crm.tasks.index')->with($this->getDataAndPagination());
+        return View::make('crm.tasks.index')->with($this->taskService->loadDataAndPagination());
     }
 
     public function create()
@@ -48,18 +37,19 @@ class TasksController extends Controller
         ]);
     }
 
-    public function show($taskId)
+    public function show(int $taskId)
     {
         return View::make('crm.tasks.show')
-            ->with('tasks', $this->taskService->getTask($taskId));
+            ->with('tasks', $this->taskService->loadTask($taskId));
     }
 
-    public function edit($taskId)
+    public function edit(int $taskId)
     {
         return View::make('crm.tasks.edit')
             ->with([
-                'tasks' => $this->taskService->getTask($taskId),
-                'employees' => $this->taskService->pluckEmployees()
+                'tasks' => $this->taskService->loadTask($taskId),
+                'employees' => $this->taskService->pluckEmployees(),
+                'inputText' => $this->getMessage('messages.InputText')
             ]);
     }
 
@@ -84,7 +74,7 @@ class TasksController extends Controller
 
     public function destroy($taskId)
     {
-        $dataOfTasks = $this->taskService->getTask($taskId);
+        $dataOfTasks = $this->taskService->loadTask($taskId);
 
         if($dataOfTasks->completed == 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.CantDeleteUnompletedTask'));
@@ -92,13 +82,12 @@ class TasksController extends Controller
             $dataOfTasks->delete();
 
             $this->systemLogs->insertSystemLogs('Tasks has been deleted with id: ' . $dataOfTasks->id, $this->systemLogs::successCode);
-
         }
 
         return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksDelete'));
     }
 
-    public function processSetIsActive($taskId, $value)
+    public function processSetIsActive(int $taskId, bool $value)
     {
         if ($this->taskService->loadIsActiveFunction($taskId, $value)) {
             $this->systemLogs->insertSystemLogs('Tasks has been enabled with id: ' . $taskId, $this->systemLogs::successCode);
@@ -108,12 +97,7 @@ class TasksController extends Controller
         }
     }
 
-    public function search()
-    {
-        return true; // TODO
-    }
-
-    public function completedTask($taskId)
+    public function completedTask(int $taskId)
     {
         if ($this->taskService->loadIsCompletedFunction($taskId, TRUE)) {
             $this->systemLogs->insertSystemLogs('Tasks has been completed with id: ' . $taskId, $this->systemLogs::successCode);
@@ -123,7 +107,7 @@ class TasksController extends Controller
         }
     }
 
-    public function uncompletedTask($taskId)
+    public function uncompletedTask(int $taskId)
     {
         if ($this->taskService->loadIsCompletedFunction($taskId, FALSE)) {
             $this->systemLogs->insertSystemLogs('Tasks has been uncompleted with id: ' . $taskId, $this->systemLogs::successCode);

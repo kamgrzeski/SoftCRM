@@ -18,14 +18,6 @@
                     <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
-            {!! Form::open(array('route' => 'sales/search', 'class'=>'form navbar-form navbar-right searchform')) !!}
-            {!! Form::text('search', null,
-                                   array('required',
-                                        'class'=>'form-control',
-                                        'placeholder'=>'Write name of sales...')) !!}
-            {!! Form::submit('Search',
-                                       array('class'=>'btn btn-default')) !!}
-            {!! Form::close() !!}
             <a href="{{ URL::to('sales/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add sales</button>
             </a>

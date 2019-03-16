@@ -15,12 +15,10 @@ class DatabaseSeeder extends Seeder
         $this->call(FakerClientSeeder::class);
         $this->call(FakerCompaniesSeeder::class);
         $this->call(FakerEmployeesSeeder::class);
-        $this->call(FakerContactsSeeder::class);
         $this->call(FakerDealsSeeder::class);
         $this->call(FakerProductsSeeder::class);
         $this->call(FakerSalesSeeder::class);
         $this->call(FakerTasksSeeder::class);
-        $this->call(FakerProjectsSeeder::class);
         $this->call(FakerFinancesSeeder::class);
 
     }

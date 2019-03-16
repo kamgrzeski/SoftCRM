@@ -19,14 +19,6 @@
                     <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
-            {!! Form::open(array('route' => 'finances/search', 'class'=>'form navbar-form navbar-right searchform')) !!}
-            {!! Form::text('search', null,
-                                   array('required',
-                                        'class'=>'form-control',
-                                        'placeholder'=>'Write name of finances...')) !!}
-            {!! Form::submit('Search',
-                                       array('class'=>'btn btn-default')) !!}
-            {!! Form::close() !!}
             <a href="{{ URL::to('finances/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add finances</button>
             </a>
@@ -77,11 +69,17 @@
                                     <td class="text-center">{{ $value->date }}</td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)
-                                            <input type="checkbox" data-on="Active" checked data-toggle="toggle"
-                                                   onchange='window.location.assign("{{ URL::to('finances/set-active/' . $value->id . '/0') }}")'/>
+                                            <label class="switch">
+                                                <input type="checkbox"
+                                                       onchange='window.location.assign("{{ URL::to('finances/set-active/' . $value->id . '/0') }}")' checked>
+                                                <span class="slider"></span>
+                                            </label>
                                         @else
-                                            <input type="checkbox" class="slider"
-                                                   onchange='window.location.assign("{{ URL::to('finances/set-active/' . $value->id . '/1') }}")'/>
+                                            <label class="switch">
+                                                <input type="checkbox"
+                                                       onchange='window.location.assign("{{ URL::to('finances/set-active/' . $value->id . '/1') }}")'>
+                                                <span class="slider"></span>
+                                            </label>
                                         @endif
                                     </td>
                                     <td class="text-right">

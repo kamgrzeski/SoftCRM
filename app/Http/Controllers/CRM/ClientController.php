@@ -9,56 +9,61 @@ use App\Services\SystemLogService;
 use App\Traits\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Config;
 use View;
 
 class ClientController extends Controller
 {
     use Language;
 
-    private $systemLogs;
+    private $systemLogsService;
     private $clientService;
 
     public function __construct()
     {
-        $this->systemLogs = new SystemLogService();
+        $this->systemLogsService = new SystemLogService();
         $this->clientService = new ClientService();
     }
 
     public function index()
     {
         return View::make('crm.client.index')
-            ->with($this->clientService->getDataAndPagination());
+            ->with($this->clientService->loadDataAndPagination());
     }
 
     public function create()
     {
-        return View::make('crm.client.create')->with([
-            'inputText' => $this->getMessage('messages.InputText')
-        ]);
+        return View::make('crm.client.create')->with(
+            [
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
 
-    public function show($clientId)
+    public function show(int $clientId)
     {
         return View::make('crm.client.show')
-            ->with([
-                'clients' => $this->clientService->findClient($clientId)
-            ]);
+            ->with(
+                [
+                    'clients' => $this->clientService->loadClientDetails($clientId)
+                ]
+            );
     }
 
     public function edit($clientId)
     {
         return View::make('crm.client.edit')
-            ->with([
-                'client' => $this->clientService->findClient($clientId),
-                'inputText' => $this->getMessage('messages.InputText')
-            ]);
+            ->with(
+                [
+                    'client' => $this->clientService->loadClientDetails($clientId),
+                    'inputText' => $this->getMessage('messages.InputText')
+                ]
+            );
     }
 
     public function store(ClientStoreRequest $request)
     {
         if ($client = $this->clientService->execute($request->validated())) {
-            $this->systemLogs->insertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogs::successCode);
+            $this->systemLogsService->insertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogsService::successCode);
             return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorClientStore'));
@@ -68,27 +73,31 @@ class ClientController extends Controller
     public function update(Request $request, int $clientId)
     {
         if ($this->clientService->update($clientId, $request->all())) {
-            return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
+            return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientUpdate'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorClientStore'));
         }
     }
 
-    public function destroy($clientId)
+    public function destroy(int $clientId)
     {
-        $checkForeign = $this->clientService->checkIfClientHaveForeignKey($clientId);
+        $clientAssigned = $this->clientService->checkIfClientHaveAssignedEmployeeOrCompanie($clientId);
 
-        if(!empty($checkForeign)) {
-            return Redirect::back()->with('message_danger', $checkForeign);
+        if (!empty($clientAssigned)) {
+            return Redirect::back()->with('message_danger', $clientAssigned);
         } else {
-            $this->clientService->processDeleteRow($clientId);
+            $this->clientService->loadDeleteClient($clientId);
         }
 
         return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientDelete'));
     }
 
-    public function search()
+    public function processSetIsActive(int $clientId, bool $value)
     {
-        return true; // TODO
+        if ($this->clientService->processIsActive($clientId, $value)) {
+            return Redirect::to('client')->with('message_success', $this->getMessage('messages.SuccessClientActive'));
+        } else {
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ClientIsActived'));
+        }
     }
 }

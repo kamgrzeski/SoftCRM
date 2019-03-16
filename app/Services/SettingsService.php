@@ -10,7 +10,7 @@ namespace App\Services;
 
 use App\Models\SettingsModel;
 use Config;
-use Jackiedo\DotenvEditor\DotenvEditor;
+use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 
 class SettingsService
 {

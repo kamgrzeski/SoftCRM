@@ -20,14 +20,6 @@
                     <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
-            {!! Form::open(array('route' => 'deals/search', 'class'=>'form navbar-form navbar-right searchform')) !!}
-            {!! Form::text('search', null,
-                                   array('required',
-                                        'class'=>'form-control',
-                                        'placeholder'=>'Write name of deals...')) !!}
-            {!! Form::submit('Search',
-                                       array('class'=>'btn btn-default')) !!}
-            {!! Form::close() !!}
             <a href="{{ URL::to('deals/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add deals</button>
             </a>

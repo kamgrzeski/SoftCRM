@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Config;
 
 class ProductsModel extends Model
 {
@@ -11,39 +13,39 @@ class ProductsModel extends Model
 
     public function sales()
     {
-        return $this->hasMany(SalesModel::class);
+        return $this->hasMany(SalesModel::class, 'id');
     }
 
-    public function insertRow($allInputs)
+    public function storeProduct($requestedData)
     {
         return self::insertGetId(
             [
-                'name' => $allInputs['name'],
-                'category' => $allInputs['category'],
-                'count' => $allInputs['count'],
-                'price' => $allInputs['price'] * 100,
+                'name' => $requestedData['name'],
+                'category' => $requestedData['category'],
+                'count' => $requestedData['count'],
+                'price' => $requestedData['price'] * 100,
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
     }
 
-    public function updateRow($id, $allInputs)
+    public function updateProduct($productId, $requestedData)
     {
-        return self::where('id', '=', $id)->update(
+        return self::where('id', '=', $productId)->update(
             [
-                'name' => $allInputs['name'],
-                'category' => $allInputs['category'],
-                'count' => $allInputs['count'],
-                'price' => $allInputs['price'],
+                'name' => $requestedData['name'],
+                'category' => $requestedData['category'],
+                'count' => $requestedData['count'],
+                'price' => $requestedData['price'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }
 
-    public function setActive($id, $activeType)
+    public function setActive($productId, $activeType)
     {
-        $findProductsById = self::where('id', '=', $id)->update(
+        $findProductsById = self::where('id', '=', $productId)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -60,13 +62,32 @@ class ProductsModel extends Model
         return self::get()->count();
     }
 
-    public function trySearchProductsByValue($type, $value, $paginationLimit = 10)
-    {
-        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
-    }
-
     public function getProductsByCreatedAt()
     {
         return self::all()->sortBy('created_at', 0, true)->slice(0, 5);
+    }
+
+    public function findClientByGivenClientId(int $productId)
+    {
+        $query = self::find($productId);
+
+        Arr::add($query, 'salesCount', count($query->sales));
+
+        return $query;
+    }
+
+    public function getProducts()
+    {
+        return self::all()->sortByDesc('created_at');
+    }
+
+    public function getPaginate()
+    {
+        return self::paginate(Config::get('crm_settings.pagination_size'));
+    }
+
+    public function getProduct(int $productId)
+    {
+        return self::find($productId);
     }
 }

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use ClickNow\Money\Money;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Config;
 
 class ClientsModel extends Model
 {
@@ -21,49 +22,44 @@ class ClientsModel extends Model
         return $this->hasMany(EmployeesModel::class, 'id');
     }
 
-    public function invoices()
-    {
-        return $this->hasMany(InvoicesModel::class, 'client_id');
-    }
-
-    public function insertRow($allInputs)
+    public function storeClient($requestedData)
     {
         return self::insertGetId(
             [
-                'full_name' => $allInputs['full_name'],
-                'phone' => $allInputs['phone'],
-                'email' => $allInputs['email'],
-                'section' => $allInputs['section'],
-                'budget' => $allInputs['budget'],
-                'location' => $allInputs['location'],
-                'zip' => $allInputs['zip'],
-                'city' => $allInputs['city'],
-                'country' => $allInputs['country'],
+                'full_name' => $requestedData['full_name'],
+                'phone' => $requestedData['phone'],
+                'email' => $requestedData['email'],
+                'section' => $requestedData['section'],
+                'budget' => $requestedData['budget'],
+                'location' => $requestedData['location'],
+                'zip' => $requestedData['zip'],
+                'city' => $requestedData['city'],
+                'country' => $requestedData['country'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
     }
 
-    public function updateRow($id, $allInputs)
+    public function updateClient($id, $requestedData)
     {
         return self::where('id', '=', $id)->update(
             [
-                'full_name' => $allInputs['full_name'],
-                'phone' => $allInputs['phone'],
-                'email' => $allInputs['email'],
-                'section' => $allInputs['section'],
-                'budget' => $allInputs['budget'],
-                'location' => $allInputs['location'],
-                'zip' => $allInputs['zip'],
-                'city' => $allInputs['city'],
-                'country' => $allInputs['country'],
+                'full_name' => $requestedData['full_name'],
+                'phone' => $requestedData['phone'],
+                'email' => $requestedData['email'],
+                'section' => $requestedData['section'],
+                'budget' => $requestedData['budget'],
+                'location' => $requestedData['location'],
+                'zip' => $requestedData['zip'],
+                'city' => $requestedData['city'],
+                'country' => $requestedData['country'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }
 
-    public function setActive($id, $activeType)
+    public function setClientActive($id, $activeType)
     {
         $findClientById = self::where('id', '=', $id)->update(['is_active' => $activeType]);
 
@@ -113,5 +109,10 @@ class ClientsModel extends Model
         }
 
         return $query;
+    }
+
+    public function getPaginate()
+    {
+        return self::paginate(Config::get('crm_settings.pagination_size'));
     }
 }

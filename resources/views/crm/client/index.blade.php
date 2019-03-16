@@ -19,14 +19,7 @@
                     <strong>Danger!</strong> {{ session()->get('message_danger') }}
                 </div>
             @endif
-            {!! Form::open(array('route' => 'client/search', 'class'=>'form navbar-form navbar-right searchform')) !!}
-            {!! Form::text('search', null,
-                                   array('required',
-                                        'class'=>'form-control',
-                                        'placeholder'=>'Write name of client...')) !!}
-            {!! Form::submit('Search',
-                                       array('class'=>'btn btn-default')) !!}
-            {!! Form::close() !!}
+
             <a href="{{ URL::to('client/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add client</button>
             </a>

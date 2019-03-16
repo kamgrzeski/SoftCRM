@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\EmployeesModel;
 use App\Models\TasksModel;
-use Config;
 
 class TasksService
 {
@@ -15,43 +14,53 @@ class TasksService
         $this->tasksModel = new TasksModel();
     }
 
-    public function getTasks()
+    public function execute(array $validateData)
     {
-        return TasksModel::all()->sortByDesc('created_at');
+        return $this->tasksModel->storeTask($validateData);
     }
 
-    public function getPaginate()
+    public function update(int $taskId, array $validatedData)
     {
-        return TasksModel::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->tasksModel->updateTask($taskId, $validatedData);
     }
 
-    public function execute($allInputs)
+    public function loadTasks()
     {
-        return $this->tasksModel->insertRow($allInputs);
+        return $this->tasksModel->getTasks();
     }
 
-    public function getTask(int $id)
+    public function loadPaginate()
     {
-        return TasksModel::find($id);
+        return $this->tasksModel->getPaginate();
     }
 
-    public function update(int $id, $allInputs)
+    public function loadTask(int $taskId)
     {
-        return $this->tasksModel->updateRow($id, $allInputs);
+        return $this->tasksModel->getTask($taskId);
     }
 
-    public function loadIsActiveFunction($id, $value)
+    public function loadIsActiveFunction(int $taskId, bool $value)
     {
-        return $this->tasksModel->setActive($id, $value);
+        return $this->tasksModel->setActive($taskId, $value);
     }
 
-    public function loadIsCompletedFunction($id, $value)
+    public function loadIsCompletedFunction(int $taskId, bool $value)
     {
-        return $this->tasksModel->setCompleted($id, $value);
+        return $this->tasksModel->setCompleted($taskId, $value);
     }
 
     public function pluckEmployees()
     {
         return EmployeesModel::pluck('full_name', 'id');
+    }
+
+    public function loadDataAndPagination()
+    {
+        $dataOfTasks = [
+            'tasks' => $this->loadTasks(),
+            'tasksPaginate' => $this->loadPaginate()
+        ];
+
+        return $dataOfTasks;
     }
 }

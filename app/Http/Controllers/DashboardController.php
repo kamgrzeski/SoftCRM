@@ -7,6 +7,7 @@ use App\Services\CompaniesService;
 use App\Services\GraphDataService;
 use App\Services\HelpersFncService;
 use App\Services\ProductsService;
+use View;
 
 class DashboardController extends Controller
 {
@@ -14,11 +15,6 @@ class DashboardController extends Controller
     private $productsService;
     private $helpersFncService;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->companieService = new CompaniesService();
@@ -28,14 +24,9 @@ class DashboardController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('index')->with([
+        return View::make('index')->with([
             'dataWithAllTasks' => $this->helpersFncService->formatTasks(),
             'dataWithAllCompanies' => $this->companieService->loadCompaniesByCreatedAt(),
             'dataWithAllProducts' => $this->productsService->loadProductsByCreatedAt(),
@@ -44,98 +35,79 @@ class DashboardController extends Controller
         ]);
     }
 
-    /**
-     * @return mixed
-     */
     public static function countCashTurnover()
     {
         $cash = new CalculateCashService();
 
-        if($cash) {
+        if ($cash) {
             return $cash->countCashTurnover();
         }
 
-       return false;
+        return false;
     }
 
-    /**
-     * @return mixed
-     */
     public static function countTodayIncome()
     {
         $cash = new CalculateCashService();
 
-        if($cash) {
+        if ($cash) {
             return $cash->countTodayIncome();
         }
 
         return false;
     }
 
-    /**
-     * @return mixed
-     */
     public static function countYesterdayIncome()
     {
         $cash = new CalculateCashService();
 
-        if($cash) {
+        if ($cash) {
             return $cash->countYesterdayIncome();
         }
 
         return false;
     }
 
-        /**
-     * @return int
-     */
     public static function countAllRowsInDb()
     {
         $cash = new CalculateCashService();
 
-        if($cash) {
+        if ($cash) {
             return $cash->countAllRowsInDb();
         }
 
         return false;
     }
 
-    /**
-     * @param $isCompleted
-     * @return array|bool
-     */
-    public function calculateTaskEveryMonth($isCompleted) {
+    public function calculateTaskEveryMonth($isCompleted)
+    {
 
         $cash = new CalculateCashService();
 
-        if($cash) {
+        if ($cash) {
             return $cash->calculateTaskEveryMonth($isCompleted);
         }
 
         return false;
     }
 
-    /**
-     * @return mixed
-     */
-    public function taskGraphData() {
+    public function taskGraphData()
+    {
 
         $graph = new GraphDataService();
 
-        if($graph) {
+        if ($graph) {
             return $graph->taskGraphData();
         }
 
         return false;
     }
 
-    /**
-     * @return mixed
-     */
-    public function itemsCountGraphData() {
+    public function itemsCountGraphData()
+    {
         $graph = new GraphDataService();
 
-        if($graph) {
+        if ($graph) {
             return $graph->itemsCountGraphData();
         }
 

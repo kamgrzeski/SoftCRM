@@ -4,20 +4,25 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Config;
 
 class SalesModel extends Model
 {
     protected $table = 'sales';
 
-    public function insertRow($allInputs)
+    public function products()
+    {
+        return $this->belongsTo(ProductsModel::class, 'product_id');
+    }
+
+    public function storeTask($requestedData)
     {
         return self::insertGetId(
             [
-                'name' => $allInputs['name'],
-                'quantity' => $allInputs['quantity'],
-                'date_of_payment' => $allInputs['date_of_payment'],
-                'product_id' => $allInputs['product_id'],
+                'name' => $requestedData['name'],
+                'quantity' => $requestedData['quantity'],
+                'date_of_payment' => $requestedData['date_of_payment'],
+                'product_id' => $requestedData['product_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1,
                 'price' => 0
@@ -25,22 +30,22 @@ class SalesModel extends Model
         );
     }
 
-    public function updateRow($id, $allInputs)
+    public function updateTask($saleId, $requestedData)
     {
-        return self::where('id', '=', $id)->update(
+        return self::where('id', '=', $saleId)->update(
             [
-                'name' => $allInputs['name'],
-                'quantity' => $allInputs['quantity'],
-                'date_of_payment' => $allInputs['date_of_payment'],
-                'product_id' => $allInputs['product_id'],
+                'name' => $requestedData['name'],
+                'quantity' => $requestedData['quantity'],
+                'date_of_payment' => $requestedData['date_of_payment'],
+                'product_id' => $requestedData['product_id'],
                 'updated_at' => Carbon::now(),
                 'is_active' => 1
             ]);
     }
 
-    public function setActive($id, $activeType)
+    public function setActive($saleId, $activeType)
     {
-        $findSalesById = self::where('id', '=', $id)->update(
+        $findSalesById = self::where('id', '=', $saleId)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -57,13 +62,13 @@ class SalesModel extends Model
         return self::all()->count();
     }
 
-    public function products()
+    public function getPaginate()
     {
-        return $this->belongsTo(ProductsModel::class, 'product_id');
+        return self::paginate(Config::get('crm_settings.pagination_size'));
     }
 
-    public static function trySearchSalesByValue($type, $value, $paginationLimit = 10)
+    public function getSalesSortedByCreatedAt()
     {
-        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
+        return self::all()->sortByDesc('created_at');
     }
 }

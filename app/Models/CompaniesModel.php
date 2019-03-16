@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Config;
 
 class CompaniesModel extends Model
 {
@@ -16,12 +17,12 @@ class CompaniesModel extends Model
 
     public function deals()
     {
-        return $this->hasMany(DealsModel::class);
+        return $this->hasMany(DealsModel::class, 'id');
     }
 
     public function employees_size()
     {
-        return $this->belongsTo(employees_size::class);
+        return $this->belongsTo(EmployeesModel::class);
     }
 
     public function finances()
@@ -29,59 +30,49 @@ class CompaniesModel extends Model
         return $this->hasMany(FinancesModel::class);
     }
 
-    public function invoices()
-    {
-        return $this->hasMany(InvoicesModel::class);
-    }
-
-    public function files()
-    {
-        return $this->hasMany(FilesModel::class);
-    }
-
-    public function insertRow($allInputs)
+    public function insertCompanie($requestedData)
     {
         return self::insertGetId(
             [
-                'name' => $allInputs['name'],
-                'tax_number' => $allInputs['tax_number'],
-                'phone' => $allInputs['phone'],
-                'city' => $allInputs['city'],
-                'billing_address' => $allInputs['billing_address'],
-                'country' => $allInputs['country'],
-                'postal_code' => $allInputs['postal_code'],
-                'employees_size' => $allInputs['employees_size'],
-                'fax' => $allInputs['fax'],
-                'description' => $allInputs['description'],
-                'client_id' => $allInputs['client_id'],
+                'name' => $requestedData['name'],
+                'tax_number' => $requestedData['tax_number'],
+                'phone' => $requestedData['phone'],
+                'city' => $requestedData['city'],
+                'billing_address' => $requestedData['billing_address'],
+                'country' => $requestedData['country'],
+                'postal_code' => $requestedData['postal_code'],
+                'employees_size' => $requestedData['employees_size'],
+                'fax' => $requestedData['fax'],
+                'description' => $requestedData['description'],
+                'client_id' => $requestedData['client_id'],
                 'created_at' => Carbon::now(),
                 'is_active' => 1
             ]
         );
     }
 
-    public function updateRow($id, $allInputs)
+    public function updateCompanie($companieId, $requestedData)
     {
-        return self::where('id', '=', $id)->update(
+        return self::where('id', '=', $companieId)->update(
             [
-                'name' => $allInputs['name'],
-                'tax_number' => $allInputs['tax_number'],
-                'phone' => $allInputs['phone'],
-                'city' => $allInputs['city'],
-                'billing_address' => $allInputs['billing_address'],
-                'country' => $allInputs['country'],
-                'postal_code' => $allInputs['postal_code'],
-                'employees_size' => $allInputs['employees_size'],
-                'fax' => $allInputs['fax'],
-                'description' => $allInputs['description'],
-                'client_id' => $allInputs['client_id'],
+                'name' => $requestedData['name'],
+                'tax_number' => $requestedData['tax_number'],
+                'phone' => $requestedData['phone'],
+                'city' => $requestedData['city'],
+                'billing_address' => $requestedData['billing_address'],
+                'country' => $requestedData['country'],
+                'postal_code' => $requestedData['postal_code'],
+                'employees_size' => $requestedData['employees_size'],
+                'fax' => $requestedData['fax'],
+                'description' => $requestedData['description'],
+                'client_id' => $requestedData['client_id'],
                 'is_active' => 1
             ]);
     }
 
-    public function setActive($id, $activeType)
+    public function setActive($companieId, $activeType)
     {
-        $findCompaniesById = self::where('id', '=', $id)->update(
+        $findCompaniesById = self::where('id', '=', $companieId)->update(
             [
                 'is_active' => $activeType
             ]);
@@ -115,5 +106,10 @@ class CompaniesModel extends Model
     public function getCompaniesSortedByCreatedAt()
     {
         return self::all()->sortBy('created_at', 0, true)->slice(0, 5);
+    }
+
+    public function getPaginate()
+    {
+        return self::paginate(Config::get('crm_settings.pagination_size'));
     }
 }

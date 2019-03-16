@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\DealsModel;
-use Config;
 
 class DealsService
 {
@@ -14,33 +13,38 @@ class DealsService
         $this->dealsModel = new DealsModel();
     }
 
-    public function getDeals()
+    public function execute($requestedData)
+    {
+        return $this->dealsModel->insertDeal($requestedData);
+    }
+
+    public function update(int $dealId, $requestedData)
+    {
+        return $this->dealsModel->updateDeal($dealId, $requestedData);
+    }
+
+    public function loadDeals()
     {
         return DealsModel::all()->sortByDesc('created_at');
     }
 
-    public function getPaginate()
+    public function loadPaginate()
     {
-        return DealsModel::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->dealsModel->getPaginate();
     }
 
-    public function execute($allInputs)
+    public function loadDeal(int $dealId)
     {
-        return $this->dealsModel->insertGetId($allInputs);
-    }
-
-    public function getDeal(int $id)
-    {
-        return DealsModel::find($id);
-    }
-
-    public function update(int $id, $allInputs)
-    {
-        return $this->dealsModel->updateRow($id, $allInputs);
+        return $this->dealsModel->getDeal($dealId);
     }
 
     public function pluckCompanies()
     {
         return $this->dealsModel->getPluckCompanies();
+    }
+
+    public function loadSetActive(int $dealId, bool $value)
+    {
+        return $this->dealsModel->setActive($dealId, $value);
     }
 }
