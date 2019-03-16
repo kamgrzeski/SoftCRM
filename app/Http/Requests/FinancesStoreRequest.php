@@ -25,12 +25,12 @@ class FinancesStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'companies_id' => 'required',
-            'description' => 'required',
-            'type' => 'required',
-            'gross' => 'required',
-            'category' => 'required'
+            'name' => 'required|string',
+            'companies_id' => 'required|integer',
+            'description' => 'required|string',
+            'type' => 'required|string',
+            'gross' => 'required|string',
+            'category' => 'required|string'
         ];
     }
 }

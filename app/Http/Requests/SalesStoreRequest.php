@@ -25,9 +25,9 @@ class SalesStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'quantity' => 'required',
-            'product_id' => 'required',
+            'name' => 'required|string',
+            'quantity' => 'required|integer',
+            'product_id' => 'required|integer',
             'date_of_payment' => 'required',
         ];
     }

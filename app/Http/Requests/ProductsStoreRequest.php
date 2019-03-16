@@ -25,10 +25,10 @@ class ProductsStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'category' => 'required',
-            'count' => 'required',
-            'price' => 'required'
+            'name' => 'required|string',
+            'category' => 'required|string',
+            'count' => 'required|integer',
+            'price' => 'required|integer'
         ];
     }
 }

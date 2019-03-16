@@ -26,14 +26,14 @@ class ClientStoreRequest extends FormRequest
     {
         return [
             'full_name' => 'required|string',
-            'phone' => 'required',
-            'budget' => 'required',
-            'section' => 'required',
+            'phone' => 'required|string',
+            'budget' => 'required|integer',
+            'section' => 'required|string',
             'email' => 'required|email',
-            'location' => 'required',
-            'zip' => 'required',
-            'city' => 'required',
-            'country' => 'required'
+            'location' => 'required|string',
+            'zip' => 'required|string',
+            'city' => 'required|string',
+            'country' => 'required|string'
         ];
     }
 }

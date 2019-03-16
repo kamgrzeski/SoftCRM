@@ -25,17 +25,17 @@ class CompaniesStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required|string',
             'tax_number' => 'required|integer',
-            'city' => 'required',
-            'billing_address' => 'required',
-            'country' => 'required',
-            'postal_code' => 'required',
+            'city' => 'required|string',
+            'billing_address' => 'required|string',
+            'country' => 'required|string',
+            'postal_code' => 'required|string',
             'employees_size' => 'required|integer',
-            'fax' => 'required',
-            'description' => 'required',
-            'phone' => 'required',
-            'client_id' => 'required',
+            'fax' => 'required|string',
+            'description' => 'required|string',
+            'phone' => 'required|string',
+            'client_id' => 'required|integer',
         ];
     }
 }

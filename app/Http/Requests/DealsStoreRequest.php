@@ -25,10 +25,10 @@ class DealsStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required|string',
             'start_time' => 'required',
             'end_time' => 'required',
-            'companies_id' => 'required',
+            'companies_id' => 'required|integer',
         ];
     }
 }

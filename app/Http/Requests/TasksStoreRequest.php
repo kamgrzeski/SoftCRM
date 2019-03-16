@@ -25,9 +25,9 @@ class TasksStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'employee_id' => 'required',
-            'duration' => 'required'
+            'name' => 'required|string',
+            'employee_id' => 'required|integer',
+            'duration' => 'required|integer'
         ];
     }
 }

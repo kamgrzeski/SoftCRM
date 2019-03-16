@@ -25,12 +25,12 @@ class EmployeesStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'full_name' => 'required',
-            'phone' => 'required',
-            'email' => 'required',
-            'job' => 'required',
-            'note' => 'required',
-            'client_id' => 'required'
+            'full_name' => 'required|string',
+            'phone' => 'required|string',
+            'email' => 'required|email',
+            'job' => 'required|string',
+            'note' => 'required|string',
+            'client_id' => 'required|integer'
         ];
     }
 }
