@@ -4,57 +4,45 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductsStoreRequest;
-use App\Services\ProductsService;
-use App\Services\SystemLogService;
-use App\Traits\Language;
 use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class ProductsController extends Controller
 {
-    use Language;
-
-    private $systemLogs;
-    private $language;
-    private $productsService;
-
-    public function __construct()
-    {
-        $this->systemLogs = new SystemLogService();
-        $this->productsService = new ProductsService();
-    }
-
     public function processListOfProducts()
     {
-        return View::make('crm.products.index')->with($this->productsService->loadDataAndPagination());
+        $collectDataForView = array_merge($this->collectedData(), $this->productsService->loadDataAndPagination());
+
+        return View::make('crm.products.index')->with($collectDataForView);
     }
 
     public function showCreateForm()
     {
-        return View::make('crm.products.create')->with([
-            'inputText' => $this->getMessage('messages.InputText')
-        ]);
+        $collectDataForView = array_merge($this->collectedData(), ['inputText' => $this->getMessage('messages.InputText')]);
+
+        return View::make('crm.products.create')->with($collectDataForView);
     }
     
     public function viewProductsDetails(int $productId)
     {
+        $collectDataForView = array_merge($this->collectedData(), ['products' => $this->productsService->loadProduct($productId)]);
         return View::make('crm.products.show')
-            ->with([
-                'products' => $this->productsService->loadProduct($productId),
-            ]);
+            ->with($collectDataForView);
     }
 
     public function showUpdateForm(int $productId)
     {
-        return View::make('crm.products.edit')
-            ->with('products', $this->productsService->loadProduct($productId));
+        $collectDataForView = array_merge($this->collectedData(), ['products' => $this->productsService->loadProduct($productId)],
+            ['inputText' => $this->getMessage('messages.InputText')]);
+
+        return View::make('crm.products.edit')->with($collectDataForView);
     }
     
     public function processCreateProducts(ProductsStoreRequest $request)
     {
         if ($product = $this->productsService->execute($request->validated())) {
-            $this->systemLogs->insertSystemLogs('Product has been add with id: '. $product, $this->systemLogs::successCode);
+            $this->systemLogsService->insertSystemLogs('Product has been add with id: '. $product, $this->systemLogsService::successCode);
             return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorProductsStore'));
@@ -81,7 +69,7 @@ class ProductsController extends Controller
             $productsDetails->delete();
         }
 
-        $this->systemLogs->insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogs::successCode);
+        $this->systemLogsService->insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogsService::successCode);
 
         return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsDelete'));
     }
@@ -89,7 +77,7 @@ class ProductsController extends Controller
     public function processSetIsActive(int $productId, bool $value)
     {
         if ($this->productsService->loadIsActiveFunction($productId, $value)) {
-            $this->systemLogs->insertSystemLogs('ProductsModel has been enabled with id: ' . $productId, $this->systemLogs::successCode);
+            $this->systemLogsService->insertSystemLogs('ProductsModel has been enabled with id: ' . $productId, $this->systemLogsService::successCode);
             return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ProductsIsActived'));

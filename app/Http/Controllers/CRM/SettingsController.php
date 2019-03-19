@@ -4,11 +4,6 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SettingsStoreRequest;
-use App\Models\SettingsModel;
-use App\Services\HelpersFncService;
-use App\Services\SettingsService;
-use App\Services\SystemLogService;
-use App\Traits\Language;
 use Axdlee\Config\Rewrite;
 use Illuminate\Support\Facades\Redirect;
 use View;
@@ -17,29 +12,11 @@ use Config;
 
 class SettingsController extends Controller
 {
-    use Language;
-
-    private $systemLogs;
-    private $settingsModel;
-    private $settingsService;
-    private $helpersService;
-
-    public function __construct()
-    {
-        $this->systemLogs = new SystemLogService();
-        $this->settingsModel = new SettingsModel();
-        $this->settingsService = new SettingsService();
-        $this->helpersService = new HelpersFncService();
-    }
-
     public function processListOfSettings()
     {
-        $input = config('crm_settings.temp');
+        $collectDataForView = array_merge($this->collectedData(), ['input' => config('crm_settings.temp')], ['logs' => $this->helpersFncService->formatAllSystemLogs()]);
 
-        return view('crm.settings.index')->with([
-            'input' => $input,
-            'logs' => $this->helpersService->formatAllSystemLogs()
-        ]);
+        return view('crm.settings.index')->with($collectDataForView);
     }
 
     public function processCreateSettings(SettingsStoreRequest $request)
@@ -60,7 +37,7 @@ class SettingsController extends Controller
 
         $this->settingsService->saveEnvData($validatedData['rollbar_token']);
 
-        $this->systemLogs->insertSystemLogs('SettingsModel has been changed.', $this->systemLogs::successCode);
+        $this->systemLogsService->insertSystemLogs('SettingsModel has been changed.', $this->systemLogsService::successCode);
         return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSettingsUpdate'));
     }
 }

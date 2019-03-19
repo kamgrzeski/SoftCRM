@@ -10,6 +10,7 @@ namespace App\Services;
 
 use App\Models\ClientsModel;
 use App\Traits\Language;
+use phpDocumentor\Reflection\Types\This;
 
 class ClientService
 {
@@ -85,5 +86,20 @@ class ClientService
     public function loadClientDetails(int $clientId)
     {
         return $this->clientsModel->findClientByGivenClientId($clientId);
+    }
+
+    public function countClients()
+    {
+        return $this->clientsModel->countClients();
+    }
+
+    public function loadDeactivatedClients()
+    {
+        return $this->clientsModel->getDeactivated();
+    }
+
+    public function loadClientsInLatestMonth()
+    {
+        return $this->clientsModel->getClientsInLatestMonth() . '%' ? : '0.00%';
     }
 }

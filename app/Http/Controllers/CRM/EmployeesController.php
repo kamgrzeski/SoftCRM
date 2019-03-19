@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Requests\EmployeesStoreRequest;
-use App\Services\EmployeesService;
-use App\Services\SystemLogService;
-use App\Traits\Language;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use View;
@@ -13,50 +10,39 @@ use Illuminate\Support\Facades\Redirect;
 
 class EmployeesController extends Controller
 {
-    use Language;
-
-    private $systemLogs;
-    private $employeesService;
-
-    public function __construct()
-    {
-        $this->systemLogs = new SystemLogService();
-        $this->employeesService = new EmployeesService();
-    }
-
     public function processListOfEmployees()
     {
-        return View::make('crm.employees.index')->with($this->employeesService->loadDataAndPagination());
+        $collectDataForView = array_merge($this->collectedData(), $this->employeesService->loadDataAndPagination());
+
+        return View::make('crm.employees.index')->with($collectDataForView);
     }
 
     public function showCreateForm()
     {
-        return View::make('crm.employees.create')->with([
-            'dataOfClients' => $this->employeesService->pluckData(),
-            'inputText' => $this->getMessage('messages.InputText')
-        ]);
+        $collectDataForView = array_merge($this->collectedData(), ['dataOfClients' => $this->employeesService->pluckData()]);
+
+        return View::make('crm.employees.create')->with($collectDataForView);
     }
 
     public function viewEmployeeDetails($employeeId)
     {
-        return View::make('crm.employees.show')
-            ->with('employees', $this->employeesService->loadEmployeeDetails($employeeId));
+        $collectDataForView = array_merge($this->collectedData(), ['employees' => $this->employeesService->loadEmployeeDetails($employeeId)]);
+
+        return View::make('crm.employees.show')->with($collectDataForView);
     }
 
     public function showUpdateForm($employeeId)
     {
-        return View::make('crm.employees.edit')
-            ->with([
-                'employees' =>  $this->employeesService->loadEmployeeDetails($employeeId),
-                'clients' => $this->employeesService->loadPluckClients(),
-                'inputText' => $this->getMessage('messages.InputText')
-            ]);
+        $collectDataForView = array_merge($this->collectedData(), ['employees' =>  $this->employeesService->loadEmployeeDetails($employeeId)],
+            ['clients' => $this->employeesService->loadPluckClients()], ['inputText' => $this->getMessage('messages.InputText')]);
+
+        return View::make('crm.employees.edit')->with($collectDataForView);
     }
 
     public function processCreateEmployee(EmployeesStoreRequest $request)
     {
         if ($employee = $this->employeesService->execute($request->validated())) {
-            $this->systemLogs->insertSystemLogs('Employees has been add with id: '. $employee, $this->systemLogs::successCode);
+            $this->systemLogsService->insertSystemLogs('Employees has been add with id: '. $employee, $this->systemLogsService::successCode);
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));
@@ -83,7 +69,7 @@ class EmployeesController extends Controller
 
         $dataOfEmployees->delete();
 
-        $this->systemLogs->insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id, $this->systemLogs::successCode);
+        $this->systemLogsService->insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id, $this->systemLogsService::successCode);
 
         return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesDelete'));
     }
@@ -91,7 +77,7 @@ class EmployeesController extends Controller
     public function processSetIsActive($employeeId, $value)
     {
         if ($this->employeesService->loadIsActiveFunction($employeeId, $value)) {
-            $this->systemLogs->insertSystemLogs('Employees has been enabled with id: ' . $employeeId, $this->systemLogs::successCode);
+            $this->systemLogsService->insertSystemLogs('Employees has been enabled with id: ' . $employeeId, $this->systemLogsService::successCode);
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesActive'));

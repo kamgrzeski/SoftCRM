@@ -10,13 +10,13 @@
             <div class="panel panel-primary text-center no-boder bg-color-green">
                     <div class="panel-body boxes">
                     <i class="fa fa-female fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Clients: {{ \App\Models\ClientsModel::countClients() ? : 0 }}
-                        ({{ \App\Models\ClientsModel::getDeactivated() ? : 0 }})
+                    <h3 style="padding:8px;font-size:18px">Clients: {{ $countClients }}
+                        ({{ $deactivatedClients }})
                     </h3>
                 </div>
                 <a href="{{ route('clients') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-green boxes-font">
-                        {{ \App\Models\ClientsModel::getClientsInLatestMonth() . '%' ? : '0.00%' }} Increase in 30 Days
+                        {{ $clientsInLatestMonth }} Increase in 30 Days
                     </div>
                 </a>
             </div>
@@ -25,13 +25,13 @@
             <div class="panel panel-primary text-center no-boder bg-color-blue">
                 <div class="panel-body boxes">
                     <i class="fa fa-compass fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Companies: {{ \App\Models\CompaniesModel::countCompanies() ? : 0 }}
-                        ({{ \App\Models\CompaniesModel::getDeactivated() ? : 0 }})
+                    <h3 style="padding:8px;font-size:18px">Companies: {{ $countCompanies }}
+                        ({{ $deactivatedCompanies }})
                     </h3>
                 </div>
                 <a href="#" style="text-decoration: none">
                     <div class="panel-footer back-footer-blue boxes-font">
-                        {{ \App\Models\CompaniesModel::getCompaniesInLatestMonth() . '%' ? : '0.00%' }} Increase in 30 Days
+                        {{ $companiesInLatestMonth }} Increase in 30 Days
                     </div>
                 </a>
             </div>
@@ -40,13 +40,13 @@
             <div class="panel panel-primary text-center no-boder bg-color-red">
                 <div class="panel-body boxes">
                     <i class="fa fa fa-users fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Employees: {{ \App\Models\EmployeesModel::countEmployees() ? : 0 }}
-                        ({{ \App\Models\EmployeesModel::getDeactivated() ? : 0 }})
+                    <h3 style="padding:8px;font-size:18px">Employees: {{ $countFinances }}
+                        ({{ $deactivatedEmployees }})
                     </h3>
                 </div>
                 <a href="{{ route('employees') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-red boxes-font">
-                        {{ \App\Models\EmployeesModel::getEmployeesInLatestMonth() . '%' ? : '0.00%' }} Increase in 30 Days
+                        {{ $employeesInLatestMonth }} Increase in 30 Days
                     </div>
                 </a>
             </div>
@@ -55,13 +55,13 @@
             <div class="panel panel-primary text-center no-boder bg-color-brown">
                 <div class="panel-body boxes">
                     <i class="fa fa-paperclip fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Deals: {{ \App\Models\DealsModel::countDeals() ? : 0 }}
-                        ({{ \App\Models\DealsModel::getDeactivated() ? : 0 }})
+                    <h3 style="padding:8px;font-size:18px">Deals: {{ $countDeals }}
+                        ({{ $deactivatedDeals }})
                     </h3>
                 </div>
                 <a href="{{ route('deals') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-brown boxes-font">
-                        {{ \App\Models\DealsModel::getDealsInLatestMonth() . '%' ? : '0.00%' }} Increase in 30 Days
+                        {{ $dealsInLatestMonth }} Increase in 30 Days
                     </div>
                 </a>
             </div>
@@ -87,8 +87,8 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Latest tasks <span class="badge"> {{ \App\Models\TasksModel::countTasks() ? : '0' }}</span></button>
-                    <span style="float: right">Completed: {{ \App\Models\TasksModel::getAllCompletedAndUncompletedTasks(1) ? : '0' }} | Uncompleted: {{ \App\Models\TasksModel::getAllCompletedAndUncompletedTasks(0) ? : '0' }}</span>
+                    Latest tasks <span class="badge"> {{ $countTasks }}</span></button>
+                    <span style="float: right">Completed: {{ $completedTasks }} | Uncompleted: {{ $uncompletedTasks }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
@@ -113,7 +113,7 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Latest add companies <span class="badge"> {{ \App\Models\CompaniesModel::countCompanies() ? : '0' }}</span>
+                    Latest add companies <span class="badge"> {{ $countCompanies }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
@@ -138,7 +138,7 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Latest add products <span class="badge"> {{ \App\Models\ProductsModel::countProducts() ? : '0' }}</span></button>
+                    Latest add products <span class="badge"> {{ $countProducts }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">

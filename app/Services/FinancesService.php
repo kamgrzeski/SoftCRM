@@ -79,4 +79,9 @@ class FinancesService
 
         return $dataOfFinances;
     }
+
+    public function loadCountFinances()
+    {
+        return $this->financesModel->countFinances() ? : 0;
+    }
 }

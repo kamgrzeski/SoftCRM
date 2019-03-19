@@ -82,4 +82,19 @@ class EmployeesService
     {
         return $this->employeesModel->getClients();
     }
+
+    public function loadCountEmployees()
+    {
+        return $this->employeesModel->countEmployees() ? : 0;
+    }
+
+    public function loadEmployeesInLatestMonth()
+    {
+        return $this->employeesModel->getEmployeesInLatestMonth() . '%' ? : '0.00%';
+    }
+
+    public function loadDeactivatedEmployees()
+    {
+        return $this->employeesModel->getDeactivated() ? : 0;
+    }
 }

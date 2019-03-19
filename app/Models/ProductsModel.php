@@ -57,7 +57,7 @@ class ProductsModel extends Model
         }
     }
 
-    public static function countProducts()
+    public function countProducts()
     {
         return self::get()->count();
     }

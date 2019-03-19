@@ -21,7 +21,7 @@
             @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    More information about {{ $deals->name }}
+                        More information about {{ $deal->name }}
                 </div>
 
                 <div class="panel-body">
@@ -29,7 +29,7 @@
                         <li class="active"><a href="#home" data-toggle="tab">The basic information</a>
                         </li>
                         <li class=""><a href="#profile" data-toggle="tab">Company <span
-                                        class="badge badge-warning">{{ count($deals->companies) }}</span></a>
+                                        class="badge badge-warning">{{ count($deal->companies) }}</span></a>
                         </li>
                         <li class=""><a href="#messages" data-toggle="tab">Terms of agreement <span
                                         class="badge badge-danger">VERY IMPORTANT</span></a>
@@ -50,25 +50,25 @@
                                 <tbody class="text-right">
                                 <tr>
                                     <th>Name</th>
-                                    <td>{{ $deals->name }}</td>
+                                    <td>{{ $deal->name }}</td>
                                 </tr>
                                 <tr>
                                     <th>Deal between company</th>
                                     <td>
-                                        <a href="{{ URL::to('companies/' . $deals->companies->id) }}">{{ $deals->companies->name }}</a>
+                                        <a href="{{ URL::to('companies/' . $deal->companies->id) }}">{{ $deal->companies->name }}</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Start date</th>
-                                    <td>{{ $deals->start_time }}</td>
+                                    <td>{{ $deal->start_time }}</td>
                                 </tr>
                                 <tr>
                                     <th>End date</th>
-                                    <td>{{ $deals->end_time }}</td>
+                                    <td>{{ $deal->end_time }}</td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $deals->is_active ? 'Yes' : 'No' }}</td>
+                                    <td>{{ $deal->is_active ? 'Yes' : 'No' }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -76,51 +76,51 @@
                         <div class="tab-pane fade" id="profile">
                             <p>
                             <table class="table table-striped table-bordered">
-                                <h4>Full information about <strong>{{ $deals->companies->name }}</strong></h4><br>
+                                <h4>Full information about <strong>{{ $deal->companies->name }}</strong></h4><br>
                                 <tbody class="text-right">
                                 <tr>
                                     <th>Name</th>
-                                    <td>{{ $deals->companies->name }}</td>
+                                    <td>{{ $deal->companies->name }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tax number</th>
-                                    <td>{{ $deals->companies->tax_number }}</td>
+                                    <td>{{ $deal->companies->tax_number }}</td>
                                 </tr>
                                 <tr>
                                     <th>Phone</th>
-                                    <td>{{ $deals->companies->phone }}</td>
+                                    <td>{{ $deal->companies->phone }}</td>
                                 </tr>
                                 <tr>
                                     <th>City</th>
-                                    <td>{{ $deals->companies->city }}</td>
+                                    <td>{{ $deal->companies->city }}</td>
                                 </tr>
                                 <tr>
                                     <th>Billing address</th>
-                                    <td>{{ $deals->companies->billing_address }}</td>
+                                    <td>{{ $deal->companies->billing_address }}</td>
                                 </tr>
                                 <tr>
                                     <th>Country</th>
-                                    <td>{{ $deals->companies->country }}</td>
+                                    <td>{{ $deal->companies->country }}</td>
                                 </tr>
                                 <tr>
                                     <th>Postal code</th>
-                                    <td>{{ $deals->companies->postal_code }}</td>
+                                    <td>{{ $deal->companies->postal_code }}</td>
                                 </tr>
                                 <tr>
                                     <th>Employees size</th>
-                                    <td>{{ $deals->companies->employees_size }}</td>
+                                    <td>{{ $deal->companies->employees_size }}</td>
                                 </tr>
                                 <tr>
                                     <th>Fax</th>
-                                    <td>{{ $deals->companies->fax }}</td>
+                                    <td>{{ $deal->companies->fax }}</td>
                                 </tr>
                                 <tr height="100px">
                                     <th>Description</th>
-                                    <td>{{ $deals->companies->description }}</td>
+                                    <td>{{ $deal->companies->description }}</td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $deals->companies->is_active ? 'Yes' : 'No' }}</td>
+                                    <td>{{ $deal->companies->is_active ? 'Yes' : 'No' }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -153,7 +153,7 @@
                     Ation will delete permanently this deal.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(array('url' => 'deals/delete/' . $deals->id, 'class' => 'pull-right')) }}
+                    {{ Form::open(array('url' => 'deals/delete/' . $deal->id, 'class' => 'pull-right')) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                     {{ Form::submit('Delete this deals', array('class' => 'btn btn-small btn-danger')) }}
                     {{ Form::close() }}

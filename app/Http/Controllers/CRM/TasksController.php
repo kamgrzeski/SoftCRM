@@ -4,59 +4,45 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TasksStoreRequest;
-use App\Services\SystemLogService;
-use App\Services\TasksService;
-use App\Traits\Language;
 use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class TasksController extends Controller
 {
-    use Language;
-
-    private $systemLogs;
-    private $taskService;
-
-    public function __construct()
-    {
-        $this->systemLogs = new SystemLogService();
-        $this->taskService = new TasksService();
-    }
-
     public function processListOfTasks()
     {
-        return View::make('crm.tasks.index')->with($this->taskService->loadDataAndPagination());
+        $collectDataForView = array_merge($this->collectedData(), $this->tasksService->loadDataAndPagination());
+
+        return View::make('crm.tasks.index')->with($collectDataForView);
     }
 
     public function showCreateForm()
     {
-        return View::make('crm.tasks.create')->with([
-            'dataOfEmployees' => $this->taskService->pluckEmployees(),
-            'inputText' => $this->getMessage('messages.InputText')
-        ]);
+        $collectDataForView = array_merge($this->collectedData(), ['dataOfEmployees' => $this->tasksService->pluckEmployees()]);
+
+        return View::make('crm.tasks.create')->with($collectDataForView);
     }
 
     public function viewTasksDetails(int $taskId)
     {
-        return View::make('crm.tasks.show')
-            ->with('tasks', $this->taskService->loadTask($taskId));
+        $collectDataForView = array_merge($this->collectedData(), ['tasks' => $this->tasksService->loadTask($taskId)]);
+
+        return View::make('crm.tasks.show')->with($collectDataForView);
     }
 
     public function showUpdateForm(int $taskId)
     {
-        return View::make('crm.tasks.edit')
-            ->with([
-                'tasks' => $this->taskService->loadTask($taskId),
-                'employees' => $this->taskService->pluckEmployees(),
-                'inputText' => $this->getMessage('messages.InputText')
-            ]);
+        $collectDataForView = array_merge($this->collectedData(), ['tasks' => $this->tasksService->loadTask($taskId)],
+            ['employees' => $this->tasksService->pluckEmployees()]);
+
+        return View::make('crm.tasks.edit')->with($collectDataForView);
     }
 
     public function processCreateTasks(TasksStoreRequest $request)
     {
-        if ($task = $this->taskService->execute($request->validated())) {
-            $this->systemLogs->insertSystemLogs('Task has been add with id: '. $task, $this->systemLogs::successCode);
+        if ($task = $this->tasksService->execute($request->validated())) {
+            $this->systemLogsService->insertSystemLogs('Task has been add with id: '. $task, $this->systemLogsService::successCode);
             return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksStore'));
@@ -65,7 +51,7 @@ class TasksController extends Controller
 
     public function processUpdateTasks(Request $request, int $taskId)
     {
-        if ($this->taskService->update($taskId, $request->all())) {
+        if ($this->tasksService->update($taskId, $request->all())) {
             return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksUpdate'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksUpdate'));
@@ -74,14 +60,14 @@ class TasksController extends Controller
 
     public function processDeleteTasks($taskId)
     {
-        $dataOfTasks = $this->taskService->loadTask($taskId);
+        $dataOfTasks = $this->tasksService->loadTask($taskId);
 
         if($dataOfTasks->completed == 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.CantDeleteUnompletedTask'));
         } else {
             $dataOfTasks->delete();
 
-            $this->systemLogs->insertSystemLogs('Tasks has been deleted with id: ' . $dataOfTasks->id, $this->systemLogs::successCode);
+            $this->systemLogsService->insertSystemLogs('Tasks has been deleted with id: ' . $dataOfTasks->id, $this->systemLogsService::successCode);
         }
 
         return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksDelete'));
@@ -89,8 +75,8 @@ class TasksController extends Controller
 
     public function processSetIsActive(int $taskId, bool $value)
     {
-        if ($this->taskService->loadIsActiveFunction($taskId, $value)) {
-            $this->systemLogs->insertSystemLogs('Tasks has been enabled with id: ' . $taskId, $this->systemLogs::successCode);
+        if ($this->tasksService->loadIsActiveFunction($taskId, $value)) {
+            $this->systemLogsService->insertSystemLogs('Tasks has been enabled with id: ' . $taskId, $this->systemLogsService::successCode);
             return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksActive'));
@@ -99,8 +85,8 @@ class TasksController extends Controller
 
     public function completedTask(int $taskId)
     {
-        if ($this->taskService->loadIsCompletedFunction($taskId, TRUE)) {
-            $this->systemLogs->insertSystemLogs('Tasks has been completed with id: ' . $taskId, $this->systemLogs::successCode);
+        if ($this->tasksService->loadIsCompletedFunction($taskId, TRUE)) {
+            $this->systemLogsService->insertSystemLogs('Tasks has been completed with id: ' . $taskId, $this->systemLogsService::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.TasksCompleted'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.TasksIsNotCompleted'));
@@ -109,8 +95,8 @@ class TasksController extends Controller
 
     public function uncompletedTask(int $taskId)
     {
-        if ($this->taskService->loadIsCompletedFunction($taskId, FALSE)) {
-            $this->systemLogs->insertSystemLogs('Tasks has been uncompleted with id: ' . $taskId, $this->systemLogs::successCode);
+        if ($this->tasksService->loadIsCompletedFunction($taskId, FALSE)) {
+            $this->systemLogsService->insertSystemLogs('Tasks has been uncompleted with id: ' . $taskId, $this->systemLogsService::successCode);
             return Redirect::back()->with('message_success', $this->getMessage('messages.TasksunCompleted'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.TasksIsNotunCompleted'));

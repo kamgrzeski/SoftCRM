@@ -18,11 +18,16 @@ class SystemLogService
 
     public function __construct()
     {
-        $this->systemLogsModel = new SystemLogsModel();
+        $this->systemLogsServiceModel = new SystemLogsModel();
     }
 
     public function insertSystemLogs($actions, $statusCode)
     {
-        return $this->systemLogsModel->insertRow($actions, $statusCode);
+        return $this->systemLogsServiceModel->insertRow($actions, $statusCode);
+    }
+
+    public function loadCountLogs()
+    {
+        return $this->systemLogsServiceModel->countRows() ? : 0;
     }
 }

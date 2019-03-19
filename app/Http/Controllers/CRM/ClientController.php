@@ -4,54 +4,36 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientStoreRequest;
-use App\Services\ClientService;
-use App\Services\SystemLogService;
-use App\Traits\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use View;
 
 class ClientController extends Controller
 {
-    use Language;
-
-    private $systemLogsService;
-    private $clientService;
-
-    public function __construct()
-    {
-        $this->systemLogsService = new SystemLogService();
-        $this->clientService = new ClientService();
-    }
-
     public function processListOfClients()
     {
-        return View::make('crm.client.index')
-            ->with($this->clientService->loadDataAndPagination());
+        $collectDataForView = array_merge($this->collectedData(), ['clients' => $this->clientService->loadDataAndPagination()]);
+
+        return View::make('crm.client.index')->with($collectDataForView);
     }
 
     public function showCreateForm()
     {
-        return View::make('crm.client.create')->with([
-            'inputText' => $this->getMessage('messages.InputText')
-        ]);
+        return View::make('crm.client.create')->with($this->collectedData());
     }
 
     public function viewClientDetails(int $clientId)
     {
-        return View::make('crm.client.show')
-            ->with([
-                'clients' => $this->clientService->loadClientDetails($clientId)
-            ]);
+        $collectDataForView = array_merge($this->collectedData(), ['clients' => $this->clientService->loadClientDetails($clientId)]);
+
+        return View::make('crm.client.show')->with($collectDataForView);
     }
 
     public function showUpdateForm(int $clientId)
     {
-        return View::make('crm.client.edit')
-            ->with([
-                'client' => $this->clientService->loadClientDetails($clientId),
-                'inputText' => $this->getMessage('messages.InputText')
-            ]);
+        $collectDataForView = array_merge($this->collectedData(), ['client' => $this->clientService->loadClientDetails($clientId)]);
+
+        return View::make('crm.client.edit')->with($collectDataForView);
     }
 
     public function processCreateClient(ClientStoreRequest $request)

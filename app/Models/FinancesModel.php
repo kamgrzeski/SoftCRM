@@ -73,7 +73,7 @@ class FinancesModel extends Model
         }
     }
 
-    public static function countFinances()
+    public function countFinances()
     {
         return self::get()->count();
     }

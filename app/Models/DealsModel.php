@@ -55,7 +55,7 @@ class DealsModel extends Model
         }
     }
 
-    public static function countDeals()
+    public function countDeals()
     {
         return self::get()->count();
     }
@@ -69,7 +69,7 @@ class DealsModel extends Model
         return $percentage;
     }
 
-    public static function getDeactivated()
+    public function getDeactivated()
     {
         return self::where('is_active', '=', 0)->count();
     }

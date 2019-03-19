@@ -75,12 +75,12 @@ class EmployeesModel extends Model
         }
     }
 
-    public static function countEmployees()
+    public function countEmployees()
     {
         return self::all()->count();
     }
 
-    public static function getEmployeesInLatestMonth() {
+    public function getEmployeesInLatestMonth() {
         $employeesCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
         $allEmployees = self::all()->count();
 
@@ -89,7 +89,7 @@ class EmployeesModel extends Model
         return $percentage;
     }
 
-    public static function getDeactivated()
+    public function getDeactivated()
     {
         return self::where('is_active', '=', 0)->count();
     }

@@ -84,12 +84,12 @@ class CompaniesModel extends Model
         }
     }
 
-    public static function countCompanies()
+    public function countCompanies()
     {
         return self::all()->count();
     }
 
-    public static function getCompaniesInLatestMonth() {
+    public function getCompaniesInLatestMonth() {
         $companiesCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
         $allCompanies = self::all()->count();
 
@@ -98,7 +98,7 @@ class CompaniesModel extends Model
         return $percentage;
     }
 
-    public static function getDeactivated()
+    public function getDeactivated()
     {
         return self::where('is_active', '=', 0)->count();
     }

@@ -81,4 +81,19 @@ class CompaniesService
     {
         return $this->companiesModel->getCompaniesSortedByCreatedAt();
     }
+
+    public function loadCountCompanies()
+    {
+        return $this->companiesModel->countCompanies() ? : 0;
+    }
+
+    public function loadDeactivatedCompanies()
+    {
+        return $this->companiesModel->getDeactivated() ? : 0;
+    }
+
+    public function loadCompaniesInLatestMonth()
+    {
+        return $this->companiesModel->getCompaniesInLatestMonth() . '%' ? : '0.00%';
+    }
 }

@@ -48,10 +48,8 @@ class SystemLogsModel extends Model
         return $geo;
     }
 
-    public static function countRows()
+    public function countRows()
     {
         return self::all()->count();
     }
-
-
 }

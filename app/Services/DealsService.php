@@ -47,4 +47,29 @@ class DealsService
     {
         return $this->dealsModel->setActive($dealId, $value);
     }
+
+    public function loadCountDeals()
+    {
+        return $this->dealsModel->countDeals() ? : 0;
+    }
+
+    public function loadDeactivatedDeals()
+    {
+        return $this->dealsModel->getDeactivated() ? : 0;
+    }
+
+    public function loadDealsInLatestMonth()
+    {
+        return $this->dealsModel->getDealsInLatestMonth() . '%' ? : '0.00%';
+    }
+
+    public function loadDataAndPagination()
+    {
+        $dataOfDeals = [
+            'deals' => $this->loadDeals(),
+            'dealsPaginate' => $this->loadPaginate()
+        ];
+
+        return $dataOfDeals;
+    }
 }

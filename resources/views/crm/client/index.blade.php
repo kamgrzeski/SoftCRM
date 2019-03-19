@@ -24,68 +24,6 @@
                 <button type="button" class="btn btn-primary btn active">Add client</button>
             </a>
             <br><br>
-            @if (isset($clients_search))
-            <!-- Advanced Tables -->
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        List of search clients
-                    </div>
-                    <div class="panel-body">
-                        <div class="table">
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
-                                <thead>
-                                <tr>
-                                    <th class="text-center">Full name</th>
-                                    <th class="text-center">Phone</th>
-                                    <th class="text-center">Email address</th>
-                                    <th class="text-center">Phone</th>
-                                    <th class="text-center">Section</th>
-                                    <th class="text-center">Budget</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center" style="width:200px">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($clients_search as $key => $value)
-                                    <tr class="odd gradeX">
-                                        <td class="text-center">{{ $value->full_name }}</td>
-                                        <td class="text-center">{{ $value->phone }}</td>
-                                        <td class="text-center">{{ $value->email }}</td>
-                                        <td class="text-center">{{ $value->section }}</td>
-                                        <td class="text-center">{{ $value->budget }}</td>
-                                        <td class="text-center">{{ $value->is_active }}</td>
-                                        <td class="text-center">
-                                            @if($value->is_active == TRUE)
-                                                <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('clients/set-active/' . $value->id . '/0') }}")' checked>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @else
-                                                <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('clients/set-active/' . $value->id . '/1') }}")'>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @endif
-                                        </td>
-
-                                        <td class="text-right">
-                                            <a class="btn btn-small btn-success small-btn"
-                                               href="{{ URL::to('clients/form/update/' . $value->id) }}">More information</a>
-
-                                            <a class="btn btn-small btn-info"
-                                               href="{{ URL::to('clients/form/update/' . $value->id ) }}">Edit</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!--End Advanced Tables -->
-            @elseif (isset($client))
             <!-- Advanced Tables -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -106,7 +44,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($client as $key => $value)
+                                @foreach($clients as $key => $client)
+                                    @foreach($client as $key => $value)
                                     <tr class="odd gradeX">
                                         <td class="text-center">{{ $value->full_name }}</td>
                                         <td class="text-center">{{ $value->phone }}</td>
@@ -144,17 +83,15 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    @endforeach
                                 @endforeach
                                 </tbody>
                             </table>
                         </div>
-                        {!! $clientPaginate->render() !!}
+                        {!! $clients['clientPaginate']->render() !!}
                     </div>
                 </div>
                 <!--End Advanced Tables -->
-            @else
-                I don't have any records!
-            @endif
         </div>
     </div>
 @endsection

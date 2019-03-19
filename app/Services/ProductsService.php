@@ -71,4 +71,9 @@ class ProductsService
             return $this->getMessage('messages.firstDeleteSales');
         }
     }
+
+    public function loadCountProducts()
+    {
+        return $this->productsModel->countProducts() ? : 0;
+    }
 }

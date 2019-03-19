@@ -68,7 +68,7 @@ class TasksModel extends Model
         }
     }
 
-    public static function countTasks()
+    public function countTasks()
     {
         return self::all()->count();
     }
@@ -78,9 +78,9 @@ class TasksModel extends Model
         return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
     }
 
-    public static function getAllCompletedAndUncompletedTasks($isCompleted)
+    public function getAllCompletedTasks()
     {
-        $tasks = self::where('completed', '=', $isCompleted)->count();
+        $tasks = self::where('completed', '=', 1)->count();
 
         $taskAll = self::all()->count();
 
@@ -102,5 +102,16 @@ class TasksModel extends Model
     public function getPaginate()
     {
         return self::paginate(Config::get('crm_settings.pagination_size'));
+    }
+
+    public function getAllUncompletedTasks()
+    {
+        $tasks = self::where('completed', '=', 0)->count();
+
+        $taskAll = self::all()->count();
+
+        $percentage = round(($tasks / $taskAll) * 100);
+
+        return $tasks . ' (' . $percentage .  '%)';
     }
 }

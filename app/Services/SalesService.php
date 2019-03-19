@@ -58,4 +58,9 @@ class SalesService
 
         return $dataWithSales;
     }
+
+    public function loadCountSales()
+    {
+        return $this->salesModel->countSales() ? : 0;
+    }
 }

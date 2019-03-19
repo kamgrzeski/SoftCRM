@@ -63,4 +63,20 @@ class TasksService
 
         return $dataOfTasks;
     }
+
+    public function loadCountTasks()
+    {
+        return $this->tasksModel->countTasks() ? : 0;
+
+    }
+
+    public function loadCompletedTasks()
+    {
+        return $this->tasksModel->getAllCompletedTasks();
+    }
+
+    public function loadUncompletedTasks()
+    {
+        return $this->tasksModel->getAllUncompletedTasks();
+    }
 }

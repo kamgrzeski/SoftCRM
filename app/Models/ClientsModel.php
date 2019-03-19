@@ -70,7 +70,7 @@ class ClientsModel extends Model
         }
     }
 
-    public static function countClients()
+    public function countClients()
     {
         return self::all()->count();
     }
@@ -84,7 +84,7 @@ class ClientsModel extends Model
         return $new_width;
     }
 
-    public static function getDeactivated()
+    public function getDeactivated()
     {
         return self::where('is_active', '=', 0)->count();
     }

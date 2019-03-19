@@ -57,7 +57,7 @@ class SalesModel extends Model
         }
     }
 
-    public static function countSales()
+    public function countSales()
     {
         return self::all()->count();
     }

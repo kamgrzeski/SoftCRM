@@ -4,62 +4,45 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompaniesStoreRequest;
-use App\Services\CompaniesService;
-use App\Services\SystemLogService;
-use App\Traits\Language;
 use View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 
 class CompaniesController extends Controller
 {
-    use Language;
-
-    private $systemLogs;
-    private $companiesService;
-    private $language;
-
-    public function __construct()
-    {
-        $this->systemLogs = new SystemLogService();
-        $this->companiesService = new CompaniesService();
-    }
-
     public function processListOfCompanies()
     {
-        return View::make('crm.companies.index')->with($this->companiesService->loadDataAndPagination());
+        $collectDataForView = array_merge($this->collectedData(), $this->companiesService->loadDataAndPagination());
+
+        return View::make('crm.companies.index')->with($collectDataForView);
     }
 
     public function showCreateForm()
     {
-        return View::make('crm.companies.create')->with([
-            'dataWithPluckOfClient' => $this->companiesService->pluckData(),
-            'inputText' => $this->getMessage('messages.InputText')
-        ]);
+        $collectDataForView = array_merge($this->collectedData(), ['dataWithPluckOfClient' => $this->companiesService->pluckData()]);
+
+        return View::make('crm.companies.create')->with($collectDataForView);
     }
 
     public function viewCompaniesDetails(int $companieId)
     {
-        return View::make('crm.companies.show')
-            ->with([
-                'companies' => $this->companiesService->loadCompanie($companieId)
-            ]);
+        $collectDataForView = array_merge($this->collectedData(), ['companies' => $this->companiesService->loadCompanie($companieId)]);
+
+        return View::make('crm.companies.show')->with($collectDataForView);
     }
 
     public function showUpdateForm(int $companieId)
     {
-        return View::make('crm.companies.edit')
-            ->with([
-                'companies' => $this->companiesService->loadCompanie($companieId),
-                'clients' => $this->companiesService->pluckData(),
-                'inputText' => $this->getMessage('messages.InputText')
-            ]);
+        $collectDataForView = array_merge($this->collectedData(), ['companies' => $this->companiesService->loadCompanie($companieId)],
+            ['clients' => $this->companiesService->pluckData()]);
+
+        return View::make('crm.companies.edit')->with($collectDataForView);
     }
 
     public function processCreateCompanies(CompaniesStoreRequest $request)
     {
         if ($companie = $this->companiesService->execute($request->validated())) {
-            $this->systemLogs->insertSystemLogs('CompaniesModel has been add with id: '. $companie, $this->systemLogs::successCode);
+            $this->systemLogsService->insertSystemLogs('CompaniesModel has been add with id: '. $companie, $this->systemLogsService::successCode);
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesStore'));
@@ -87,7 +70,7 @@ class CompaniesController extends Controller
 
         $dataOfCompanies->delete();
 
-        $this->systemLogs->insertSystemLogs('CompaniesModel has been deleted with id: ' . $dataOfCompanies->id, $this->systemLogs::successCode);
+        $this->systemLogsService->insertSystemLogs('CompaniesModel has been deleted with id: ' . $dataOfCompanies->id, $this->systemLogsService::successCode);
 
         return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesDelete'));
     }
@@ -95,7 +78,7 @@ class CompaniesController extends Controller
     public function processSetIsActive(int $companieId, bool $value)
     {
         if ($this->companiesService->loadSetActive($companieId, $value)) {
-            $this->systemLogs->insertSystemLogs('CompaniesModel has been enabled with id: ' . $companieId, $this->systemLogs::successCode);
+            $this->systemLogsService->insertSystemLogs('CompaniesModel has been enabled with id: ' . $companieId, $this->systemLogsService::successCode);
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesActive'));
