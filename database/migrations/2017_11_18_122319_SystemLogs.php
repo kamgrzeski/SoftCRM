@@ -12,7 +12,7 @@ class SystemLogs extends Migration
      * @return void
      */
     public function up() {
-        Schema::create('systemlogs', function (Blueprint $table) {
+        Schema::create('system_logs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id')->nullable();
             $table->string('actions')->nullable();
@@ -21,6 +21,7 @@ class SystemLogs extends Migration
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->dateTime('date')->nullable();
+            $table->softDeletes();
         });
     }
 
@@ -31,6 +32,6 @@ class SystemLogs extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mailing');
+        Schema::dropIfExists('system_logs');
     }
 }

@@ -1,29 +1,25 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kamilgrzechulski
- * Date: 30.07.2018
- * Time: 09:20
- */
 
 namespace App\Services;
 
-use App\Models\SettingsModel;
 use Config;
-use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 
 class SettingsService
 {
-    private $settingsModel;
-
-    public function __construct()
+    public function storeSettings(array $validatedData)
     {
-        $this->settingsModel = new SettingsModel();
+        if (isset($validatedData)) {
+            foreach ($validatedData as $key => $data) {
+                Config::set('crm_settings.'. $key, $data);
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public function saveEnvData($RollbarToken)
+    public function loadConfigData()
     {
-        DotenvEditor::setKey('ROLLBAR_TOKEN', $RollbarToken);
-        DotenvEditor::save();
+        return Config::get('crm_settings');
     }
 }

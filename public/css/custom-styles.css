@@ -1,13 +1,3 @@
-/*----------------------------------------------
-Author : www.webthemez.com
-License: Commons Attribution 3.0
-http://creativecommons.org/licenses/by/3.0/
-------------------------------------------------*/
-
-
-/*----------------------------------------------
-    COMMON  STYLES    
-------------------------------------------------*/
 body {
     font-family: 'Open Sans', sans-serif;
 }
@@ -20,7 +10,7 @@ body {
 
  #wrapper {
     width: 100%;
-    background:#09192A;
+    background:#054a7f;
 }
 
 #page-wrapper {
@@ -376,7 +366,7 @@ background: #172D44;
 	
 }
 .top-navbar {
-	background:#09192A;
+	background:#054a7f;
 	border-bottom:none;
 	
 }
@@ -395,7 +385,7 @@ border:0px solid black;
      
 }
 .navbar-header {
-    background: #09192A;
+    background: #054a7f;
 }
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
 background-color: #B40101;

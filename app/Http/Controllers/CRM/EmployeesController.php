@@ -2,86 +2,90 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Http\Requests\EmployeesStoreRequest;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use View;
-use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\EmployeesStoreRequest;
+use App\Http\Requests\EmployeesUpdateRequest;
+use App\Services\EmployeesService;
+use Illuminate\Http\Request;
+use Illuminate\Http\{JsonResponse};
 
 class EmployeesController extends Controller
 {
-    public function processListOfEmployees()
-    {
-        $collectDataForView = array_merge($this->collectedData(), $this->employeesService->loadDataAndPagination());
+    private $employeesService;
 
-        return View::make('crm.employees.index')->with($collectDataForView);
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->employeesService = new EmployeesService();
     }
 
-    public function showCreateForm()
+    public function processListOfEmployees() : JsonResponse
     {
-        $collectDataForView = array_merge($this->collectedData(), ['dataOfClients' => $this->employeesService->pluckData()]);
-
-        return View::make('crm.employees.create')->with($collectDataForView);
-    }
-
-    public function viewEmployeeDetails($employeeId)
-    {
-        $collectDataForView = array_merge($this->collectedData(), ['employees' => $this->employeesService->loadEmployeeDetails($employeeId)]);
-
-        return View::make('crm.employees.show')->with($collectDataForView);
-    }
-
-    public function showUpdateForm($employeeId)
-    {
-        $collectDataForView = array_merge($this->collectedData(), ['employees' =>  $this->employeesService->loadEmployeeDetails($employeeId)],
-            ['clients' => $this->employeesService->loadPluckClients()], ['inputText' => $this->getMessage('messages.InputText')]);
-
-        return View::make('crm.employees.edit')->with($collectDataForView);
-    }
-
-    public function processCreateEmployee(EmployeesStoreRequest $request)
-    {
-        if ($employee = $this->employeesService->execute($request->validated())) {
-            $this->systemLogsService->insertSystemLogs('Employees has been add with id: '. $employee, $this->systemLogsService::successCode);
-            return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
+        if ($employeesList = $this->employeesService->loadEmployeesList()) {
+            return $this->jsonResponse('Employees list.', $employeesList, $this->successCode, $this->startTime);
         } else {
-            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));
+            return $this->jsonResponse('Something went wrong while collection employee list.', [], $this->unauthorized, $this->startTime);
         }
     }
 
-    public function processUpdateEmployee(Request $request, int $employeeId)
+    public function processCreateEmployee(EmployeesStoreRequest $request) : JsonResponse
     {
-        if ($this->employeesService->update($employeeId, $request->all())) {
-            return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesUpdate'));
+        $validatedData = $this->convertToObject($request->validated());
+
+        if ($employeeId = $this->employeesService->execute($validatedData)) {
+            $this->insertSystemLogs('Employee has been stored. Employee ID: ' . $employeeId, $this->successCode);
+            return $this->jsonResponse('You have successfully stored employee!', [], $this->successCode, $this->startTime);
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesUpdate'));
+            return $this->jsonResponse('Something went wrong while storing employee.', [], $this->unauthorized, $this->startTime);
         }
     }
 
-    public function processDeleteEmployee($employeeId)
+    public function processEmployeeDetails(Request $request) : JsonResponse
     {
-        $dataOfEmployees = $this->employeesService->loadEmployeeDetails($employeeId);
-        $countTasks = $this->employeesService->countEmployeeTasks($dataOfEmployees);
-
-        if ($countTasks > 0) {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteTasks'));
+        if ($employeeDetails = $this->employeesService->loadEmployeeDetails($request->route('employeeId'))) {
+            return $this->jsonResponse('Employee details', $employeeDetails, $this->successCode, $this->startTime);
+        } else {
+            return $this->jsonResponse('Something went wrong while collecting employee data.', [], $this->unauthorized, $this->startTime);
         }
-
-        $dataOfEmployees->delete();
-
-        $this->systemLogsService->insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id, $this->systemLogsService::successCode);
-
-        return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesDelete'));
     }
 
-    public function processSetIsActive($employeeId, $value)
+    public function processDeleteEmployee(Request $request) : JsonResponse
     {
-        if ($this->employeesService->loadIsActiveFunction($employeeId, $value)) {
-            $this->systemLogsService->insertSystemLogs('Employees has been enabled with id: ' . $employeeId, $this->systemLogsService::successCode);
-            return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesActive'));
+        $employeeId = $request->route('employ   eeId');
+
+        if ($this->employeesService->loadEmployeeDelete($employeeId)) {
+            return $this->jsonResponse('Employee has been deleted.', ['employeeId' => $employeeId], $this->successCode, $this->startTime);
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesActive'));
+            return $this->jsonResponse('Something went wrong while collecting employee data.', [], $this->unauthorized, $this->startTime);
+        }
+    }
+
+    public function processUpdateEmployee(EmployeesUpdateRequest $request) : JsonResponse
+    {
+        $groupId = (int) $request->route('employeeId');
+        $validated = $this->convertToObject($request->validated());
+
+        if($groupDetails = $this->employeesService->update($validated, $groupId)) {
+            return $this->jsonResponse('You have been updated employee!', $groupDetails, $this->successCreatedCode, $this->startTime);
+        } else {
+            return $this->jsonResponse('There is no employee with given employeeId.', [], $this->notFound, $this->startTime);
+        }
+    }
+
+    public function processSetIsActive(Request $request) : JsonResponse
+    {
+        $employeeId = (int) $request->get('employeeId');
+        $value = $request->get('type');
+
+        if($groupDetails = $this->employeesService->setIsActive($employeeId, $value)) {
+            if($value == 1) {
+                return $this->jsonResponse('You have been deactive employee!', $groupDetails, $this->successCreatedCode, $this->startTime);
+            } else {
+                return $this->jsonResponse('You have been active employee!', $groupDetails, $this->successCreatedCode, $this->startTime);
+            }
+        } else {
+            return $this->jsonResponse('There is no user with given employeeId.', [], $this->notFound, $this->startTime);
         }
     }
 }
-

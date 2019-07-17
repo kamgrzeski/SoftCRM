@@ -1,14 +1,20 @@
 # <s>SoftCRM</s> SoftCRM v2
 
-Cooming soon: SoftCRM v2 API (Laravel 5.8+) + VUE.JS
+TODO (rebuild API and implement VUE):
+
+Clients Module <img src="https://www.inwayhosting.com/assets/images/tick.png"><br>
+Companies Module  <img src="https://static.seekingalpha.com/uploads/2011/9/19/saupload_20px_flag_of_switzerland.svg.png"><br>
+Deal Module <img src="https://www.inwayhosting.com/assets/images/tick.png"><br>
+Employees Module <img src="https://www.inwayhosting.com/assets/images/tick.png"><br>
+Finances Module <img src="https://static.seekingalpha.com/uploads/2011/9/19/saupload_20px_flag_of_switzerland.svg.png"><br>
+Products Module <img src="https://static.seekingalpha.com/uploads/2011/9/19/saupload_20px_flag_of_switzerland.svg.png"><br>
+Sales Module <img src="https://static.seekingalpha.com/uploads/2011/9/19/saupload_20px_flag_of_switzerland.svg.png"><br>
+Settings Module <img src="https://static.seekingalpha.com/uploads/2011/9/19/saupload_20px_flag_of_switzerland.svg.png"><br>
+Tasks Module <img src="https://static.seekingalpha.com/uploads/2011/9/19/saupload_20px_flag_of_switzerland.svg.png"><br>
 
 Customer relationship management (CRM) is an approach to managing a company's interaction with current and potential customers. It uses data analysis about customers' history with a company and to improve business relationships with customers, specifically focusing on customer retention and ultimately driving sales growth.
 
 <img src="https://i.ibb.co/0ZfbYvC/Przechwytywanie.png">
-
-Comming soon: 
-
-<img src="https://i.ibb.co/85wMt0g/Przechwytywanie.png">
 
 ## <font color="red">IMPORTANT!</font> 
 In the future, administrators can define the default language to be applied to all site content. At the moment, SoftCRM supports English (you can configure your i18n). 
@@ -34,28 +40,22 @@ git clone https://github.com/KamilGrzechulski/SoftCRM.git
 ```
 composer install 
 ```
-#### 3. Now install node_modules files by this command:
+#### 3. Run this command from the root project folder and this will create the database tables for you. This is our custom command to process all missing features.
+```
+php artisan process-softcrm
+```
+#### 4. Now install node_modules files by this command:
 ```
 npm install
 ```
-#### 4. Now run complied command:
+#### 5. Now run complied command:
 ```
 npm run prod
 ```
 
-#### 5. After successfully commands setup your database and open the .env.example file. Rename this file to .env and enter details for your site, database, stripe and email integration.
+#### 6. After successfully commands setup your database and open the .env.example file. Rename this file to .env and enter details for your site, database, stripe and email integration.
 
-#### 6. Run this command from the root project folder and this will create the database tables for you. This is our custom command to process all missing features.
-```
-php artisan process-softcrm
-```
-
-#### 7. Than run laravel server by command:
-```
-php artisan serve
-```
-
-#### 8. Now you can login your Admin account by using:
+#### 7. Now you can login your Admin account by using:
 ```
 user: admin@admin.com
 password: admin

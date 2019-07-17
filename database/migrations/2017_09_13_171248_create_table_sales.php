@@ -22,6 +22,7 @@ class CreateTableSales extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

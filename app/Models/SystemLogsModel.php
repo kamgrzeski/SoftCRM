@@ -4,33 +4,32 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use Request;
+use Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SystemLogsModel extends Model
 {
-    protected $table = 'systemlogs';
+    use SoftDeletes;
 
-    public $ip = null;
+    protected $table = 'system_logs';
 
-    public function __construct()
+    public function getCountLogs()
     {
-        $hostName = Request::getHttpHost();
-
-        if (strpos($hostName, 'localhost') != 0) {
-            $this->ip = Request::ip();
-        } else {
-            $this->ip = '66.249.69.115'; // googlebot
-        }
+        return $this->all()->count();
     }
 
-    public function insertRow($actions, $statusCode)
+    public function getSystemLogs()
+    {
+        return $this->all();
+    }
+
+    public function storeSystemLogs($actions, $statusCode)
     {
         $userInformation = $this->getUserInformation();
 
         self::insert(
             [
-                'user_id' => Auth::id(),
+                'user_id' => Auth::id() ?? 1,
                 'actions' => $actions,
                 'status_code' => $statusCode,
                 'date' => Carbon::now(),
@@ -46,10 +45,5 @@ class SystemLogsModel extends Model
         $geo = unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$this->ip"));
 
         return $geo;
-    }
-
-    public function countRows()
-    {
-        return self::all()->count();
     }
 }

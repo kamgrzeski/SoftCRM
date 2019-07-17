@@ -26,6 +26,7 @@ class CreateTableFinances extends Migration
             $table->foreign('companies_id')->references('id')->on('companies');
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

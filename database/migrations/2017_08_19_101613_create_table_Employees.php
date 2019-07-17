@@ -23,6 +23,7 @@ class CreateTableEmployees extends Migration
             $table->foreign('client_id')->references('id')->on('clients');
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

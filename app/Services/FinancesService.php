@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kami
- * Date: 16.03.2018
- * Time: 13:59
- */
 
 namespace App\Services;
 
@@ -20,14 +14,9 @@ class FinancesService
         $this->financesModel = new FinancesModel();
     }
 
-    public function execute($requestedData)
+    public function loadCountFinances()
     {
-        return $this->financesModel->storeFinance($requestedData);
-    }
-
-    public function update(int $financeId, $requestedData)
-    {
-        return $this->financesModel->updateFinance($financeId, $requestedData);
+        return $this->financesModel->getCountFinances();
     }
 
     public function calculateNetAndVatByGivenGross($gross)
@@ -43,45 +32,5 @@ class FinancesService
             'net' => $net,
             'vat' => $vat,
         ];
-    }
-
-    public function loadFinances()
-    {
-        return $this->financesModel->getFinancesSortedByCreatedAt();
-    }
-
-    public function loadPagination()
-    {
-        return $this->financesModel->getPaginate();
-    }
-
-    public function loadFinance(int $financeId)
-    {
-        return $this->financesModel::find($financeId);
-    }
-
-    public function loadIsActiveFunction($financeId, $value)
-    {
-        return $this->financesModel->setActive($financeId, $value);
-    }
-
-    public function pluckCompanies()
-    {
-        return $this->financesModel->getPluckCompanies();
-    }
-
-    public function loadDataAndPagination()
-    {
-        $dataOfFinances = [
-            'finances' => $this->loadFinances(),
-            'financesPaginate' => $this->loadPagination()
-        ];
-
-        return $dataOfFinances;
-    }
-
-    public function loadCountFinances()
-    {
-        return $this->financesModel->countFinances() ? : 0;
     }
 }

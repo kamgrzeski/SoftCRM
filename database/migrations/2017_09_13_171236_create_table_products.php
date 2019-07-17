@@ -20,6 +20,7 @@ class CreateTableProducts extends Migration
             $table->integer('price');
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -21,6 +21,7 @@ class CreateTableTasks extends Migration
             $table->boolean('is_active')->nullable()->default(1);
             $table->boolean('completed')->nullable()->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

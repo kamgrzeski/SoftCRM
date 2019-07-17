@@ -4,112 +4,45 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Config;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CompaniesModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'companies';
 
-    public function client()
+    public function getCountCompanies()
     {
-        return $this->belongsTo(ClientsModel::class);
+        return $this->all()->count();
     }
 
-    public function deals()
+    public function getCountOfDeactivatedCompanies()
     {
-        return $this->hasMany(DealsModel::class, 'id');
+        return $this->where('is_active', 0)->get()->count();
     }
 
-    public function employees_size()
+    public function getCountOfDeactivatedCompaniesInLatestMonth()
     {
-        return $this->belongsTo(EmployeesModel::class);
+        $companiesCount = $this->where('created_at', '>=', Carbon::now()->subMonth())->count();
+
+        $companiesInLatestMonth = ($this->getCountCompanies() / 100) * $companiesCount;
+
+        return $companiesInLatestMonth . '%' ? : '0.00%';
     }
 
-    public function finances()
+    public function getCompanies()
     {
-        return $this->hasMany(FinancesModel::class);
+        return self::all()->slice(0, 5);
     }
 
-    public function insertCompanie($requestedData)
+    public function getCompaniesAssignedToClient($clientId)
     {
-        return self::insertGetId(
-            [
-                'name' => $requestedData['name'],
-                'tax_number' => $requestedData['tax_number'],
-                'phone' => $requestedData['phone'],
-                'city' => $requestedData['city'],
-                'billing_address' => $requestedData['billing_address'],
-                'country' => $requestedData['country'],
-                'postal_code' => $requestedData['postal_code'],
-                'employees_size' => $requestedData['employees_size'],
-                'fax' => $requestedData['fax'],
-                'description' => $requestedData['description'],
-                'client_id' => $requestedData['client_id'],
-                'created_at' => Carbon::now(),
-                'is_active' => 1
-            ]
-        );
+        return $this->where('client_id', $clientId)->get()->count();
     }
 
-    public function updateCompanie($companieId, $requestedData)
+    public function getCompaniesDetailsAssignedToClient($clientId)
     {
-        return self::where('id', '=', $companieId)->update(
-            [
-                'name' => $requestedData['name'],
-                'tax_number' => $requestedData['tax_number'],
-                'phone' => $requestedData['phone'],
-                'city' => $requestedData['city'],
-                'billing_address' => $requestedData['billing_address'],
-                'country' => $requestedData['country'],
-                'postal_code' => $requestedData['postal_code'],
-                'employees_size' => $requestedData['employees_size'],
-                'fax' => $requestedData['fax'],
-                'description' => $requestedData['description'],
-                'client_id' => $requestedData['client_id'],
-                'is_active' => 1
-            ]);
-    }
-
-    public function setActive($companieId, $activeType)
-    {
-        $findCompaniesById = self::where('id', '=', $companieId)->update(
-            [
-                'is_active' => $activeType
-            ]);
-
-        if ($findCompaniesById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
-    public function countCompanies()
-    {
-        return self::all()->count();
-    }
-
-    public function getCompaniesInLatestMonth() {
-        $companiesCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allCompanies = self::all()->count();
-
-        $percentage = ($allCompanies / 100) * $companiesCount;
-
-        return $percentage;
-    }
-
-    public function getDeactivated()
-    {
-        return self::where('is_active', '=', 0)->count();
-    }
-
-    public function getCompaniesSortedByCreatedAt()
-    {
-        return self::all()->sortBy('created_at', 0, true)->slice(0, 5);
-    }
-
-    public function getPaginate()
-    {
-        return self::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->where('client_id', $clientId)->get();
     }
 }

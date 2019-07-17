@@ -4,88 +4,53 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Config;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DealsModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'deals';
 
-    public function companies()
+    public function getCountDeals()
     {
-        return $this->belongsTo(CompaniesModel::class);
+        return $this->all()->count();
     }
 
-    public function insertDeal($requestedData)
+    public function getCountOfDeactivatedDeals()
     {
-        return self::insert(
-            [
-                'name' => $requestedData['name'],
-                'start_time' => $requestedData['start_time'],
-                'end_time' => $requestedData['end_time'],
-                'companies_id' => $requestedData['companies_id'],
-                'created_at' => Carbon::now(),
-                'is_active' => 1
-            ]
-        );
+        return $this->where('is_active', 0)->get()->count();
     }
 
-    public function updateDeal($dealId, $requestedData)
+    public function getCountOfDealsInLatestMonth()
     {
-        return self::where('id', '=', $dealId)->update(
-            [
-                'name' => $requestedData['name'],
-                'start_time' => $requestedData['start_time'],
-                'end_time' => $requestedData['end_time'],
-                'companies_id' => $requestedData['companies_id'],
-                'is_active' => 1
-            ]);
+        $dealsCount = $this->where('created_at', '>=', Carbon::now()->subMonth())->count();
+
+        $dealsInLatestMonth = ($this->getCountDeals() / 100) * $dealsCount;
+
+        return $dealsInLatestMonth . '%' ? : '0.00%';
     }
 
-    public function setActive($dealId, $activeType)
+    public function getDeals()
     {
-        $findDealsById = self::where('id', '=', $dealId)->update(
-            [
-                'is_active' => $activeType
-            ]);
+        return $this->all();
+    }
 
-        if ($findDealsById) {
-            return TRUE;
-        } else {
-            return FALSE;
+    public function getDealDetails($dealId)
+    {
+        return $this->where('id', $dealId)->get()->last();
+    }
+
+    public function deleteDeal($dealId)
+    {
+        $dealModel = self::find($dealId);
+
+        if (is_null($dealModel)) {
+            return false;
         }
-    }
 
-    public function countDeals()
-    {
-        return self::get()->count();
-    }
+        $dealModel->delete();
 
-    public static function getDealsInLatestMonth() {
-        $dealsCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allDeals = self::all()->count();
-
-        $percentage = ($allDeals / 100) * $dealsCount;
-
-        return $percentage;
-    }
-
-    public function getDeactivated()
-    {
-        return self::where('is_active', '=', 0)->count();
-    }
-
-    public function getPluckCompanies()
-    {
-        return self::pluck('name', 'id');
-    }
-
-    public function getPaginate()
-    {
-        return self::paginate(Config::get('crm_settings.pagination_size'));
-    }
-
-    public function getDeal(int $dealId)
-    {
-        return self::find($dealId);
+        return true;
     }
 }

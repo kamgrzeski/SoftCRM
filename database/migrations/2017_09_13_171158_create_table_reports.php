@@ -21,6 +21,7 @@ class CreateTableReports extends Migration
             $table->foreign('clients_id')->references('id')->on('clients');
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

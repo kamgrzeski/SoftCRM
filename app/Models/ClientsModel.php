@@ -3,116 +3,56 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use ClickNow\Money\Money;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
-use Config;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ClientsModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'clients';
 
-    public function companies()
+    protected $fillable = [ 'full_name', 'lang', 'date_format', 'per_page', 'dashboard_history', 'email_newsletters' ];
+
+    public function getCountClients()
     {
-        return $this->hasMany(CompaniesModel::class, 'id');
+        return $this->all()->count();
     }
 
-    public function employees()
+    public function getCountOfDeactivatedClients()
     {
-        return $this->hasMany(EmployeesModel::class, 'id');
+        return $this->where('is_active', 0)->get()->count();
     }
 
-    public function storeClient($requestedData)
+    public function getCountOfClientsInLatestMonth()
     {
-        return self::insertGetId(
-            [
-                'full_name' => $requestedData['full_name'],
-                'phone' => $requestedData['phone'],
-                'email' => $requestedData['email'],
-                'section' => $requestedData['section'],
-                'budget' => $requestedData['budget'],
-                'location' => $requestedData['location'],
-                'zip' => $requestedData['zip'],
-                'city' => $requestedData['city'],
-                'country' => $requestedData['country'],
-                'created_at' => Carbon::now(),
-                'is_active' => 1
-            ]
-        );
+        $clientCount = $this->where('created_at', '>=', Carbon::now()->subMonth())->count();
+
+        $clientsInLatestMonth = ($this->getCountClients() / 100) * $clientCount;
+
+        return $clientsInLatestMonth . '%' ? : '0.00%';
     }
 
-    public function updateClient($id, $requestedData)
+    public function getClients()
     {
-        return self::where('id', '=', $id)->update(
-            [
-                'full_name' => $requestedData['full_name'],
-                'phone' => $requestedData['phone'],
-                'email' => $requestedData['email'],
-                'section' => $requestedData['section'],
-                'budget' => $requestedData['budget'],
-                'location' => $requestedData['location'],
-                'zip' => $requestedData['zip'],
-                'city' => $requestedData['city'],
-                'country' => $requestedData['country'],
-                'updated_at' => Carbon::now(),
-                'is_active' => 1
-            ]);
+        return $this->all();
     }
 
-    public function setClientActive($id, $activeType)
+    public function getClientsDetails($clientId)
     {
-        $findClientById = self::where('id', '=', $id)->update(['is_active' => $activeType]);
-
-        if ($findClientById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return $this->where('id', $clientId)->get()->last();
     }
 
-    public function countClients()
+    public function deleteClient($clientId)
     {
-        return self::all()->count();
-    }
+        $clientsModel = self::find($clientId);
 
-    public static function getClientsInLatestMonth() {
-        $clientCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allClient = self::all()->count();
-
-        $new_width = ($allClient / 100) * $clientCount;
-
-        return $new_width;
-    }
-
-    public function getDeactivated()
-    {
-        return self::where('is_active', '=', 0)->count();
-    }
-
-    public function findClientByGivenClientId($clientId)
-    {
-        $query = self::find($clientId);
-
-        Arr::add($query, 'companiesCount', count($query->companies));
-        Arr::add($query, 'employeesCount', count($query->employees));
-        Arr::add($query, 'formattedBudget', Money::{config('crm_settings.currency')}($query->budget));
-
-        return $query;
-    }
-
-    public function getClientSortedBy($by)
-    {
-        $query = self::all()->sortByDesc($by);
-
-        foreach($query as $key => $client) {
-            $query[$key]->budget = Money::{config('crm_settings.currency')}($client->budget);
+        if (is_null($clientsModel)) {
+            return false;
         }
 
-        return $query;
-    }
+        $clientsModel->delete();
 
-    public function getPaginate()
-    {
-        return self::paginate(Config::get('crm_settings.pagination_size'));
+        return true;
     }
 }

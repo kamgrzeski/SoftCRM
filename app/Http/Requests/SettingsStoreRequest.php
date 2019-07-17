@@ -14,7 +14,8 @@ class SettingsStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check();
+        return true;
+//        return Auth::check();
     }
 
     /**
@@ -25,14 +26,13 @@ class SettingsStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'pagination_size' => 'required|integer',
-            'currency' => 'required|string',
-            'priority_size' => 'required|integer',
-            'invoice_tax' => 'required|integer',
-            'invoice_logo_link' => 'required',
-            'rollbar_token' => 'required',
-            'loading_circle' => 'required',
-            'stats' => 'required'
+            'pagination_size' => 'integer',
+            'currency' => 'string',
+            'priority_size' => 'integer',
+            'invoice_tax' => 'integer',
+            'rollbar_token' => '',
+            'loading_circle' => '',
+            'stats' => ''
         ];
     }
 }

@@ -20,6 +20,7 @@ class CreateTableClients extends Migration
             $table->text('country');
             $table->boolean('is_active')->nullable()->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

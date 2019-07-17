@@ -4,40 +4,41 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SettingsStoreRequest;
-use Axdlee\Config\Rewrite;
-use Illuminate\Support\Facades\Redirect;
-use View;
-use Validator;
+use App\Services\SettingsService;
+use App\Services\SystemLogsService;
 use Config;
+use Illuminate\Http\{JsonResponse};
 
 class SettingsController extends Controller
 {
-    public function processListOfSettings()
-    {
-        $collectDataForView = array_merge($this->collectedData(), ['input' => config('crm_settings.temp')], ['logs' => $this->helpersFncService->formatAllSystemLogs()]);
+    private $systemLogsService;
+    private $settingsService;
 
-        return view('crm.settings.index')->with($collectDataForView);
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->systemLogsService = new SystemLogsService();
+        $this->settingsService = new SettingsService();
     }
 
-    public function processCreateSettings(SettingsStoreRequest $request)
+    public function processListOfSystemLogs() : array
+    {
+        return [
+            'systemLogs' => $this->systemLogsService->loadSystemLogs(),
+            'configData' => $this->settingsService->loadConfigData()
+        ];
+    }
+
+    public function processStoreSettings(SettingsStoreRequest $request) : JsonResponse
     {
         $validatedData = $request->validated();
 
-        $writeConfig = new Rewrite;
-        $writeConfig->toFile(base_path() . '/config/crm_settings.php', [
-            'pagination_size' => $validatedData['pagination_size'],
-            'currency' => $validatedData['currency'],
-            'priority_size' => $validatedData['priority_size'],
-            'invoice_tax' => $validatedData['invoice_tax'],
-            'invoice_logo_link' => $validatedData['invoice_logo_link'],
-            'rollbar_token' => $validatedData['rollbar_token'],
-            'loading_circle' => $validatedData['loading_circle'],
-            'stats' => $validatedData['stats']
-        ]);
-
-        $this->settingsService->saveEnvData($validatedData['rollbar_token']);
-
-        $this->systemLogsService->insertSystemLogs('SettingsModel has been changed.', $this->systemLogsService::successCode);
-        return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSettingsUpdate'));
+        if ($this->settingsService->storeSettings($validatedData)) {
+            $this->insertSystemLogs('Settings has been changed.', $this->successCode);
+            return $this->jsonResponse('You have successfully stored settings!', [], $this->successCode, $this->startTime);
+        } else {
+            return $this->jsonResponse('Something went wrong while storing settings.', [], $this->unauthorized, $this->startTime);
+        }
     }
 }

@@ -4,76 +4,88 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DealsStoreRequest;
-use View;
+use App\Http\Requests\DealsUpdateRequest;
+use App\Services\DealsService;
 use Illuminate\Http\Request;
-Use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\{JsonResponse};
 
 class DealsController extends Controller
 {
-    public function processListOfDeals()
-    {
-        $collectDataForView = array_merge($this->collectedData(), ['deals' => $this->dealsService->loadDataAndPagination()]);
+    private $dealsService;
 
-        return View::make('crm.deals.index')->with($collectDataForView);
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->dealsService = new DealsService();
     }
 
-    public function showCreateForm()
+    public function processListOfDeals() : JsonResponse
     {
-        $collectDataForView = array_merge($this->collectedData(), ['dataOfDeals' => $this->dealsService->pluckCompanies()]);
-
-        return View::make('crm.deals.create')->with($collectDataForView);
-    }
-
-    public function viewDealsDetails(int $dealId)
-    {
-        $collectDataForView = array_merge($this->collectedData(), ['deal' => $this->dealsService->loadDeal($dealId)]);
-
-        return View::make('crm.deals.show')->with($collectDataForView);
-    }
-
-    public function showUpdateForm(int $dealId)
-    {
-        $collectDataForView = array_merge($this->collectedData(), ['deals' => $this->dealsService->loadDeal($dealId)], ['companies' => $this->dealsService->pluckCompanies()]);
-
-        return View::make('crm.deals.edit')->with($collectDataForView);
-    }
-
-    public function processCreateDeals(DealsStoreRequest $request)
-    {
-        if ($deal = $this->dealsService->execute($request->validated())) {
-            $this->systemLogsService->insertSystemLogs('Deal has been add with id: '. $deal, $this->systemLogsService::successCode);
-            return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsStore'));
+        if ($dealsList = $this->dealsService->loadDealsList()) {
+            return $this->jsonResponse('Deals list.', $dealsList, $this->successCode, $this->startTime);
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsStore'));
+            return $this->jsonResponse('Something went wrong while collection deal list.', [], $this->unauthorized, $this->startTime);
         }
     }
 
-    public function processUpdateDeals(Request $request, int $dealId)
+    public function processCreateDeal(DealsStoreRequest $request) : JsonResponse
     {
-        if ($this->dealsService->update($dealId, $request->all())) {
-            return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsUpdate'));
+        $validatedData = $this->convertToObject($request->validated());
+
+        if ($dealId = $this->dealsService->execute($validatedData)) {
+            $this->insertSystemLogs('Deal has been stored. Deal ID: ' . $dealId, $this->successCode);
+            return $this->jsonResponse('You have successfully stored deal!', [], $this->successCode, $this->startTime);
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsUpdate'));
+            return $this->jsonResponse('Something went wrong while storing deal.', [], $this->unauthorized, $this->startTime);
         }
     }
 
-    public function processDeleteDeals(int $dealId)
+    public function processDealDetails(Request $request) : JsonResponse
     {
-        $dataOfDeals = $this->dealsService->loadDeal($dealId);
-        $dataOfDeals->delete();
-
-        $this->systemLogsService->insertSystemLogs('DealsModel has been deleted with id: ' .$dataOfDeals->id, $this->systemLogsService::successCode);
-
-        return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsDelete'));
+        if ($dealDetails = $this->dealsService->loadDealDetails($request->route('dealId'))) {
+            return $this->jsonResponse('Deal details', $dealDetails, $this->successCode, $this->startTime);
+        } else {
+            return $this->jsonResponse('Something went wrong while collecting deal data.', [], $this->unauthorized, $this->startTime);
+        }
     }
 
-    public function processSetIsActive(int $dealId, bool $value)
+    public function processDeleteDeal(Request $request) : JsonResponse
     {
-        if ($this->dealsService->loadSetActive($dealId, $value)) {
-            $this->systemLogsService->insertSystemLogs('DealsModel has been enabled with id: ' .$dealId, $this->systemLogsService::successCode);
-            return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsActive'));
+        $dealId = $request->route('dealId');
+
+        if ($this->dealsService->loadDealDelete($dealId)) {
+            return $this->jsonResponse('Deal has been deleted.', ['dealId' => $dealId], $this->successCode, $this->startTime);
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsActive'));
+            return $this->jsonResponse('Something went wrong while collecting deal data.', [], $this->unauthorized, $this->startTime);
+        }
+    }
+
+    public function processUpdateDeal(DealsUpdateRequest $request) : JsonResponse
+    {
+        $groupId = (int) $request->route('dealId');
+        $validated = $this->convertToObject($request->validated());
+
+        if($groupDetails = $this->dealsService->update($validated, $groupId)) {
+            return $this->jsonResponse('You have been updated deal!', $groupDetails, $this->successCreatedCode, $this->startTime);
+        } else {
+            return $this->jsonResponse('There is no deal with given dealId.', [], $this->notFound, $this->startTime);
+        }
+    }
+
+    public function processSetIsActive(Request $request) : JsonResponse
+    {
+        $dealId = (int) $request->get('dealId');
+        $value = $request->get('type');
+
+        if($groupDetails = $this->dealsService->setIsActive($dealId, $value)) {
+            if($value == 1) {
+                return $this->jsonResponse('You have been deactive deal!', $groupDetails, $this->successCreatedCode, $this->startTime);
+            } else {
+                return $this->jsonResponse('You have been active deal!', $groupDetails, $this->successCreatedCode, $this->startTime);
+            }
+        } else {
+            return $this->jsonResponse('There is no user with given dealId.', [], $this->notFound, $this->startTime);
         }
     }
 }

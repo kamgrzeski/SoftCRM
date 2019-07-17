@@ -13,63 +13,81 @@ class DealsService
         $this->dealsModel = new DealsModel();
     }
 
-    public function execute($requestedData)
-    {
-        return $this->dealsModel->insertDeal($requestedData);
-    }
-
-    public function update(int $dealId, $requestedData)
-    {
-        return $this->dealsModel->updateDeal($dealId, $requestedData);
-    }
-
-    public function loadDeals()
-    {
-        return DealsModel::all()->sortByDesc('created_at');
-    }
-
-    public function loadPaginate()
-    {
-        return $this->dealsModel->getPaginate();
-    }
-
-    public function loadDeal(int $dealId)
-    {
-        return $this->dealsModel->getDeal($dealId);
-    }
-
-    public function pluckCompanies()
-    {
-        return $this->dealsModel->getPluckCompanies();
-    }
-
-    public function loadSetActive(int $dealId, bool $value)
-    {
-        return $this->dealsModel->setActive($dealId, $value);
-    }
-
     public function loadCountDeals()
     {
-        return $this->dealsModel->countDeals() ? : 0;
+        return $this->dealsModel->getCountDeals();
     }
 
     public function loadDeactivatedDeals()
     {
-        return $this->dealsModel->getDeactivated() ? : 0;
+        return $this->dealsModel->getCountOfDeactivatedDeals();
     }
 
     public function loadDealsInLatestMonth()
     {
-        return $this->dealsModel->getDealsInLatestMonth() . '%' ? : '0.00%';
+        return $this->dealsModel->getCountOfDealsInLatestMonth();
     }
 
-    public function loadDataAndPagination()
+    public function loadDealsList()
     {
-        $dataOfDeals = [
-            'deals' => $this->loadDeals(),
-            'dealsPaginate' => $this->loadPaginate()
-        ];
+        return $this->dealsModel->getDeals();
+    }
 
-        return $dataOfDeals;
+    public function loadDealDetails($dealId)
+    {
+        $dealDetails = $this->dealsModel->getDealDetails($dealId);
+
+        if($dealDetails == null) {
+            return false;
+        }
+
+        return [
+            'dealDetails' => $dealDetails,
+        ];
+    }
+
+    public function update($validatedData, int $clientId)
+    {
+        $this->dealsModel = DealsModel::find($clientId);
+
+        if (isset($this->dealsModel)) {
+            if (isset($validatedData->name))
+                $this->dealsModel->name = $validatedData->name;
+
+            if (isset($validatedData->start_time) && count($validatedData->start_time) != 0)
+                $this->dealsModel->start_time = $validatedData->start_time;
+
+            if (isset($validatedData->end_time) && count($validatedData->end_time) != 0)
+                $this->dealsModel->end_time = $validatedData->end_time;
+
+            if (isset($validatedData->companies_id) && count($validatedData->companies_id) != 0)
+                $this->dealsModel->companies_id = $validatedData->companies_id;
+
+            if ($this->dealsModel->save()) {
+                return $this->dealsModel;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function loadDealDelete($dealId)
+    {
+        return $this->dealsModel->deleteDeal($dealId);
+    }
+
+    public function setIsActive(int $dealId, $value)
+    {
+        $dealsModel = DealsModel::find($dealId);
+
+        $dealsModel->is_active = $value == 1 ? false : true;
+
+        if ($dealsModel->save()) {
+            return $dealsModel;
+        } else {
+            return false;
+        }
     }
 }
