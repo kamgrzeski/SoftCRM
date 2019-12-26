@@ -53,8 +53,6 @@ class Controller extends BaseController
         $this->calculateCashService = new CalculateCashService();
         $this->systemLogsService = new SystemLogService();
         $this->settingsService = new SettingsService();
-
-        $this->middleware('auth');
     }
 
     public function collectedData(bool $isDashboard = false)

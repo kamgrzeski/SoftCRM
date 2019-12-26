@@ -11,8 +11,9 @@
 |
 */
 
-Auth::routes();
-Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::get('login', 'CRM\AdminController@showLoginForm')->name('login');
+Route::post('login/process', 'CRM\AdminController@processLoginAdmin')->name('login/process');
+Route::get('logout', 'CRM\AdminController@logout')->name('logout');
 
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('/', 'DashboardController@index');

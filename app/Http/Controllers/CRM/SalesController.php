@@ -10,6 +10,13 @@ Use Illuminate\Support\Facades\Redirect;
 
 class SalesController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('auth');
+    }
+
     public function processListOfSales()
     {
         $collectDataForView = array_merge($this->collectedData(), $this->salesService->loadDataAndPagination());

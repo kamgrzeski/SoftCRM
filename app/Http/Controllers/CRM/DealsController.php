@@ -10,6 +10,13 @@ Use Illuminate\Support\Facades\Redirect;
 
 class DealsController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('auth');
+    }
+
     public function processListOfDeals()
     {
         $collectDataForView = array_merge($this->collectedData(), ['deals' => $this->dealsService->loadDataAndPagination()]);

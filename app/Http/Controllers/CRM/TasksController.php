@@ -10,6 +10,13 @@ Use Illuminate\Support\Facades\Redirect;
 
 class TasksController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('auth');
+    }
+
     public function processListOfTasks()
     {
         $collectDataForView = array_merge($this->collectedData(), $this->tasksService->loadDataAndPagination());

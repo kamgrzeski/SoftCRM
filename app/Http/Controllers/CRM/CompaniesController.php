@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class CompaniesController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('auth');
+    }
+
     public function processListOfCompanies()
     {
         $collectDataForView = array_merge($this->collectedData(), $this->companiesService->loadDataAndPagination());

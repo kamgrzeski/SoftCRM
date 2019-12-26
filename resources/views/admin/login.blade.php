@@ -16,7 +16,16 @@
         <h1>SoftCRM</h1>
         <h4 class="small-text">Customer relationship management system</h4></div>
     <div class="form">
-        <form method="POST" action="{{ route('login') }}" class="login-form">
+        @if(Session::has('message-error'))
+            <div class="alert alert-danger">
+                <strong>Danger!</strong> {{ Session::get('message-error') }}
+            </div>
+            @elseif(Session::has('message-success'))
+            <div class="alert alert-success">
+                <strong>Success!</strong> {{ Session::get('message-success') }}
+            </div>
+        @endif
+        <form method="POST" action="{{ route('login/process') }}" class="login-form">
             {{ csrf_field() }}
             <input id="email" type="email" name="email" placeholder="Write your email here ..." value="admin@admin.com"/>
             <input id="password" type="password" name="password" placeholder="Write your password here ..." value="admin"/>

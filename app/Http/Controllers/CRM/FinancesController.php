@@ -10,6 +10,13 @@ Use Illuminate\Support\Facades\Redirect;
 
 class FinancesController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('auth');
+    }
+
     public function processListOfFinances()
     {
         $collectDataForView = array_merge($this->collectedData(), $this->financesService->loadDataAndPagination());

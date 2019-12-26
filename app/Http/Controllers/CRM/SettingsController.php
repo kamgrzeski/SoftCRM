@@ -11,6 +11,13 @@ use Config;
 
 class SettingsController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('auth');
+    }
+
     public function processListOfSettings()
     {
         $collectDataForView = array_merge($this->collectedData(), ['input' => config('crm_settings.temp')], ['logs' => $this->helpersFncService->formatAllSystemLogs()]);

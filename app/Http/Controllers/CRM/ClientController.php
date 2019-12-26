@@ -10,6 +10,13 @@ use View;
 
 class ClientController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('auth');
+    }
+
     public function processListOfClients()
     {
         $collectDataForView = array_merge($this->collectedData(), ['clients' => $this->clientService->loadDataAndPagination()]);

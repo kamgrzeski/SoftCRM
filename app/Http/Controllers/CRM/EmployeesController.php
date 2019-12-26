@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Redirect;
 
 class EmployeesController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('auth');
+    }
+
     public function processListOfEmployees()
     {
         $collectDataForView = array_merge($this->collectedData(), $this->employeesService->loadDataAndPagination());

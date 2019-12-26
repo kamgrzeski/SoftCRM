@@ -10,6 +10,13 @@ Use Illuminate\Support\Facades\Redirect;
 
 class ProductsController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('auth');
+    }
+
     public function processListOfProducts()
     {
         $collectDataForView = array_merge($this->collectedData(), $this->productsService->loadDataAndPagination());

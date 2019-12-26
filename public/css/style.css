@@ -72,3 +72,14 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
+.alert-danger {
+	background-color: #ff00003d;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+.alert-success {
+	background-color: rgba(75, 255, 10, 0.51);
+	padding: 10px;
+	margin-bottom: 20px;
+}
