@@ -4,8 +4,82 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3bb4dacacf43532a01bf1d3d6dd3bbe1",
+    "content-hash": "1c7ba206a3c1081422edb1e070d0de5d",
     "packages": [
+        {
+            "name": "cknow/laravel-money",
+            "version": "v3.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cknow/laravel-money.git",
+                "reference": "02c79d014f2be5cf7daec48b20a7bb0335804fc8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cknow/laravel-money/zipball/02c79d014f2be5cf7daec48b20a7bb0335804fc8",
+                "reference": "02c79d014f2be5cf7daec48b20a7bb0335804fc8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-intl": "*",
+                "ext-json": "*",
+                "illuminate/support": "^5.5|^6.0",
+                "illuminate/view": "^5.5|^6.0",
+                "moneyphp/money": "^3.2",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "graham-campbell/testbench": "^5.3",
+                "illuminate/filesystem": "^5.5|^6.0",
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "mockery/mockery": "^1.2",
+                "nikic/php-parser": "^4.2",
+                "phpmd/phpmd": "^2.7",
+                "phpro/grumphp": "^0.15.2",
+                "phpstan/phpstan": "^0.11",
+                "phpunit/phpunit": "^7.0",
+                "povils/phpmnd": "^2.1",
+                "sebastian/phpcpd": "^4.1",
+                "sensiolabs/security-checker": "^6.0",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Cknow\\Money\\MoneyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Cknow\\Money\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ricardo Gobbo de Souza",
+                    "email": "ricardogobbosouza@yahoo.com.br",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Money",
+            "homepage": "https://github.com/cknow/laravel-money",
+            "keywords": [
+                "currency",
+                "laravel",
+                "money"
+            ],
+            "time": "2019-09-06T12:52:54+00:00"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "v0.1.1",
@@ -381,6 +455,55 @@
             "time": "2019-12-20T13:11:11+00:00"
         },
         {
+            "name": "jackiedo/dotenv-editor",
+            "version": "1.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JackieDo/Laravel-Dotenv-Editor.git",
+                "reference": "2ceebe3a1cf5b2b1ce61bf6d58fce2af754e3ad3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JackieDo/Laravel-Dotenv-Editor/zipball/2ceebe3a1cf5b2b1ce61bf6d58fce2af754e3ad3",
+                "reference": "2ceebe3a1cf5b2b1ce61bf6d58fce2af754e3ad3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": ">=5.0",
+                "illuminate/container": ">=5.0",
+                "illuminate/support": ">=5.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jackiedo\\DotenvEditor\\": "src/Jackiedo/DotenvEditor"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jackie Do",
+                    "email": "anhvudo@gmail.com"
+                }
+            ],
+            "description": "The .env file editor tool for Laravel 5+",
+            "keywords": [
+                "dotenv",
+                "dotenv-editor",
+                "laravel"
+            ],
+            "time": "2018-12-10T08:59:29+00:00"
+        },
+        {
             "name": "jakub-onderka/php-console-color",
             "version": "v0.2",
             "source": {
@@ -678,6 +801,74 @@
             "time": "2019-11-26T17:57:28+00:00"
         },
         {
+            "name": "laravelcollective/html",
+            "version": "v6.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LaravelCollective/html.git",
+                "reference": "bcc317d21a7e04eebcc81c4109fa84feaab63590"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/bcc317d21a7e04eebcc81c4109fa84feaab63590",
+                "reference": "bcc317d21a7e04eebcc81c4109fa84feaab63590",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "^6.0",
+                "illuminate/routing": "^6.0",
+                "illuminate/session": "^6.0",
+                "illuminate/support": "^6.0",
+                "illuminate/view": "^6.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "illuminate/database": "^6.0",
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~7.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Collective\\Html\\HtmlServiceProvider"
+                    ],
+                    "aliases": {
+                        "Form": "Collective\\Html\\FormFacade",
+                        "Html": "Collective\\Html\\HtmlFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Collective\\Html\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Engebretson",
+                    "email": "adam@laravelcollective.com"
+                },
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "HTML and Form Builders for the Laravel Framework",
+            "homepage": "https://laravelcollective.com",
+            "time": "2019-10-02T00:37:39+00:00"
+        },
+        {
             "name": "league/flysystem",
             "version": "1.0.61",
             "source": {
@@ -760,6 +951,88 @@
                 "storage"
             ],
             "time": "2019-12-08T21:46:50+00:00"
+        },
+        {
+            "name": "moneyphp/money",
+            "version": "v3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moneyphp/money.git",
+                "reference": "f6085de6c565e98d2f9a7311a605987b54e06d5e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moneyphp/money/zipball/f6085de6c565e98d2f9a7311a605987b54e06d5e",
+                "reference": "f6085de6c565e98d2f9a7311a605987b54e06d5e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "cache/taggable-cache": "^0.4.0",
+                "doctrine/instantiator": "^1.0.5",
+                "ext-bcmath": "*",
+                "ext-gmp": "*",
+                "ext-intl": "*",
+                "florianv/exchanger": "^1.0",
+                "florianv/swap": "^3.0",
+                "leanphp/phpspec-code-coverage": "^3.0 || ^4.0",
+                "moneyphp/iso-currencies": "^3.0",
+                "php-http/message": "^1.4",
+                "php-http/mock-client": "^1.0.0",
+                "phpspec/phpspec": "^3.0",
+                "phpunit/phpunit": "^5.7 || ^6.4 || ^7.0",
+                "psr/cache": "^1.0",
+                "symfony/phpunit-bridge": "^4"
+            },
+            "suggest": {
+                "ext-bcmath": "Calculate without integer limits",
+                "ext-gmp": "Calculate without integer limits",
+                "ext-intl": "Format Money objects with intl",
+                "florianv/exchanger": "Exchange rates library for PHP",
+                "florianv/swap": "Exchange rates library for PHP",
+                "psr/cache-implementation": "Used for Currency caching"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Money\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com"
+                },
+                {
+                    "name": "Mathias Verraes",
+                    "email": "mathias@verraes.net",
+                    "homepage": "http://verraes.net"
+                },
+                {
+                    "name": "Frederik Bosch",
+                    "email": "f.bosch@genkgo.nl"
+                }
+            ],
+            "description": "PHP implementation of Fowler's Money pattern",
+            "homepage": "http://moneyphp.org",
+            "keywords": [
+                "Value Object",
+                "money",
+                "vo"
+            ],
+            "time": "2019-02-07T18:01:35+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3253,6 +3526,58 @@
                 "whoops"
             ],
             "time": "2019-12-25T10:00:00+00:00"
+        },
+        {
+            "name": "fx3costa/laravelchartjs",
+            "version": "2.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fxcosta/laravel-chartjs.git",
+                "reference": "942df19ad2ae9d2ebd822c19447472710c6c1612"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fxcosta/laravel-chartjs/zipball/942df19ad2ae9d2ebd822c19447472710c6c1612",
+                "reference": "942df19ad2ae9d2ebd822c19447472710c6c1612",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.1|^6.0",
+                "php": ">=5.6.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Fx3costa\\LaravelChartJs\\Providers\\ChartjsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fx3costa\\LaravelChartJs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Felix",
+                    "email": "fx3costa@gmail.com"
+                }
+            ],
+            "description": "Simple package to facilitate and automate the use of charts in Laravel 5.x using Chartjs v2 library",
+            "keywords": [
+                "chart",
+                "chartjs",
+                "fx3costa",
+                "graphics",
+                "laravel5",
+                "reports"
+            ],
+            "time": "2019-10-10T18:18:10+00:00"
         },
         {
             "name": "fzaninotto/faker",
