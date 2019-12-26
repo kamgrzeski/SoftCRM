@@ -4,46 +4,54 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SalesStoreRequest;
+use App\Services\SalesService;
+use App\Services\SystemLogService;
 use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class SalesController extends Controller
 {
+    private $salesService;
+    private $systemLogsService;
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->middleware('auth');
+
+        $this->salesService = new SalesService();
+        $this->systemLogsService = new SystemLogService();
     }
 
     public function processListOfSales()
     {
-        $collectDataForView = array_merge($this->collectedData(), $this->salesService->loadDataAndPagination());
-
-        return View::make('crm.sales.index')->with($collectDataForView);
+        return View::make('crm.sales.index')->with($this->salesService->loadDataAndPagination());
     }
-    
+
     public function showCreateForm()
     {
-        $collectDataForView = array_merge($this->collectedData(), ['dataOfProducts' => $this->salesService->loadProducts()]);
-
-        return View::make('crm.sales.create')->with($collectDataForView);
+        return View::make('crm.sales.create')->with(
+            [
+                'dataOfProducts' => $this->salesService->loadProducts(),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
-    
+
     public function viewSalesDetails($saleId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['sales' => $this->salesService->loadSale($saleId)]);
-
-        return View::make('crm.sales.show')->with($collectDataForView);
+        return View::make('crm.sales.show')->with(['sales' => $this->salesService->loadSale($saleId)]);
     }
 
     public function showUpdateForm($saleId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['sales' => $this->salesService->loadSale($saleId)],
-            ['dataWithPluckOfProducts' => $this->salesService->loadProducts()]);
-
-        return View::make('crm.sales.edit')->with($collectDataForView);
+        return View::make('crm.sales.edit')->with(
+            [
+                'sales' => $this->salesService->loadSale($saleId),
+                'dataWithPluckOfProducts' => $this->salesService->loadProducts(),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
 
     public function processCreateSales(SalesStoreRequest $request)

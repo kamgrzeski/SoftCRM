@@ -4,52 +4,60 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompaniesStoreRequest;
+use App\Services\CompaniesService;
+use App\Services\SystemLogService;
 use View;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 
 class CompaniesController extends Controller
 {
+    private $companiesService;
+    private $systemLogsService;
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->middleware('auth');
+
+        $this->companiesService = new CompaniesService();
+        $this->systemLogsService = new SystemLogService();
     }
 
     public function processListOfCompanies()
     {
-        $collectDataForView = array_merge($this->collectedData(), $this->companiesService->loadDataAndPagination());
-
-        return View::make('crm.companies.index')->with($collectDataForView);
+        return View::make('crm.companies.index')->with($this->companiesService->loadDataAndPagination());
     }
 
     public function showCreateForm()
     {
-        $collectDataForView = array_merge($this->collectedData(), ['dataWithPluckOfClient' => $this->companiesService->pluckData()]);
-
-        return View::make('crm.companies.create')->with($collectDataForView);
+        return View::make('crm.companies.create')->with(
+            [
+                'dataWithPluckOfClient' => $this->companiesService->pluckData(),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
 
     public function viewCompaniesDetails(int $companiesId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['companies' => $this->companiesService->loadCompanie($companiesId)]);
-
-        return View::make('crm.companies.show')->with($collectDataForView);
+        return View::make('crm.companies.show')->with(['companies' => $this->companiesService->loadCompanie($companiesId)]);
     }
 
     public function showUpdateForm(int $companiesId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['companies' => $this->companiesService->loadCompanie($companiesId)],
-            ['clients' => $this->companiesService->pluckData()]);
-
-        return View::make('crm.companies.edit')->with($collectDataForView);
+        return View::make('crm.companies.edit')->with(
+            [
+                'companies' => $this->companiesService->loadCompanie($companiesId),
+                'clients' => $this->companiesService->pluckData(),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
 
     public function processCreateCompanies(CompaniesStoreRequest $request)
     {
         if ($companie = $this->companiesService->execute($request->validated())) {
-            $this->systemLogsService->insertSystemLogs('CompaniesModel has been add with id: '. $companie, $this->systemLogsService::successCode);
+            $this->systemLogsService->insertSystemLogs('CompaniesModel has been add with id: ' . $companie, $this->systemLogsService::successCode);
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesStore'));
@@ -69,7 +77,7 @@ class CompaniesController extends Controller
     {
         $dataOfCompanies = $this->companiesService->loadCompanie($companiesId);
 
-        $countDeals = $this->companiesService->countAssignedDeals($dataOfCompanies);
+        $countDeals = $this->companiesService->countAssignedDeals($companiesId);
 
         if ($countDeals > 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteDeals'));

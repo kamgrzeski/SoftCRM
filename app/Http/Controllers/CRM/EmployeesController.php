@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Requests\EmployeesStoreRequest;
+use App\Services\EmployeesService;
+use App\Services\SystemLogService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use View;
@@ -10,46 +12,52 @@ use Illuminate\Support\Facades\Redirect;
 
 class EmployeesController extends Controller
 {
+    private $employeesService;
+    private $systemLogsService;
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->middleware('auth');
+
+        $this->employeesService = new EmployeesService();
+        $this->systemLogsService = new SystemLogService();
     }
 
     public function processListOfEmployees()
     {
-        $collectDataForView = array_merge($this->collectedData(), $this->employeesService->loadDataAndPagination());
-
-        return View::make('crm.employees.index')->with($collectDataForView);
+        return View::make('crm.employees.index')->with($this->employeesService->loadDataAndPagination());
     }
 
     public function showCreateForm()
     {
-        $collectDataForView = array_merge($this->collectedData(), ['dataOfClients' => $this->employeesService->pluckData()]);
-
-        return View::make('crm.employees.create')->with($collectDataForView);
+        return View::make('crm.employees.create')->with(
+            [
+                'dataOfClients' => $this->employeesService->pluckData(),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
 
     public function viewEmployeeDetails($employeeId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['employees' => $this->employeesService->loadEmployeeDetails($employeeId)]);
-
-        return View::make('crm.employees.show')->with($collectDataForView);
+        return View::make('crm.employees.show')->with(['employees' => $this->employeesService->loadEmployeeDetails($employeeId)]);
     }
 
     public function showUpdateForm($employeeId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['employees' =>  $this->employeesService->loadEmployeeDetails($employeeId)],
-            ['clients' => $this->employeesService->loadPluckClients()], ['inputText' => $this->getMessage('messages.InputText')]);
-
-        return View::make('crm.employees.edit')->with($collectDataForView);
+        return View::make('crm.employees.edit')->with(
+            [
+                'employees' => $this->employeesService->loadEmployeeDetails($employeeId),
+                'clients' => $this->employeesService->loadPluckClients(),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
 
     public function processCreateEmployee(EmployeesStoreRequest $request)
     {
         if ($employee = $this->employeesService->execute($request->validated())) {
-            $this->systemLogsService->insertSystemLogs('Employees has been add with id: '. $employee, $this->systemLogsService::successCode);
+            $this->systemLogsService->insertSystemLogs('Employees has been add with id: ' . $employee, $this->systemLogsService::successCode);
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));

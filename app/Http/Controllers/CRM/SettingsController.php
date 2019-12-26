@@ -4,6 +4,9 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SettingsStoreRequest;
+use App\Services\HelpersFncService;
+use App\Services\SettingsService;
+use App\Services\SystemLogService;
 use Illuminate\Support\Facades\Redirect;
 use View;
 use Validator;
@@ -11,18 +14,27 @@ use Config;
 
 class SettingsController extends Controller
 {
+    private $helpersFncService;
+    private $settingsService;
+    private $systemLogsService;
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->middleware('auth');
+
+        $this->helpersFncService = new HelpersFncService();
+        $this->settingsService = new SettingsService();
+        $this->systemLogsService = new SystemLogService();
     }
 
     public function processListOfSettings()
     {
-        $collectDataForView = array_merge($this->collectedData(), ['input' => config('crm_settings.temp')], ['logs' => $this->helpersFncService->formatAllSystemLogs()]);
-
-        return view('crm.settings.index')->with($collectDataForView);
+        return view('crm.settings.index')->with(
+            [
+                'input' => config('crm_settings.temp'),
+                'logs' => $this->helpersFncService->formatAllSystemLogs()
+            ]
+        );
     }
 
     public function processCreateSettings(SettingsStoreRequest $request)
@@ -34,7 +46,7 @@ class SettingsController extends Controller
             'priority_size' => $validatedData['priority_size'],
             'invoice_tax' => $validatedData['invoice_tax'],
             'invoice_logo_link' => $validatedData['invoice_logo_link'],
-            'stats' => $validatedData['stats'] ]);
+            'stats' => $validatedData['stats']]);
 
 
         $this->settingsService->saveEnvData($validatedData['rollbar_token']);

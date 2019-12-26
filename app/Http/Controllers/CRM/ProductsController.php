@@ -4,52 +4,54 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductsStoreRequest;
+use App\Services\ProductsService;
+use App\Services\SystemLogService;
 use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class ProductsController extends Controller
 {
+    private $productsService;
+    private $systemLogsService;
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->middleware('auth');
+
+        $this->productsService = new ProductsService();
+        $this->systemLogsService = new SystemLogService();
     }
 
     public function processListOfProducts()
     {
-        $collectDataForView = array_merge($this->collectedData(), $this->productsService->loadDataAndPagination());
-
-        return View::make('crm.products.index')->with($collectDataForView);
+        return View::make('crm.products.index')->with($this->productsService->loadDataAndPagination());
     }
 
     public function showCreateForm()
     {
-        $collectDataForView = array_merge($this->collectedData(), ['inputText' => $this->getMessage('messages.InputText')]);
-
-        return View::make('crm.products.create')->with($collectDataForView);
+        return View::make('crm.products.create')->with(['inputText' => $this->getMessage('messages.InputText')]);
     }
-    
+
     public function viewProductsDetails(int $productId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['products' => $this->productsService->loadProduct($productId)]);
-        return View::make('crm.products.show')
-            ->with($collectDataForView);
+        return View::make('crm.products.show')->with(['products' => $this->productsService->loadProduct($productId)]);
     }
 
     public function showUpdateForm(int $productId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['products' => $this->productsService->loadProduct($productId)],
-            ['inputText' => $this->getMessage('messages.InputText')]);
-
-        return View::make('crm.products.edit')->with($collectDataForView);
+        return View::make('crm.products.edit')->with(
+            [
+                'products' => $this->productsService->loadProduct($productId),
+                'inputText' => $this->getMessage('messages.InputText'),
+            ]
+        );
     }
-    
+
     public function processCreateProducts(ProductsStoreRequest $request)
     {
         if ($product = $this->productsService->execute($request->validated())) {
-            $this->systemLogsService->insertSystemLogs('Product has been add with id: '. $product, $this->systemLogsService::successCode);
+            $this->systemLogsService->insertSystemLogs('Product has been add with id: ' . $product, $this->systemLogsService::successCode);
             return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorProductsStore'));

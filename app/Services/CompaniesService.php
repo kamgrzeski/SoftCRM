@@ -9,6 +9,7 @@
 namespace App\Services;
 
 use App\Models\CompaniesModel;
+use App\Models\DealsModel;
 
 class CompaniesService
 {
@@ -62,14 +63,14 @@ class CompaniesService
         return $this->companiesModel::find($companiesId);
     }
 
-    public function countAssignedDeals(CompaniesModel $dataOfCompanies)
+    public function countAssignedDeals(int $companiesId)
     {
-        return count($dataOfCompanies->deals()->get());
+        return DealsModel::where('companies_id', $companiesId)->get()->count();
     }
 
-    public function countAssignedFile(CompaniesModel $dataOfCompanies)
+    public function countAssignedFile(int $companieId)
     {
-        return count($dataOfCompanies->files()->get());
+//        return $this->companiesModel
     }
 
     public function loadSetActive($companiesId, $value)

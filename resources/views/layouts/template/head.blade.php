@@ -57,7 +57,7 @@
     </style>
     <script>
         $(window).load(function () {
-            $(".se-pre-con").delay(900).fadeOut("slow");
+            $(".se-pre-con").delay(500).fadeOut("slow");
         });
     </script>
     <script type="text/javascript">

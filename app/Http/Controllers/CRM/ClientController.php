@@ -4,43 +4,48 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientStoreRequest;
+use App\Services\ClientService;
+use App\Services\SystemLogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use View;
 
 class ClientController extends Controller
 {
+    private $clientService;
+    private $systemLogsService;
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->middleware('auth');
+
+        $this->clientService = new ClientService();
+        $this->systemLogsService = new SystemLogService();
     }
 
     public function processListOfClients()
     {
-        $collectDataForView = array_merge($this->collectedData(), ['clients' => $this->clientService->loadDataAndPagination()]);
-
-        return View::make('crm.client.index')->with($collectDataForView);
+        return View::make('crm.client.index')->with(['clients' => $this->clientService->loadDataAndPagination()]);
     }
 
     public function showCreateForm()
     {
-        return View::make('crm.client.create')->with($this->collectedData());
+        return View::make('crm.client.create')->with(['inputText' => $this->getMessage('messages.InputText')]);
     }
 
     public function viewClientDetails(int $clientId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['clients' => $this->clientService->loadClientDetails($clientId)]);
-
-        return View::make('crm.client.show')->with($collectDataForView);
+        return View::make('crm.client.show')->with(['clients' => $this->clientService->loadClientDetails($clientId)]);
     }
 
     public function showUpdateForm(int $clientId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['client' => $this->clientService->loadClientDetails($clientId)]);
-
-        return View::make('crm.client.edit')->with($collectDataForView);
+        return View::make('crm.client.edit')->with(
+            [
+                'client' => $this->clientService->loadClientDetails($clientId),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
 
     public function processCreateClient(ClientStoreRequest $request)

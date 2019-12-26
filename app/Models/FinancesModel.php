@@ -43,11 +43,11 @@ class FinancesModel extends Model
         $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($requestedData['gross']);
 
-        return self::where('id', '=', $financeId)->update(
+        return self::where('id', $financeId)->update(
             [
                 'name' => $requestedData['name'],
                 'description' => $requestedData['description'],
-                'type' => $requestedData['type'],
+                'type' => $requestedData['type'] ?? null,
                 'category' => $requestedData['category'],
                 'gross' => $requestedData['gross'],
                 'net' => $dataToInsert['net'],

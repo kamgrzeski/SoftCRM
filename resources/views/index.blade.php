@@ -10,13 +10,13 @@
             <div class="panel panel-primary text-center no-boder bg-color-green">
                     <div class="panel-body boxes">
                     <i class="fa fa-female fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Clients: {{ $countClients }}
-                        ({{ $deactivatedClients }})
+                    <h3 style="padding:8px;font-size:18px">Clients: {{ Cache::get('countClients') }}
+                        ({{ Cache::get('deactivatedClients') }})
                     </h3>
                 </div>
                 <a href="{{ route('clients') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-green boxes-font">
-                        {{ $clientsInLatestMonth }} Increase in 30 Days
+                        {{ Cache::get('clientsInLatestMonth') }} Increase in 30 Days
                     </div>
                 </a>
             </div>
@@ -25,13 +25,13 @@
             <div class="panel panel-primary text-center no-boder bg-color-blue">
                 <div class="panel-body boxes">
                     <i class="fa fa-compass fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Companies: {{ $countCompanies }}
-                        ({{ $deactivatedCompanies }})
+                    <h3 style="padding:8px;font-size:18px">Companies: {{ Cache::get('countCompanies') }}
+                        ({{ Cache::get('deactivatedCompanies') }})
                     </h3>
                 </div>
                 <a href="{{ route('companies') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-blue boxes-font">
-                        {{ $companiesInLatestMonth }} Increase in 30 Days
+                        {{ Cache::get('companiesInLatestMonth') }} Increase in 30 Days
                     </div>
                 </a>
             </div>
@@ -40,13 +40,13 @@
             <div class="panel panel-primary text-center no-boder bg-color-red">
                 <div class="panel-body boxes">
                     <i class="fa fa fa-users fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Employees: {{ $countFinances }}
-                        ({{ $deactivatedEmployees }})
+                    <h3 style="padding:8px;font-size:18px">Employees: {{ Cache::get('countFinances') }}
+                        ({{ Cache::get('deactivatedEmployees') }})
                     </h3>
                 </div>
                 <a href="{{ route('employees') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-red boxes-font">
-                        {{ $employeesInLatestMonth }} Increase in 30 Days
+                        {{ Cache::get('employeesInLatestMonth') }} Increase in 30 Days
                     </div>
                 </a>
             </div>
@@ -55,13 +55,13 @@
             <div class="panel panel-primary text-center no-boder bg-color-brown">
                 <div class="panel-body boxes">
                     <i class="fa fa-paperclip fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Deals: {{ $countDeals }}
-                        ({{ $deactivatedDeals }})
+                    <h3 style="padding:8px;font-size:18px">Deals: {{ Cache::get('countDeals') }}
+                        ({{ Cache::get('deactivatedDeals') }})
                     </h3>
                 </div>
                 <a href="{{ route('deals') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-brown boxes-font">
-                        {{ $dealsInLatestMonth }} Increase in 30 Days
+                        {{ Cache::get('dealsInLatestMonth') }} Increase in 30 Days
                     </div>
                 </a>
             </div>
@@ -87,8 +87,8 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Latest tasks <span class="badge"> {{ $countTasks }}</span></button>
-                    <span style="float: right">Completed: {{ $completedTasks }} | Uncompleted: {{ $uncompletedTasks }}</span>
+                    Latest tasks <span class="badge"> {{ Cache::get('countTasks') }}</span></button>
+                    <span style="float: right">Completed: {{ Cache::get('completedTasks') }} | Uncompleted: {{ Cache::get('uncompletedTasks') }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
@@ -113,7 +113,7 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Latest add companies <span class="badge"> {{ $countCompanies }}</span>
+                    Latest add companies <span class="badge"> {{ Cache::get('countCompanies') }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
@@ -138,7 +138,7 @@
         <div class="col-md-6 col-sm-12 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Latest add products <span class="badge"> {{ $countProducts }}</span>
+                    Latest add products <span class="badge"> {{ Cache::get('countProducts') }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">

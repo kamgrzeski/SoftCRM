@@ -4,52 +4,60 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TasksStoreRequest;
+use App\Services\SystemLogService;
+use App\Services\TasksService;
 use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class TasksController extends Controller
 {
+    private $tasksService;
+    private $systemLogsService;
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->middleware('auth');
+
+        $this->tasksService = new TasksService();
+        $this->systemLogsService = new SystemLogService();
     }
 
     public function processListOfTasks()
     {
-        $collectDataForView = array_merge($this->collectedData(), $this->tasksService->loadDataAndPagination());
-
-        return View::make('crm.tasks.index')->with($collectDataForView);
+        return View::make('crm.tasks.index')->with($this->tasksService->loadDataAndPagination());
     }
 
     public function showCreateForm()
     {
-        $collectDataForView = array_merge($this->collectedData(), ['dataOfEmployees' => $this->tasksService->pluckEmployees()]);
-
-        return View::make('crm.tasks.create')->with($collectDataForView);
+        return View::make('crm.tasks.create')->with(
+            [
+                'dataOfEmployees' => $this->tasksService->pluckEmployees(),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
 
     public function viewTasksDetails(int $taskId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['tasks' => $this->tasksService->loadTask($taskId)]);
-
-        return View::make('crm.tasks.show')->with($collectDataForView);
+        return View::make('crm.tasks.show')->with(['tasks' => $this->tasksService->loadTask($taskId)]);
     }
 
     public function showUpdateForm(int $taskId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['tasks' => $this->tasksService->loadTask($taskId)],
-            ['employees' => $this->tasksService->pluckEmployees()]);
-
-        return View::make('crm.tasks.edit')->with($collectDataForView);
+        return View::make('crm.tasks.edit')->with(
+            [
+                'tasks' => $this->tasksService->loadTask($taskId),
+                'employees' => $this->tasksService->pluckEmployees(),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
 
     public function processCreateTasks(TasksStoreRequest $request)
     {
         if ($task = $this->tasksService->execute($request->validated())) {
-            $this->systemLogsService->insertSystemLogs('Task has been add with id: '. $task, $this->systemLogsService::successCode);
+            $this->systemLogsService->insertSystemLogs('Task has been add with id: ' . $task, $this->systemLogsService::successCode);
             return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksStore'));
@@ -69,7 +77,7 @@ class TasksController extends Controller
     {
         $dataOfTasks = $this->tasksService->loadTask($taskId);
 
-        if($dataOfTasks->completed == 0) {
+        if ($dataOfTasks->completed == 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.CantDeleteUnompletedTask'));
         } else {
             $dataOfTasks->delete();

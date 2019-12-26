@@ -4,52 +4,60 @@ namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FinancesStoreRequest;
+use App\Services\FinancesService;
+use App\Services\SystemLogService;
 use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class FinancesController extends Controller
 {
+    private $financesService;
+    private $systemLogsService;
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->middleware('auth');
+
+        $this->financesService = new FinancesService();
+        $this->systemLogsService = new SystemLogService();
     }
 
     public function processListOfFinances()
     {
-        $collectDataForView = array_merge($this->collectedData(), $this->financesService->loadDataAndPagination());
-
-        return View::make('crm.finances.index')->with($collectDataForView);
+        return View::make('crm.finances.index')->with($this->financesService->loadDataAndPagination());
     }
 
     public function showCreateForm()
     {
-        $collectDataForView = array_merge($this->collectedData(), ['dataWithPluckOfCompanies' => $this->financesService->pluckCompanies()]);
-
-        return View::make('crm.finances.create')->with($collectDataForView);
+        return View::make('crm.finances.create')->with(
+            [
+                'dataWithPluckOfCompanies' => $this->financesService->pluckCompanies(),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
-    
+
     public function viewFinancesDetails($financeId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['finances' => $this->financesService->loadFinance($financeId)]);
-
-        return View::make('crm.finances.show')->with($collectDataForView);
+        return View::make('crm.finances.show')->with(['finances' => $this->financesService->loadFinance($financeId)]);
     }
 
     public function showUpdateForm($financeId)
     {
-        $collectDataForView = array_merge($this->collectedData(), ['finances' => $this->financesService->loadFinance($financeId)],
-            ['dataWithPluckOfCompanies' => $this->financesService->pluckCompanies()]);
-
-        return View::make('crm.finances.edit')->with($collectDataForView);
+        return View::make('crm.finances.edit')->with(
+            [
+                'finances' => $this->financesService->loadFinance($financeId),
+                'dataWithPluckOfCompanies' => $this->financesService->pluckCompanies(),
+                'inputText' => $this->getMessage('messages.InputText')
+            ]
+        );
     }
 
     public function processCreateFinances(FinancesStoreRequest $request)
     {
         if ($finance = $this->financesService->execute($request->validated())) {
-            $this->systemLogsService->insertSystemLogs('FinancesModel has been add with id: '. $finance, $this->systemLogsService::successCode);
+            $this->systemLogsService->insertSystemLogs('FinancesModel has been add with id: ' . $finance, $this->systemLogsService::successCode);
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesStore'));
