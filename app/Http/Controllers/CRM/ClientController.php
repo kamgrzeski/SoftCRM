@@ -30,7 +30,7 @@ class ClientController extends Controller
 
     public function showCreateForm()
     {
-        return View::make('crm.client.create')->with(['inputText' => $this->getMessage('messages.InputText')]);
+        return View::make('crm.client.create');
     }
 
     public function viewClientDetails(int $clientId)
@@ -40,12 +40,7 @@ class ClientController extends Controller
 
     public function showUpdateForm(int $clientId)
     {
-        return View::make('crm.client.edit')->with(
-            [
-                'client' => $this->clientService->loadClientDetails($clientId),
-                'inputText' => $this->getMessage('messages.InputText')
-            ]
-        );
+        return View::make('crm.client.edit')->with(['client' => $this->clientService->loadClientDetails($clientId)]);
     }
 
     public function processCreateClient(ClientStoreRequest $request)

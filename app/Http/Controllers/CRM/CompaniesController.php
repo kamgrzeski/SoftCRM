@@ -30,12 +30,7 @@ class CompaniesController extends Controller
 
     public function showCreateForm()
     {
-        return View::make('crm.companies.create')->with(
-            [
-                'dataWithPluckOfClient' => $this->companiesService->pluckData(),
-                'inputText' => $this->getMessage('messages.InputText')
-            ]
-        );
+        return View::make('crm.companies.create')->with(['dataWithPluckOfClient' => $this->companiesService->pluckData()]);
     }
 
     public function viewCompaniesDetails(int $companiesId)
@@ -48,8 +43,7 @@ class CompaniesController extends Controller
         return View::make('crm.companies.edit')->with(
             [
                 'companies' => $this->companiesService->loadCompanie($companiesId),
-                'clients' => $this->companiesService->pluckData(),
-                'inputText' => $this->getMessage('messages.InputText')
+                'clients' => $this->companiesService->pluckData()
             ]
         );
     }

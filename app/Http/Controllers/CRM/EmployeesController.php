@@ -30,12 +30,7 @@ class EmployeesController extends Controller
 
     public function showCreateForm()
     {
-        return View::make('crm.employees.create')->with(
-            [
-                'dataOfClients' => $this->employeesService->pluckData(),
-                'inputText' => $this->getMessage('messages.InputText')
-            ]
-        );
+        return View::make('crm.employees.create')->with(['dataOfClients' => $this->employeesService->pluckData()]        );
     }
 
     public function viewEmployeeDetails($employeeId)
@@ -48,8 +43,7 @@ class EmployeesController extends Controller
         return View::make('crm.employees.edit')->with(
             [
                 'employees' => $this->employeesService->loadEmployeeDetails($employeeId),
-                'clients' => $this->employeesService->loadPluckClients(),
-                'inputText' => $this->getMessage('messages.InputText')
+                'clients' => $this->employeesService->loadPluckClients()
             ]
         );
     }

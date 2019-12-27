@@ -29,12 +29,12 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
+                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('start_time', 'Start date') }}
-                                {{ Form::date('start_time', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
+                                {{ Form::date('start_time', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
                             </div>
                         </div>
 
@@ -42,12 +42,12 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('end_time', 'End date') }}
-                                {{ Form::date('end_time', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
+                                {{ Form::date('end_time', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('companies_id', 'Deal between company:') }}
-                                {{ Form::select('companies_id', $companies, null, ['class' => 'form-control', 'placeholder' => $inputText])  }}
+                                {{ Form::select('companies_id', $companies, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')])  }}
                             </div>
 
                         </div>

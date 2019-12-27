@@ -30,12 +30,7 @@ class DealsController extends Controller
 
     public function showCreateForm()
     {
-        return View::make('crm.deals.create')->with(
-            [
-                'dataOfDeals' => $this->dealsService->pluckCompanies(),
-                'inputText' => $this->getMessage('messages.InputText')
-            ]
-        );
+        return View::make('crm.deals.create')->with(['dataOfDeals' => $this->dealsService->pluckCompanies()]);
     }
 
     public function viewDealsDetails(int $dealId)
@@ -48,8 +43,7 @@ class DealsController extends Controller
         return View::make('crm.deals.edit')->with(
             [
                 'deals' => $this->dealsService->loadDeal($dealId),
-                'companies' => $this->dealsService->pluckCompanies(),
-                'inputText' => $this->getMessage('messages.InputText')
+                'companies' => $this->dealsService->pluckCompanies()
             ]
         );
     }

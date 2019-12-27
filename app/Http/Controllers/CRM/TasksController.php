@@ -30,12 +30,7 @@ class TasksController extends Controller
 
     public function showCreateForm()
     {
-        return View::make('crm.tasks.create')->with(
-            [
-                'dataOfEmployees' => $this->tasksService->pluckEmployees(),
-                'inputText' => $this->getMessage('messages.InputText')
-            ]
-        );
+        return View::make('crm.tasks.create')->with(['dataOfEmployees' => $this->tasksService->pluckEmployees()]);
     }
 
     public function viewTasksDetails(int $taskId)
@@ -48,8 +43,7 @@ class TasksController extends Controller
         return View::make('crm.tasks.edit')->with(
             [
                 'tasks' => $this->tasksService->loadTask($taskId),
-                'employees' => $this->tasksService->pluckEmployees(),
-                'inputText' => $this->getMessage('messages.InputText')
+                'employees' => $this->tasksService->pluckEmployees()
             ]
         );
     }

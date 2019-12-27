@@ -32,8 +32,7 @@ class SalesController extends Controller
     {
         return View::make('crm.sales.create')->with(
             [
-                'dataOfProducts' => $this->salesService->loadProducts(),
-                'inputText' => $this->getMessage('messages.InputText')
+                'dataOfProducts' => $this->salesService->loadProducts()
             ]
         );
     }
@@ -48,8 +47,7 @@ class SalesController extends Controller
         return View::make('crm.sales.edit')->with(
             [
                 'sales' => $this->salesService->loadSale($saleId),
-                'dataWithPluckOfProducts' => $this->salesService->loadProducts(),
-                'inputText' => $this->getMessage('messages.InputText')
+                'dataWithPluckOfProducts' => $this->salesService->loadProducts()
             ]
         );
     }

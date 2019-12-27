@@ -38,7 +38,7 @@
                                 {{ Form::label('product_id', 'Assign product') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('product_id', $dataWithPluckOfProducts, null, ['class' => 'form-control', 'placeholder' => $inputText]) }}
+                                    {{ Form::select('product_id', $dataWithPluckOfProducts, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                                     {{ Form::label('quantity', 'Quantity') }}
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                        {{ Form::text('quantity', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
+                                        {{ Form::text('quantity', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                                 {{ Form::label('date_of_payment', 'Date of payment') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    {{ Form::date('date_of_payment', null, array('class' => 'form-control', 'required', 'placeholder' => $inputText)) }}
+                                    {{ Form::date('date_of_payment', null, array('class' => 'form-control', 'required', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>

@@ -30,7 +30,7 @@
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
+                                    {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 
@@ -38,7 +38,7 @@
                                 {{ Form::label('category', 'Category') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-podcast"></i></span>
-                                    {{ Form::text('category', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
+                                    {{ Form::text('category', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                         </div>
@@ -48,14 +48,14 @@
                                 {{ Form::label('count', 'Count') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::text('count', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
+                                    {{ Form::text('count', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('price', 'Price') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::text('price', null, array('class' => 'form-control', 'placeholder' => $inputText)) }}
+                                    {{ Form::text('price', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
                                 </div>
                             </div>
 

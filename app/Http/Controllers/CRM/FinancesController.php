@@ -30,12 +30,7 @@ class FinancesController extends Controller
 
     public function showCreateForm()
     {
-        return View::make('crm.finances.create')->with(
-            [
-                'dataWithPluckOfCompanies' => $this->financesService->pluckCompanies(),
-                'inputText' => $this->getMessage('messages.InputText')
-            ]
-        );
+        return View::make('crm.finances.create')->with(['dataWithPluckOfCompanies' => $this->financesService->pluckCompanies()]);
     }
 
     public function viewFinancesDetails($financeId)
@@ -48,8 +43,7 @@ class FinancesController extends Controller
         return View::make('crm.finances.edit')->with(
             [
                 'finances' => $this->financesService->loadFinance($financeId),
-                'dataWithPluckOfCompanies' => $this->financesService->pluckCompanies(),
-                'inputText' => $this->getMessage('messages.InputText')
+                'dataWithPluckOfCompanies' => $this->financesService->pluckCompanies()
             ]
         );
     }

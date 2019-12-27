@@ -30,7 +30,7 @@ class ProductsController extends Controller
 
     public function showCreateForm()
     {
-        return View::make('crm.products.create')->with(['inputText' => $this->getMessage('messages.InputText')]);
+        return View::make('crm.products.create');
     }
 
     public function viewProductsDetails(int $productId)
@@ -40,12 +40,7 @@ class ProductsController extends Controller
 
     public function showUpdateForm(int $productId)
     {
-        return View::make('crm.products.edit')->with(
-            [
-                'products' => $this->productsService->loadProduct($productId),
-                'inputText' => $this->getMessage('messages.InputText'),
-            ]
-        );
+        return View::make('crm.products.edit')->with(['products' => $this->productsService->loadProduct($productId)]);
     }
 
     public function processCreateProducts(ProductsStoreRequest $request)
