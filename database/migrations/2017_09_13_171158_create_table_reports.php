@@ -20,6 +20,8 @@ class CreateTableReports extends Migration
             $table->unsignedInteger('clients_id');
             $table->foreign('clients_id')->references('id')->on('clients');
             $table->boolean('is_active')->nullable()->default(1);
+            $table->unsignedInteger('admin_id');
+            $table->foreign('admin_id')->references('id')->on('admins');
             $table->timestamps();
         });
     }

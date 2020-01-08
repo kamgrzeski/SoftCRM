@@ -20,9 +20,9 @@ class FinancesService
         $this->financesModel = new FinancesModel();
     }
 
-    public function execute($requestedData)
+    public function execute($requestedData, int $adminId)
     {
-        return $this->financesModel->storeFinance($requestedData);
+        return $this->financesModel->storeFinance($requestedData, $adminId);
     }
 
     public function update(int $financeId, $requestedData)

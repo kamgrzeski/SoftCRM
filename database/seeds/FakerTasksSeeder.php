@@ -22,7 +22,8 @@ class FakerTasksSeeder extends Seeder
                 'duration' => rand(1,30),
                 'completed' => rand(0,1),
                 'created_at' => $faker->dateTimeBetween($startDate = '-15 days', $endDate = 'now'),
-                'updated_at' => \Carbon\Carbon::now()
+                'updated_at' => \Carbon\Carbon::now(),
+                'admin_id' => 1
             ];
 
             DB::table('tasks')->insert($tasks);

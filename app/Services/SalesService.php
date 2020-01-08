@@ -14,9 +14,9 @@ class SalesService
         $this->salesModel = new SalesModel();
     }
 
-    public function execute($requestedData)
+    public function execute($requestedData, int $adminId)
     {
-        return $this->salesModel->storeSale($requestedData);
+        return $this->salesModel->storeSale($requestedData, $adminId);
     }
 
     public function update($saleId, $requestedData)

@@ -22,7 +22,8 @@ class FakerDealsSeeder extends Seeder
                 'end_time' => $faker->date,
                 'companies_id' => $faker->randomElement($companiesIds),
                 'created_at' => $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now'),
-                'updated_at' => \Carbon\Carbon::now()
+                'updated_at' => \Carbon\Carbon::now(),
+                'admin_id' => 1
             ];
 
             DB::table('deals')->insert($deals);

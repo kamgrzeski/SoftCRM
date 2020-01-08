@@ -22,6 +22,8 @@ class CreateTableCompanies extends Migration
             $table->boolean('is_active')->nullable()->default(1);
             $table->unsignedInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients');
+            $table->unsignedInteger('admin_id');
+            $table->foreign('admin_id')->references('id')->on('admins');
             $table->timestamps();
         });
     }

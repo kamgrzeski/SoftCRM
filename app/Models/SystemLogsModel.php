@@ -24,7 +24,7 @@ class SystemLogsModel extends Model
         }
     }
 
-    public function insertRow($actions, $statusCode)
+    public function insertRow($actions, int $statusCode, int $adminId)
     {
         $userInformation = $this->getUserInformation();
 
@@ -36,7 +36,8 @@ class SystemLogsModel extends Model
                 'date' => Carbon::now(),
                 'ip_address' => $userInformation['geoplugin_request'],
                 'city' => $userInformation['geoplugin_city'],
-                'country' => $userInformation['geoplugin_countryName']
+                'country' => $userInformation['geoplugin_countryName'],
+                'admin_id' => 1 ?? $adminId
             ]
         );
     }

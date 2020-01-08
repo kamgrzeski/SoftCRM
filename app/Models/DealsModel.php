@@ -15,7 +15,7 @@ class DealsModel extends Model
         return $this->belongsTo(CompaniesModel::class);
     }
 
-    public function insertDeal($requestedData)
+    public function insertDeal(array $requestedData, int $adminId) : self
     {
         return self::insert(
             [
@@ -24,12 +24,13 @@ class DealsModel extends Model
                 'end_time' => $requestedData['end_time'],
                 'companies_id' => $requestedData['companies_id'],
                 'created_at' => Carbon::now(),
-                'is_active' => 1
+                'is_active' => 1,
+                'admin_id' => $adminId
             ]
         );
     }
 
-    public function updateDeal($dealId, $requestedData)
+    public function updateDeal(int $dealId, array $requestedData) : bool
     {
         return self::where('id', '=', $dealId)->update(
             [
@@ -41,7 +42,7 @@ class DealsModel extends Model
             ]);
     }
 
-    public function setActive($dealId, $activeType)
+    public function setActive(int $dealId, array $activeType) : bool
     {
         $findDealsById = self::where('id', '=', $dealId)->update(
             [
@@ -55,7 +56,7 @@ class DealsModel extends Model
         }
     }
 
-    public function countDeals()
+    public function countDeals() : int
     {
         return self::get()->count();
     }
@@ -69,7 +70,7 @@ class DealsModel extends Model
         return $percentage;
     }
 
-    public function getDeactivated()
+    public function getDeactivated() : int
     {
         return self::where('is_active', '=', 0)->count();
     }
@@ -84,7 +85,7 @@ class DealsModel extends Model
         return self::paginate(Config::get('crm_settings.pagination_size'));
     }
 
-    public function getDeal(int $dealId)
+    public function getDeal(int $dealId) : self
     {
         return self::find($dealId);
     }

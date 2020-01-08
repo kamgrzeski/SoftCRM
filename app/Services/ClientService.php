@@ -23,9 +23,9 @@ class ClientService
         $this->clientsModel = new ClientsModel();
     }
 
-    public function execute(array $requestedData)
+    public function execute(array $requestedData, int $adminId)
     {
-        return $this->clientsModel->storeClient($requestedData);
+        return $this->clientsModel->storeClient($requestedData, $adminId);
     }
 
     public function update(int $clientId, array $requestedData)

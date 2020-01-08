@@ -45,8 +45,8 @@ class ProductsController extends Controller
 
     public function processCreateProducts(ProductsStoreRequest $request)
     {
-        if ($product = $this->productsService->execute($request->validated())) {
-            $this->systemLogsService->insertSystemLogs('Product has been add with id: ' . $product, $this->systemLogsService::successCode);
+        if ($product = $this->productsService->execute($request->validated(), $this->getAdminId())) {
+            $this->systemLogsService->insertSystemLogs('Product has been add with id: ' . $product, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorProductsStore'));
@@ -73,7 +73,7 @@ class ProductsController extends Controller
             $productsDetails->delete();
         }
 
-        $this->systemLogsService->insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogsService::successCode);
+        $this->systemLogsService->insertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogsService::successCode, $this->getAdminId());
 
         return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsDelete'));
     }
@@ -81,7 +81,7 @@ class ProductsController extends Controller
     public function processSetIsActive(int $productId, bool $value)
     {
         if ($this->productsService->loadIsActiveFunction($productId, $value)) {
-            $this->systemLogsService->insertSystemLogs('ProductsModel has been enabled with id: ' . $productId, $this->systemLogsService::successCode);
+            $this->systemLogsService->insertSystemLogs('ProductsModel has been enabled with id: ' . $productId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ProductsIsActived'));

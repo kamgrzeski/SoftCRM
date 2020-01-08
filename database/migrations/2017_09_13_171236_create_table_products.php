@@ -19,6 +19,8 @@ class CreateTableProducts extends Migration
             $table->integer('count');
             $table->integer('price');
             $table->boolean('is_active')->nullable()->default(1);
+            $table->unsignedInteger('admin_id');
+            $table->foreign('admin_id')->references('id')->on('admins');
             $table->timestamps();
         });
     }

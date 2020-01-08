@@ -27,7 +27,8 @@ class FakerClientSeeder extends Seeder
                 'city' => $faker->city,
                 'country' => $faker->country,
                 'created_at' => $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now'),
-                'updated_at' => \Carbon\Carbon::now()
+                'updated_at' => \Carbon\Carbon::now(),
+                'admin_id' => 1
             ];
 
              DB::table('clients')->insert($client);

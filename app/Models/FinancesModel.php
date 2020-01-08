@@ -16,7 +16,7 @@ class FinancesModel extends Model
         return $this->belongsTo(CompaniesModel::class);
     }
 
-    public function storeFinance($requestedData)
+    public function storeFinance(array $requestedData, int $adminId) : int
     {
         $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($requestedData['gross']);
@@ -33,12 +33,13 @@ class FinancesModel extends Model
                 'date' => $requestedData['date'] ?? Carbon::now(),
                 'companies_id' => $requestedData['companies_id'],
                 'created_at' => Carbon::now(),
-                'is_active' => 1
+                'is_active' => 1,
+                'admin_id' => $adminId
             ]
         );
     }
 
-    public function updateFinance($financeId, $requestedData)
+    public function updateFinance(int $financeId, array $requestedData) : bool
     {
         $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($requestedData['gross']);
@@ -59,7 +60,7 @@ class FinancesModel extends Model
             ]);
     }
 
-    public function setActive($financeId, $activeType)
+    public function setActive(int $financeId, int $activeType) : bool
     {
         $findFinancesById = self::where('id', '=', $financeId)->update(
             [
@@ -73,7 +74,7 @@ class FinancesModel extends Model
         }
     }
 
-    public function countFinances()
+    public function countFinances() : int
     {
         return self::get()->count();
     }

@@ -14,9 +14,9 @@ class TasksService
         $this->tasksModel = new TasksModel();
     }
 
-    public function execute(array $validateData)
+    public function execute(array $validateData, int $adminId)
     {
-        return $this->tasksModel->storeTask($validateData);
+        return $this->tasksModel->storeTask($validateData, $adminId);
     }
 
     public function update(int $taskId, array $validatedData)

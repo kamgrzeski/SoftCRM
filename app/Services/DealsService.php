@@ -13,9 +13,9 @@ class DealsService
         $this->dealsModel = new DealsModel();
     }
 
-    public function execute($requestedData)
+    public function execute($requestedData, int $adminId)
     {
-        return $this->dealsModel->insertDeal($requestedData);
+        return $this->dealsModel->insertDeal($requestedData, $adminId);
     }
 
     public function update(int $dealId, $requestedData)

@@ -16,7 +16,7 @@ class ProductsModel extends Model
         return $this->hasMany(SalesModel::class, 'id');
     }
 
-    public function storeProduct($requestedData)
+    public function storeProduct(array $requestedData, int $adminId) : int
     {
         return self::insertGetId(
             [
@@ -25,12 +25,13 @@ class ProductsModel extends Model
                 'count' => $requestedData['count'],
                 'price' => $requestedData['price'] * 100,
                 'created_at' => Carbon::now(),
-                'is_active' => 1
+                'is_active' => 1,
+                'admin_id' => $adminId
             ]
         );
     }
 
-    public function updateProduct($productId, $requestedData)
+    public function updateProduct(int $productId, array $requestedData) : bool
     {
         return self::where('id', '=', $productId)->update(
             [
@@ -43,7 +44,7 @@ class ProductsModel extends Model
             ]);
     }
 
-    public function setActive($productId, $activeType)
+    public function setActive(int $productId, int $activeType) : bool
     {
         $findProductsById = self::where('id', '=', $productId)->update(
             [
@@ -57,7 +58,7 @@ class ProductsModel extends Model
         }
     }
 
-    public function countProducts()
+    public function countProducts() : int
     {
         return self::get()->count();
     }
@@ -86,7 +87,7 @@ class ProductsModel extends Model
         return self::paginate(Config::get('crm_settings.pagination_size'));
     }
 
-    public function getProduct(int $productId)
+    public function getProduct(int $productId) : self
     {
         return self::find($productId);
     }

@@ -50,8 +50,8 @@ class EmployeesController extends Controller
 
     public function processCreateEmployee(EmployeesStoreRequest $request)
     {
-        if ($employee = $this->employeesService->execute($request->validated())) {
-            $this->systemLogsService->insertSystemLogs('Employees has been add with id: ' . $employee, $this->systemLogsService::successCode);
+        if ($employee = $this->employeesService->execute($request->validated(), $this->getAdminId())) {
+            $this->systemLogsService->insertSystemLogs('Employees has been add with id: ' . $employee, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));
@@ -78,7 +78,7 @@ class EmployeesController extends Controller
 
         $dataOfEmployees->delete();
 
-        $this->systemLogsService->insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id, $this->systemLogsService::successCode);
+        $this->systemLogsService->insertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id, $this->systemLogsService::successCode, $this->getAdminId());
 
         return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesDelete'));
     }
@@ -86,7 +86,7 @@ class EmployeesController extends Controller
     public function processSetIsActive($employeeId, $value)
     {
         if ($this->employeesService->loadIsActiveFunction($employeeId, $value)) {
-            $this->systemLogsService->insertSystemLogs('Employees has been enabled with id: ' . $employeeId, $this->systemLogsService::successCode);
+            $this->systemLogsService->insertSystemLogs('Employees has been enabled with id: ' . $employeeId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesActive'));

@@ -15,7 +15,7 @@ class SalesModel extends Model
         return $this->belongsTo(ProductsModel::class, 'product_id');
     }
 
-    public function storeSale($requestedData)
+    public function storeSale(array $requestedData, int $adminId) : int
     {
         return self::insertGetId(
             [
@@ -25,12 +25,13 @@ class SalesModel extends Model
                 'product_id' => $requestedData['product_id'],
                 'price' => $requestedData['price'],
                 'created_at' => Carbon::now(),
-                'is_active' => 1
+                'is_active' => 1,
+                'admin_id' => $adminId
             ]
         );
     }
 
-    public function updateTask($saleId, $requestedData)
+    public function updateTask(int $saleId, array $requestedData) : bool
     {
         return self::where('id', '=', $saleId)->update(
             [
@@ -43,12 +44,12 @@ class SalesModel extends Model
             ]);
     }
 
-    public function setActive($saleId, $activeType)
+    public function setActive(int $saleId, int $activeType) : bool
     {
         return self::where('id', '=', $saleId)->update(['is_active' => $activeType]);
     }
 
-    public function countSales()
+    public function countSales() : int
     {
         return self::all()->count();
     }
@@ -63,7 +64,7 @@ class SalesModel extends Model
         return self::all()->sortByDesc('created_at');
     }
 
-    public function getSale(int $saleId)
+    public function getSale(int $saleId) : self
     {
         return $this->find($saleId);
     }

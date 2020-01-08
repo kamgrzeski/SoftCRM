@@ -15,7 +15,7 @@ class TasksModel extends Model
         return $this->belongsTo(EmployeesModel::class, 'employee_id');
     }
 
-    public function storeTask(array $requestedData)
+    public function storeTask(array $requestedData, int $adminId)
     {
         return self::insertGetId(
             [
@@ -23,7 +23,8 @@ class TasksModel extends Model
                 'employee_id' => $requestedData['employee_id'],
                 'duration' => $requestedData['duration'],
                 'is_active' => 1,
-                'created_at' => Carbon::now()
+                'created_at' => Carbon::now(),
+                'admin_id' => $adminId
             ]
         );
     }
@@ -40,7 +41,7 @@ class TasksModel extends Model
             ]);
     }
 
-    public function setActive(int $taskId, $activeType)
+    public function setActive(int $taskId, int $activeType)
     {
         $findTasksById = self::where('id', '=', $taskId)->update(
             [
@@ -54,7 +55,7 @@ class TasksModel extends Model
         }
     }
 
-    public function setCompleted(int $taskId, $completeType)
+    public function setCompleted(int $taskId, int $completeType)
     {
         $findTasksById = self::where('id', '=', $taskId)->update(
             [

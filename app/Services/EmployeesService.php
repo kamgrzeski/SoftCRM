@@ -20,9 +20,9 @@ class EmployeesService
         $this->employeesModel = new EmployeesModel();
     }
 
-    public function execute($requestedData)
+    public function execute($requestedData, int $adminId)
     {
-        return $this->employeesModel->insertEmployee($requestedData);
+        return $this->employeesModel->insertEmployee($requestedData, $adminId);
     }
 
     public function update(int $employeeId, $requestedData)

@@ -17,9 +17,9 @@ class ProductsService
         $this->productsModel = new ProductsModel();
     }
 
-    public function execute($requestedData)
+    public function execute($requestedData, int $adminId)
     {
-        return $this->productsModel->storeProduct($requestedData);
+        return $this->productsModel->storeProduct($requestedData, $adminId);
     }
 
     public function update(int $productId, $requestedData)

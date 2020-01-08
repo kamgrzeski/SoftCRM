@@ -30,7 +30,7 @@ class EmployeesModel extends Model
         return $this->hasMany(TasksModel::class, 'employee_id');
     }
 
-    public function insertEmployee($requestedData)
+    public function insertEmployee(array $requestedData, int $adminId) : int
     {
         return self::insertGetId(
             [
@@ -41,12 +41,13 @@ class EmployeesModel extends Model
                 'note' => $requestedData['note'],
                 'client_id' => $requestedData['client_id'],
                 'created_at' => Carbon::now(),
-                'is_active' => 1
+                'is_active' => 1,
+                'admin_id' => $adminId
             ]
         );
     }
 
-    public function updateEmployee($employeeId, $requestedData)
+    public function updateEmployee(int $employeeId, array $requestedData) : bool
     {
         return self::where('id', '=', $employeeId)->update(
             [
@@ -61,7 +62,7 @@ class EmployeesModel extends Model
             ]);
     }
 
-    public function setActive($employeeId, $activeType)
+    public function setActive(int $employeeId, int $activeType) : bool
     {
         $findEmployeesById = self::where('id', '=', $employeeId)->update(
             [
@@ -75,12 +76,13 @@ class EmployeesModel extends Model
         }
     }
 
-    public function countEmployees()
+    public function countEmployees() : int
     {
         return self::all()->count();
     }
 
-    public function getEmployeesInLatestMonth() {
+    public function getEmployeesInLatestMonth() : float
+    {
         $employeesCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
         $allEmployees = self::all()->count();
 
@@ -89,7 +91,7 @@ class EmployeesModel extends Model
         return $percentage;
     }
 
-    public function getDeactivated()
+    public function getDeactivated() : int
     {
         return self::where('is_active', '=', 0)->count();
     }
@@ -106,7 +108,7 @@ class EmployeesModel extends Model
         return $query;
     }
 
-    public function getEmployeeDetails(int $employeeId)
+    public function getEmployeeDetails(int $employeeId) : self
     {
         $query = self::find($employeeId);
 
@@ -125,7 +127,7 @@ class EmployeesModel extends Model
         return self::pluck('full_name', 'id');
     }
 
-    private function getEmployeesTaskCount($id)
+    private function getEmployeesTaskCount(int $id) : int
     {
         return TasksModel::where('employee_id', $id)->get()->count();
     }

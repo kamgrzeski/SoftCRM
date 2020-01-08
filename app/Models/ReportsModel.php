@@ -9,7 +9,7 @@ class ReportsModel extends Model
 {
     protected $table = 'reports';
 
-    public static function storeReport($requestedData)
+    public static function storeReport(array $requestedData) : int
     {
         return self::insertGetId(
             [
@@ -22,7 +22,7 @@ class ReportsModel extends Model
         );
     }
 
-    public static function updateReport($reportId, $requestedData)
+    public static function updateReport(int $reportId, array $requestedData) : bool
     {
         return self::where('id', '=', $reportId)->update(
             [
@@ -34,7 +34,7 @@ class ReportsModel extends Model
             ]);
     }
 
-    public static function setActive($reportId, $activeType)
+    public static function setActive(int $reportId, int $activeType) : bool
     {
         $findReportsById = self::where('id', '=', $reportId)->update(
             [
@@ -48,7 +48,7 @@ class ReportsModel extends Model
         }
     }
 
-    public static function countReports()
+    public static function countReports() : int
     {
         return self::all()->count();
     }

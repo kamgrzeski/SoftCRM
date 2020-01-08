@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminAccSeeder extends Seeder
 {
@@ -12,8 +13,13 @@ class AdminAccSeeder extends Seeder
      */
     public function run()
     {
-        $user = ['name' => 'admin','email' => 'admin@admin.com','password' => bcrypt('admin')];
+        $admin = [
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('admin'),
+            'role_type' => 2 // admin
+            ];
 
-        DB::table('users')->insert($user);
+        DB::table('admins')->insert($admin);
     }
 }

@@ -45,8 +45,8 @@ class ClientController extends Controller
 
     public function processCreateClient(ClientStoreRequest $request)
     {
-        if ($client = $this->clientService->execute($request->validated())) {
-            $this->systemLogsService->insertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogsService::successCode);
+        if ($client = $this->clientService->execute($request->validated(), $this->getAdminId())) {
+            $this->systemLogsService->insertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorClientStore'));

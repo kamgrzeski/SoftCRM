@@ -50,8 +50,8 @@ class FinancesController extends Controller
 
     public function processCreateFinances(FinancesStoreRequest $request)
     {
-        if ($finance = $this->financesService->execute($request->validated())) {
-            $this->systemLogsService->insertSystemLogs('FinancesModel has been add with id: ' . $finance, $this->systemLogsService::successCode);
+        if ($finance = $this->financesService->execute($request->validated(), $this->getAdminId())) {
+            $this->systemLogsService->insertSystemLogs('FinancesModel has been add with id: ' . $finance, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesStore'));
@@ -73,7 +73,7 @@ class FinancesController extends Controller
 
         $dataOfFinances->delete();
 
-        $this->systemLogsService->insertSystemLogs('FinancesModel has been deleted with id: ' . $dataOfFinances->id, $this->systemLogsService::successCode);
+        $this->systemLogsService->insertSystemLogs('FinancesModel has been deleted with id: ' . $dataOfFinances->id, $this->systemLogsService::successCode, $this->getAdminId());
 
         return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesDelete'));
     }
@@ -81,7 +81,7 @@ class FinancesController extends Controller
     public function processSetIsActive($financeId, $value)
     {
         if ($this->financesService->loadIsActiveFunction($financeId, $value)) {
-            $this->systemLogsService->insertSystemLogs('FinancesModel has been enabled with id: ' . $financeId, $this->systemLogsService::successCode);
+            $this->systemLogsService->insertSystemLogs('FinancesModel has been enabled with id: ' . $financeId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesActive'));

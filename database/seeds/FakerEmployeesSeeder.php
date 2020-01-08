@@ -24,7 +24,8 @@ class FakerEmployeesSeeder extends Seeder
                 'note' => $faker->text($maxNbChars = 200),
                 'client_id' => $faker->randomElement($userIds),
                 'created_at' => $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now'),
-                'updated_at' => \Carbon\Carbon::now()
+                'updated_at' => \Carbon\Carbon::now(),
+                'admin_id' => 1
             ];
 
             DB::table('employees')->insert($employees);

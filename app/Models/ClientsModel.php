@@ -22,7 +22,7 @@ class ClientsModel extends Model
         return $this->hasMany(EmployeesModel::class, 'id');
     }
 
-    public function storeClient($requestedData)
+    public function storeClient(array $requestedData, int $adminId) : int
     {
         return self::insertGetId(
             [
@@ -36,12 +36,13 @@ class ClientsModel extends Model
                 'city' => $requestedData['city'],
                 'country' => $requestedData['country'],
                 'created_at' => Carbon::now(),
-                'is_active' => 1
+                'is_active' => 1,
+                'admin_id' => $adminId
             ]
         );
     }
 
-    public function updateClient($id, $requestedData)
+    public function updateClient(int $id, array $requestedData) : bool
     {
         return self::where('id', '=', $id)->update(
             [
@@ -59,7 +60,7 @@ class ClientsModel extends Model
             ]);
     }
 
-    public function setClientActive($id, $activeType)
+    public function setClientActive(int $id, int $activeType) : bool
     {
         $findClientById = self::where('id', '=', $id)->update(['is_active' => $activeType]);
 
@@ -70,12 +71,13 @@ class ClientsModel extends Model
         }
     }
 
-    public function countClients()
+    public function countClients() : int
     {
         return self::all()->count();
     }
 
-    public static function getClientsInLatestMonth() {
+    public static function getClientsInLatestMonth() : float
+    {
         $clientCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
         $allClient = self::all()->count();
 
@@ -84,12 +86,12 @@ class ClientsModel extends Model
         return $new_width;
     }
 
-    public function getDeactivated()
+    public function getDeactivated() : int
     {
         return self::where('is_active', '=', 0)->count();
     }
 
-    public function findClientByGivenClientId($clientId)
+    public function findClientByGivenClientId(int $clientId) : self
     {
         $query = self::find($clientId);
 

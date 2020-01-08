@@ -20,9 +20,9 @@ class CompaniesService
         $this->companiesModel = new CompaniesModel();
     }
 
-    public function execute($requestedData)
+    public function execute($requestedData, int $adminId)
     {
-        return $this->companiesModel->insertCompanie($requestedData);
+        return $this->companiesModel->insertCompanie($requestedData, $adminId);
     }
 
     public function update(int $companiesId, $requestedData)

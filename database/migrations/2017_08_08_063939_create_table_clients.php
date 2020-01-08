@@ -19,6 +19,8 @@ class CreateTableClients extends Migration
             $table->text('city');
             $table->text('country');
             $table->boolean('is_active')->nullable()->default(1);
+            $table->unsignedInteger('admin_id');
+            $table->foreign('admin_id')->references('id')->on('admins');
             $table->timestamps();
         });
     }

@@ -30,7 +30,7 @@ class CompaniesModel extends Model
         return $this->hasMany(FinancesModel::class);
     }
 
-    public function insertCompanie($requestedData)
+    public function insertCompanie(array $requestedData, int $adminId) : int
     {
         return self::insertGetId(
             [
@@ -46,12 +46,13 @@ class CompaniesModel extends Model
                 'description' => $requestedData['description'],
                 'client_id' => $requestedData['client_id'],
                 'created_at' => Carbon::now(),
-                'is_active' => 1
+                'is_active' => 1,
+                'admin_id' => $adminId
             ]
         );
     }
 
-    public function updateCompanie($companiesId, $requestedData)
+    public function updateCompanie(int $companiesId, array $requestedData) : bool
     {
         return self::where('id', '=', $companiesId)->update(
             [
@@ -70,7 +71,7 @@ class CompaniesModel extends Model
             ]);
     }
 
-    public function setActive($companiesId, $activeType)
+    public function setActive(int $companiesId, int $activeType) : bool
     {
         $findCompaniesById = self::where('id', '=', $companiesId)->update(
             [
@@ -84,12 +85,13 @@ class CompaniesModel extends Model
         }
     }
 
-    public function countCompanies()
+    public function countCompanies() : int
     {
         return self::all()->count();
     }
 
-    public function getCompaniesInLatestMonth() {
+    public function getCompaniesInLatestMonth() : float
+    {
         $companiesCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
         $allCompanies = self::all()->count();
 
@@ -98,7 +100,7 @@ class CompaniesModel extends Model
         return $percentage;
     }
 
-    public function getDeactivated()
+    public function getDeactivated() : int
     {
         return self::where('is_active', '=', 0)->count();
     }
