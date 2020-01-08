@@ -1,6 +1,6 @@
-# B2B CRM System in Laravel 6.9 with PHP [>7.3]
+# B2B CRM System in Laravel 6.10 with PHP [>7.3]
 
-Customer relationship management (CRM) is an approach to managing a company's interaction with current and potential customers. It uses data analysis about customers' history with a company and to improve business relationships with customers, specifically focusing on customer retention and ultimately driving sales growth.
+SoftCRM is a database system containing a number of useful functions and solutions to facilitate B2B company management. It uses data analysis about customers' history with a company and to improve business relationships with customers, specifically focusing on customer retention and ultimately driving sales growth.
 
 <img src="https://i.ibb.co/0ZfbYvC/Przechwytywanie.png">
 
