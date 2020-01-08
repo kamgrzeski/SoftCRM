@@ -49,3 +49,9 @@ password: admin
 
 
 # Now you should then be able to access SoftCRM easily!
+
+Hey! I see that you have come to the end. Do you appreciate my work on softCRM? If so, give me a virtual beer using Paypal. :)
+<img src="https://i.ibb.co/h8TTGYf/beer.png">
+
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=KVZEXQKGZU2ZN&currency_code=USD&source=url)
