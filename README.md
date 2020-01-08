@@ -50,7 +50,7 @@ password: admin
 
 # Now you should then be able to access SoftCRM easily!
 
-Hey! I see that you have come to the end. Do you appreciate my work on <strong>SoftCRM</strong>? Give me a virtual beer using Paypal !
+I see that you have come to the end. Do you appreciate my work on <strong>SoftCRM</strong>? Give me a virtual beer using Paypal !
 <img src="https://i.ibb.co/NmFYNfx/beer-1.png">
 
 
