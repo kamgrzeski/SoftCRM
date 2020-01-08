@@ -29,6 +29,7 @@ class SalesStoreRequest extends FormRequest
             'quantity' => 'required|integer',
             'product_id' => 'required|integer',
             'date_of_payment' => 'required',
+            'price' => 'required'
         ];
     }
 }

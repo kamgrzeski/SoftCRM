@@ -55,7 +55,7 @@
                                     <td class="text-center"><a
                                                 href="{{ URL::to('products/view/' . $value->products->id) }}">{{ $value->products->name }}</a>
                                     </td>
-                                        <td class="text-center">{{ $value->date_of_payment }}</td>
+                                    <td class="text-center">{{ $value->date_of_payment }}</td>
                                     <td class="text-center">
                                             @if($value->is_active == TRUE)
                                                 <label class="switch">

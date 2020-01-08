@@ -85,7 +85,7 @@ class EmployeesService
 
     public function loadCountEmployees()
     {
-        return $this->employeesModel->countEmployees() ? : 0;
+        return $this->employeesModel->countEmployees();
     }
 
     public function loadEmployeesInLatestMonth()
@@ -95,6 +95,6 @@ class EmployeesService
 
     public function loadDeactivatedEmployees()
     {
-        return $this->employeesModel->getDeactivated() ? : 0;
+        return $this->employeesModel->getDeactivated();
     }
 }

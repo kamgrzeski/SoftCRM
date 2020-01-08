@@ -64,6 +64,17 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
+                            <div class="form-group input-row">
+                                <div class="form-group input-row">
+                                    {{ Form::label('price', 'Price') }}
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+                                        {{ Form::text('price', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
                         </div>
                         <div class="col-lg-12 validate_form">
                             {{ Form::submit('Add sales', array('class' => 'btn btn-primary')) }}

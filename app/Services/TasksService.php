@@ -66,7 +66,7 @@ class TasksService
 
     public function loadCountTasks()
     {
-        return $this->tasksModel->countTasks() ? : 0;
+        return $this->tasksModel->countTasks();
 
     }
 

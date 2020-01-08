@@ -12,7 +12,7 @@
         "cknow/laravel-money": "^3.8",
         "fideloper/proxy": "^4.0",
         "jackiedo/dotenv-editor": "^1.0",
-        "laravel/framework": "^6.2",
+        "laravel/framework": "^6.9",
         "laravel/tinker": "^2.0",
         "laravelcollective/html": "^6.0"
     },

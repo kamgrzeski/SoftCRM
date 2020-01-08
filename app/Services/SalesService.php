@@ -16,7 +16,7 @@ class SalesService
 
     public function execute($requestedData)
     {
-        return $this->salesModel->storeTask($requestedData);
+        return $this->salesModel->storeSale($requestedData);
     }
 
     public function update($saleId, $requestedData)
@@ -36,7 +36,7 @@ class SalesService
 
     public function loadSale(int $saleId)
     {
-        return $this->salesModel::find($saleId);
+        return $this->salesModel->getSale($saleId);
     }
 
     public function loadIsActiveFunction($saleId, $value)
@@ -51,16 +51,14 @@ class SalesService
 
     public function loadDataAndPagination()
     {
-        $dataWithSales = [
+        return [
             'sales' => $this->loadSales(),
             'salesPaginate' => $this->loadPaginate()
         ];
-
-        return $dataWithSales;
     }
 
     public function loadCountSales()
     {
-        return $this->salesModel->countSales() ? : 0;
+        return $this->salesModel->countSales();
     }
 }

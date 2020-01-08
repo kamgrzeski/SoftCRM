@@ -50,12 +50,12 @@ class DealsService
 
     public function loadCountDeals()
     {
-        return $this->dealsModel->countDeals() ? : 0;
+        return $this->dealsModel->countDeals();
     }
 
     public function loadDeactivatedDeals()
     {
-        return $this->dealsModel->getDeactivated() ? : 0;
+        return $this->dealsModel->getDeactivated();
     }
 
     public function loadDealsInLatestMonth()

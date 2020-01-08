@@ -30,6 +30,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src ="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
     <div class="se-pre-con"></div>
     <style>
         .no-js #loader {
@@ -64,6 +65,14 @@
 
         $(document).ready(function () {
             $('#localclock').jsclock();
+        });
+
+        $(document).ready(function () {
+            $('#dataTables-example').DataTable({
+                "paging":   false,
+                "ordering": true,
+                "info":     false
+            });
         });
     </script>
 </head>

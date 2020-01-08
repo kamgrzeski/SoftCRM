@@ -74,6 +74,6 @@ class ProductsService
 
     public function loadCountProducts()
     {
-        return $this->productsModel->countProducts() ? : 0;
+        return $this->productsModel->countProducts();
     }
 }

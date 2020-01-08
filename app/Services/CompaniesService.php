@@ -68,7 +68,7 @@ class CompaniesService
         return DealsModel::where('companies_id', $companiesId)->get()->count();
     }
 
-    public function countAssignedFile(int $companieId)
+    public function countAssignedFile(int $companiesId)
     {
 //        return $this->companiesModel
     }
@@ -85,12 +85,12 @@ class CompaniesService
 
     public function loadCountCompanies()
     {
-        return $this->companiesModel->countCompanies() ? : 0;
+        return $this->companiesModel->countCompanies();
     }
 
     public function loadDeactivatedCompanies()
     {
-        return $this->companiesModel->getDeactivated() ? : 0;
+        return $this->companiesModel->getDeactivated();
     }
 
     public function loadCompaniesInLatestMonth()

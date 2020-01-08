@@ -15,7 +15,7 @@ class SalesModel extends Model
         return $this->belongsTo(ProductsModel::class, 'product_id');
     }
 
-    public function storeTask($requestedData)
+    public function storeSale($requestedData)
     {
         return self::insertGetId(
             [
@@ -23,9 +23,9 @@ class SalesModel extends Model
                 'quantity' => $requestedData['quantity'],
                 'date_of_payment' => $requestedData['date_of_payment'],
                 'product_id' => $requestedData['product_id'],
+                'price' => $requestedData['price'],
                 'created_at' => Carbon::now(),
-                'is_active' => 1,
-                'price' => 0
+                'is_active' => 1
             ]
         );
     }
@@ -38,23 +38,14 @@ class SalesModel extends Model
                 'quantity' => $requestedData['quantity'],
                 'date_of_payment' => $requestedData['date_of_payment'],
                 'product_id' => $requestedData['product_id'],
-                'updated_at' => Carbon::now(),
-                'is_active' => 1
+                'price' => $requestedData['price'],
+                'updated_at' => Carbon::now()
             ]);
     }
 
     public function setActive($saleId, $activeType)
     {
-        $findSalesById = self::where('id', '=', $saleId)->update(
-            [
-                'is_active' => $activeType
-            ]);
-
-        if ($findSalesById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return self::where('id', '=', $saleId)->update(['is_active' => $activeType]);
     }
 
     public function countSales()
@@ -70,5 +61,10 @@ class SalesModel extends Model
     public function getSalesSortedByCreatedAt()
     {
         return self::all()->sortByDesc('created_at');
+    }
+
+    public function getSale(int $saleId)
+    {
+        return $this->find($saleId);
     }
 }

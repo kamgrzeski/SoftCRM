@@ -1,20 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kamilgrzechulski
- * Date: 15.03.2018
- * Time: 09:20
- */
 
 namespace App\Services;
 
-use App\Models\DealsModel;
-use App\Models\FinancesModel;
-use App\Models\ProductsModel;
-use App\Models\SalesModel;
-
 class GraphDataService
 {
+    private $width = 400;
+    private $height = 200;
+
     public function taskGraphData() {
 
         $cash = new CalculateCashService();
@@ -23,7 +15,7 @@ class GraphDataService
             $taskGraphData = app()->chartjs
                 ->name('taskGraphData')
                 ->type('line')
-                ->size(['width' => 400, 'height' => 200])
+                ->size(['width' => $this->width, 'height' => $this->height])
                 ->labels(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
                 ->datasets([
                     [
@@ -62,7 +54,7 @@ class GraphDataService
         $itemsCountGraphData = app()->chartjs
             ->name('cashTurnoverGraphData')
             ->type('bar')
-            ->size(['width' => 400, 'height' => 200])
+            ->size(['width' => $this->width, 'height' => $this->height])
             ->datasets([
                 [
                     "label" => "Products",
