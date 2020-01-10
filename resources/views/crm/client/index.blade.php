@@ -44,8 +44,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($clients as $key => $client)
-                                    @foreach($client as $key => $value)
+                                @foreach($clients as $key => $value)
                                     <tr class="odd gradeX">
                                         <td class="text-center">{{ $value->full_name }}</td>
                                         <td class="text-center">{{ $value->phone }}</td>
@@ -84,11 +83,10 @@
                                         </td>
                                     </tr>
                                     @endforeach
-                                @endforeach
                                 </tbody>
                             </table>
                         </div>
-                        {!! $clients['clientPaginate']->render() !!}
+                        {!! $clientPaginate->render() !!}
                     </div>
                 </div>
                 <!--End Advanced Tables -->

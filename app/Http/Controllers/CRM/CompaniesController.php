@@ -25,7 +25,12 @@ class CompaniesController extends Controller
 
     public function processListOfCompanies()
     {
-        return View::make('crm.companies.index')->with($this->companiesService->loadDataAndPagination());
+        return View::make('crm.companies.index')->with(
+            [
+                'companies' => $this->companiesService->loadCompanies(),
+                'companiesPaginate' => $this->companiesService->loadPagination()
+            ]
+        );
     }
 
     public function showCreateForm()

@@ -43,8 +43,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($deals as $key => $deal)
-                                @foreach($deal as $key => $value)
+                            @foreach($deals as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->name }}</td>
                                     <td class="text-center"><a
@@ -80,12 +79,11 @@
                                         </div>
                                     </td>
                                 </tr>
-                                @endforeach
                             @endforeach
                             </tbody>
                         </table>
                     </div>
-                    {!! $deals['dealsPaginate']->render() !!}
+                    {!! $dealsPaginate->render() !!}
 
                 </div>
             </div>

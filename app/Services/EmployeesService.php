@@ -40,19 +40,6 @@ class EmployeesService
         return $this->employeesModel::paginate(Config::get('crm_settings.pagination_size'));
     }
 
-    /**
-     * @return array
-     */
-    public function loadDataAndPagination()
-    {
-        $dataOfEmployees = [
-            'employees' => $this->loadEmployees(),
-            'employeesPaginate' => $this->loadPaginate()
-        ];
-
-        return $dataOfEmployees;
-    }
-
     public function pluckData()
     {
         return $this->employeesModel::pluck('full_name', 'id');

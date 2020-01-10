@@ -36,6 +36,7 @@ class ProductsService
     {
         return $this->productsModel->getPaginate();
     }
+
     public function loadProduct(int $productId)
     {
         return $this->productsModel->getProduct($productId);
@@ -49,16 +50,6 @@ class ProductsService
     public function loadProductsByCreatedAt()
     {
         return $this->productsModel->getProductsByCreatedAt();
-    }
-
-    public function loadDataAndPagination()
-    {
-        $dataWithProducts = [
-            'products' => $this->loadProducts(),
-            'productsPaginate' => $this->loadPagination()
-        ];
-
-        return $dataWithProducts;
     }
 
     public function checkIfProductHaveAssignedSale(int $productId)

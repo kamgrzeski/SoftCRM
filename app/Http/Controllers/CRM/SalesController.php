@@ -25,7 +25,12 @@ class SalesController extends Controller
 
     public function processListOfSales()
     {
-        return View::make('crm.sales.index')->with($this->salesService->loadDataAndPagination());
+        return View::make('crm.sales.index')->with(
+            [
+                'sales' => $this->salesService->loadSales(),
+                'salesPaginate' => $this->salesService->loadPaginate()
+            ]
+        );
     }
 
     public function showCreateForm()

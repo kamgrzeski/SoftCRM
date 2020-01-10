@@ -25,7 +25,12 @@ class ProductsController extends Controller
 
     public function processListOfProducts()
     {
-        return View::make('crm.products.index')->with($this->productsService->loadDataAndPagination());
+        return View::make('crm.products.index')->with(
+            [
+                'products' => $this->productsService->loadProducts(),
+                'productsPaginate' => $this->productsService->loadPagination()
+            ]
+        );
     }
 
     public function showCreateForm()

@@ -40,19 +40,6 @@ class CompaniesService
         return $this->companiesModel->getPaginate();
     }
 
-    /**
-     * @return array
-     */
-    public function loadDataAndPagination()
-    {
-        $dataOfCompanies = [
-            'companies' => $this->loadCompanies(),
-            'companiesPaginate' => $this->loadPagination()
-        ];
-
-        return $dataOfCompanies;
-    }
-
     public function pluckData()
     {
         return $this->companiesModel::pluck('name', 'id');

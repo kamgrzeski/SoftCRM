@@ -68,19 +68,14 @@ class ClientService
         }
     }
 
-    public function loadClientSortedBy(string $string)
+    public function loadClients()
     {
-        return $this->clientsModel->getClientSortedBy($string);
+        return $this->clientsModel->getClientSortedBy('created_at');
     }
 
-    public function loadDataAndPagination()
+    public function loadPagination()
     {
-        $dataWithClients = [
-            'client' => $this->loadClientSortedBy('created_at'),
-            'clientPaginate' => $this->clientsModel->getPaginate()
-        ];
-
-        return $dataWithClients;
+        return $this->clientsModel->getPaginate();
     }
 
     public function loadClientDetails(int $clientId)

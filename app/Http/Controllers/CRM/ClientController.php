@@ -25,7 +25,12 @@ class ClientController extends Controller
 
     public function processListOfClients()
     {
-        return View::make('crm.client.index')->with(['clients' => $this->clientService->loadDataAndPagination()]);
+        return View::make('crm.client.index')->with(
+            [
+                'clients' => $this->clientService->loadClients(),
+                'clientPaginate' => $this->clientService->loadPagination()
+            ]
+        );
     }
 
     public function showCreateForm()

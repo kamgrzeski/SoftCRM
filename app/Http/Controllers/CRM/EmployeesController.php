@@ -25,12 +25,16 @@ class EmployeesController extends Controller
 
     public function processListOfEmployees()
     {
-        return View::make('crm.employees.index')->with($this->employeesService->loadDataAndPagination());
+        return View::make('crm.employees.index')->with(
+            [
+                'employees' => $this->employeesService->loadEmployees(),
+                'employeesPaginate' => $this->employeesService->loadPaginate()
+            ]);
     }
 
     public function showCreateForm()
     {
-        return View::make('crm.employees.create')->with(['dataOfClients' => $this->employeesService->pluckData()]        );
+        return View::make('crm.employees.create')->with(['dataOfClients' => $this->employeesService->pluckData()]);
     }
 
     public function viewEmployeeDetails($employeeId)

@@ -49,14 +49,6 @@ class SalesService
         return ProductsModel::pluck('name', 'id');
     }
 
-    public function loadDataAndPagination()
-    {
-        return [
-            'sales' => $this->loadSales(),
-            'salesPaginate' => $this->loadPaginate()
-        ];
-    }
-
     public function loadCountSales()
     {
         return $this->salesModel->countSales();

@@ -62,14 +62,4 @@ class DealsService
     {
         return $this->dealsModel->getDealsInLatestMonth() . '%' ? : '0.00%';
     }
-
-    public function loadDataAndPagination()
-    {
-        $dataOfDeals = [
-            'deals' => $this->loadDeals(),
-            'dealsPaginate' => $this->loadPaginate()
-        ];
-
-        return $dataOfDeals;
-    }
 }

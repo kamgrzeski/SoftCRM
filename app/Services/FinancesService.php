@@ -70,16 +70,6 @@ class FinancesService
         return $this->financesModel->getPluckCompanies();
     }
 
-    public function loadDataAndPagination()
-    {
-        $dataOfFinances = [
-            'finances' => $this->loadFinances(),
-            'financesPaginate' => $this->loadPagination()
-        ];
-
-        return $dataOfFinances;
-    }
-
     public function loadCountFinances()
     {
         return $this->financesModel->countFinances();

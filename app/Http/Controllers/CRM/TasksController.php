@@ -25,7 +25,11 @@ class TasksController extends Controller
 
     public function processListOfTasks()
     {
-        return View::make('crm.tasks.index')->with($this->tasksService->loadDataAndPagination());
+        return View::make('crm.tasks.index')->with(
+            [
+                'tasks' => $this->tasksService->loadTasks(),
+                'tasksPaginate' => $this->tasksService->loadPaginate()
+            ]);
     }
 
     public function showCreateForm()

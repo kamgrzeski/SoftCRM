@@ -25,7 +25,12 @@ class DealsController extends Controller
 
     public function processListOfDeals()
     {
-        return View::make('crm.deals.index')->with(['deals' => $this->dealsService->loadDataAndPagination()]);
+        return View::make('crm.deals.index')->with(
+            [
+                'deals' => $this->dealsService->loadDeals(),
+                'dealsPaginate' => $this->dealsService->loadPaginate()
+            ]
+        );
     }
 
     public function showCreateForm()

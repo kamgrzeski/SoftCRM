@@ -54,16 +54,6 @@ class TasksService
         return EmployeesModel::pluck('full_name', 'id');
     }
 
-    public function loadDataAndPagination()
-    {
-        $dataOfTasks = [
-            'tasks' => $this->loadTasks(),
-            'tasksPaginate' => $this->loadPaginate()
-        ];
-
-        return $dataOfTasks;
-    }
-
     public function loadCountTasks()
     {
         return $this->tasksModel->countTasks();
