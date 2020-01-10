@@ -32,7 +32,7 @@ class EmployeesModel extends Model
 
     public function insertEmployee(array $requestedData, int $adminId) : int
     {
-        return self::insertGetId(
+        return $this->insertGetId(
             [
                 'full_name' => $requestedData['full_name'],
                 'phone' => $requestedData['phone'],
@@ -49,7 +49,7 @@ class EmployeesModel extends Model
 
     public function updateEmployee(int $employeeId, array $requestedData) : bool
     {
-        return self::where('id', '=', $employeeId)->update(
+        return $this->where('id', '=', $employeeId)->update(
             [
                 'full_name' => $requestedData['full_name'],
                 'phone' => $requestedData['phone'],
@@ -58,33 +58,23 @@ class EmployeesModel extends Model
                 'note' => $requestedData['note'],
                 'client_id' => $requestedData['client_id'],
                 'updated_at' => Carbon::now(),
-                'is_active' => 1
             ]);
     }
 
     public function setActive(int $employeeId, int $activeType) : bool
     {
-        $findEmployeesById = self::where('id', '=', $employeeId)->update(
-            [
-                'is_active' => $activeType
-            ]);
-
-        if ($findEmployeesById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return $this->where('id', '=', $employeeId)->update(['is_active' => $activeType]);
     }
 
     public function countEmployees() : int
     {
-        return self::all()->count();
+        return $this->all()->count();
     }
 
     public function getEmployeesInLatestMonth() : float
     {
-        $employeesCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allEmployees = self::all()->count();
+        $employeesCount = $this->where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $allEmployees = $this->all()->count();
 
         $percentage = ($allEmployees / 100) * $employeesCount;
 
@@ -93,12 +83,12 @@ class EmployeesModel extends Model
 
     public function getDeactivated() : int
     {
-        return self::where('is_active', '=', 0)->count();
+        return $this->where('is_active', '=', 0)->count();
     }
 
     public function getEmployees()
     {
-        $query = self::all()->sortByDesc('created_at');
+        $query = $this->all()->sortByDesc('created_at');
 
         foreach($query as $key => $value) {
             $query[$key]->is_active = $query[$key]->is_active  ? 'Active' : 'Deactive';
@@ -110,7 +100,7 @@ class EmployeesModel extends Model
 
     public function getEmployeeDetails(int $employeeId) : self
     {
-        $query = self::find($employeeId);
+        $query = $this->find($employeeId);
 
         Arr::add($query, 'taskCount', count($query->tasks));
 
@@ -119,12 +109,12 @@ class EmployeesModel extends Model
 
     public function getEmployee()
     {
-        return self::pluck('full_name', 'id');
+        return $this->pluck('full_name', 'id');
     }
 
     public function getClients()
     {
-        return self::pluck('full_name', 'id');
+        return $this->pluck('full_name', 'id');
     }
 
     private function getEmployeesTaskCount(int $id) : int

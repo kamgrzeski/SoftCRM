@@ -20,12 +20,12 @@ class CompaniesService
         $this->companiesModel = new CompaniesModel();
     }
 
-    public function execute($requestedData, int $adminId)
+    public function execute(array $requestedData, int $adminId)
     {
         return $this->companiesModel->insertCompanie($requestedData, $adminId);
     }
 
-    public function update(int $companiesId, $requestedData)
+    public function update(int $companiesId, array $requestedData)
     {
         return $this->companiesModel->updateCompanie($companiesId, $requestedData);
     }
@@ -60,7 +60,7 @@ class CompaniesService
 //        return $this->companiesModel
     }
 
-    public function loadSetActive($companiesId, $value)
+    public function loadSetActive(int $companiesId, bool $value)
     {
         return $this->companiesModel->setActive($companiesId, $value);
     }

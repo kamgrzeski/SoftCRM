@@ -20,12 +20,12 @@ class FinancesService
         $this->financesModel = new FinancesModel();
     }
 
-    public function execute($requestedData, int $adminId)
+    public function execute(array $requestedData, int $adminId)
     {
         return $this->financesModel->storeFinance($requestedData, $adminId);
     }
 
-    public function update(int $financeId, $requestedData)
+    public function update(int $financeId, array $requestedData)
     {
         return $this->financesModel->updateFinance($financeId, $requestedData);
     }
@@ -60,7 +60,7 @@ class FinancesService
         return $this->financesModel::find($financeId);
     }
 
-    public function loadIsActiveFunction($financeId, $value)
+    public function loadIsActiveFunction(int $financeId, int $value)
     {
         return $this->financesModel->setActive($financeId, $value);
     }

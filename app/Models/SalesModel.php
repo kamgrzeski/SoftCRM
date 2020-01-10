@@ -17,7 +17,7 @@ class SalesModel extends Model
 
     public function storeSale(array $requestedData, int $adminId) : int
     {
-        return self::insertGetId(
+        return $this->insertGetId(
             [
                 'name' => $requestedData['name'],
                 'quantity' => $requestedData['quantity'],
@@ -33,7 +33,7 @@ class SalesModel extends Model
 
     public function updateTask(int $saleId, array $requestedData) : bool
     {
-        return self::where('id', '=', $saleId)->update(
+        return $this->where('id', '=', $saleId)->update(
             [
                 'name' => $requestedData['name'],
                 'quantity' => $requestedData['quantity'],
@@ -46,22 +46,22 @@ class SalesModel extends Model
 
     public function setActive(int $saleId, int $activeType) : bool
     {
-        return self::where('id', '=', $saleId)->update(['is_active' => $activeType]);
+        return $this->where('id', '=', $saleId)->update(['is_active' => $activeType]);
     }
 
     public function countSales() : int
     {
-        return self::all()->count();
+        return $this->all()->count();
     }
 
     public function getPaginate()
     {
-        return self::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->paginate(Config::get('crm_settings.pagination_size'));
     }
 
     public function getSalesSortedByCreatedAt()
     {
-        return self::all()->sortByDesc('created_at');
+        return $this->all()->sortByDesc('created_at');
     }
 
     public function getSale(int $saleId) : self

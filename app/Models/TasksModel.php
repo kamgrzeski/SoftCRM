@@ -17,7 +17,7 @@ class TasksModel extends Model
 
     public function storeTask(array $requestedData, int $adminId)
     {
-        return self::insertGetId(
+        return $this->insertGetId(
             [
                 'name' => $requestedData['name'],
                 'employee_id' => $requestedData['employee_id'],
@@ -31,7 +31,7 @@ class TasksModel extends Model
 
     public function updateTask(int $taskId, array $requestedData)
     {
-        return self::where('id', '=', $taskId)->update(
+        return $this->where('id', '=', $taskId)->update(
             [
                 'name' => $requestedData['name'],
                 'employee_id' => $requestedData['employee_id'],
@@ -43,35 +43,17 @@ class TasksModel extends Model
 
     public function setActive(int $taskId, int $activeType)
     {
-        $findTasksById = self::where('id', '=', $taskId)->update(
-            [
-                'is_active' => $activeType
-            ]);
-
-        if ($findTasksById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return $this->where('id', '=', $taskId)->update(['is_active' => $activeType]);
     }
 
     public function setCompleted(int $taskId, int $completeType)
     {
-        $findTasksById = self::where('id', '=', $taskId)->update(
-            [
-                'completed' => $completeType
-            ]);
-
-        if ($findTasksById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return $this->where('id', '=', $taskId)->update(['completed' => $completeType]);
     }
 
     public function countTasks()
     {
-        return self::all()->count();
+        return $this->all()->count();
     }
 
     public static function trySearchTasksByValue($type, $value, $paginationLimit = 10)
@@ -81,9 +63,9 @@ class TasksModel extends Model
 
     public function getAllCompletedTasks()
     {
-        $tasks = self::where('completed', '=', 1)->count();
+        $tasks = $this->where('completed', '=', 1)->count();
 
-        $taskAll = self::all()->count();
+        $taskAll = $this->all()->count();
 
         $percentage = round(($tasks / $taskAll) * 100);
 
@@ -92,24 +74,24 @@ class TasksModel extends Model
 
     public function getTask(int $taskId)
     {
-        return self::find($taskId);
+        return $this->find($taskId);
     }
 
     public function getTasks()
     {
-        return self::all()->sortByDesc('created_at');
+        return $this->all()->sortByDesc('created_at');
     }
 
     public function getPaginate()
     {
-        return self::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->paginate(Config::get('crm_settings.pagination_size'));
     }
 
     public function getAllUncompletedTasks()
     {
-        $tasks = self::where('completed', '=', 0)->count();
+        $tasks = $this->where('completed', '=', 0)->count();
 
-        $taskAll = self::all()->count();
+        $taskAll = $this->all()->count();
 
         $percentage = round(($tasks / $taskAll) * 100);
 

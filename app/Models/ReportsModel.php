@@ -36,16 +36,7 @@ class ReportsModel extends Model
 
     public static function setActive(int $reportId, int $activeType) : bool
     {
-        $findReportsById = self::where('id', '=', $reportId)->update(
-            [
-                'is_active' => $activeType
-            ]);
-
-        if ($findReportsById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return self::where('id', '=', $reportId)->update(['is_active' => $activeType]);
     }
 
     public static function countReports() : int

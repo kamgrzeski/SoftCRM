@@ -18,7 +18,7 @@ class ProductsModel extends Model
 
     public function storeProduct(array $requestedData, int $adminId) : int
     {
-        return self::insertGetId(
+        return $this->insertGetId(
             [
                 'name' => $requestedData['name'],
                 'category' => $requestedData['category'],
@@ -33,7 +33,7 @@ class ProductsModel extends Model
 
     public function updateProduct(int $productId, array $requestedData) : bool
     {
-        return self::where('id', '=', $productId)->update(
+        return $this->where('id', '=', $productId)->update(
             [
                 'name' => $requestedData['name'],
                 'category' => $requestedData['category'],
@@ -46,31 +46,22 @@ class ProductsModel extends Model
 
     public function setActive(int $productId, int $activeType) : bool
     {
-        $findProductsById = self::where('id', '=', $productId)->update(
-            [
-                'is_active' => $activeType
-            ]);
-
-        if ($findProductsById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return $this->where('id', '=', $productId)->update(['is_active' => $activeType]);
     }
 
     public function countProducts() : int
     {
-        return self::get()->count();
+        return $this->get()->count();
     }
 
     public function getProductsByCreatedAt()
     {
-        return self::all()->sortBy('created_at', 0, true)->slice(0, 5);
+        return $this->all()->sortBy('created_at', 0, true)->slice(0, 5);
     }
 
     public function findClientByGivenClientId(int $productId)
     {
-        $query = self::find($productId);
+        $query = $this->find($productId);
 
         Arr::add($query, 'salesCount', count($query->sales));
 
@@ -79,16 +70,16 @@ class ProductsModel extends Model
 
     public function getProducts()
     {
-        return self::all()->sortByDesc('created_at');
+        return $this->all()->sortByDesc('created_at');
     }
 
     public function getPaginate()
     {
-        return self::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->paginate(Config::get('crm_settings.pagination_size'));
     }
 
     public function getProduct(int $productId) : self
     {
-        return self::find($productId);
+        return $this->find($productId);
     }
 }

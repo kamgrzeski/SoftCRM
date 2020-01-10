@@ -70,7 +70,7 @@ class ClientService
 
     public function loadClients()
     {
-        return $this->clientsModel->getClientSortedBy('created_at');
+        return $this->clientsModel->getClientSortedBy();
     }
 
     public function loadPagination()

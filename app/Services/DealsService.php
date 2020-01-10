@@ -13,12 +13,12 @@ class DealsService
         $this->dealsModel = new DealsModel();
     }
 
-    public function execute($requestedData, int $adminId)
+    public function execute(array $requestedData, int $adminId)
     {
         return $this->dealsModel->insertDeal($requestedData, $adminId);
     }
 
-    public function update(int $dealId, $requestedData)
+    public function update(int $dealId, array $requestedData)
     {
         return $this->dealsModel->updateDeal($dealId, $requestedData);
     }

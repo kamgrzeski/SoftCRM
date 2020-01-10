@@ -7,6 +7,7 @@ use Cknow\Money\Money;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Config;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ClientsModel extends Model
 {
@@ -24,7 +25,7 @@ class ClientsModel extends Model
 
     public function storeClient(array $requestedData, int $adminId) : int
     {
-        return self::insertGetId(
+        return $this->insertGetId(
             [
                 'full_name' => $requestedData['full_name'],
                 'phone' => $requestedData['phone'],
@@ -44,7 +45,7 @@ class ClientsModel extends Model
 
     public function updateClient(int $id, array $requestedData) : bool
     {
-        return self::where('id', '=', $id)->update(
+        return $this->where('id', '=', $id)->update(
             [
                 'full_name' => $requestedData['full_name'],
                 'phone' => $requestedData['phone'],
@@ -55,25 +56,18 @@ class ClientsModel extends Model
                 'zip' => $requestedData['zip'],
                 'city' => $requestedData['city'],
                 'country' => $requestedData['country'],
-                'updated_at' => Carbon::now(),
-                'is_active' => 1
+                'updated_at' => Carbon::now()
             ]);
     }
 
     public function setClientActive(int $id, int $activeType) : bool
     {
-        $findClientById = self::where('id', '=', $id)->update(['is_active' => $activeType]);
-
-        if ($findClientById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return $this->where('id', '=', $id)->update(['is_active' => $activeType]);
     }
 
     public function countClients() : int
     {
-        return self::all()->count();
+        return $this->all()->count();
     }
 
     public static function getClientsInLatestMonth() : float
@@ -88,12 +82,16 @@ class ClientsModel extends Model
 
     public function getDeactivated() : int
     {
-        return self::where('is_active', '=', 0)->count();
+        return $this->where('is_active', '=', 0)->count();
     }
 
     public function findClientByGivenClientId(int $clientId) : self
     {
-        $query = self::find($clientId);
+        $query = $this->find($clientId);
+
+        if(is_null($query)) {
+            throw new BadRequestHttpException('User with given clientId not exists.');
+        }
 
         Arr::add($query, 'companiesCount', count($query->companies));
         Arr::add($query, 'employeesCount', count($query->employees));
@@ -102,9 +100,9 @@ class ClientsModel extends Model
         return $query;
     }
 
-    public function getClientSortedBy($by)
+    public function getClientSortedBy()
     {
-        $query = self::all()->sortByDesc($by);
+        $query = $this->all()->sortBy('created_at');
 
         foreach($query as $key => $client) {
             $query[$key]->budget = Money::{config('crm_settings.currency')}($client->budget);
@@ -115,6 +113,6 @@ class ClientsModel extends Model
 
     public function getPaginate()
     {
-        return self::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->paginate(Config::get('crm_settings.pagination_size'));
     }
 }

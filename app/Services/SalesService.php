@@ -14,12 +14,12 @@ class SalesService
         $this->salesModel = new SalesModel();
     }
 
-    public function execute($requestedData, int $adminId)
+    public function execute(array $requestedData, int $adminId)
     {
         return $this->salesModel->storeSale($requestedData, $adminId);
     }
 
-    public function update($saleId, $requestedData)
+    public function update(int $saleId, array $requestedData)
     {
         return $this->salesModel->updateTask($saleId, $requestedData);
     }
@@ -39,7 +39,7 @@ class SalesService
         return $this->salesModel->getSale($saleId);
     }
 
-    public function loadIsActiveFunction($saleId, $value)
+    public function loadIsActiveFunction(int $saleId, int $value)
     {
         return $this->salesModel->setActive($saleId, $value);
     }

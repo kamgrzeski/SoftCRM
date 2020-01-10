@@ -20,12 +20,12 @@ class EmployeesService
         $this->employeesModel = new EmployeesModel();
     }
 
-    public function execute($requestedData, int $adminId)
+    public function execute(array $requestedData, int $adminId)
     {
         return $this->employeesModel->insertEmployee($requestedData, $adminId);
     }
 
-    public function update(int $employeeId, $requestedData)
+    public function update(int $employeeId, array $requestedData)
     {
         return $this->employeesModel->updateEmployee($employeeId, $requestedData);
     }
@@ -50,12 +50,7 @@ class EmployeesService
         return $this->employeesModel->getEmployeeDetails($employeeId);
     }
 
-    public function countEmployeeContacts($dataOfEmployees)
-    {
-        return $dataOfEmployees->contacts()->get()->count();
-    }
-
-    public function countEmployeeTasks($dataOfEmployees)
+    public function countEmployeeTasks(EmployeesModel $dataOfEmployees)
     {
         return $dataOfEmployees->tasks()->get()->count();
     }

@@ -21,7 +21,7 @@ class FinancesModel extends Model
         $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($requestedData['gross']);
 
-        return self::insertGetId(
+        return $this->insertGetId(
             [
                 'name' => $requestedData['name'],
                 'description' => $requestedData['description'],
@@ -44,7 +44,7 @@ class FinancesModel extends Model
         $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($requestedData['gross']);
 
-        return self::where('id', $financeId)->update(
+        return $this->where('id', $financeId)->update(
             [
                 'name' => $requestedData['name'],
                 'description' => $requestedData['description'],
@@ -62,21 +62,12 @@ class FinancesModel extends Model
 
     public function setActive(int $financeId, int $activeType) : bool
     {
-        $findFinancesById = self::where('id', '=', $financeId)->update(
-            [
-                'is_active' => $activeType
-            ]);
-
-        if ($findFinancesById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return $this->where('id', '=', $financeId)->update(['is_active' => $activeType]);
     }
 
     public function countFinances() : int
     {
-        return self::get()->count();
+        return $this->get()->count();
     }
 
     public function getPluckCompanies()
@@ -86,11 +77,11 @@ class FinancesModel extends Model
 
     public function getFinancesSortedByCreatedAt()
     {
-        return self::all()->sortByDesc('created_at');
+        return $this->all()->sortByDesc('created_at');
     }
 
     public function getPaginate()
     {
-        return self::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->paginate(Config::get('crm_settings.pagination_size'));
     }
 }

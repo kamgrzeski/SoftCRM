@@ -17,12 +17,12 @@ class ProductsService
         $this->productsModel = new ProductsModel();
     }
 
-    public function execute($requestedData, int $adminId)
+    public function execute(array $requestedData, int $adminId)
     {
         return $this->productsModel->storeProduct($requestedData, $adminId);
     }
 
-    public function update(int $productId, $requestedData)
+    public function update(int $productId, array $requestedData)
     {
         return $this->productsModel->updateProduct($productId, $requestedData);
     }
@@ -42,7 +42,7 @@ class ProductsService
         return $this->productsModel->getProduct($productId);
     }
 
-    public function loadIsActiveFunction($productId, $value)
+    public function loadIsActiveFunction(int $productId, int $value)
     {
         return $this->productsModel->setActive($productId, $value);
     }

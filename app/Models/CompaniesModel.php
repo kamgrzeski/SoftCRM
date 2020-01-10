@@ -32,7 +32,7 @@ class CompaniesModel extends Model
 
     public function insertCompanie(array $requestedData, int $adminId) : int
     {
-        return self::insertGetId(
+        return $this->insertGetId(
             [
                 'name' => $requestedData['name'],
                 'tax_number' => $requestedData['tax_number'],
@@ -54,7 +54,7 @@ class CompaniesModel extends Model
 
     public function updateCompanie(int $companiesId, array $requestedData) : bool
     {
-        return self::where('id', '=', $companiesId)->update(
+        return $this->where('id', '=', $companiesId)->update(
             [
                 'name' => $requestedData['name'],
                 'tax_number' => $requestedData['tax_number'],
@@ -73,21 +73,12 @@ class CompaniesModel extends Model
 
     public function setActive(int $companiesId, int $activeType) : bool
     {
-        $findCompaniesById = self::where('id', '=', $companiesId)->update(
-            [
-                'is_active' => $activeType
-            ]);
-
-        if ($findCompaniesById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+       return $this->where('id', '=', $companiesId)->update(['is_active' => $activeType]);
     }
 
     public function countCompanies() : int
     {
-        return self::all()->count();
+        return $this->all()->count();
     }
 
     public function getCompaniesInLatestMonth() : float
@@ -102,16 +93,16 @@ class CompaniesModel extends Model
 
     public function getDeactivated() : int
     {
-        return self::where('is_active', '=', 0)->count();
+        return $this->where('is_active', '=', 0)->count();
     }
 
     public function getCompaniesSortedByCreatedAt()
     {
-        return self::all()->sortBy('created_at', 0, true)->slice(0, 5);
+        return $this->all()->sortBy('created_at', 0, true)->slice(0, 5);
     }
 
     public function getPaginate()
     {
-        return self::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->paginate(Config::get('crm_settings.pagination_size'));
     }
 }

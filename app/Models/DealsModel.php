@@ -15,9 +15,9 @@ class DealsModel extends Model
         return $this->belongsTo(CompaniesModel::class);
     }
 
-    public function insertDeal(array $requestedData, int $adminId) : self
+    public function insertDeal(array $requestedData, int $adminId) : bool
     {
-        return self::insert(
+        return $this->insert(
             [
                 'name' => $requestedData['name'],
                 'start_time' => $requestedData['start_time'],
@@ -32,33 +32,23 @@ class DealsModel extends Model
 
     public function updateDeal(int $dealId, array $requestedData) : bool
     {
-        return self::where('id', '=', $dealId)->update(
+        return $this->where('id', '=', $dealId)->update(
             [
                 'name' => $requestedData['name'],
                 'start_time' => $requestedData['start_time'],
                 'end_time' => $requestedData['end_time'],
-                'companies_id' => $requestedData['companies_id'],
-                'is_active' => 1
+                'companies_id' => $requestedData['companies_id']
             ]);
     }
 
-    public function setActive(int $dealId, array $activeType) : bool
+    public function setActive(int $dealId, bool $activeType) : bool
     {
-        $findDealsById = self::where('id', '=', $dealId)->update(
-            [
-                'is_active' => $activeType
-            ]);
-
-        if ($findDealsById) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return $this->where('id', '=', $dealId)->update(['is_active' => $activeType]);
     }
 
     public function countDeals() : int
     {
-        return self::get()->count();
+        return $this->get()->count();
     }
 
     public static function getDealsInLatestMonth() {
@@ -72,21 +62,21 @@ class DealsModel extends Model
 
     public function getDeactivated() : int
     {
-        return self::where('is_active', '=', 0)->count();
+        return $this->where('is_active', '=', 0)->count();
     }
 
     public function getPluckCompanies()
     {
-        return self::pluck('name', 'id');
+        return $this->pluck('name', 'id');
     }
 
     public function getPaginate()
     {
-        return self::paginate(Config::get('crm_settings.pagination_size'));
+        return $this->paginate(Config::get('crm_settings.pagination_size'));
     }
 
     public function getDeal(int $dealId) : self
     {
-        return self::find($dealId);
+        return $this->find($dealId);
     }
 }
