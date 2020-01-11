@@ -15,7 +15,7 @@ class DealsModel extends Model
         return $this->belongsTo(CompaniesModel::class);
     }
 
-    public function insertDeal(array $requestedData, int $adminId) : bool
+    public function storeDeal(array $requestedData, int $adminId) : bool
     {
         return $this->insert(
             [

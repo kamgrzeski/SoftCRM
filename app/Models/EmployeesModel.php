@@ -30,7 +30,7 @@ class EmployeesModel extends Model
         return $this->hasMany(TasksModel::class, 'employee_id');
     }
 
-    public function insertEmployee(array $requestedData, int $adminId) : int
+    public function storeEmployee(array $requestedData, int $adminId) : int
     {
         return $this->insertGetId(
             [
@@ -105,11 +105,6 @@ class EmployeesModel extends Model
         Arr::add($query, 'taskCount', count($query->tasks));
 
         return $query;
-    }
-
-    public function getEmployee()
-    {
-        return $this->pluck('full_name', 'id');
     }
 
     public function getClients()

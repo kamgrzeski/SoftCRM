@@ -64,12 +64,12 @@ class DashboardController extends Controller
 
     public function calculateTaskEveryMonth($isCompleted)
     {
-        return $this->calculateCashService->calculateTaskEveryMonth($isCompleted);
+        return $this->calculateCashService->loadTaskEveryMonth($isCompleted);
     }
 
     private function storeInCacheUsableVariables()
     {
-        Cache::put('countClients', $this->clientService->countClients(), null);
+        Cache::put('countClients', $this->clientService->loadCountClients(), null);
         Cache::put('deactivatedClients', $this->clientService->loadDeactivatedClients(), null);
         Cache::put('clientsInLatestMonth', $this->clientService->loadClientsInLatestMonth(), null);
         Cache::put('countCompanies', $this->companiesService->loadCountCompanies(), null);
@@ -80,10 +80,10 @@ class DashboardController extends Controller
         Cache::put('countTasks', $this->tasksService->loadCountTasks(), null);
         Cache::put('countSales', $this->salesService->loadCountSales(), null);
         Cache::put('deactivatedCompanies', $this->companiesService->loadDeactivatedCompanies(), null);
-        Cache::put('todayIncome', $this->calculateCashService->countTodayIncome(), null);
-        Cache::put('yesterdayIncome', $this->calculateCashService->countYesterdayIncome(), null);
-        Cache::put('cashTurnover', $this->calculateCashService->countCashTurnover(), null);
-        Cache::put('countAllRowsInDb', $this->calculateCashService->countAllRowsInDb(), null);
+        Cache::put('todayIncome', $this->calculateCashService->loadCountTodayIncome(), null);
+        Cache::put('yesterdayIncome', $this->calculateCashService->loadCountYesterdayIncome(), null);
+        Cache::put('cashTurnover', $this->calculateCashService->loadCountCashTurnover(), null);
+        Cache::put('countAllRowsInDb', $this->calculateCashService->loadCountAllRowsInDb(), null);
         Cache::put('countSystemLogs', $this->systemLogService->loadCountLogs(), null);
         Cache::put('companiesInLatestMonth', $this->companiesService->loadCompaniesInLatestMonth(), null);
         Cache::put('employeesInLatestMonth', $this->employeesService->loadEmployeesInLatestMonth(), null);

@@ -60,7 +60,7 @@ class SalesController extends Controller
     public function processCreateSales(SalesStoreRequest $request)
     {
         if ($sale = $this->salesService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->insertSystemLogs('SalesModel has been add with id: ' . $sale, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('SalesModel has been add with id: ' . $sale, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorSalesStore'));
@@ -81,7 +81,7 @@ class SalesController extends Controller
         $salesDetails = $this->salesService->loadSale($saleId);
         $salesDetails->delete();
 
-        $this->systemLogsService->insertSystemLogs('SalesModel has been deleted with id: ' . $salesDetails->id, $this->systemLogsService::successCode, $this->getAdminId());
+        $this->systemLogsService->loadInsertSystemLogs('SalesModel has been deleted with id: ' . $salesDetails->id, $this->systemLogsService::successCode, $this->getAdminId());
 
         return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesDelete'));
     }
@@ -89,7 +89,7 @@ class SalesController extends Controller
     public function processSetIsActive(int $saleId, bool $value)
     {
         if ($this->salesService->loadIsActiveFunction($saleId, $value)) {
-            $this->systemLogsService->insertSystemLogs('SalesModel has been enabled with id: ' . $saleId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('SalesModel has been enabled with id: ' . $saleId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.SalesIsActived'));

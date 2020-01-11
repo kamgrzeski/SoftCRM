@@ -15,7 +15,7 @@ class CalculateCashService
     /**
      * @return mixed
      */
-    public function countCashTurnover()
+    public function loadCountCashTurnover()
     {
         $products = ProductsModel::all();
         $sales = SalesModel::all();
@@ -45,7 +45,7 @@ class CalculateCashService
     /**
      * @return mixed
      */
-    public function countTodayIncome()
+    public function loadCountTodayIncome()
     {
         $products = ProductsModel::whereDate('created_at', Carbon::today())->get();
         $sales = SalesModel::whereDate('created_at', Carbon::today())->get();
@@ -73,7 +73,7 @@ class CalculateCashService
     /**
      * @return mixed
      */
-    public function countYesterdayIncome()
+    public function loadCountYesterdayIncome()
     {
         $products = ProductsModel::whereDate('created_at', Carbon::yesterday())->get();
         $sales = SalesModel::whereDate('created_at', Carbon::yesterday())->get();
@@ -100,7 +100,7 @@ class CalculateCashService
     /**
      * @return int
      */
-    public function countAllRowsInDb()
+    public function loadCountAllRowsInDb()
     {
         $counter = 0;
         $tables = array_map('reset', \DB::select('SHOW TABLES'));
@@ -116,7 +116,7 @@ class CalculateCashService
      * @param $isCompleted
      * @return array
      */
-    public function calculateTaskEveryMonth($isCompleted) {
+    public function loadTaskEveryMonth($isCompleted) {
 
         $dates = collect();
         foreach( range( -6, 0 ) AS $i ) {

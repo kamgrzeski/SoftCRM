@@ -31,7 +31,7 @@ class SalesModel extends Model
         );
     }
 
-    public function updateTask(int $saleId, array $requestedData) : bool
+    public function updateSale(int $saleId, array $requestedData) : bool
     {
         return $this->where('id', '=', $saleId)->update(
             [

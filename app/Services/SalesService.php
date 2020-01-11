@@ -21,7 +21,7 @@ class SalesService
 
     public function update(int $saleId, array $requestedData)
     {
-        return $this->salesModel->updateTask($saleId, $requestedData);
+        return $this->salesModel->updateSale($saleId, $requestedData);
     }
 
     public function loadSales()

@@ -51,7 +51,7 @@ class ClientController extends Controller
     public function processCreateClient(ClientStoreRequest $request)
     {
         if ($client = $this->clientService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->insertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorClientStore'));
@@ -82,7 +82,7 @@ class ClientController extends Controller
 
     public function processSetIsActive(int $clientId, bool $value)
     {
-        if ($this->clientService->processIsActive($clientId, $value)) {
+        if ($this->clientService->loadSetActive($clientId, $value)) {
             return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ClientIsActived'));

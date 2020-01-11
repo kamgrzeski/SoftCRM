@@ -55,7 +55,7 @@ class TasksController extends Controller
     public function processCreateTasks(TasksStoreRequest $request)
     {
         if ($task = $this->tasksService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->insertSystemLogs('Task has been add with id: ' . $task, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('Task has been add with id: ' . $task, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksStore'));
@@ -80,7 +80,7 @@ class TasksController extends Controller
         } else {
             $dataOfTasks->delete();
 
-            $this->systemLogsService->insertSystemLogs('Tasks has been deleted with id: ' . $dataOfTasks->id, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('Tasks has been deleted with id: ' . $dataOfTasks->id, $this->systemLogsService::successCode, $this->getAdminId());
         }
 
         return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksDelete'));
@@ -89,7 +89,7 @@ class TasksController extends Controller
     public function processSetIsActive(int $taskId, bool $value)
     {
         if ($this->tasksService->loadIsActiveFunction($taskId, $value)) {
-            $this->systemLogsService->insertSystemLogs('Tasks has been enabled with id: ' . $taskId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('Tasks has been enabled with id: ' . $taskId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksActive'));
@@ -99,7 +99,7 @@ class TasksController extends Controller
     public function completedTask(int $taskId)
     {
         if ($this->tasksService->loadIsCompletedFunction($taskId, TRUE)) {
-            $this->systemLogsService->insertSystemLogs('Tasks has been completed with id: ' . $taskId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('Tasks has been completed with id: ' . $taskId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::back()->with('message_success', $this->getMessage('messages.TasksCompleted'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.TasksIsNotCompleted'));
@@ -109,7 +109,7 @@ class TasksController extends Controller
     public function uncompletedTask(int $taskId)
     {
         if ($this->tasksService->loadIsCompletedFunction($taskId, FALSE)) {
-            $this->systemLogsService->insertSystemLogs('Tasks has been uncompleted with id: ' . $taskId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('Tasks has been uncompleted with id: ' . $taskId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::back()->with('message_success', $this->getMessage('messages.TasksunCompleted'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.TasksIsNotunCompleted'));

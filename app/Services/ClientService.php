@@ -1,16 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kamilgrzechulski
- * Date: 30.07.2018
- * Time: 09:20
- */
 
 namespace App\Services;
 
 use App\Models\ClientsModel;
 use App\Traits\Language;
-use phpDocumentor\Reflection\Types\This;
 
 class ClientService
 {
@@ -35,7 +28,7 @@ class ClientService
 
     public function checkIfClientHaveAssignedEmployeeOrCompanie(int $clientId)
     {
-        $client = $this->clientsModel->findClientByGivenClientId($clientId);
+        $client = $this->clientsModel->getClientByGivenClientId($clientId);
 
         $countCompanies = $client->companies()->count();
         $countEmployees = $client->employees()->count();
@@ -52,14 +45,14 @@ class ClientService
 
     public function loadDeleteClient(int $clientId)
     {
-        $data = $this->clientsModel->findClientByGivenClientId($clientId);
+        $data = $this->clientsModel->getClientByGivenClientId($clientId);
 
         return $data->delete();
     }
 
-    public function processIsActive(int $clientId, bool $value)
+    public function loadSetActive(int $clientId, bool $value)
     {
-        $clientDetails = $this->clientsModel->findClientByGivenClientId($clientId);
+        $clientDetails = $this->clientsModel->getClientByGivenClientId($clientId);
 
         if ($this->clientsModel->setClientActive($clientDetails->id, $value)) {
             return $this->getMessage('messages.SuccessClientActive');
@@ -80,10 +73,10 @@ class ClientService
 
     public function loadClientDetails(int $clientId)
     {
-        return $this->clientsModel->findClientByGivenClientId($clientId);
+        return $this->clientsModel->getClientByGivenClientId($clientId);
     }
 
-    public function countClients()
+    public function loadCountClients()
     {
         return $this->clientsModel->countClients();
     }

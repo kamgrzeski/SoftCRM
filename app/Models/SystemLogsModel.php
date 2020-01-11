@@ -24,7 +24,7 @@ class SystemLogsModel extends Model
         }
     }
 
-    public function insertRow($actions, int $statusCode, int $adminId)
+    public function insertSystemLog($actions, int $statusCode, int $adminId)
     {
         $userInformation = $this->getUserInformation();
 

@@ -19,7 +19,7 @@ class FinancesModel extends Model
     public function storeFinance(array $requestedData, int $adminId) : int
     {
         $financesHelper = new FinancesService();
-        $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($requestedData['gross']);
+        $dataToInsert = $financesHelper->loadCalculateNetAndVatByGivenGross($requestedData['gross']);
 
         return $this->insertGetId(
             [
@@ -42,7 +42,7 @@ class FinancesModel extends Model
     public function updateFinance(int $financeId, array $requestedData) : bool
     {
         $financesHelper = new FinancesService();
-        $dataToInsert = $financesHelper->calculateNetAndVatByGivenGross($requestedData['gross']);
+        $dataToInsert = $financesHelper->loadCalculateNetAndVatByGivenGross($requestedData['gross']);
 
         return $this->where('id', $financeId)->update(
             [

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kamilgrzechulski
- * Date: 30.07.2018
- * Time: 09:20
- */
 
 namespace App\Services;
 
@@ -22,7 +16,7 @@ class CompaniesService
 
     public function execute(array $requestedData, int $adminId)
     {
-        return $this->companiesModel->insertCompanie($requestedData, $adminId);
+        return $this->companiesModel->storeCompanie($requestedData, $adminId);
     }
 
     public function update(int $companiesId, array $requestedData)
@@ -50,14 +44,9 @@ class CompaniesService
         return $this->companiesModel::find($companiesId);
     }
 
-    public function countAssignedDeals(int $companiesId)
+    public function loadCountAssignedDeals(int $companiesId)
     {
         return DealsModel::where('companies_id', $companiesId)->get()->count();
-    }
-
-    public function countAssignedFile(int $companiesId)
-    {
-//        return $this->companiesModel
     }
 
     public function loadSetActive(int $companiesId, bool $value)

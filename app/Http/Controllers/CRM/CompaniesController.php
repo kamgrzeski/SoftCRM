@@ -56,7 +56,7 @@ class CompaniesController extends Controller
     public function processCreateCompanies(CompaniesStoreRequest $request)
     {
         if ($companie = $this->companiesService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->insertSystemLogs('CompaniesModel has been add with id: ' . $companie, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('CompaniesModel has been add with id: ' . $companie, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesStore'));
@@ -76,7 +76,7 @@ class CompaniesController extends Controller
     {
         $dataOfCompanies = $this->companiesService->loadCompanie($companiesId);
 
-        $countDeals = $this->companiesService->countAssignedDeals($companiesId);
+        $countDeals = $this->companiesService->loadCountAssignedDeals($companiesId);
 
         if ($countDeals > 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteDeals'));
@@ -84,7 +84,7 @@ class CompaniesController extends Controller
 
         $dataOfCompanies->delete();
 
-        $this->systemLogsService->insertSystemLogs('CompaniesModel has been deleted with id: ' . $dataOfCompanies->id, $this->systemLogsService::successCode, $this->getAdminId());
+        $this->systemLogsService->loadInsertSystemLogs('CompaniesModel has been deleted with id: ' . $dataOfCompanies->id, $this->systemLogsService::successCode, $this->getAdminId());
 
         return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesDelete'));
     }
@@ -92,7 +92,7 @@ class CompaniesController extends Controller
     public function processSetIsActive(int $companiesId, bool $value)
     {
         if ($this->companiesService->loadSetActive($companiesId, $value)) {
-            $this->systemLogsService->insertSystemLogs('CompaniesModel has been enabled with id: ' . $companiesId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('CompaniesModel has been enabled with id: ' . $companiesId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesActive'));

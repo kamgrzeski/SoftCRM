@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kamilgrzechulski
- * Date: 30.07.2018
- * Time: 09:20
- */
 
 namespace App\Services;
 
@@ -22,7 +16,7 @@ class EmployeesService
 
     public function execute(array $requestedData, int $adminId)
     {
-        return $this->employeesModel->insertEmployee($requestedData, $adminId);
+        return $this->employeesModel->storeEmployee($requestedData, $adminId);
     }
 
     public function update(int $employeeId, array $requestedData)

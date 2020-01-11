@@ -60,6 +60,8 @@ class ProductsService
 
         if ($countSales > 0) {
             return $this->getMessage('messages.firstDeleteSales');
+        } else {
+            return true;
         }
     }
 

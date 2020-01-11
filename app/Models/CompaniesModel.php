@@ -30,7 +30,7 @@ class CompaniesModel extends Model
         return $this->hasMany(FinancesModel::class);
     }
 
-    public function insertCompanie(array $requestedData, int $adminId) : int
+    public function storeCompanie(array $requestedData, int $adminId) : int
     {
         return $this->insertGetId(
             [

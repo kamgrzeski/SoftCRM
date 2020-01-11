@@ -15,7 +15,7 @@ class DealsService
 
     public function execute(array $requestedData, int $adminId)
     {
-        return $this->dealsModel->insertDeal($requestedData, $adminId);
+        return $this->dealsModel->storeDeal($requestedData, $adminId);
     }
 
     public function update(int $dealId, array $requestedData)
@@ -38,7 +38,7 @@ class DealsService
         return $this->dealsModel->getDeal($dealId);
     }
 
-    public function pluckCompanies()
+    public function pluckDeals()
     {
         return $this->dealsModel->getPluckCompanies();
     }

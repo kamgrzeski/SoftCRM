@@ -26,7 +26,7 @@ class GraphDataService
                         "pointBackgroundColor" => "rgba(38, 185, 154, 0.7)",
                         "pointHoverBackgroundColor" => "#fff",
                         "pointHoverBorderColor" => "rgba(220,220,220,1)",
-                        'data' => $cash->calculateTaskEveryMonth($isCompleted = false)
+                        'data' => $cash->loadTaskEveryMonth($isCompleted = false)
                     ],
                     [
                         "label" => "Completed tasks",
@@ -36,7 +36,7 @@ class GraphDataService
                         "pointBackgroundColor" => "rgba(38, 185, 154, 0.7)",
                         "pointHoverBackgroundColor" => "#fff",
                         "pointHoverBorderColor" => "rgba(220,220,220,1)",
-                        'data' => $cash->calculateTaskEveryMonth($isCompleted = true)
+                        'data' => $cash->loadTaskEveryMonth($isCompleted = true)
                     ]
                 ])
                 ->options([]);

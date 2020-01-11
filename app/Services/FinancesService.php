@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kami
- * Date: 16.03.2018
- * Time: 13:59
- */
 
 namespace App\Services;
 
@@ -30,7 +24,7 @@ class FinancesService
         return $this->financesModel->updateFinance($financeId, $requestedData);
     }
 
-    public function calculateNetAndVatByGivenGross($gross)
+    public function loadCalculateNetAndVatByGivenGross($gross)
     {
         $getTaxValueFromConfig = Config::get('crm_settings.invoice_tax')  / 100;
         $getGrossValueFromInput = $gross;

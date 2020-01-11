@@ -85,7 +85,7 @@ class ClientsModel extends Model
         return $this->where('is_active', '=', 0)->count();
     }
 
-    public function findClientByGivenClientId(int $clientId) : self
+    public function getClientByGivenClientId(int $clientId) : self
     {
         $query = $this->find($clientId);
 

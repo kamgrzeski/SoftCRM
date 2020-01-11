@@ -35,7 +35,7 @@ class DealsController extends Controller
 
     public function showCreateForm()
     {
-        return View::make('crm.deals.create')->with(['dataOfDeals' => $this->dealsService->pluckCompanies()]);
+        return View::make('crm.deals.create')->with(['dataOfDeals' => $this->dealsService->pluckDeals()]);
     }
 
     public function viewDealsDetails(int $dealId)
@@ -48,7 +48,7 @@ class DealsController extends Controller
         return View::make('crm.deals.edit')->with(
             [
                 'deals' => $this->dealsService->loadDeal($dealId),
-                'companies' => $this->dealsService->pluckCompanies()
+                'companies' => $this->dealsService->pluckDeals()
             ]
         );
     }
@@ -56,7 +56,7 @@ class DealsController extends Controller
     public function processCreateDeals(DealsStoreRequest $request)
     {
         if ($deal = $this->dealsService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->insertSystemLogs('Deal has been add with id: ' . $deal, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('Deal has been add with id: ' . $deal, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsStore'));
@@ -77,7 +77,7 @@ class DealsController extends Controller
         $dataOfDeals = $this->dealsService->loadDeal($dealId);
         $dataOfDeals->delete();
 
-        $this->systemLogsService->insertSystemLogs('DealsModel has been deleted with id: ' . $dataOfDeals->id, $this->systemLogsService::successCode, $this->getAdminId());
+        $this->systemLogsService->loadInsertSystemLogs('DealsModel has been deleted with id: ' . $dataOfDeals->id, $this->systemLogsService::successCode, $this->getAdminId());
 
         return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsDelete'));
     }
@@ -85,7 +85,7 @@ class DealsController extends Controller
     public function processSetIsActive(int $dealId, bool $value)
     {
         if ($this->dealsService->loadSetActive($dealId, $value)) {
-            $this->systemLogsService->insertSystemLogs('DealsModel has been enabled with id: ' . $dealId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->systemLogsService->loadInsertSystemLogs('DealsModel has been enabled with id: ' . $dealId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsActive'));

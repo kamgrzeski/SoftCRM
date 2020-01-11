@@ -59,6 +59,6 @@ class processSoftCRM extends Command
         $this->info('If you have any question please contact with me by email: kamil.grzechulskii@gmail.com');
 
         $systemLogs = new SystemLogService();
-        $systemLogs->insertSystemLogs('First usage of process-softcrm command', 200, 1);
+        $systemLogs->loadInsertSystemLogs('First usage of process-softcrm command', 200, 1);
     }
 }
