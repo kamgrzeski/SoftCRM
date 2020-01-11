@@ -14,7 +14,8 @@
         "jackiedo/dotenv-editor": "^1.0",
         "laravel/framework": "^6.10.0",
         "laravel/tinker": "^2.0",
-        "laravelcollective/html": "^6.0"
+        "laravelcollective/html": "^6.0",
+        "pragmarx/version": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

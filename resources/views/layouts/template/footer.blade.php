@@ -1,7 +1,7 @@
 <footer>
     <p>
         All right reserved. Template by: <a href="http://webthemez.com">WebThemez</a> | Code by: <a
-                href="https://github.com/KamilGrzechulski/">Kamil Grzechulski</a>
+                href="https://github.com/KamilGrzechulski/">Kamil Grzechulski</a> | @version
     </p>
 </footer>
 </div>
