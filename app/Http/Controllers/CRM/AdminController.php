@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
+use App\Services\AdminService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -11,6 +12,13 @@ use Auth;
 
 class AdminController extends Controller
 {
+    private $adminService;
+
+    public function __construct()
+    {
+        $this->adminService = new AdminService();
+    }
+
     public function showLoginForm()
     {
         return View::make('admin.login');
@@ -22,7 +30,7 @@ class AdminController extends Controller
         if (Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
             return Redirect::to('/');
         } else {
-            Session::flash('message-error', 'Wrong email or password!');
+            Session::flash('message_danger', 'Wrong email or password!');
             return Redirect::to('login');
         }
     }
@@ -32,5 +40,27 @@ class AdminController extends Controller
         Session::flash('message-success', 'You have been logged out form system.');
         Auth::logout();
         return Redirect::to('login');
+    }
+
+    public function renderChangePasswordView()
+    {
+        return View::make('admin.passwords.reset');
+    }
+
+    public function processChangePassword(Request $request)
+    {
+        if($request->get('old_password') == null || $request->get('new_password') == null || $request->get('confirm_password') == null) {
+            Session::flash('message_danger', 'All fields are required.');
+            return Redirect::to('password/reset');
+        }
+
+        if($this->adminService->loadValidatePassword($request->get('old_password'), $request->get('new_password'), $request->get('confirm_password'), $this->getAdminId())) {
+            Session::flash('message_success', 'You have been logged out form system.');
+            return Redirect::to('password/reset');
+
+        } else {
+            Session::flash('message_danger', 'You write wrong password!');
+            return Redirect::to('password/reset');
+        }
     }
 }

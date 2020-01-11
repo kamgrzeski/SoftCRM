@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 class AdminModel extends Authenticatable
 {
@@ -41,4 +42,25 @@ class AdminModel extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function changeAdminPassword(string $oldPassword, string $newPassword, int $adminId)
+    {
+        $adminDetails = $this->getAdminDetails($adminId);
+
+        if(Hash::check($oldPassword, $adminDetails->password)) {
+            return $this->updateAdminPassword($newPassword, $adminId);
+        } else {
+            return false;
+        }
+    }
+
+    private function getAdminDetails(int $adminId)
+    {
+        return $this->find($adminId);
+    }
+
+    private function updateAdminPassword(string $newPassword, int $adminId)
+    {
+        return $this->where('id', $adminId)->update(['password' => Hash::make($newPassword)]);
+    }
 }

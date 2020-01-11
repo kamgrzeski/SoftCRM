@@ -123,5 +123,9 @@ return [
     'ErrorProductsActive' => 'Products hasn\'t been active yet.',
     'ProductsIsNowDeactivated' => 'Products has been deactivated.',
     'ProductsIsDeactivated' => 'Products has been already deactivated.',
-    'firstDeleteSales' => 'Cannot delete, have assigned sales.'
+    'firstDeleteSales' => 'Cannot delete, have assigned sales.',
+
+    /** Admin operations **/
+
+    'changeAdminPassword' => 'Your password has been changed.',
 ];
