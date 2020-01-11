@@ -8,7 +8,6 @@
 @section('content')
     <div class="row">
         <div class="col-md-12 col-sm-6">
-            <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
                     <strong>Well done!</strong> {{ session()->get('message_success') }}
@@ -63,7 +62,6 @@
             </div>
         </div>
     </div>
-    </div>
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
@@ -76,9 +74,9 @@
                     Action will delete permanently this products.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(array('url' => 'products/delete/' . $products->id, 'class' => 'pull-right')) }}
+                    {{ Form::open(['url' => 'products/delete/' . $products->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this product', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::submit('Delete this product', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}
                 </div>
             </div>

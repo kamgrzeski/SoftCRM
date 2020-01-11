@@ -4,11 +4,9 @@
 
 @section('title', 'Information about client: ' . $clients->full_name)
 
-
 @section('content')
     <div class="row">
         <div class="col-md-12 col-sm-6">
-            <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
                     <strong>Well done!</strong> {{ session()->get('message_success') }}
@@ -32,16 +30,14 @@
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
-                              Delete this client <li class="fa fa-trash-o"></li>
+                                Delete this client
+                                <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
-
                     </ul>
 
                     <div class="tab-content">
                         <div class="tab-pane fade active in" id="home">
-                            <h4></h4>
-
                             <table class="table table-striped table-bordered">
                                 <tbody class="text-right">
                                 <tr>
@@ -76,7 +72,8 @@
                         </div>
                         <div class="tab-pane fade" id="profile">
                             <h4>List of companies</h4>
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example"
+                                   data-sortable>
                                 <thead>
                                 <tr>
                                     <th>Name</th>
@@ -93,9 +90,9 @@
                                         <td>{{ $companies->tax_number }}</td>
                                         <td>{{ $companies->phone }}</td>
                                         <td>
-                                            {{ Form::open(array('url' => 'clients/delete/' . $companies->id, 'class' => 'pull-right')) }}
+                                            {{ Form::open(['url' => 'clients/delete/' . $companies->id,'class' => 'pull-right']) }}
                                             {{ Form::hidden('_method', 'DELETE') }}
-                                            {{ Form::submit('Delete this companies', array('class' => 'btn btn-danger btn-sm')) }}
+                                            {{ Form::submit('Delete this companies', ['class' => 'btn btn-danger btn-sm']) }}
                                             {{ Form::close() }}
                                         </td>
                                     @endforeach
@@ -104,7 +101,8 @@
                         </div>
                         <div class="tab-pane fade" id="messages">
                             <h4>List of employeees</h4>
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example"
+                                   data-sortable>
                                 <thead>
                                 <tr>
                                     <th>Full name</th>
@@ -123,9 +121,9 @@
                                         <td>{{ $employees->email }}</td>
                                         <td>{{ $employees->job }}</td>
                                         <td>
-                                            {{ Form::open(array('url' => 'employees/delete/' . $employees->id, 'class' => 'pull-right')) }}
+                                            {{ Form::open(['url' => 'employees/delete/' . $employees->id,'class' => 'pull-right']) }}
                                             {{ Form::hidden('_method', 'DELETE') }}
-                                            {{ Form::submit('Delete this employee', array('class' => 'btn btn-danger btn-sm')) }}
+                                            {{ Form::submit('Delete this employee', ['class' => 'btn btn-danger btn-sm']) }}
                                             {{ Form::close() }}
                                         </td>
                                     @endforeach
@@ -137,7 +135,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -149,10 +146,12 @@
                     Ation will delete permanently this client.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 15px;">Close</button>
-                    {{ Form::open(array('url' => 'clients/delete/' . $clients->id, 'class' => 'pull-right')) }}
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 15px;">
+                        Close
+                    </button>
+                    {{ Form::open(['url' => 'clients/delete/' . $clients->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this client', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::submit('Delete this client', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}
                 </div>
             </div>

@@ -23,14 +23,14 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::model($tasks, array('route' => array('processUpdateTasks', $tasks->id), 'method' => 'PUT')) }}
+                            {{ Form::model($tasks, ['route' => ['processUpdateTasks', $tasks->id], 'method' => 'PUT']) }}
                             <div class="form-group">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('duration', 'Duration') }}
-                                {{ Form::text('duration', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('duration', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -41,7 +41,7 @@
                         </div>
 
                         <div class="col-lg-12">
-                            {{ Form::submit('Edit task', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Edit task', ['class' => 'btn btn-primary']) }}
                         </div>
 
                         {{ Form::close() }}

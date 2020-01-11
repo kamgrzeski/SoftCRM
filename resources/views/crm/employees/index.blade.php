@@ -9,7 +9,6 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
                     <strong>Well done!</strong> {{ session()->get('message_success') }}
@@ -23,7 +22,6 @@
                 <button type="button" class="btn btn-primary btn active">Add employees</button>
             </a>
             <br><br>
-            <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-code-fork" aria-hidden="true"></i> List of employees
@@ -88,7 +86,6 @@
 
                 </div>
             </div>
-            <!--End Advanced Tables -->
         </div>
     </div>
 @endsection

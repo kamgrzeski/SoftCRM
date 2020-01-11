@@ -13,7 +13,6 @@
                     href="{{ URL::to('client/create') }}">Click here!</a>
         </div>
     @endif
-    <!-- will be used to show any messages -->
     @if(session()->has('message_success'))
         <div class="alert alert-success">
             <strong>Well done!</strong> {{ session()->get('message_success') }}
@@ -23,20 +22,18 @@
             <strong>Danger!</strong> {{ session()->get('message_danger') }}
         </div>
     @endif
-
-    <!-- /. ROW  -->
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(array('route' => 'processCreateEmployee')) }}
+                            {{ Form::open(['route' => 'processCreateEmployee']) }}
                             <div class="form-group input-row">
                                 {{ Form::label('full_name', 'Full name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('full_name', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('full_name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
@@ -44,7 +41,7 @@
                                 {{ Form::label('phone', 'Phone') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
-                                    {{ Form::text('phone', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('phone', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
@@ -52,7 +49,7 @@
                                 {{ Form::label('email', 'Email') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                    {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
@@ -60,7 +57,7 @@
                                 {{ Form::label('job', 'Job') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                                    {{ Form::text('job', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('job', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
                         </div>
@@ -76,25 +73,20 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('note', 'Note') }}
-                                {{ Form::textarea('note', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::textarea('note', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>
                         </div>
 
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Add employee', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Add employee', ['class' => 'btn btn-primary']) }}
                         </div>
 
                     {{ Form::close() }}
-
-                    <!-- /.row (nested) -->
                     </div>
-                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel -->
             </div>
-            <!-- /.col-lg-12 -->
         </div>
-
+    </div>
         <script>
             $(document).ready(function () {
                 //create formValidator object

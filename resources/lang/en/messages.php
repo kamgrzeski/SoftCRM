@@ -97,15 +97,6 @@ return [
     'FinancesIsNowDeactivated' => 'Finances has been deactivated.',
     'FinancesIsDeactivated' => 'Finances has been already deactivated.',
 
-    /** Invoices Messages **/
-    'SuccessInvoicesStore' => 'Invoices has been added.',
-    'SuccessInvoicesDelete' => 'Invoices has been deleted.',
-    'SuccessInvoicesUpdate' => 'Invoices has been updated.',
-    'SuccessInvoicesActive' => 'Invoices has been active.',
-    'ErrorInvoicesActive' => 'Invoices hasn\'t been active yet.',
-    'InvoicesIsNowDeactivated' => 'Invoices has been deactivated.',
-    'InvoicesIsDeactivated' => 'Invoices has been already deactivated.',
-
     /** Projects Messages **/
     'SuccessProjectsStore' => 'Projects has been added.',
     'SuccessProjectsDelete' => 'Projects has been deleted.',

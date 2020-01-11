@@ -9,7 +9,6 @@
 @section('content')
     <div class="row">
         <div class="col-md-12 col-sm-6">
-            <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
                     <strong>Well done!</strong> {{ session()->get('message_success') }}
@@ -38,7 +37,6 @@
                                 Delete this companise <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
-
                     </ul>
 
                     <div class="tab-content">
@@ -140,7 +138,6 @@
         </div>
     </div>
 
-
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -152,9 +149,9 @@
                     Ation will delete permanently this deal.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(array('url' => 'deals/delete/' . $deal->id, 'class' => 'pull-right')) }}
+                    {{ Form::open(['url' => 'deals/delete/' . $deal->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this deals', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::submit('Delete this deals', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}
                 </div>
             </div>

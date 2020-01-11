@@ -7,7 +7,6 @@
 @section('lyric', 'lorem ipsum')
 
 @section('content')
-    <!-- will be used to show any messages -->
     @if(session()->has('message_success'))
         <div class="alert alert-success">
             <strong>Well done!</strong> {{ session()->get('message_success') }}
@@ -17,24 +16,22 @@
             <strong>Danger!</strong> {{ session()->get('message_danger') }}
         </div>
     @endif
-
-    <!-- /. ROW  -->
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::model($deals, array('route' => array('processUpdateDeals', $deals->id), 'method' => 'PUT')) }}
+                            {{ Form::model($deals, ['route' => ['processUpdateDeals', $deals->id], 'method' => 'PUT']) }}
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('start_time', 'Start date') }}
-                                {{ Form::date('start_time', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::date('start_time', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>
                         </div>
 
@@ -42,7 +39,7 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('end_time', 'End date') }}
-                                {{ Form::date('end_time', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::date('end_time', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>
 
                             <div class="form-group input-row">
@@ -53,20 +50,15 @@
                         </div>
 
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Edit deals', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Edit deals', ['class' => 'btn btn-primary']) }}
                         </div>
 
                     {{ Form::close() }}
-
-                    <!-- /.row (nested) -->
                     </div>
-                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel -->
             </div>
-            <!-- /.col-lg-12 -->
         </div>
-
+    </div>
         <script>
             $(document).ready(function () {
                 //create formValidator object

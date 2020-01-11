@@ -7,7 +7,6 @@
 @section('lyric', 'lorem ipsum')
 
 @section('content')
-    <!-- will be used to show any messages -->
     @if(session()->has('message_success'))
         <div class="alert alert-success">
             <strong>Well done!</strong> {{ session()->get('message_success') }}
@@ -23,15 +22,15 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::model($employees, array('route' => array('processUpdateEmployee', $employees->id), 'method' => 'PUT')) }}
+                            {{ Form::model($employees, ['route' => ['processUpdateEmployee', $employees->id], 'method' => 'PUT']) }}
 
                             <div class="form-group">
                                 {{ Form::label('full_name', 'Full name') }}
-                                {{ Form::text('full_name', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('full_name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('email', 'Email address') }}
-                                {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('client_id', 'Assign client') }}
@@ -41,31 +40,27 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('phone', 'Phone') }}
-                                {{ Form::text('phone', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('phone', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('job', 'Job') }}
-                                {{ Form::text('job', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::text('job', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('note', 'Notatnik') }}
-                                {{ Form::textarea('note', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                {{ Form::textarea('note', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>
                         </div>
 
                         <div class="col-lg-12">
-                            {{ Form::submit('Edit employee', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Edit employee', ['class' => 'btn btn-primary']) }}
                         </div>
 
                         {{ Form::close() }}
 
                     </div>
-                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel -->
             </div>
-            <!-- /.col-lg-12 -->
         </div>
-
-
+    </div>
 @endsection

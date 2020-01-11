@@ -88,9 +88,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 15px;">Close</button>
-                    {{ Form::open(array('url' => 'tasks/delete/' . $tasks->id, 'class' => 'pull-right')) }}
+                    {{ Form::open(['url' => 'tasks/delete/' . $tasks->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this task', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::submit('Delete this task', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}
                 </div>
             </div>

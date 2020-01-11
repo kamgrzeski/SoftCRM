@@ -22,23 +22,23 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
-                        {{ Form::open(array('route' => 'password-process')) }}
+                        {{ Form::open(['route' => 'password-process']) }}
                         <div class="col-lg-12">
                             <div class="form-group input-row">
                                 {{ Form::label('old_password', 'Old password') }}
-                                {{ Form::password('old_password', null, array('class' => 'form-control')) }}
+                                {{ Form::password('old_password', null, ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('new_password', 'New password') }}
-                                {{ Form::password('new_password', null, array('class' => 'form-control')) }}
+                                {{ Form::password('new_password', null, ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('confirm_password', 'Repeat new password') }}
-                                {{ Form::password('confirm_password', null, array('class' => 'form-control')) }}
+                                {{ Form::password('confirm_password', null, ['class' => 'form-control']) }}
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Change password', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Change password', ['class' => 'btn btn-primary']) }}
                         </div>
                     {{ Form::close() }}
                     <!-- /.row (nested) -->

@@ -9,7 +9,6 @@
 @section('content')
     <div class="row">
         <div class="col-md-12 col-sm-6">
-            <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
                     <strong>Well done!</strong> {{ session()->get('message_success') }}
@@ -23,7 +22,6 @@
                 <div class="panel-heading">
                     More information about: {{ $employees->full_name }}
                 </div>
-
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
@@ -93,9 +91,9 @@
                                     <tr class="odd gradeX">
                                         <td>{{ $tasks->name }}</td>
                                         <td>
-                                            {{ Form::open(array('url' => 'tasks/view/' . $tasks->id, 'class' => 'pull-right')) }}
+                                            {{ Form::open(['url' => 'tasks/view/' . $tasks->id,'class' => 'pull-right']) }}
                                             {{ Form::hidden('_method', 'GET') }}
-                                            {{ Form::submit('More information about this tasks', array('class' => 'btn btn-primary btn-sm')) }}
+                                            {{ Form::submit('More information about this tasks', ['class' => 'btn btn-primary btn-sm']) }}
                                             {{ Form::close() }}
                                         </td>
                                     @endforeach
@@ -119,9 +117,9 @@
                     Ation will delete permanently this employees.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(array('url' => 'employees/delete/' . $employees->id, 'class' => 'pull-right')) }}
+                    {{ Form::open(['url' => 'employees/delete/' . $employees->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this companie', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::submit('Delete this companie', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}
                 </div>
             </div>

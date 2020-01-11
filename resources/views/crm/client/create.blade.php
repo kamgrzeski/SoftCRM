@@ -7,7 +7,6 @@
 @section('lyric', 'lorem ipsum')
 
 @section('content')
-    <!-- will be used to show any messages -->
     @if(session()->has('message_success'))
         <div class="alert alert-success">
             <strong>Well done!</strong> {{ session()->get('message_success') }}
@@ -17,20 +16,18 @@
             <strong>Danger!</strong> {{ session()->get('message_danger') }}
         </div>
     @endif
-
-    <!-- /. ROW  -->
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(array('route' => 'processCreateClient')) }}
+                            {{ Form::open(['route' => 'processCreateClient']) }}
                             <div class="form-group  input-row">
                                 {{ Form::label('full_name', 'Full name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('full_name', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('full_name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
@@ -38,7 +35,7 @@
                                 {{ Form::label('phone', 'Phone') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
-                                    {{ Form::text('phone', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('phone', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
@@ -46,7 +43,7 @@
                                 {{ Form::label('budget', 'Budget') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
-                                    {{ Form::text('budget', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('budget', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
@@ -54,7 +51,7 @@
                                 {{ Form::label('city', 'City') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                    {{ Form::text('city', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('city', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
@@ -62,7 +59,7 @@
                                 {{ Form::label('country', 'Country') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                    {{ Form::text('country', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('country', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
                         </div>
@@ -72,7 +69,7 @@
                                 {{ Form::label('email', 'Emial address') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                    {{ Form::text('email', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
@@ -96,7 +93,7 @@
                                 {{ Form::label('location', 'Location') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pie-chart"></i></span>
-                                    {{ Form::text('location', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('location', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
@@ -104,23 +101,18 @@
                                 {{ Form::label('zip', 'ZIP') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-registered"></i></span>
-                                    {{ Form::text('zip', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('zip', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 
                         </div>
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Add client', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Add client', ['class' => 'btn btn-primary']) }}
                         </div>
-                    {{ Form::close() }}
-
-                    <!-- /.row (nested) -->
+                        {{ Form::close() }}
                     </div>
-                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel -->
             </div>
-            <!-- /.col-lg-12 -->
         </div>
 
         <script>
@@ -151,7 +143,7 @@
                     //this is a final callback after failing to validate one or more fields
                     //it can be used to display a summary message, scroll to the first error, etc.
                     onErrors: function (errors, event) {
-                        //errors is an array of objects, each containing a 'field' and 'message' parameter
+                        //errors is an  of objects, each containing a 'field' and 'message' parameter
                     },
                     //this defines the actual validation rules
                     rules: {
@@ -226,8 +218,8 @@
                         },
                         'city': {
                             'field': $('input[name=city]'),
-                            'validate': function(field, event) {
-                                if(!field.val()) {
+                            'validate': function (field, event) {
+                                if (!field.val()) {
                                     throw "A city is required.";
                                 }
                             }
@@ -235,24 +227,24 @@
 
                         'country': {
                             'field': $('input[name=country]'),
-                            'validate': function(field, event) {
-                                if(!field.val()) {
+                            'validate': function (field, event) {
+                                if (!field.val()) {
                                     throw "A country is required.";
                                 }
                             }
                         },
                         'location': {
                             'field': $('input[name=location]'),
-                            'validate': function(field, event) {
-                                if(!field.val()) {
+                            'validate': function (field, event) {
+                                if (!field.val()) {
                                     throw "A location is required.";
                                 }
                             }
                         },
                         'zip': {
                             'field': $('input[name=zip]'),
-                            'validate': function(field, event) {
-                                if(!field.val()) {
+                            'validate': function (field, event) {
+                                if (!field.val()) {
                                     throw "A zip is required.";
                                 }
                             }
@@ -303,4 +295,5 @@
                 });
             });
         </script>
+    </div>
 @endsection

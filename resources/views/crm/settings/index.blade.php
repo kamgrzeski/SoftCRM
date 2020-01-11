@@ -1,4 +1,4 @@
-    @extends('layouts.base')
+@extends('layouts.base')
 
 @section('caption', 'SettingsModel')
 
@@ -15,26 +15,24 @@
             <strong>Danger!</strong> {{ session()->get('message_danger') }}
         </div>
     @endif
-
-    <!-- /. ROW  -->
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
-                        {{ Form::open(array('route' => 'processCreateSettings')) }}
+                        {{ Form::open(['route' => 'processCreateSettings']) }}
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('pagination_size', 'Pagination size') }}
-                                {{ Form::text('pagination_size', config('crm_settings.pagination_size'), array('class' => 'form-control')) }}
+                                {{ Form::text('pagination_size', config('crm_settings.pagination_size'), ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('priority_size', 'Priority size') }}
-                                {{ Form::text('priority_size', config('crm_settings.priority_size'), array('class' => 'form-control')) }}
+                                {{ Form::text('priority_size', config('crm_settings.priority_size'), ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('invoice_logo_link', 'Invoice logo (comping soon)') }}
-                                {{ Form::text('invoice_logo_link', config('crm_settings.invoice_logo_link'), array('class' => 'form-control')) }}
+                                {{ Form::text('invoice_logo_link', config('crm_settings.invoice_logo_link'), ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('loading_circle', 'Loading circle') }}
@@ -48,11 +46,11 @@
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('invoice_tax', 'Tax') }}
-                                {{ Form::text('invoice_tax', config('crm_settings.invoice_tax'), array('class' => 'form-control')) }}
+                                {{ Form::text('invoice_tax', config('crm_settings.invoice_tax'), ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('rollbar_token', 'Rollbar Token') }}
-                                {{ Form::text('rollbar_token', config('crm_settings.rollbar_token'), array('class' => 'form-control')) }}
+                                {{ Form::text('rollbar_token', config('crm_settings.rollbar_token'), ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('stats', 'Statistic (left panel)') }}
@@ -60,14 +58,11 @@
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Save settings', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Save settings', ['class' => 'btn btn-primary']) }}
                         </div>
-                    {{ Form::close() }}
-                    <!-- /.row (nested) -->
+                        {{ Form::close() }}
                     </div>
-                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel -->
             </div>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -100,17 +95,11 @@
                                 </tbody>
                             </table>
                         </div>
-                    <!-- /.row (nested) -->
                     </div>
-                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel -->
             </div>
-            <!-- /.col-lg-12 -->
         </div>
-
-
-
+    </div>
         <script>
             $(document).ready(function () {
                 //create formValidator object

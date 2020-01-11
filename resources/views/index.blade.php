@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-3 col-sm-12 col-xs-12">
             <div class="panel panel-primary text-center no-boder bg-color-green">
-                    <div class="panel-body boxes">
+                <div class="panel-body boxes">
                     <i class="fa fa-female fa-3x"></i>
                     <h3 style="padding:8px;font-size:18px">Clients: {{ Cache::get('countClients') }}
                         ({{ Cache::get('deactivatedClients') }})
@@ -88,20 +88,23 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Latest tasks <span class="badge"> {{ Cache::get('countTasks') }}</span></button>
-                    <span style="float: right">Completed: {{ Cache::get('completedTasks') }} | Uncompleted: {{ Cache::get('uncompletedTasks') }}</span>
+                    <span style="float: right">Completed: {{ Cache::get('completedTasks') }}
+                        | Uncompleted: {{ Cache::get('uncompletedTasks') }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
                         @if(count($dataWithAllTasks) > 0)
-                        @foreach ($dataWithAllTasks as $result)
-                            <a href="{{ URL::to('tasks/view/' . $result['id']) }}" class="list-group-item">
-                                <span class="badge badge" style="background-color: #428bca !important;">{{ $result['created_at']->diffForHumans() }}</span>
-                                <span class="badge badge" style="background-color: #ca4e6e !important;">Duration: {{ $result['duration'] . ' days' }}</span>
-                                <i class="fa fa-fw fa-comment"></i> {{ $result['name'] }}
-                            </a>
-                        @endforeach
+                            @foreach ($dataWithAllTasks as $result)
+                                <a href="{{ URL::to('tasks/view/' . $result['id']) }}" class="list-group-item">
+                                    <span class="badge badge"
+                                          style="background-color: #428bca !important;">{{ $result['created_at']->diffForHumans() }}</span>
+                                    <span class="badge badge"
+                                          style="background-color: #ca4e6e !important;">Duration: {{ $result['duration'] . ' days' }}</span>
+                                    <i class="fa fa-fw fa-comment"></i> {{ $result['name'] }}
+                                </a>
+                            @endforeach
                         @else
-                           There is no tasks.
+                            There is no tasks.
                         @endif
                     </div>
                     <div class="text-right">
@@ -121,7 +124,8 @@
                             @foreach ($dataWithAllCompanies as $result)
                                 <a href="{{ URL::to('companies/view/' . $result->id) }}" class="list-group-item">
                                     <i class="fa fa-compass"></i> {{ $result->name }}
-                                    <span class="badge badge" style="background-color: #ff9800 !important;">Phone: {{ $result->phone }}</span>
+                                    <span class="badge badge"
+                                          style="background-color: #ff9800 !important;">Phone: {{ $result->phone }}</span>
                                 </a>
                             @endforeach
                         @else
@@ -145,7 +149,8 @@
                         @if(count($dataWithAllProducts) > 0)
                             @foreach ($dataWithAllProducts as $result)
                                 <a href="{{ URL::to('products/view/' . $result->id) }}" class="list-group-item">
-                                    <span class="badge badge" style="background-color: #428bca !important;">{{ $result->created_at->diffForHumans() }}</span>
+                                    <span class="badge badge"
+                                          style="background-color: #428bca !important;">{{ $result->created_at->diffForHumans() }}</span>
                                     <span class="badge badge" style="background-color: #8a3a44 !important;">
                                          {{ $result->count }} qty</span>
                                     <span class="badge badge" style="background-color: #298a15 !important;">
@@ -163,8 +168,6 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 
 @endsection

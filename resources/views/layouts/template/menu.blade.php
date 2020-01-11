@@ -1,5 +1,3 @@
-
-<!--/. NAV TOP  -->
 <nav class="navbar-default navbar-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav" id="main-menu">
@@ -53,5 +51,4 @@
             <li><i class="fa fa-book" aria-hidden="true"></i> System logs: {{ Cache::get('countSystemLogs') }}</li>
         </ul>
     </div>
-
 </nav>

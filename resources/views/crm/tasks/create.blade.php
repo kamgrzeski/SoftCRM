@@ -30,13 +30,13 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(array('route' => 'processCreateTasks')) }}
+                            {{ Form::open(['route' => 'processCreateTasks']) }}
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::textarea('name', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::textarea('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
                         </div>
@@ -56,13 +56,13 @@
                                 {{ Form::label('duration', 'Duration') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::text('duration', null, array('class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText'))) }}
+                                    {{ Form::text('duration', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Add task', array('class' => 'btn btn-primary')) }}
+                            {{ Form::submit('Add task', ['class' => 'btn btn-primary']) }}
                         </div>
 
                     {{ Form::close() }}

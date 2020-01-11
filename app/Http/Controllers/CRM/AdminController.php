@@ -30,7 +30,7 @@ class AdminController extends Controller
         if (Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
             return Redirect::to('/');
         } else {
-            Session::flash('message_danger', 'Wrong email or password!');
+            Session::flash('message-error', 'Wrong email or password!');
             return Redirect::to('login');
         }
     }
@@ -55,7 +55,7 @@ class AdminController extends Controller
         }
 
         if($this->adminService->loadValidatePassword($request->get('old_password'), $request->get('new_password'), $request->get('confirm_password'), $this->getAdminId())) {
-            Session::flash('message_success', 'You have been logged out form system.');
+            Session::flash('message_success', 'Your password has been changed.');
             return Redirect::to('password/reset');
 
         } else {

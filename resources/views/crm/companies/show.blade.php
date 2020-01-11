@@ -9,7 +9,6 @@
 @section('content')
     <div class="row">
         <div class="col-md-12 col-sm-6">
-            <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
                     <strong>Well done!</strong> {{ session()->get('message_success') }}
@@ -23,13 +22,9 @@
                 <div class="panel-heading">
                     More information about {{ $companies->name }}
                 </div>
-
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
-                        </li>
-                        <li class=""><a href="#profile" data-toggle="tab">Invoices <span
-                                        class="badge badge-warning">0</span></a>
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
@@ -37,7 +32,6 @@
                             </button>
                         </div>
                     </ul>
-
                     <div class="tab-content">
                         <div class="tab-pane fade active in" id="home">
                             <h4></h4>
@@ -105,7 +99,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -117,9 +110,9 @@
                     Ation will delete permanently this companies.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(array('url' => 'companies/delete/' . $companies->id, 'class' => 'pull-right')) }}
+                    {{ Form::open(['url' => 'companies/delete/' . $companies->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this companie', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::submit('Delete this companie', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}
                 </div>
             </div>

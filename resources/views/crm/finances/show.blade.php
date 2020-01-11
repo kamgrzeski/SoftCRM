@@ -4,11 +4,9 @@
 
 @section('title', 'Information about employee: ' . $finances->full_name)
 
-
 @section('content')
     <div class="row">
         <div class="col-md-12 col-sm-6">
-            <!-- will be used to show any messages -->
             @if(session()->has('message_success'))
                 <div class="alert alert-success">
                     <strong>Well done!</strong> {{ session()->get('message_success') }}
@@ -73,7 +71,6 @@
                                 <td>
                                     <a href="{{ URL::to('companies/view/' . $finances->companies->id) }}">{{ $finances->companies->name }}</a>
                                 </td>
-
                             </tr>
                             <tr>
                                 <th>Status</th>
@@ -98,9 +95,9 @@
                     Ation will delete permanently this finances.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(array('url' => 'finances/delete/' . $finances->id, 'class' => 'pull-right')) }}
+                    {{ Form::open(['url' => 'finances/delete/' . $finances->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this finances', array('class' => 'btn btn-small btn-danger')) }}
+                    {{ Form::submit('Delete this finances', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}
                 </div>
             </div>
