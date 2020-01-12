@@ -23,6 +23,21 @@ class ProductsController extends Controller
         $this->systemLogsService = new SystemLogService();
     }
 
+    public function processRenderCreateForm()
+    {
+        return View::make('crm.products.create');
+    }
+
+    public function processShowProductsDetails(int $productId)
+    {
+        return View::make('crm.products.show')->with(['product' => $this->productsService->loadProduct($productId)]);
+    }
+
+    public function processRenderUpdateForm(int $productId)
+    {
+        return View::make('crm.products.edit')->with(['product' => $this->productsService->loadProduct($productId)]);
+    }
+
     public function processListOfProducts()
     {
         return View::make('crm.products.index')->with(
@@ -33,32 +48,17 @@ class ProductsController extends Controller
         );
     }
 
-    public function showCreateForm()
+    public function processStoreProduct(ProductsStoreRequest $request)
     {
-        return View::make('crm.products.create');
-    }
-
-    public function viewProductsDetails(int $productId)
-    {
-        return View::make('crm.products.show')->with(['products' => $this->productsService->loadProduct($productId)]);
-    }
-
-    public function showUpdateForm(int $productId)
-    {
-        return View::make('crm.products.edit')->with(['products' => $this->productsService->loadProduct($productId)]);
-    }
-
-    public function processCreateProducts(ProductsStoreRequest $request)
-    {
-        if ($product = $this->productsService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->loadInsertSystemLogs('Product has been add with id: ' . $product, $this->systemLogsService::successCode, $this->getAdminId());
+        if ($productId = $this->productsService->execute($request->validated(), $this->getAdminId())) {
+            $this->systemLogsService->loadInsertSystemLogs('Product has been add with id: ' . $productId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorProductsStore'));
         }
     }
 
-    public function processUpdateProducts(Request $request, int $productId)
+    public function processUpdateProduct(Request $request, int $productId)
     {
         if ($this->productsService->update($productId, $request->all())) {
             return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
@@ -67,7 +67,7 @@ class ProductsController extends Controller
         }
     }
 
-    public function processDeleteProducts(int $productId)
+    public function processDeleteProduct(int $productId)
     {
         $clientAssigned = $this->productsService->checkIfProductHaveAssignedSale($productId);
 

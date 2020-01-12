@@ -23,6 +23,26 @@ class SalesController extends Controller
         $this->systemLogsService = new SystemLogService();
     }
 
+    public function processRenderCreateForm()
+    {
+        return View::make('crm.sales.create')->with(['dataOfProducts' => $this->salesService->loadProducts()]);
+    }
+
+    public function processShowSalesDetails($saleId)
+    {
+        return View::make('crm.sales.show')->with(['sale' => $this->salesService->loadSale($saleId)]);
+    }
+
+    public function processRenderUpdateForm($saleId)
+    {
+        return View::make('crm.sales.edit')->with(
+            [
+                'sale' => $this->salesService->loadSale($saleId),
+                'dataWithPluckOfProducts' => $this->salesService->loadProducts()
+            ]
+        );
+    }
+
     public function processListOfSales()
     {
         return View::make('crm.sales.index')->with(
@@ -33,41 +53,17 @@ class SalesController extends Controller
         );
     }
 
-    public function showCreateForm()
+    public function processStoreSale(SalesStoreRequest $request)
     {
-        return View::make('crm.sales.create')->with(
-            [
-                'dataOfProducts' => $this->salesService->loadProducts()
-            ]
-        );
-    }
-
-    public function viewSalesDetails($saleId)
-    {
-        return View::make('crm.sales.show')->with(['sales' => $this->salesService->loadSale($saleId)]);
-    }
-
-    public function showUpdateForm($saleId)
-    {
-        return View::make('crm.sales.edit')->with(
-            [
-                'sales' => $this->salesService->loadSale($saleId),
-                'dataWithPluckOfProducts' => $this->salesService->loadProducts()
-            ]
-        );
-    }
-
-    public function processCreateSales(SalesStoreRequest $request)
-    {
-        if ($sale = $this->salesService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->loadInsertSystemLogs('SalesModel has been add with id: ' . $sale, $this->systemLogsService::successCode, $this->getAdminId());
+        if ($saleId = $this->salesService->execute($request->validated(), $this->getAdminId())) {
+            $this->systemLogsService->loadInsertSystemLogs('SalesModel has been add with id: ' . $saleId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorSalesStore'));
         }
     }
 
-    public function processUpdateSales(Request $request, int $saleId)
+    public function processUpdateSale(Request $request, int $saleId)
     {
         if ($this->salesService->update($saleId, $request->all())) {
             return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
@@ -76,7 +72,7 @@ class SalesController extends Controller
         }
     }
 
-    public function processDeleteSales(int $saleId)
+    public function processDeleteSale(int $saleId)
     {
         $salesDetails = $this->salesService->loadSale($saleId);
         $salesDetails->delete();

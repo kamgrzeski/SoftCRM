@@ -22,7 +22,7 @@ class FakerFinancesSeeder extends Seeder
             $rand = rand(800,2000);
             $calculateFromFakeRand = new \App\Services\FinancesService();
 
-            $data = $calculateFromFakeRand->calculateNetAndVatByGivenGross($rand);
+            $data = $calculateFromFakeRand->loadCalculateNetAndVatByGivenGross($rand);
 
             $finances = [
                 'name' => $faker->name,

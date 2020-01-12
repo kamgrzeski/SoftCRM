@@ -37,23 +37,23 @@
                             <tbody class="text-right">
                             <tr>
                                 <th>Name</th>
-                                <td>{{ $products->name }}</td>
+                                <td>{{ $product->name }}</td>
                             </tr>
                             <tr>
                                 <th>Category</th>
-                                <td>{{ $products->category  }}</td>
+                                <td>{{ $product->category  }}</td>
                             </tr>
                             <tr>
                                 <th>Count</th>
-                                <td>{{ $products->count  }}</td>
+                                <td>{{ $product->count  }}</td>
                             </tr>
                             <tr>
                                 <th>Price</th>
-                                <td>{{ $products->price  }}</td>
+                                <td>{{ $product->price  }}</td>
                             </tr>
                             <tr>
                                 <th>Status</th>
-                                <td>{{ $products->is_active ? 'Yes' : 'No' }}</td>
+                                <td>{{ $product->is_active ? 'Yes' : 'No' }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -74,7 +74,7 @@
                     Action will delete permanently this products.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(['url' => 'products/delete/' . $products->id,'class' => 'pull-right']) }}
+                    {{ Form::open(['url' => 'products/delete/' . $product->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                     {{ Form::submit('Delete this product', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}

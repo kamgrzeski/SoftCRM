@@ -16,12 +16,12 @@ class CompaniesService
 
     public function execute(array $requestedData, int $adminId)
     {
-        return $this->companiesModel->storeCompanie($requestedData, $adminId);
+        return $this->companiesModel->storeCompany($requestedData, $adminId);
     }
 
     public function update(int $companiesId, array $requestedData)
     {
-        return $this->companiesModel->updateCompanie($companiesId, $requestedData);
+        return $this->companiesModel->updateCompany($companiesId, $requestedData);
     }
 
     public function loadCompanies()

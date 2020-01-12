@@ -22,7 +22,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(['route' => 'processCreateProducts']) }}
+                            {{ Form::open(['route' => 'processStoreProduct']) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">

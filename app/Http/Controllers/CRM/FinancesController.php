@@ -23,6 +23,16 @@ class FinancesController extends Controller
         $this->systemLogsService = new SystemLogService();
     }
 
+    public function processRenderCreateForm()
+    {
+        return View::make('crm.finances.create')->with(['dataWithPluckOfCompanies' => $this->financesService->pluckCompanies()]);
+    }
+
+    public function processShowFinancesDetails($financeId)
+    {
+        return View::make('crm.finances.show')->with(['finance' => $this->financesService->loadFinance($financeId)]);
+    }
+
     public function processListOfFinances()
     {
         return View::make('crm.finances.index')->with(
@@ -33,37 +43,27 @@ class FinancesController extends Controller
         );
     }
 
-    public function showCreateForm()
-    {
-        return View::make('crm.finances.create')->with(['dataWithPluckOfCompanies' => $this->financesService->pluckCompanies()]);
-    }
-
-    public function viewFinancesDetails($financeId)
-    {
-        return View::make('crm.finances.show')->with(['finances' => $this->financesService->loadFinance($financeId)]);
-    }
-
-    public function showUpdateForm($financeId)
+    public function processRenderUpdateForm($financeId)
     {
         return View::make('crm.finances.edit')->with(
             [
-                'finances' => $this->financesService->loadFinance($financeId),
+                'finance' => $this->financesService->loadFinance($financeId),
                 'dataWithPluckOfCompanies' => $this->financesService->pluckCompanies()
             ]
         );
     }
 
-    public function processCreateFinances(FinancesStoreRequest $request)
+    public function processStoreFinance(FinancesStoreRequest $request)
     {
-        if ($finance = $this->financesService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->loadInsertSystemLogs('FinancesModel has been add with id: ' . $finance, $this->systemLogsService::successCode, $this->getAdminId());
+        if ($financeId = $this->financesService->execute($request->validated(), $this->getAdminId())) {
+            $this->systemLogsService->loadInsertSystemLogs('FinancesModel has been add with id: ' . $financeId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesStore'));
         }
     }
 
-    public function processUpdateFinances(Request $request, $financeId)
+    public function processUpdateFinance(Request $request, $financeId)
     {
         if ($this->financesService->update($financeId, $request->all())) {
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
@@ -72,7 +72,7 @@ class FinancesController extends Controller
         }
     }
 
-    public function processDeleteFinances($financeId)
+    public function processDeleteFinance($financeId)
     {
         $dataOfFinances = $this->financesService->loadFinance($financeId);
 

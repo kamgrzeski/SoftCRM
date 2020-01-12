@@ -23,7 +23,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::model($tasks, ['route' => ['processUpdateTasks', $tasks->id], 'method' => 'PUT']) }}
+                            {{ Form::model($task, ['route' => ['processUpdateTask', $task->id], 'method' => 'PUT']) }}
                             <div class="form-group">
                                 {{ Form::label('name', 'Name') }}
                                 {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}

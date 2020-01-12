@@ -23,6 +23,16 @@ class EmployeesController extends Controller
         $this->systemLogsService = new SystemLogService();
     }
 
+    public function processRenderCreateForm()
+    {
+        return View::make('crm.employees.create')->with(['dataOfClients' => $this->employeesService->pluckData()]);
+    }
+
+    public function processShowEmployeeDetails($employeeId)
+    {
+        return View::make('crm.employees.show')->with(['employee' => $this->employeesService->loadEmployeeDetails($employeeId)]);
+    }
+
     public function processListOfEmployees()
     {
         return View::make('crm.employees.index')->with(
@@ -32,30 +42,20 @@ class EmployeesController extends Controller
             ]);
     }
 
-    public function showCreateForm()
-    {
-        return View::make('crm.employees.create')->with(['dataOfClients' => $this->employeesService->pluckData()]);
-    }
-
-    public function viewEmployeeDetails($employeeId)
-    {
-        return View::make('crm.employees.show')->with(['employees' => $this->employeesService->loadEmployeeDetails($employeeId)]);
-    }
-
-    public function showUpdateForm($employeeId)
+    public function processRenderUpdateForm($employeeId)
     {
         return View::make('crm.employees.edit')->with(
             [
-                'employees' => $this->employeesService->loadEmployeeDetails($employeeId),
+                'employee' => $this->employeesService->loadEmployeeDetails($employeeId),
                 'clients' => $this->employeesService->loadPluckClients()
             ]
         );
     }
 
-    public function processCreateEmployee(EmployeesStoreRequest $request)
+    public function processStoreEmployee(EmployeesStoreRequest $request)
     {
-        if ($employee = $this->employeesService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->loadInsertSystemLogs('Employees has been add with id: ' . $employee, $this->systemLogsService::successCode, $this->getAdminId());
+        if ($employeeId = $this->employeesService->execute($request->validated(), $this->getAdminId())) {
+            $this->systemLogsService->loadInsertSystemLogs('Employees has been add with id: ' . $employeeId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));

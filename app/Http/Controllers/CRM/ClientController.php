@@ -23,35 +23,35 @@ class ClientController extends Controller
         $this->systemLogsService = new SystemLogService();
     }
 
+    public function processRenderCreateForm()
+    {
+        return View::make('crm.client.create');
+    }
+
+    public function processShowClientDetails(int $clientId)
+    {
+        return View::make('crm.client.show')->with(['clientDetails' => $this->clientService->loadClientDetails($clientId)]);
+    }
+
+    public function processRenderUpdateForm(int $clientId)
+    {
+        return View::make('crm.client.edit')->with(['clientDetails' => $this->clientService->loadClientDetails($clientId)]);
+    }
+
     public function processListOfClients()
     {
         return View::make('crm.client.index')->with(
             [
                 'clients' => $this->clientService->loadClients(),
-                'clientPaginate' => $this->clientService->loadPagination()
+                'clientsPaginate' => $this->clientService->loadPagination()
             ]
         );
     }
 
-    public function showCreateForm()
+    public function processStoreClient(ClientStoreRequest $request)
     {
-        return View::make('crm.client.create');
-    }
-
-    public function viewClientDetails(int $clientId)
-    {
-        return View::make('crm.client.show')->with(['clients' => $this->clientService->loadClientDetails($clientId)]);
-    }
-
-    public function showUpdateForm(int $clientId)
-    {
-        return View::make('crm.client.edit')->with(['client' => $this->clientService->loadClientDetails($clientId)]);
-    }
-
-    public function processCreateClient(ClientStoreRequest $request)
-    {
-        if ($client = $this->clientService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->loadInsertSystemLogs('ClientsModel has been add with id: ' . $client, $this->systemLogsService::successCode, $this->getAdminId());
+        if ($clientId = $this->clientService->execute($request->validated(), $this->getAdminId())) {
+            $this->systemLogsService->loadInsertSystemLogs('ClientsModel has been add with id: ' . $clientId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorClientStore'));

@@ -22,7 +22,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(['route' => 'processCreateClient']) }}
+                            {{ Form::open(['route' => 'processStoreClient']) }}
                             <div class="form-group  input-row">
                                 {{ Form::label('full_name', 'Full name') }}
                                 <div class="input-group">

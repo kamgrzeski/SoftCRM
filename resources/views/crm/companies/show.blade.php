@@ -20,7 +20,7 @@
             @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    More information about {{ $companies->name }}
+                    More information about {{ $company->name }}
                 </div>
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
@@ -40,53 +40,53 @@
                                 <tbody class="text-right">
                                 <tr>
                                     <th>Name</th>
-                                    <td>{{ $companies->name }}</td>
+                                    <td>{{ $company->name }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tax number</th>
-                                    <td>{{ $companies->tax_number }}</td>
+                                    <td>{{ $company->tax_number }}</td>
                                 </tr>
                                 <tr>
                                     <th>Phone</th>
-                                    <td>{{ $companies->phone }}</td>
+                                    <td>{{ $company->phone }}</td>
                                 </tr>
                                 <tr>
                                     <th>City</th>
-                                    <td>{{ $companies->city }}</td>
+                                    <td>{{ $company->city }}</td>
                                 </tr>
                                 <tr>
                                     <th>Billing Address</th>
-                                    <td>{{ $companies->billing_address }}</td>
+                                    <td>{{ $company->billing_address }}</td>
                                 </tr>
                                 <tr>
                                     <th>Country</th>
-                                    <td>{{ $companies->country }}</td>
+                                    <td>{{ $company->country }}</td>
                                 </tr>
                                 <tr>
                                     <th>Postal code</th>
-                                    <td>{{ $companies->postal_code }}</td>
+                                    <td>{{ $company->postal_code }}</td>
                                 </tr>
                                 <tr>
                                     <th>Employee size</th>
-                                    <td>{{ $companies->employees_size }}</td>
+                                    <td>{{ $company->employees_size }}</td>
                                 </tr>
                                 <tr>
                                     <th>Assigned client</th>
                                     <td>
-                                        <a href="{{ URL::to('clients/view/' . $companies->client->id) }}">{{ $companies->client->full_name }}</a>
+                                        <a href="{{ URL::to('clients/view/' . $company->client->id) }}">{{ $company->client->full_name }}</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Fax</th>
-                                    <td>{{ $companies->fax }}</td>
+                                    <td>{{ $company->fax }}</td>
                                 </tr>
                                 <tr height="100px">
                                     <th>Description</th>
-                                    <td>{{ $companies->description }}</td>
+                                    <td>{{ $company->description }}</td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $companies->is_active ? 'Yes' : 'No' }}</td>
+                                    <td>{{ $company->is_active ? 'Yes' : 'No' }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -110,7 +110,7 @@
                     Ation will delete permanently this companies.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(['url' => 'companies/delete/' . $companies->id,'class' => 'pull-right']) }}
+                    {{ Form::open(['url' => 'companies/delete/' . $company->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                     {{ Form::submit('Delete this companie', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}

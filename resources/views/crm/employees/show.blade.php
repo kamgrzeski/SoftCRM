@@ -20,14 +20,14 @@
             @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    More information about: {{ $employees->full_name }}
+                    More information about: {{ $employee->full_name }}
                 </div>
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <li class=""><a href="#profile" data-toggle="tab">Tasks <span
-                                        class="badge badge-warning">{{ $employees->taskCount }}</span></a>
+                                        class="badge badge-warning">{{ $employee->taskCount }}</span></a>
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
@@ -44,34 +44,34 @@
                                 <tbody class="text-right">
                                 <tr>
                                     <th>Full name</th>
-                                    <td>{{ $employees->full_name }}</td>
+                                    <td>{{ $employee->full_name }}</td>
                                 </tr>
                                 <tr>
                                     <th>Phone</th>
-                                    <td>{{ $employees->phone }}</td>
+                                    <td>{{ $employee->phone }}</td>
                                 </tr>
                                 <tr>
                                     <th>Email address</th>
-                                    <td>{{ $employees->email }}</td>
+                                    <td>{{ $employee->email }}</td>
                                 </tr>
                                 <tr>
                                     <th>Job</th>
-                                    <td>{{ $employees->job }}</td>
+                                    <td>{{ $employee->job }}</td>
                                 </tr>
                                 <tr>
                                     <th>Note</th>
-                                    <td>{{ $employees->note }}</td>
+                                    <td>{{ $employee->note }}</td>
                                 </tr>
                                 <tr>
                                     <th>Assigned client</th>
                                     <td>
-                                        <a href="{{ URL::to('clients/view/' . $employees->client->id) }}">{{ $employees->client->full_name }}</a>
+                                        <a href="{{ URL::to('clients/view/' . $employee->client->id) }}">{{ $employee->client->full_name }}</a>
                                     </td>
 
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $employees->is_active ? 'Yes' : 'No' }}</td>
+                                    <td>{{ $employee->is_active ? 'Yes' : 'No' }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -86,7 +86,7 @@
                                 </tr>
                                 </thead>
                                 </tr>
-                                @foreach($employees->tasks as $tasks)
+                                @foreach($employee->tasks as $tasks)
                                     <tbody>
                                     <tr class="odd gradeX">
                                         <td>{{ $tasks->name }}</td>
@@ -117,7 +117,7 @@
                     Ation will delete permanently this employees.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(['url' => 'employees/delete/' . $employees->id,'class' => 'pull-right']) }}
+                    {{ Form::open(['url' => 'employees/delete/' . $employee->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                     {{ Form::submit('Delete this companie', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}

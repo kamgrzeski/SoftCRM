@@ -30,7 +30,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(['route' => 'processCreateTasks']) }}
+                            {{ Form::open(['route' => 'processStoreTask']) }}
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}

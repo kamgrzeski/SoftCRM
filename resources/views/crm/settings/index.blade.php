@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('caption', 'SettingsModel')
+@section('caption', 'Settings')
 
 @section('title', 'Settings')
 
@@ -20,7 +20,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
-                        {{ Form::open(['route' => 'processCreateSettings']) }}
+                        {{ Form::open(['route' => 'processStoreSettings']) }}
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('pagination_size', 'Pagination size') }}

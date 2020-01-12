@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Information about task: ' . $tasks->name)
+@section('caption', 'Information about task: ' . $task->name)
 
-@section('title', 'Information about task: ' . $tasks->name)
+@section('title', 'Information about task: ' . $task->name)
 
 
 @section('content')
@@ -25,12 +25,12 @@
                         </li>
 
                         <div class="text-right">
-                                @if($tasks->completed == FALSE)
-                                    <a href="{{ URL::to('tasks/completed/' . $tasks->id) }}">
+                                @if($task->completed == FALSE)
+                                    <a href="{{ URL::to('tasks/completed/' . $task->id) }}">
                                         <button type="button" class="btn btn-success">Mark as completed</button>
                                     </a>
                                 @else
-                                    <a href="{{ URL::to('tasks/uncompleted/' . $tasks->id) }}">
+                                    <a href="{{ URL::to('tasks/uncompleted/' . $task->id) }}">
                                         <button type="button" class="btn btn-success">Mark as uncompleted</button>
                                     </a>
                                 @endif
@@ -47,25 +47,25 @@
                             <tbody class="text-right">
                             <tr>
                                 <th>Name</th>
-                                <td>{{ $tasks->name }}</td>
+                                <td>{{ $task->name }}</td>
                             </tr>
                             <tr>
                                 <th>Assigned employee</th>
                                 <td><a
-                                            href="{{ URL::to('employees/view/' . $tasks->employees->id) }}">{{ $tasks->employees->full_name }}</a>
+                                            href="{{ URL::to('employees/view/' . $task->employees->id) }}">{{ $task->employees->full_name }}</a>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Date</th>
-                                <td>{{ $tasks->created_at }}</td>
+                                <td>{{ $task->created_at }}</td>
                             </tr>
                             <tr>
                                 <th>Status</th>
-                                <td>{{ $tasks->is_active ? 'Active' : 'Deactive' }}</td>
+                                <td>{{ $task->is_active ? 'Active' : 'Deactive' }}</td>
                             </tr>
                             <tr>
                                 <th>Completed</th>
-                                <td>{{ $tasks->completed ? 'Yes' : 'No' }}</td>
+                                <td>{{ $task->completed ? 'Yes' : 'No' }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -88,7 +88,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 15px;">Close</button>
-                    {{ Form::open(['url' => 'tasks/delete/' . $tasks->id,'class' => 'pull-right']) }}
+                    {{ Form::open(['url' => 'tasks/delete/' . $task->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                     {{ Form::submit('Delete this task', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}

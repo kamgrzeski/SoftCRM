@@ -84,7 +84,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        {!! $clientPaginate->render() !!}
+                        {!! $clientsPaginate->render() !!}
                     </div>
                 </div>
         </div>

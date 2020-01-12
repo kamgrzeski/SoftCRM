@@ -37,7 +37,7 @@ class SettingsController extends Controller
         );
     }
 
-    public function processCreateSettings(SettingsStoreRequest $request)
+    public function processStoreSettings(SettingsStoreRequest $request)
     {
         $validatedData = $request->validated();
 

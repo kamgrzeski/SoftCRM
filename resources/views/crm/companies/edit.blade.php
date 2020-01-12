@@ -22,7 +22,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::model($companies, ['route' => ['processUpdateCompanies', $companies->id], 'method' => 'PUT']) }}
+                            {{ Form::model($company, ['route' => ['processUpdateCompanies', $company->id], 'method' => 'PUT']) }}
 
                             <div class="form-group">
                                 {{ Form::label('name', 'Name') }}

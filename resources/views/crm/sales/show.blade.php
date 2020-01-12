@@ -36,25 +36,25 @@
                             <tbody class="text-right">
                             <tr>
                                 <th>Name</th>
-                                <td>{{ $sales->name }}</td>
+                                <td>{{ $sale->name }}</td>
                             </tr>
                             <tr>
                                 <th>Quantity</th>
-                                <td>{{ $sales->quantity }}</td>
+                                <td>{{ $sale->quantity }}</td>
                             </tr>
                             <tr>
                                 <th>Date of payment</th>
-                                <td>{{ $sales->date_of_payment }}</td>
+                                <td>{{ $sale->date_of_payment }}</td>
                             </tr>
                             <tr>
                                 <th>Assigned Product</th>
                                 <td>
-                                    <a href="{{ URL::to('products/view/' . $sales->products->id) }}">{{ $sales->products->name }}</a>
+                                    <a href="{{ URL::to('products/view/' . $sale->products->id) }}">{{ $sale->products->name }}</a>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Status</th>
-                                <td>{{ $sales->is_active ? 'Yes' : 'No'  }}</td>
+                                <td>{{ $sale->is_active ? 'Yes' : 'No'  }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -75,7 +75,7 @@
                     Action will delete permanently this products.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(['url' => 'sales/delete/' . $sales->id,'class' => 'pull-right']) }}
+                    {{ Form::open(['url' => 'sales/delete/' . $sale->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                     {{ Form::submit('Delete this sale', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}

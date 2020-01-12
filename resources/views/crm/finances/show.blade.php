@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Information about employee: ' . $finances->full_name)
+@section('caption', 'Information about employee: ' . $finance->full_name)
 
-@section('title', 'Information about employee: ' . $finances->full_name)
+@section('title', 'Information about employee: ' . $finance->full_name)
 
 @section('content')
     <div class="row">
@@ -36,45 +36,45 @@
                             <tbody class="text-right">
                             <tr>
                                 <th>Full name</th>
-                                <td>{{ $finances->name }}</td>
+                                <td>{{ $finance->name }}</td>
                             </tr>
                             <tr>
                                 <th>Description</th>
-                                <td>{{ $finances->description }}</td>
+                                <td>{{ $finance->description }}</td>
                             </tr>
                             <tr>
                                 <th>Category</th>
-                                <td>{{ $finances->category }}</td>
+                                <td>{{ $finance->category }}</td>
                             </tr>
                             <tr>
                                 <th>Type</th>
-                                <td>{{ $finances->type }}</td>
+                                <td>{{ $finance->type }}</td>
                             </tr>
                             <tr>
                                 <th>Gross</th>
-                                <td>{{ Cknow\Money\Money::{config('crm_settings.currency')}($finances->gross) }}</td>
+                                <td>{{ Cknow\Money\Money::{config('crm_settings.currency')}($finance->gross) }}</td>
                             </tr>
                             <tr>
                                 <th>Net</th>
-                                <td>{{ Cknow\Money\Money::{config('crm_settings.currency')}($finances->net) }}</td>
+                                <td>{{ Cknow\Money\Money::{config('crm_settings.currency')}($finance->net) }}</td>
                             </tr>
                             <tr>
                                 <th>Vat</th>
-                                <td>{{ Cknow\Money\Money::{config('crm_settings.currency')}($finances->vat) }}</td>
+                                <td>{{ Cknow\Money\Money::{config('crm_settings.currency')}($finance->vat) }}</td>
                             </tr>
                             <tr>
                                 <th>Date</th>
-                                <td>{{ $finances->date }}</td>
+                                <td>{{ $finance->date }}</td>
                             </tr>
                             <tr>
                                 <th>Assigned companies</th>
                                 <td>
-                                    <a href="{{ URL::to('companies/view/' . $finances->companies->id) }}">{{ $finances->companies->name }}</a>
+                                    <a href="{{ URL::to('companies/view/' . $finance->companies->id) }}">{{ $finance->companies->name }}</a>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Status</th>
-                                <td>{{ $finances->is_active ? 'Active' : 'Deactive' }}</td>
+                                <td>{{ $finance->is_active ? 'Active' : 'Deactive' }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -95,7 +95,7 @@
                     Ation will delete permanently this finances.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(['url' => 'finances/delete/' . $finances->id,'class' => 'pull-right']) }}
+                    {{ Form::open(['url' => 'finances/delete/' . $finance->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                     {{ Form::submit('Delete this finances', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}

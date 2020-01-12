@@ -30,7 +30,7 @@ class CompaniesModel extends Model
         return $this->hasMany(FinancesModel::class);
     }
 
-    public function storeCompanie(array $requestedData, int $adminId) : int
+    public function storeCompany(array $requestedData, int $adminId) : int
     {
         return $this->insertGetId(
             [
@@ -52,7 +52,7 @@ class CompaniesModel extends Model
         );
     }
 
-    public function updateCompanie(int $companiesId, array $requestedData) : bool
+    public function updateCompany(int $companiesId, array $requestedData) : bool
     {
         return $this->where('id', '=', $companiesId)->update(
             [
