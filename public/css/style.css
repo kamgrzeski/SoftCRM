@@ -20,11 +20,11 @@
 	outline: 0;
 	background: #cfcfcf;
 	width: 100%;
-	border: 0;
 	margin: 0 0 15px;
 	padding: 15px;
 	box-sizing: border-box;
 	font-size: 14px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .form button {
 	font-family: "Roboto", sans-serif;
