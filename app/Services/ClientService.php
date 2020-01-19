@@ -26,7 +26,7 @@ class ClientService
         return $this->clientsModel->updateClient($clientId, $requestedData);
     }
 
-    public function checkIfClientHaveAssignedEmployeeOrCompanie(int $clientId)
+    public function checkIfClientHaveAssignedEmployeeOrCompany(int $clientId)
     {
         $client = $this->clientsModel->getClientByGivenClientId($clientId);
 

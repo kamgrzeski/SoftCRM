@@ -20,6 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FakerSalesSeeder::class);
         $this->call(FakerTasksSeeder::class);
         $this->call(FakerFinancesSeeder::class);
-
+        $this->call(SettingsSeeder::class);
     }
 }

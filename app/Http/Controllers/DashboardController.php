@@ -11,6 +11,7 @@ use App\Services\FinancesService;
 use App\Services\HelpersFncService;
 use App\Services\ProductsService;
 use App\Services\SalesService;
+use App\Services\SettingsService;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
 use Illuminate\Support\Facades\Cache;
@@ -29,6 +30,7 @@ class DashboardController extends Controller
     private $tasksService;
     private $salesService;
     private $systemLogService;
+    private $settingsService;
 
     public function __construct()
     {
@@ -45,6 +47,7 @@ class DashboardController extends Controller
         $this->tasksService = new TasksService();
         $this->salesService = new SalesService();
         $this->systemLogService = new SystemLogService();
+        $this->settingsService = new SettingsService();
     }
 
     public function index()
@@ -58,6 +61,7 @@ class DashboardController extends Controller
                 'dataWithAllTasks' => $this->helpersFncService->formatTasks(),
                 'dataWithAllCompanies' => $this->companiesService->loadCompaniesByCreatedAt(),
                 'dataWithAllProducts' => $this->productsService->loadProductsByCreatedAt(),
+                'currency' => $this->settingsService->loadSettingValue('currency')
             ]
         );
     }

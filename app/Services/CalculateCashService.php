@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\DB;
 
 class CalculateCashService
 {
+    private $settingsService;
+
+    public function __construct()
+    {
+        $this->settingsService = new SettingsService();
+    }
+
     /**
      * @return mixed
      */
@@ -39,7 +46,7 @@ class CalculateCashService
 
         $officialSum = $productSum + $salesSum + $financesSum;
 
-        return Money::{config('crm_settings.currency')}($officialSum);
+        return Money::{$this->settingsService->loadSettingValue('currency')}($officialSum);
     }
 
     /**
@@ -67,7 +74,7 @@ class CalculateCashService
 
         $todayIncome = $productSum + $salesSum + $financesSum;
 
-        return Money::{config('crm_settings.currency')}($todayIncome);
+        return Money::{$this->settingsService->loadSettingValue('currency')}($todayIncome);
     }
 
     /**
@@ -94,7 +101,7 @@ class CalculateCashService
 
         $yesterdayIncome = $productSum + $salesSum + $financesSum;
 
-        return Money::{config('crm_settings.currency')}($yesterdayIncome);
+        return Money::{$this->settingsService->loadSettingValue('currency')}($yesterdayIncome);
     }
 
     /**

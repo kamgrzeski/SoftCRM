@@ -70,7 +70,7 @@ class ProductsModel extends Model
 
     public function getProducts()
     {
-        return $this->all()->sortByDesc('created_at');
+        return $this->all()->sortBy('created_at');
     }
 
     public function getPaginate()

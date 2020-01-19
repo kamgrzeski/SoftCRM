@@ -6,5 +6,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class SettingsModel extends Model
 {
-    protected $table = 'systemlogs';
+    protected $table = 'settings';
+
+    public function updateSetting(string $key, string $value) : bool
+    {
+        return $this->where('key', $key)->update(['value' => $value]);
+    }
+
+    public function getSettingValue(string $key)
+    {
+        $query = $this->where('key', $key)->get()->last();
+
+        if($query) {
+            return $query->value;
+        } else {
+            new \Exception('invalid key');
+        }
+    }
+
+    public function getAllSettings()
+    {
+        $allSettings = $this->all()->toArray();
+        $container = [];
+
+        foreach($allSettings as $key => $setting) {
+            $container[$setting['key']] = $setting['value'];
+        }
+
+        return $container;
+    }
 }

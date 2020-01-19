@@ -154,7 +154,7 @@
                                     <span class="badge badge" style="background-color: #8a3a44 !important;">
                                          {{ $result->count }} qty</span>
                                     <span class="badge badge" style="background-color: #298a15 !important;">
-                                        {{ Cknow\Money\Money::{config('crm_settings.currency')}($result->price) }}</span>
+                                        {{ Cknow\Money\Money::{$currency}($result->price) }}</span>
                                     <i class="fa fa-fw fa-product-hunt"></i> {{ $result->name }}
                                 </a>
                             @endforeach

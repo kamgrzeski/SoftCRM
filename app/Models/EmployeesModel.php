@@ -88,7 +88,7 @@ class EmployeesModel extends Model
 
     public function getEmployees()
     {
-        $query = $this->all()->sortByDesc('created_at');
+        $query = $this->all()->sortBy('created_at');
 
         foreach($query as $key => $value) {
             $query[$key]->is_active = $query[$key]->is_active  ? 'Active' : 'Deactive';

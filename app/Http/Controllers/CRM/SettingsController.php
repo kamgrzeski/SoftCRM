@@ -9,8 +9,6 @@ use App\Services\SettingsService;
 use App\Services\SystemLogService;
 use Illuminate\Support\Facades\Redirect;
 use View;
-use Validator;
-use Config;
 
 class SettingsController extends Controller
 {
@@ -31,7 +29,7 @@ class SettingsController extends Controller
     {
         return view('crm.settings.index')->with(
             [
-                'input' => config('crm_settings.temp'),
+                'settings' => $this->settingsService->loadAllSettings(),
                 'logs' => $this->helpersFncService->formatAllSystemLogs()
             ]
         );
@@ -41,17 +39,11 @@ class SettingsController extends Controller
     {
         $validatedData = $request->validated();
 
-        Config::set('crm_settings', ['pagination_size' => $validatedData['pagination_size'],
-            'currency' => $validatedData['currency'],
-            'priority_size' => $validatedData['priority_size'],
-            'invoice_tax' => $validatedData['invoice_tax'],
-            'invoice_logo_link' => $validatedData['invoice_logo_link'],
-            'stats' => $validatedData['stats']]);
-
-
-        $this->settingsService->saveEnvData($validatedData['rollbar_token']);
-
-        $this->systemLogsService->loadInsertSystemLogs('SettingsModel has been changed.', $this->systemLogsService::successCode, $this->getAdminId());
-        return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSettingsUpdate'));
+        if ($this->settingsService->loadUpdateSettings($validatedData)) {
+            $this->systemLogsService->loadInsertSystemLogs('SettingsModel has been changed.', $this->systemLogsService::successCode, $this->getAdminId());
+            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSettingsUpdate'));
+        } else {
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSettingsUpdate'));
+        }
     }
 }

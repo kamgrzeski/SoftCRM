@@ -26,7 +26,7 @@ class CompaniesService
 
     public function loadCompanies()
     {
-        return $this->companiesModel::all()->sortByDesc('created_at');
+        return $this->companiesModel::all()->sortBy('created_at');
     }
 
     public function loadPagination()

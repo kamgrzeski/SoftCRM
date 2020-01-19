@@ -61,7 +61,7 @@ class SalesModel extends Model
 
     public function getSalesSortedByCreatedAt()
     {
-        return $this->all()->sortByDesc('created_at');
+        return $this->all()->sortBy('created_at');
     }
 
     public function getSale(int $saleId) : self

@@ -69,7 +69,7 @@ class ClientController extends Controller
 
     public function processDeleteClient(int $clientId)
     {
-        $clientAssigned = $this->clientService->checkIfClientHaveAssignedEmployeeOrCompanie($clientId);
+        $clientAssigned = $this->clientService->checkIfClientHaveAssignedEmployeeOrCompany($clientId);
 
         if (!empty($clientAssigned)) {
             return Redirect::back()->with('message_danger', $clientAssigned);

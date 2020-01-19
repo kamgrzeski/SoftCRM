@@ -29,10 +29,7 @@ class SettingsStoreRequest extends FormRequest
             'currency' => 'required|string',
             'priority_size' => 'required|integer',
             'invoice_tax' => 'required|integer',
-            'invoice_logo_link' => 'required',
-            'rollbar_token' => 'required',
-            'loading_circle' => 'required',
-            'stats' => 'required'
+            'loading_circle' => 'required'
         ];
     }
 }

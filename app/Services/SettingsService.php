@@ -1,15 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kamilgrzechulski
- * Date: 30.07.2018
- * Time: 09:20
- */
 
 namespace App\Services;
 
 use App\Models\SettingsModel;
-use Config;
 
 class SettingsService
 {
@@ -20,10 +13,28 @@ class SettingsService
         $this->settingsModel = new SettingsModel();
     }
 
-    public function saveEnvData($RollbarToken)
+    public function loadUpdateSetting(string $key, string $value) : string
     {
-        // TODO Sentry
-//        DotenvEditor::setKey('ROLLBAR_TOKEN', $RollbarToken);
-//        DotenvEditor::save();
+        return $this->settingsModel->updateSetting($key, $value);
     }
+
+    public function loadSettingValue(string $key) : string
+    {
+        return $this->settingsModel->getSettingValue($key);
+    }
+
+    public function loadUpdateSettings(array $validatedData)
+    {
+        foreach($validatedData as $key => $value) {
+            $this->settingsModel->updateSetting($key, $value);
+        }
+
+        return true;
+    }
+
+    public function loadAllSettings()
+    {
+        return $this->settingsModel->getAllSettings();
+    }
+
 }

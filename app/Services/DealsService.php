@@ -25,7 +25,7 @@ class DealsService
 
     public function loadDeals()
     {
-        return DealsModel::all()->sortByDesc('created_at');
+        return DealsModel::all()->sortBy('created_at');
     }
 
     public function loadPaginate()

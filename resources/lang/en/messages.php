@@ -17,6 +17,7 @@ return [
     'ClientIsDeactivated' => 'Client has been already deactivated.',
     'ThereIsNoClient' => 'A client with this name doesn\'t exist.',
     'SuccessSettingsUpdate' => 'Settings has been updated.',
+    'ErrorSettingsUpdate' => 'There is problem with settings update.',
 
     /** Companies Messages **/
     'SuccessCompaniesStore' => 'Company has been added.',

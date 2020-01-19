@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\SettingsModel;
+use App\Models\SystemLogsModel;
 use App\Models\TasksModel;
 
 class HelpersFncService
@@ -49,19 +49,19 @@ class HelpersFncService
      */
     public function formatAllSystemLogs()
     {
-        $allLogs = SettingsModel::all();
+        $allLogs = SystemLogsModel::all();
         $tempArray = [];
 
         foreach ($allLogs as $key => $result)
         {
             $tempArray[$key] = [
-                'id' => $result->id,
-                'user_id' => $result->user_id,
-                'actions' => $result->actions,
-                'city' => $result->city,
-                'country' => $result->country,
-                'ip_address' => $result->ip_address,
-                'date' => $result->date
+                'id' => $result->id ?? '(not set)',
+                'user_id' => $result->user_id ?? '(not set)',
+                'actions' => $result->actions ?? '(not set)',
+                'city' => $result->city ?? '(not set)',
+                'country' => $result->country ?? '(not set)',
+                'ip_address' => $result->ip_address ?? '(not set)',
+                'date' => $result->date ?? '(not set)'
             ];
         }
 

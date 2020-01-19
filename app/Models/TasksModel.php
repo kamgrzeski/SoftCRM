@@ -79,7 +79,7 @@ class TasksModel extends Model
 
     public function getTasks()
     {
-        return $this->all()->sortByDesc('created_at');
+        return $this->all()->sortBy('created_at');
     }
 
     public function getPaginate()

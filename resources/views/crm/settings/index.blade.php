@@ -24,37 +24,25 @@
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('pagination_size', 'Pagination size') }}
-                                {{ Form::text('pagination_size', config('crm_settings.pagination_size'), ['class' => 'form-control']) }}
+                                {{ Form::text('pagination_size', $settings['pagination_size'], ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('priority_size', 'Priority size') }}
-                                {{ Form::text('priority_size', config('crm_settings.priority_size'), ['class' => 'form-control']) }}
-                            </div>
-                            <div class="form-group input-row">
-                                {{ Form::label('invoice_logo_link', 'Invoice logo (comping soon)') }}
-                                {{ Form::text('invoice_logo_link', config('crm_settings.invoice_logo_link'), ['class' => 'form-control']) }}
+                                {{ Form::text('priority_size', $settings['priority_size'], ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('loading_circle', 'Loading circle') }}
-                                {{ Form::select('loading_circle', [1 => 'Show', 0 =>'Don\'t show'], config('crm_settings.loading_circle'), ['class'=>'form-control']) }}
+                                {{ Form::select('loading_circle', [1 => 'Show', 0 =>'Don\'t show'], $settings['loading_circle'], ['class'=>'form-control']) }}
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('currency', 'Currency type') }}
-                                {{ Form::select('currency', ['PLN' => 'PLN', 'EUR' => 'EUR', 'USD' => 'USD'], config('crm_settings.currency'), ['class' => 'form-control']) }}
+                                {{ Form::select('currency', ['PLN' => 'PLN', 'EUR' => 'EUR', 'USD' => 'USD'], $settings['currency'], ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('invoice_tax', 'Tax') }}
-                                {{ Form::text('invoice_tax', config('crm_settings.invoice_tax'), ['class' => 'form-control']) }}
-                            </div>
-                            <div class="form-group input-row">
-                                {{ Form::label('rollbar_token', 'Rollbar Token') }}
-                                {{ Form::text('rollbar_token', config('crm_settings.rollbar_token'), ['class' => 'form-control']) }}
-                            </div>
-                            <div class="form-group input-row">
-                                {{ Form::label('stats', 'Statistic (left panel)') }}
-                                {{ Form::select('stats', [1 => 'Yes', 2 => 'No'], config('crm_settings.stats'), ['class' => 'form-control']) }}
+                                {{ Form::text('invoice_tax', $settings['invoice_tax'], ['class' => 'form-control']) }}
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">
