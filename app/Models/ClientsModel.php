@@ -95,7 +95,7 @@ class ClientsModel extends Model
 
         Arr::add($query, 'companiesCount', count($query->companies));
         Arr::add($query, 'employeesCount', count($query->employees));
-        Arr::add($query, 'formattedBudget', Money::{config('crm_settings.currency')}($query->budget));
+        Arr::add($query, 'formattedBudget', Money::{SettingsModel::getSettingValue('currency')}($query->budget));
 
         return $query;
     }
@@ -105,7 +105,7 @@ class ClientsModel extends Model
         $query = $this->all()->sortBy('created_at');
 
         foreach($query as $key => $client) {
-            $query[$key]->budget = Money::{config('crm_settings.currency')}($client->budget);
+            $query[$key]->budget = Money::{SettingsModel::getSettingValue('currency')}($client->budget);
         }
 
         return $query;

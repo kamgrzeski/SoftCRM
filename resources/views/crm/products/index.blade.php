@@ -46,7 +46,7 @@
                                     <td class="text-center">{{ $value->count }}</td>
                                     <td class="text-center">
                                         <button type="submit"
-                                                class="btn btn-default">{{ Cknow\Money\Money::{config('crm_settings.currency')}($value->price) }}</button>
+                                                class="btn btn-default">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($value->price) }}</button>
                                     </td>
                                     <td class="text-center">
                                         @if($value->is_active == TRUE)

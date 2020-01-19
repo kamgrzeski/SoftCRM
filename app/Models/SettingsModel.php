@@ -13,9 +13,9 @@ class SettingsModel extends Model
         return $this->where('key', $key)->update(['value' => $value]);
     }
 
-    public function getSettingValue(string $key)
+    public static function getSettingValue(string $key)
     {
-        $query = $this->where('key', $key)->get()->last();
+        $query = self::where('key', $key)->get()->last();
 
         if($query) {
             return $query->value;

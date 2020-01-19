@@ -51,15 +51,15 @@
                                     <td class="text-center">{{ $value->type }}</td>
                                     <td>
                                         <button type="submit"
-                                                class="btn btn-default" style="background-color: rgba(130,113,243,0.22)">{{ Cknow\Money\Money::{config('crm_settings.currency')}($value->gross) }}</button>
+                                                class="btn btn-default" style="background-color: rgba(130,113,243,0.22)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($value->gross) }}</button>
                                     </td>
                                     <td>
                                         <button type="submit"
-                                                class="btn btn-default" style="background-color: rgba(113,243,110,0.45)">{{ Cknow\Money\Money::{config('crm_settings.currency')}($value->net) }}</button>
+                                                class="btn btn-default" style="background-color: rgba(113,243,110,0.45)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($value->net) }}</button>
                                     </td>
                                     <td>
                                         <button type="submit"
-                                                class="btn btn-default" style="background-color: rgba(217,243,30,0.45)">{{ Cknow\Money\Money::{config('crm_settings.currency')}($value->vat) }}</button>
+                                                class="btn btn-default" style="background-color: rgba(217,243,30,0.45)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($value->vat) }}</button>
                                     </td>
                                     <td class="text-center"><a
                                                 href="{{ URL::to('companies/view/' . $value->companies->id) }}">{{ $value->companies->name }}</a>

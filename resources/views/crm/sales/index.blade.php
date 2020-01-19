@@ -45,7 +45,7 @@
                                     <td class="text-center">{{ $value->quantity }}</td>
                                     <td class="text-center">
                                         <button type="submit"class="btn btn-default">
-                                            {{ Cknow\Money\Money::{config('crm_settings.currency')}
+                                            {{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}
                                             ($value->quantity * $value->products->price) }}
                                         </button>
                                     </td>
