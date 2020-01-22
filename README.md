@@ -5,46 +5,46 @@
 
 SoftCRM is a database system containing a number of useful functions and solutions to facilitate B2B company management. It uses data analysis about customers' history with a company and to improve business relationships with customers, specifically focusing on customer retention and ultimately driving sales growth.
 
-<img src="https://i.ibb.co/0ZfbYvC/Przechwytywanie.png">
+<img src="https://i.ibb.co/xMcZF2V/Przechwytywanie.jpg">
 
-## <font color="red">IMPORTANT!</font> 
-In the future, administrators can define the default language to be applied to all site content. At the moment, SoftCRM supports English (you can configure your i18n). 
 ## Functionality:
-<ul>
-  <li>Contact Management</li>
-  <li>Sales Team and Customer Opportunity Management</li>
-  <li>Lead Management for determining high-quality leads</li>
-  <li>Reports and Dashboards</li>
-  <li>Sales Analytics</li>
-  <li>Sales Force Automation</li>
-  <li>Workflow and Approvals</li>
-  <li>Sales Data</li>
-</ul>
+Dependencies:
+- Customer management
+- Employee management
+- Business management
+- Contract management between companies
 
+Marketing:
+- Product management
+- Task management for employees
+
+Sales:
+- Finance management
+- Sales management
 ## Installation
 
 #### 1. To install run the following commands in a working directory: 
 ```
 git clone https://github.com/KamilGrzechulski/SoftCRM.git
 ```
-#### 2. Now run and make sure you have composer installed on your server:
+#### 2. Now run and make sure you have the composer installed on your machine:
 ```
 composer install 
 ```
 
-#### 3. Then setup your database and open the .env.example file. Rename this file to .env and enter details for your site, database, stripe and email integration.
+#### 3. In the next step, open the .env.example file. Change the data of this file to .env and the details of the site, database and email settings.
 
-#### 4. Run this command from the root project folder and this will create the database tables for you. This is our custom command to process all missing features.
+#### 4. Run the command from the main project folder to create database tables. This is our custom command to process all missing functions.
 ```
 php artisan process-softcrm
 ```
 
-#### 5. Than run laravel server by command:
+#### 5. that's all ! Now start the laravel server using the command:
 ```
 php artisan serve
 ```
 
-#### 6. Now you can login your Admin account by using:
+#### 6. Login to SoftCRM by using this account:
 ```
 user: admin@admin.com
 password: admin
