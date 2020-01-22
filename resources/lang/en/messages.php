@@ -52,11 +52,13 @@ return [
     'SuccessDealsUpdate' => 'Deal has been updated.',
     'ErrorDealsUpdate' => 'Deal hasn\'t been updated yet.',
     'SuccessDealsDelete' => 'Deal has been deleted.',
+    'SuccessDealsTermDelete' => 'Deal term has been deleted.',
     'SuccessDealsActive' => 'Deal has been active.',
     'ErrorDealsActive' => 'Deal hasn\'t been active yet.',
     'DealsIsNowDeactivated' => 'Deal has been deactivated.',
     'DealsIsDeactivated' => 'Deal has been already deactivated.',
     'ThereIsNoDeals' => 'A deal with this name doesn\'t exist.',
+    'SuccessDealsTermsStore' => 'Deal terms has been stored.',
 
     /** Employees Messages **/
     'SuccessEmployeesStore' => 'Employee has been added.',

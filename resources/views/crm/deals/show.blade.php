@@ -20,7 +20,7 @@
             @endif
             <div class="panel panel-default">
                 <div class="panel-heading">
-                        More information about {{ $deal->name }}
+                       Stored deals terms
                 </div>
 
                 <div class="panel-body">
@@ -124,19 +124,98 @@
                             </p>
                         </div>
                         <div class="tab-pane fade" id="messages">
-                            <h4>Terms of agreement</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                mollit anim id est laborum.</p>
+                            {{ Form::open(['route' => 'processStoreDealTerms']) }}
+
+                            <div class="col-lg-12 editor-style">
+                                    {!! Form::textarea('body', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                   incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                   exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                   dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                   Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                   mollit anim id est laborum.', ['class' => 'form-control', 'id' => 'summary-ckeditor']) !!}
+                            </div>
+
+                            {{ Form::hidden('dealId', $deal->id) }}
+
+                            <div class="col-lg-12 validate_form">
+                                {{ Form::submit('Save terms of argeement', ['class' => 'btn btn-primary']) }}
+                            </div>
+
+                            {{ Form::close() }}
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Stored deals terms
+        </div>
+
+        <div class="panel-body">
+            <div class="tab-content">
+                <div class="tab-pane fade active in" id="home">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Created at</th>
+                            <th scope="col" width="20%">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($dealsTerms as $key => $terms)
+                                <tr>
+                            <th scope="row">{{ $terms->id }}</th>
+                            <td>{{ $terms->formattedDate }}</td>
+                            <td>
+
+                                {{ Form::open(['url' => 'deals/terms/delete/', 'class' => 'pull-right']) }}
+                                {{ Form::hidden('_method', 'DELETE') }}
+                                {{ Form::hidden('termId', $terms->id) }}
+                                {{ Form::submit('Delete', ['class' => 'btn btn-small btn-danger btn-padding']) }}
+                                {{ Form::close() }}
+
+                                {{ Form::open(['url' => 'deals/terms/generate-pdf/', 'class' => 'pull-right']) }}
+                                {{ Form::hidden('_method', 'POST') }}
+                                {{ Form::hidden('termId', $terms->id) }}
+                                {{ Form::submit('Generate PDF', ['class' => 'btn btn-small btn-padding btn-pdf']) }}
+                                {{ Form::close() }}
+                            </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="tab-pane fade" id="messages">
+                    {{ Form::open(['route' => 'processStoreDealTerms']) }}
+
+                    <div class="col-lg-12 editor-style">
+                        {!! Form::textarea('body', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                       incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                       exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                       dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                       Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                       mollit anim id est laborum.', ['class' => 'form-control', 'id' => 'summary-ckeditor']) !!}
+                    </div>
+
+                    {{ Form::hidden('dealId', $deal->id) }}
+
+                    <div class="col-lg-12 validate_form">
+                        {{ Form::submit('Save terms of argeement', ['class' => 'btn btn-primary']) }}
+                    </div>
+
+                    {{ Form::close() }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
@@ -157,4 +236,9 @@
             </div>
         </div>
     </div>
+
+    <script src="//cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace( 'summary-ckeditor' );
+    </script>
 @endsection

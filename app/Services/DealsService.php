@@ -3,14 +3,18 @@
 namespace App\Services;
 
 use App\Models\DealsModel;
+use App\Models\DealsTermsModel;
+use niklasravnsborg\LaravelPdf\Facades\Pdf;
 
 class DealsService
 {
     private $dealsModel;
+    private $dealsTermsModel;
 
     public function __construct()
     {
         $this->dealsModel = new DealsModel();
+        $this->dealsTermsModel = new DealsTermsModel();
     }
 
     public function execute(array $requestedData, int $adminId)
@@ -61,5 +65,31 @@ class DealsService
     public function loadDealsInLatestMonth()
     {
         return $this->dealsModel->getDealsInLatestMonth() . '%' ? : '0.00%';
+    }
+
+    public function loadStoreDealTerms(array $validatedData)
+    {
+        return $this->dealsTermsModel->storeDealTerms($validatedData);
+    }
+
+    public function loadDealsTerms(int $dealId)
+    {
+        return $this->dealsTermsModel->getDealTerms($dealId);
+    }
+
+    public function loadGenerateDealTermsInPDF(int $termId)
+    {
+        $data = [
+            'body' => $this->dealsTermsModel->getTermsBody($termId)
+        ];
+
+        $pdf = PDF::loadView('crm.deals.terms-pdf', $data);
+
+        return $pdf->stream('crm.deals.terms-pdf');
+    }
+
+    public function loadDeleteTerm(int $termId)
+    {
+        return $this->dealsTermsModel->deleteTerm($termId);
     }
 }

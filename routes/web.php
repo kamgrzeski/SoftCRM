@@ -51,6 +51,9 @@ Route::group(['prefix' => 'deals'], function () {
     Route::put('update/{employeeId}', 'CRM\DealsController@processUpdateDeal')->name('processUpdateDeal');
     Route::delete('delete/{clientId}', 'CRM\DealsController@processDeleteDeal')->name('processDeleteDeal');
     Route::get('set-active/{id}/{value}', 'CRM\DealsController@processSetIsActive')->name('processSetIsActive');
+    Route::post('store-terms', 'CRM\DealsController@processStoreDealTerms')->name('processStoreDealTerms');
+    Route::post('terms/generate-pdf', 'CRM\DealsController@processGenerateDealTermsInPDF');
+    Route::delete('terms/delete', 'CRM\DealsController@processDeleteDealTerm')->name('processDeleteDealTerm');
 });
 
 Route::group(['prefix' => 'employees'], function () {
