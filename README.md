@@ -1,4 +1,4 @@
-# B2B CRM System in Laravel 6.10 with PHP [>7.3]
+# B2B CRM System in Laravel 6.12 with PHP [>7.3]
 <p align="center">
   <img src="https://i.ibb.co/z8ssKdN/Przechwytywanie.jpg">
 </p>
@@ -8,19 +8,26 @@ SoftCRM is a database system containing a number of useful functions and solutio
 <img src="https://i.ibb.co/xMcZF2V/Przechwytywanie.jpg">
 
 ## Functionality:
-Dependencies:
+#### Dependencies:
 - Customer management
 - Employee management
 - Business management
 - Contract management between companies
 
-Marketing:
+#### Marketing:
 - Product management
 - Task management for employees
 
-Sales:
+#### Sales:
 - Finance management
 - Sales management
+
+#### Statistics:
+- full statistics from every day, yesterday, week and year
+- number of operations in the system,
+
+####  Keep in mind that this is not the end of the functionality of this system because I am constantly developing it!
+
 ## Installation
 
 #### 1. To install run the following commands in a working directory: 
