@@ -1,4 +1,7 @@
 # B2B CRM System in Laravel 6.10 with PHP [>7.3]
+<p align="center">
+  <img src="https://i.ibb.co/z8ssKdN/Przechwytywanie.jpg">
+</p>
 
 SoftCRM is a database system containing a number of useful functions and solutions to facilitate B2B company management. It uses data analysis about customers' history with a company and to improve business relationships with customers, specifically focusing on customer retention and ultimately driving sales growth.
 
