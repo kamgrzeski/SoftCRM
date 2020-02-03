@@ -119,10 +119,6 @@ class CalculateCashService
         return $counter;
     }
 
-    /**
-     * @param $isCompleted
-     * @return array
-     */
     public function loadTaskEveryMonth($isCompleted) {
 
         $dates = collect();

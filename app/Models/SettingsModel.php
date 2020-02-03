@@ -8,7 +8,7 @@ class SettingsModel extends Model
 {
     protected $table = 'settings';
 
-    public function updateSetting(string $key, string $value) : bool
+    public function updateSetting(string $key, string $value) : int
     {
         return $this->where('key', $key)->update(['value' => $value]);
     }

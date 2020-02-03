@@ -20,11 +20,12 @@
     },
     "require-dev": {
         "facade/ignition": "^1.4",
+        "fx3costa/laravelchartjs": "^2.3",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
-        "phpunit/phpunit": "^8.5.1",
-        "fx3costa/laravelchartjs": "^2.3"
+        "nunomaduro/larastan": "^0.5.0",
+        "phpunit/phpunit": "^8.5.1"
     },
     "config": {
         "optimize-autoloader": true,

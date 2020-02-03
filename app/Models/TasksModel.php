@@ -29,7 +29,7 @@ class TasksModel extends Model
         );
     }
 
-    public function updateTask(int $taskId, array $requestedData)
+    public function updateTask(int $taskId, array $requestedData) : int
     {
         return $this->where('id', '=', $taskId)->update(
             [
@@ -41,12 +41,12 @@ class TasksModel extends Model
             ]);
     }
 
-    public function setActive(int $taskId, int $activeType)
+    public function setActive(int $taskId, int $activeType) : int
     {
         return $this->where('id', '=', $taskId)->update(['is_active' => $activeType]);
     }
 
-    public function setCompleted(int $taskId, int $completeType)
+    public function setCompleted(int $taskId, int $completeType) : int
     {
         return $this->where('id', '=', $taskId)->update(['completed' => $completeType]);
     }

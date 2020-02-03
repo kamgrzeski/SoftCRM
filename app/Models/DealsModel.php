@@ -30,7 +30,7 @@ class DealsModel extends Model
         );
     }
 
-    public function updateDeal(int $dealId, array $requestedData) : bool
+    public function updateDeal(int $dealId, array $requestedData) : int
     {
         return $this->where('id', '=', $dealId)->update(
             [
@@ -41,7 +41,7 @@ class DealsModel extends Model
             ]);
     }
 
-    public function setActive(int $dealId, bool $activeType) : bool
+    public function setActive(int $dealId, bool $activeType) : int
     {
         return $this->where('id', '=', $dealId)->update(['is_active' => $activeType]);
     }

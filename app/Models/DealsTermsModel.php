@@ -38,12 +38,12 @@ class DealsTermsModel extends Model
         return $formatted->format('d M, Y');
     }
 
-    public function getTermsBody(int $termId)
+    public function getTermsBody(int $termId) : int
     {
         return $this->where('id', $termId)->get()->last()->body;
     }
 
-    public function deleteTerm(int $termId)
+    public function deleteTerm(int $termId) : bool
     {
         return $this->find($termId)->delete();
     }

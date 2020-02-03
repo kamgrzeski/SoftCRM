@@ -71,30 +71,31 @@ class DashboardController extends Controller
         return $this->calculateCashService->loadTaskEveryMonth($isCompleted);
     }
 
+    //cache set for 99 minutes
     private function storeInCacheUsableVariables()
     {
-        Cache::put('countClients', $this->clientService->loadCountClients(), null);
-        Cache::put('deactivatedClients', $this->clientService->loadDeactivatedClients(), null);
-        Cache::put('clientsInLatestMonth', $this->clientService->loadClientsInLatestMonth(), null);
-        Cache::put('countCompanies', $this->companiesService->loadCountCompanies(), null);
-        Cache::put('countEmployees', $this->employeesService->loadCountEmployees(), null);
-        Cache::put('countDeals', $this->dealsService->loadCountDeals(), null);
-        Cache::put('countFinances', $this->financesService->loadCountFinances(), null);
-        Cache::put('countProducts', $this->productsService->loadCountProducts(), null);
-        Cache::put('countTasks', $this->tasksService->loadCountTasks(), null);
-        Cache::put('countSales', $this->salesService->loadCountSales(), null);
-        Cache::put('deactivatedCompanies', $this->companiesService->loadDeactivatedCompanies(), null);
-        Cache::put('todayIncome', $this->calculateCashService->loadCountTodayIncome(), null);
-        Cache::put('yesterdayIncome', $this->calculateCashService->loadCountYesterdayIncome(), null);
-        Cache::put('cashTurnover', $this->calculateCashService->loadCountCashTurnover(), null);
-        Cache::put('countAllRowsInDb', $this->calculateCashService->loadCountAllRowsInDb(), null);
-        Cache::put('countSystemLogs', $this->systemLogService->loadCountLogs(), null);
-        Cache::put('companiesInLatestMonth', $this->companiesService->loadCompaniesInLatestMonth(), null);
-        Cache::put('employeesInLatestMonth', $this->employeesService->loadEmployeesInLatestMonth(), null);
-        Cache::put('deactivatedEmployees', $this->employeesService->loadDeactivatedEmployees(), null);
-        Cache::put('deactivatedDeals', $this->dealsService->loadDeactivatedDeals(), null);
-        Cache::put('dealsInLatestMonth', $this->dealsService->loadDealsInLatestMonth(), null);
-        Cache::put('completedTasks', $this->tasksService->loadCompletedTasks(), null);
-        Cache::put('uncompletedTasks', $this->tasksService->loadUncompletedTasks(), null);
+        Cache::put('countClients', $this->clientService->loadCountClients(), 99);
+        Cache::put('deactivatedClients', $this->clientService->loadDeactivatedClients(), 99);
+        Cache::put('clientsInLatestMonth', $this->clientService->loadClientsInLatestMonth(), 99);
+        Cache::put('countCompanies', $this->companiesService->loadCountCompanies(), 99);
+        Cache::put('countEmployees', $this->employeesService->loadCountEmployees(), 99);
+        Cache::put('countDeals', $this->dealsService->loadCountDeals(), 99);
+        Cache::put('countFinances', $this->financesService->loadCountFinances(), 99);
+        Cache::put('countProducts', $this->productsService->loadCountProducts(), 99);
+        Cache::put('countTasks', $this->tasksService->loadCountTasks(), 99);
+        Cache::put('countSales', $this->salesService->loadCountSales(), 99);
+        Cache::put('deactivatedCompanies', $this->companiesService->loadDeactivatedCompanies(), 99);
+        Cache::put('todayIncome', $this->calculateCashService->loadCountTodayIncome(), 99);
+        Cache::put('yesterdayIncome', $this->calculateCashService->loadCountYesterdayIncome(), 99);
+        Cache::put('cashTurnover', $this->calculateCashService->loadCountCashTurnover(), 99);
+        Cache::put('countAllRowsInDb', $this->calculateCashService->loadCountAllRowsInDb(), 99);
+        Cache::put('countSystemLogs', $this->systemLogService->loadCountLogs(), 99);
+        Cache::put('companiesInLatestMonth', $this->companiesService->loadCompaniesInLatestMonth(), 99);
+        Cache::put('employeesInLatestMonth', $this->employeesService->loadEmployeesInLatestMonth(), 99);
+        Cache::put('deactivatedEmployees', $this->employeesService->loadDeactivatedEmployees(), 99);
+        Cache::put('deactivatedDeals', $this->dealsService->loadDeactivatedDeals(), 99);
+        Cache::put('dealsInLatestMonth', $this->dealsService->loadDealsInLatestMonth(), 99);
+        Cache::put('completedTasks', $this->tasksService->loadCompletedTasks(), 99);
+        Cache::put('uncompletedTasks', $this->tasksService->loadUncompletedTasks(), 99);
     }
 }

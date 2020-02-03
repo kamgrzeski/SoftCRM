@@ -31,7 +31,7 @@ class SalesModel extends Model
         );
     }
 
-    public function updateSale(int $saleId, array $requestedData) : bool
+    public function updateSale(int $saleId, array $requestedData) : int
     {
         return $this->where('id', '=', $saleId)->update(
             [
@@ -44,7 +44,7 @@ class SalesModel extends Model
             ]);
     }
 
-    public function setActive(int $saleId, int $activeType) : bool
+    public function setActive(int $saleId, int $activeType) : int
     {
         return $this->where('id', '=', $saleId)->update(['is_active' => $activeType]);
     }

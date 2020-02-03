@@ -19,22 +19,14 @@ class Controller extends BaseController
     {
         $graph = new GraphDataService();
 
-        if ($graph) {
-            return $graph->taskGraphData();
-        }
-
-        return false;
+        return $graph->taskGraphData();
     }
 
     public function itemsCountGraphData()
     {
         $graph = new GraphDataService();
 
-        if ($graph) {
-            return $graph->itemsCountGraphData();
-        }
-
-        return false;
+        return $graph->itemsCountGraphData();
     }
 
     public function getAdminRoleType()

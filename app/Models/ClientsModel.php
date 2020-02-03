@@ -43,7 +43,7 @@ class ClientsModel extends Model
         );
     }
 
-    public function updateClient(int $id, array $requestedData) : bool
+    public function updateClient(int $id, array $requestedData) : int
     {
         return $this->where('id', '=', $id)->update(
             [
@@ -60,7 +60,7 @@ class ClientsModel extends Model
             ]);
     }
 
-    public function setClientActive(int $id, int $activeType) : bool
+    public function setClientActive(int $id, int $activeType) : int
     {
         return $this->where('id', '=', $id)->update(['is_active' => $activeType]);
     }

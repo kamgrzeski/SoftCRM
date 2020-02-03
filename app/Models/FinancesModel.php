@@ -39,7 +39,7 @@ class FinancesModel extends Model
         );
     }
 
-    public function updateFinance(int $financeId, array $requestedData) : bool
+    public function updateFinance(int $financeId, array $requestedData) : int
     {
         $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->loadCalculateNetAndVatByGivenGross($requestedData['gross']);
@@ -60,7 +60,7 @@ class FinancesModel extends Model
             ]);
     }
 
-    public function setActive(int $financeId, int $activeType) : bool
+    public function setActive(int $financeId, int $activeType) : int
     {
         return $this->where('id', '=', $financeId)->update(['is_active' => $activeType]);
     }

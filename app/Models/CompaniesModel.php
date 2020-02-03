@@ -52,7 +52,7 @@ class CompaniesModel extends Model
         );
     }
 
-    public function updateCompany(int $companiesId, array $requestedData) : bool
+    public function updateCompany(int $companiesId, array $requestedData) : int
     {
         return $this->where('id', '=', $companiesId)->update(
             [
@@ -71,7 +71,7 @@ class CompaniesModel extends Model
             ]);
     }
 
-    public function setActive(int $companiesId, int $activeType) : bool
+    public function setActive(int $companiesId, int $activeType) : int
     {
        return $this->where('id', '=', $companiesId)->update(['is_active' => $activeType]);
     }

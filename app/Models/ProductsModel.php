@@ -31,7 +31,7 @@ class ProductsModel extends Model
         );
     }
 
-    public function updateProduct(int $productId, array $requestedData) : bool
+    public function updateProduct(int $productId, array $requestedData) : int
     {
         return $this->where('id', '=', $productId)->update(
             [
@@ -44,7 +44,7 @@ class ProductsModel extends Model
             ]);
     }
 
-    public function setActive(int $productId, int $activeType) : bool
+    public function setActive(int $productId, int $activeType) : int
     {
         return $this->where('id', '=', $productId)->update(['is_active' => $activeType]);
     }

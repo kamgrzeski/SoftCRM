@@ -47,7 +47,7 @@ class EmployeesModel extends Model
         );
     }
 
-    public function updateEmployee(int $employeeId, array $requestedData) : bool
+    public function updateEmployee(int $employeeId, array $requestedData) : int
     {
         return $this->where('id', '=', $employeeId)->update(
             [
@@ -61,7 +61,7 @@ class EmployeesModel extends Model
             ]);
     }
 
-    public function setActive(int $employeeId, int $activeType) : bool
+    public function setActive(int $employeeId, int $activeType) : int
     {
         return $this->where('id', '=', $employeeId)->update(['is_active' => $activeType]);
     }

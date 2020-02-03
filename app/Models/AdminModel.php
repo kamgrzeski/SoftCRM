@@ -54,12 +54,12 @@ class AdminModel extends Authenticatable
         }
     }
 
-    private function getAdminDetails(int $adminId)
+    private function getAdminDetails(int $adminId) : self
     {
         return $this->find($adminId);
     }
 
-    private function updateAdminPassword(string $newPassword, int $adminId)
+    private function updateAdminPassword(string $newPassword, int $adminId) : int
     {
         return $this->where('id', $adminId)->update(['password' => Hash::make($newPassword)]);
     }
