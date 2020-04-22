@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProductsStoreRequest;
+use App\Http\Requests\ProductStoreRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Services\ProductsService;
 use App\Services\SystemLogService;
 use View;
@@ -48,19 +49,21 @@ class ProductsController extends Controller
         );
     }
 
-    public function processStoreProduct(ProductsStoreRequest $request)
+    public function processStoreProduct(ProductStoreRequest $request)
     {
-        if ($productId = $this->productsService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->loadInsertSystemLogs('Product has been add with id: ' . $productId, $this->systemLogsService::successCode, $this->getAdminId());
+        $storedProductId = $this->productsService->execute($request->validated(), $this->getAdminId());
+
+        if ($storedProductId) {
+            $this->systemLogsService->loadInsertSystemLogs('Product has been add with id: ' . $storedProductId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorProductsStore'));
         }
     }
 
-    public function processUpdateProduct(Request $request, int $productId)
+    public function processUpdateProduct(ProductUpdateRequest $request, int $productId)
     {
-        if ($this->productsService->update($productId, $request->all())) {
+        if ($this->productsService->update($productId, $request->validated())) {
             return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorProductsStore'));
@@ -83,7 +86,7 @@ class ProductsController extends Controller
         return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsDelete'));
     }
 
-    public function processSetIsActive(int $productId, bool $value)
+    public function processProductSetIsActive(int $productId, bool $value)
     {
         if ($this->productsService->loadIsActiveFunction($productId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('ProductsModel has been enabled with id: ' . $productId, $this->systemLogsService::successCode, $this->getAdminId());

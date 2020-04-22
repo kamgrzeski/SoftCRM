@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\FinancesModel;
-use Config;
+use Illuminate\Support\Facades\Config;
 
 class FinancesService
 {

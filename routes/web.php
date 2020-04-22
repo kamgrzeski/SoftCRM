@@ -20,6 +20,8 @@ Route::post('password/reset/process', 'CRM\AdminController@processChangePassword
 Route::get('/', 'DashboardController@index')->name('home');
 Route::get('/', 'DashboardController@index');
 
+Route::get('/reload-info', 'DashboardController@processReloadInformation')->name('reload-info');
+
 Route::group(['prefix' => 'clients'], function () {
     Route::get('/', 'CRM\ClientController@processListOfClients')->name('clients');
     Route::get('form/create', 'CRM\ClientController@processRenderCreateForm')->name('processRenderCreateForm');
@@ -28,7 +30,7 @@ Route::group(['prefix' => 'clients'], function () {
     Route::post('store', 'CRM\ClientController@processStoreClient')->name('processStoreClient');
     Route::put('update/{clientId}', 'CRM\ClientController@processUpdateClient')->name('processUpdateClient');
     Route::delete('delete/{clientId}', 'CRM\ClientController@processDeleteClient')->name('processDeleteClient');
-    Route::get('set-active/{id}/{value}', 'CRM\ClientController@processSetIsActive')->name('processSetIsActive');
+    Route::get('set-active/{id}/{value}', 'CRM\ClientController@processClientSetIsActive')->name('processSetIsActive');
 });
 
 Route::group(['prefix' => 'companies'], function () {
@@ -39,7 +41,7 @@ Route::group(['prefix' => 'companies'], function () {
     Route::post('store', 'CRM\CompaniesController@processStoreCompany')->name('processStoreCompanies');
     Route::put('update/{employeeId}', 'CRM\CompaniesController@processUpdateCompany')->name('processUpdateCompanies');
     Route::delete('delete/{clientId}', 'CRM\CompaniesController@processDeleteCompany')->name('processDeleteCompanies');
-    Route::get('set-active/{id}/{value}', 'CRM\CompaniesController@processSetIsActive')->name('processSetIsActive');
+    Route::get('set-active/{id}/{value}', 'CRM\CompaniesController@processCompanySetIsActive')->name('processSetIsActive');
 });
 
 Route::group(['prefix' => 'deals'], function () {
@@ -64,18 +66,7 @@ Route::group(['prefix' => 'employees'], function () {
     Route::post('store', 'CRM\EmployeesController@processStoreEmployee')->name('processStoreEmployee');
     Route::put('update/{employeeId}', 'CRM\EmployeesController@processUpdateEmployee')->name('processUpdateEmployee');
     Route::delete('delete/{clientId}', 'CRM\EmployeesController@processDeleteEmployee')->name('processDeleteEmployee');
-    Route::get('set-active/{id}/{value}', 'CRM\EmployeesController@processSetIsActive')->name('processSetIsActive');
-});
-
-Route::group(['prefix' => 'contacts'], function () {
-    Route::get('/', 'CRM\ContactsController@processListOfContacts')->name('contacts');
-    Route::get('form/create', 'CRM\ContactsController@processRenderCreateForm')->name('processRenderCreateForm');
-    Route::get('form/update/{clientId}', 'CRM\ContactsController@processRenderUpdateForm')->name('processRenderUpdateForm');
-    Route::get('view/{clientId}', 'CRM\ContactsController@processShowContactsDetails')->name('viewContactsDetails');
-    Route::post('store', 'CRM\ContactsController@processStoreContacts')->name('processStoreContacts');
-    Route::put('update/{employeeId}', 'CRM\ContactsController@processUpdateContacts')->name('processUpdateContacts');
-    Route::delete('delete/{clientId}', 'CRM\ContactsController@processDeleteContacts')->name('processDeleteContacts');
-    Route::get('set-active/{id}/{value}', 'CRM\ContactsController@processSetIsActive')->name('processSetIsActive');
+    Route::get('set-active/{id}/{value}', 'CRM\EmployeesController@processEmployeeSetIsActive')->name('processSetIsActive');
 });
 
 Route::group(['prefix' => 'tasks'], function () {
@@ -86,7 +77,7 @@ Route::group(['prefix' => 'tasks'], function () {
     Route::post('store', 'CRM\TasksController@processStoreTask')->name('processStoreTask');
     Route::put('update/{employeeId}', 'CRM\TasksController@processUpdateTask')->name('processUpdateTask');
     Route::delete('delete/{clientId}', 'CRM\TasksController@processDeleteTask')->name('processDeleteTask');
-    Route::get('set-active/{id}/{value}', 'CRM\TasksController@processSetIsActive')->name('processSetIsActive');
+    Route::get('set-active/{id}/{value}', 'CRM\TasksController@processTaskSetIsActive')->name('processSetIsActive');
     Route::get('/completed/{id}', 'CRM\TasksController@processSetTaskToCompleted')->name('completeTask');
     Route::get('/uncompleted/{id}', 'CRM\TasksController@processSetTaskToUnCompleted')->name('processSetTaskToUnCompleted');
 });
@@ -99,7 +90,7 @@ Route::group(['prefix' => 'sales'], function () {
     Route::post('store', 'CRM\SalesController@processStoreSale')->name('processStoreSale');
     Route::put('update/{employeeId}', 'CRM\SalesController@processUpdateSale')->name('processUpdateSale');
     Route::delete('delete/{clientId}', 'CRM\SalesController@processDeleteSale')->name('processDeleteSale');
-    Route::get('set-active/{id}/{value}', 'CRM\SalesController@processSetIsActive')->name('processSetIsActive');
+    Route::get('set-active/{id}/{value}', 'CRM\SalesController@processSaleSetIsActive')->name('processSetIsActive');
 });
 
 Route::group(['prefix' => 'products'], function () {
@@ -110,18 +101,7 @@ Route::group(['prefix' => 'products'], function () {
     Route::post('store', 'CRM\ProductsController@processStoreProduct')->name('processStoreProduct');
     Route::put('update/{employeeId}', 'CRM\ProductsController@processUpdateProduct')->name('processUpdateProduct');
     Route::delete('delete/{clientId}', 'CRM\ProductsController@processDeleteProduct')->name('processDeleteProduct');
-    Route::get('set-active/{id}/{value}', 'CRM\ProductsController@processSetIsActive')->name('processSetIsActive');
-});
-
-Route::group(['prefix' => 'projects'], function () {
-    Route::get('/', 'CRM\ProjectsController@processListOfProjects')->name('projects');
-    Route::get('form/create', 'CRM\ProjectsController@processRenderCreateForm')->name('processRenderCreateForm');
-    Route::get('form/update/{clientId}', 'CRM\ProjectsController@processRenderUpdateForm')->name('processRenderUpdateForm');
-    Route::get('view/{clientId}', 'CRM\ProjectsController@processShowProjectsDetails')->name('viewProjectsDetails');
-    Route::post('store', 'CRM\ProjectsController@processStoreProjects')->name('processStoreProjects');
-    Route::put('update/{employeeId}', 'CRM\ProjectsController@processUpdateProjects')->name('processUpdateProjects');
-    Route::delete('delete/{clientId}', 'CRM\ProjectsController@processDeleteProjects')->name('processDeleteProjects');
-    Route::get('set-active/{id}/{value}', 'CRM\ProjectsController@processSetIsActive')->name('processSetIsActive');
+    Route::get('set-active/{id}/{value}', 'CRM\ProductsController@processProductSetIsActive')->name('processSetIsActive');
 });
 
 Route::group(['prefix' => 'finances'], function () {
@@ -132,16 +112,10 @@ Route::group(['prefix' => 'finances'], function () {
     Route::post('store', 'CRM\FinancesController@processStoreFinance')->name('processStoreFinance');
     Route::put('update/{employeeId}', 'CRM\FinancesController@processUpdateFinance')->name('processUpdateFinance');
     Route::delete('delete/{clientId}', 'CRM\FinancesController@processDeleteFinance')->name('processDeleteFinance');
-    Route::get('set-active/{id}/{value}', 'CRM\FinancesController@processSetIsActive')->name('processSetIsActive');
+    Route::get('set-active/{id}/{value}', 'CRM\FinancesController@processFinanceSetIsActive')->name('processSetIsActive');
 });
 
 Route::group(['prefix' => 'settings'], function () {
     Route::get('/', 'CRM\SettingsController@processListOfSettings')->name('settings');
-    Route::get('form/create', 'CRM\SettingsController@processRenderCreateForm')->name('processRenderCreateForm');
-    Route::get('form/update/{clientId}', 'CRM\SettingsController@processRenderUpdateForm')->name('processRenderUpdateForm');
-    Route::get('view/{clientId}', 'CRM\SettingsController@processShowSettingsDetails')->name('viewSettingsDetails');
-    Route::post('store', 'CRM\SettingsController@processStoreSettings')->name('processStoreSettings');
-    Route::put('update/{employeeId}', 'CRM\SettingsController@processUpdateSettings')->name('processUpdateSettings');
-    Route::delete('delete/{clientId}', 'CRM\SettingsController@processDeleteSettings')->name('processDeleteSettings');
-    Route::get('set-active/{id}/{value}', 'CRM\SettingsController@processSetIsActive')->name('processSetIsActive');
+    Route::put('update', 'CRM\SettingsController@processUpdateSettings')->name('processUpdateSettings');
 });

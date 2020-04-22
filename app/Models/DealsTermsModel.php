@@ -5,10 +5,14 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Config;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DealsTermsModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'deals_terms';
+    protected $dates = ['deleted_at'];
 
     public function storeDealTerms(array $validatedData)
     {
@@ -38,7 +42,7 @@ class DealsTermsModel extends Model
         return $formatted->format('d M, Y');
     }
 
-    public function getTermsBody(int $termId) : int
+    public function getTermsBody(int $termId) : string
     {
         return $this->where('id', $termId)->get()->last()->body;
     }
@@ -46,5 +50,10 @@ class DealsTermsModel extends Model
     public function deleteTerm(int $termId) : bool
     {
         return $this->find($termId)->delete();
+    }
+
+    public function countAssignedDealTerms(int $dealId)
+    {
+        return $this->where('deal_id', $dealId)->count();
     }
 }

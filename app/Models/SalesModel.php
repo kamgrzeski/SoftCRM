@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Config;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SalesModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'sales';
+    protected $dates = ['deleted_at'];
 
     public function products()
     {
@@ -24,7 +27,7 @@ class SalesModel extends Model
                 'date_of_payment' => $requestedData['date_of_payment'],
                 'product_id' => $requestedData['product_id'],
                 'price' => $requestedData['price'],
-                'created_at' => Carbon::now(),
+                'created_at' => now(),
                 'is_active' => 1,
                 'admin_id' => $adminId
             ]
@@ -40,13 +43,19 @@ class SalesModel extends Model
                 'date_of_payment' => $requestedData['date_of_payment'],
                 'product_id' => $requestedData['product_id'],
                 'price' => $requestedData['price'],
-                'updated_at' => Carbon::now()
-            ]);
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function setActive(int $saleId, int $activeType) : int
     {
-        return $this->where('id', '=', $saleId)->update(['is_active' => $activeType]);
+        return $this->where('id', '=', $saleId)->update(
+            [
+                'is_active' => $activeType,
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function countSales() : int

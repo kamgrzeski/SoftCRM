@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Services\FinancesService;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Config;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Config;
 
 class FinancesModel extends Model
 {
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
+
     protected $table = 'finances';
 
     public function companies()
@@ -30,9 +33,9 @@ class FinancesModel extends Model
                 'gross' => $requestedData['gross'],
                 'net' => $dataToInsert['net'],
                 'vat' => $dataToInsert['vat'],
-                'date' => $requestedData['date'] ?? Carbon::now(),
+                'date' => $requestedData['date'] ?? now(),
                 'companies_id' => $requestedData['companies_id'],
-                'created_at' => Carbon::now(),
+                'created_at' => now(),
                 'is_active' => 1,
                 'admin_id' => $adminId
             ]
@@ -55,14 +58,20 @@ class FinancesModel extends Model
                 'vat' => $dataToInsert['vat'],
                 'date' => $requestedData['date'],
                 'companies_id' => $requestedData['companies_id'],
-                'updated_at' => Carbon::now(),
+                'updated_at' => now(),
                 'is_active' => 1
-            ]);
+            ]
+        );
     }
 
     public function setActive(int $financeId, int $activeType) : int
     {
-        return $this->where('id', '=', $financeId)->update(['is_active' => $activeType]);
+        return $this->where('id', '=', $financeId)->update(
+            [
+                'is_active' => $activeType,
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function countFinances() : int

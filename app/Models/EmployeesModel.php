@@ -4,11 +4,15 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 
 class EmployeesModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'employees';
+    protected $dates = ['deleted_at'];
 
     public function companies()
     {
@@ -40,7 +44,7 @@ class EmployeesModel extends Model
                 'job' => $requestedData['job'],
                 'note' => $requestedData['note'],
                 'client_id' => $requestedData['client_id'],
-                'created_at' => Carbon::now(),
+                'created_at' => now(),
                 'is_active' => 1,
                 'admin_id' => $adminId
             ]
@@ -57,13 +61,19 @@ class EmployeesModel extends Model
                 'job' => $requestedData['job'],
                 'note' => $requestedData['note'],
                 'client_id' => $requestedData['client_id'],
-                'updated_at' => Carbon::now(),
-            ]);
+                'updated_at' => now(),
+            ]
+        );
     }
 
     public function setActive(int $employeeId, int $activeType) : int
     {
-        return $this->where('id', '=', $employeeId)->update(['is_active' => $activeType]);
+        return $this->where('id', '=', $employeeId)->update(
+            [
+                'is_active' => $activeType,
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function countEmployees() : int
@@ -73,7 +83,7 @@ class EmployeesModel extends Model
 
     public function getEmployeesInLatestMonth() : float
     {
-        $employeesCount = $this->where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $employeesCount = $this->where('created_at', '>=', now()->subMonth())->count();
         $allEmployees = $this->all()->count();
 
         $percentage = ($allEmployees / 100) * $employeesCount;
@@ -91,7 +101,7 @@ class EmployeesModel extends Model
         $query = $this->all()->sortBy('created_at');
 
         foreach($query as $key => $value) {
-            $query[$key]->is_active = $query[$key]->is_active  ? 'Active' : 'Deactive';
+            $query[$key]->is_active = $query[$key]->is_active  ? 'Active' : 'Deactivate';
             Arr::add($query[$key], 'taskCount', $this->getEmployeesTaskCount($value->id));
         }
 

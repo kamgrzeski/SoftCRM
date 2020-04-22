@@ -19,6 +19,7 @@ class AddSettingsTable extends Migration
             $table->string('value')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 

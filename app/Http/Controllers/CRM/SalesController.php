@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SalesStoreRequest;
+use App\Http\Requests\SaleStoreRequest;
+use App\Http\Requests\SaleUpdateRequest;
 use App\Services\SalesService;
 use App\Services\SystemLogService;
 use View;
@@ -53,19 +54,21 @@ class SalesController extends Controller
         );
     }
 
-    public function processStoreSale(SalesStoreRequest $request)
+    public function processStoreSale(SaleStoreRequest $request)
     {
-        if ($saleId = $this->salesService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->loadInsertSystemLogs('SalesModel has been add with id: ' . $saleId, $this->systemLogsService::successCode, $this->getAdminId());
+        $storedSaleId = $this->salesService->execute($request->validated(), $this->getAdminId());
+
+        if ($storedSaleId) {
+            $this->systemLogsService->loadInsertSystemLogs('SalesModel has been add with id: ' . $storedSaleId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorSalesStore'));
         }
     }
 
-    public function processUpdateSale(Request $request, int $saleId)
+    public function processUpdateSale(SaleUpdateRequest $request, int $saleId)
     {
-        if ($this->salesService->update($saleId, $request->all())) {
+        if ($this->salesService->update($saleId, $request->validated())) {
             return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSalesStore'));
@@ -82,7 +85,7 @@ class SalesController extends Controller
         return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesDelete'));
     }
 
-    public function processSetIsActive(int $saleId, bool $value)
+    public function processSaleSetIsActive(int $saleId, bool $value)
     {
         if ($this->salesService->loadIsActiveFunction($saleId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('SalesModel has been enabled with id: ' . $saleId, $this->systemLogsService::successCode, $this->getAdminId());

@@ -62,6 +62,11 @@
                 "ordering": true,
                 "info": false
             });
+            $('#dataTables-example-sort-employees').DataTable({
+                "paging": false,
+                "ordering": true,
+                "info": false
+            });
         });
     </script>
 </head>

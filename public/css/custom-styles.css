@@ -18,6 +18,24 @@ body {
     margin-top: 30px !important;
 }
 
+input[type="search"] {
+    color: #000;
+    border: 1px solid black;
+    margin: 7px;
+    box-sizing: border-box;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.refresh-info {
+    font-size: 10px;
+    background-color: #F44336;
+    padding: 5px;
+    margin-left: 12px;
+    color: white;
+    text-decoration: none;
+}
+
  #wrapper {
     width: 100%;
     background:#09192A;

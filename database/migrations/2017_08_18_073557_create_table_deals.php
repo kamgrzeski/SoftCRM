@@ -18,6 +18,7 @@ class CreateTableDeals extends Migration
             $table->unsignedInteger('admin_id');
             $table->foreign('admin_id')->references('id')->on('admins');
             $table->timestamps();
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 

@@ -24,7 +24,7 @@
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
-                                Delete this finances <li class="fa fa-trash-o"></li>
+                                Delete this finance <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
 
@@ -52,15 +52,15 @@
                             </tr>
                             <tr>
                                 <th>Gross</th>
-                                <td>{{ Cknow\Money\Money::{config('crm_settings.currency')}($finance->gross) }}</td>
+                                <td>{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($finance->gross) }}</td>
                             </tr>
                             <tr>
                                 <th>Net</th>
-                                <td>{{ Cknow\Money\Money::{config('crm_settings.currency')}($finance->net) }}</td>
+                                <td>{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($finance->net) }}</td>
                             </tr>
                             <tr>
                                 <th>Vat</th>
-                                <td>{{ Cknow\Money\Money::{config('crm_settings.currency')}($finance->vat) }}</td>
+                                <td>{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($finance->vat) }}</td>
                             </tr>
                             <tr>
                                 <th>Date</th>
@@ -89,15 +89,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">You want delete this finances?</h4>
+                    <h4 class="modal-title" id="myModalLabel">You want delete this finance?</h4>
                 </div>
                 <div class="modal-body">
-                    Ation will delete permanently this finances.
+                    Ation will delete permanently this finance.
                 </div>
                 <div class="modal-footer">
                     {{ Form::open(['url' => 'finances/delete/' . $finance->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this finances', ['class' => 'btn btn-small btn-danger']) }}
+                    {{ Form::submit('Delete this finance', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}
                 </div>
             </div>

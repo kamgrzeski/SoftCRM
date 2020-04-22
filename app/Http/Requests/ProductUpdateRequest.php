@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
-class TasksStoreRequest extends FormRequest
+class ProductUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,9 @@ class TasksStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'employee_id' => 'required|integer',
-            'duration' => 'required|integer'
+            'category' => 'required|string',
+            'count' => 'required|integer',
+            'price' => 'required|integer'
         ];
     }
 }

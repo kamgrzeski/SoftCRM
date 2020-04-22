@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Http\Requests\EmployeesStoreRequest;
+use App\Http\Requests\EmployeeStoreRequest;
+use App\Http\Requests\EmployeeUpdateRequest;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use Illuminate\Http\Request;
@@ -52,19 +53,21 @@ class EmployeesController extends Controller
         );
     }
 
-    public function processStoreEmployee(EmployeesStoreRequest $request)
+    public function processStoreEmployee(EmployeeStoreRequest $request)
     {
-        if ($employeeId = $this->employeesService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->loadInsertSystemLogs('Employees has been add with id: ' . $employeeId, $this->systemLogsService::successCode, $this->getAdminId());
+        $storedEmployeeId = $this->employeesService->execute($request->validated(), $this->getAdminId());
+
+        if ($storedEmployeeId) {
+            $this->systemLogsService->loadInsertSystemLogs('Employees has been add with id: ' . $storedEmployeeId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));
         }
     }
 
-    public function processUpdateEmployee(Request $request, int $employeeId)
+    public function processUpdateEmployee(EmployeeUpdateRequest $request, int $employeeId)
     {
-        if ($this->employeesService->update($employeeId, $request->all())) {
+        if ($this->employeesService->update($employeeId, $request->validated())) {
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesUpdate'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesUpdate'));
@@ -87,7 +90,7 @@ class EmployeesController extends Controller
         return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesDelete'));
     }
 
-    public function processSetIsActive($employeeId, $value)
+    public function processEmployeeSetIsActive($employeeId, $value)
     {
         if ($this->employeesService->loadIsActiveFunction($employeeId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('Employees has been enabled with id: ' . $employeeId, $this->systemLogsService::successCode, $this->getAdminId());

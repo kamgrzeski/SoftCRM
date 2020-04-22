@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Config;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TasksModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'tasks';
+    protected $dates = ['deleted_at'];
 
     public function employees()
     {
@@ -23,7 +26,7 @@ class TasksModel extends Model
                 'employee_id' => $requestedData['employee_id'],
                 'duration' => $requestedData['duration'],
                 'is_active' => 1,
-                'created_at' => Carbon::now(),
+                'created_at' => now(),
                 'admin_id' => $adminId
             ]
         );
@@ -36,19 +39,29 @@ class TasksModel extends Model
                 'name' => $requestedData['name'],
                 'employee_id' => $requestedData['employee_id'],
                 'duration' => $requestedData['duration'],
-                'is_active' => 1,
-                'updated_at' => Carbon::now()
-            ]);
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function setActive(int $taskId, int $activeType) : int
     {
-        return $this->where('id', '=', $taskId)->update(['is_active' => $activeType]);
+        return $this->where('id', '=', $taskId)->update(
+            [
+                'is_active' => $activeType,
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function setCompleted(int $taskId, int $completeType) : int
     {
-        return $this->where('id', '=', $taskId)->update(['completed' => $completeType]);
+        return $this->where('id', '=', $taskId)->update(
+            [
+                'completed' => $completeType,
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function countTasks()

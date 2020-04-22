@@ -39,9 +39,9 @@ class CompaniesService
         return $this->companiesModel::pluck('name', 'id');
     }
 
-    public function loadCompanie(int $companiesId)
+    public function loadCompany(int $companyId)
     {
-        return $this->companiesModel::find($companiesId);
+        return $this->companiesModel->getCompany($companyId);
     }
 
     public function loadCountAssignedDeals(int $companiesId)

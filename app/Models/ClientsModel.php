@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Cknow\Money\Money;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Config;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ClientsModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'clients';
+    protected $dates = ['deleted_at'];
 
     public function companies()
     {
@@ -36,7 +39,7 @@ class ClientsModel extends Model
                 'zip' => $requestedData['zip'],
                 'city' => $requestedData['city'],
                 'country' => $requestedData['country'],
-                'created_at' => Carbon::now(),
+                'created_at' => now(),
                 'is_active' => 1,
                 'admin_id' => $adminId
             ]
@@ -56,13 +59,19 @@ class ClientsModel extends Model
                 'zip' => $requestedData['zip'],
                 'city' => $requestedData['city'],
                 'country' => $requestedData['country'],
-                'updated_at' => Carbon::now()
-            ]);
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function setClientActive(int $id, int $activeType) : int
     {
-        return $this->where('id', '=', $id)->update(['is_active' => $activeType]);
+        return $this->where('id', '=', $id)->update(
+            [
+                'is_active' => $activeType,
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function countClients() : int
@@ -72,7 +81,7 @@ class ClientsModel extends Model
 
     public static function getClientsInLatestMonth() : float
     {
-        $clientCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $clientCount = self::where('created_at', '>=', now()->subMonth())->count();
         $allClient = self::all()->count();
 
         $new_width = ($allClient / 100) * $clientCount;

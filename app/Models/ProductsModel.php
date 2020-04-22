@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Config;
 
 class ProductsModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'products';
+    protected $dates = ['deleted_at'];
 
     public function sales()
     {
@@ -24,7 +27,7 @@ class ProductsModel extends Model
                 'category' => $requestedData['category'],
                 'count' => $requestedData['count'],
                 'price' => $requestedData['price'] * 100,
-                'created_at' => Carbon::now(),
+                'created_at' => now(),
                 'is_active' => 1,
                 'admin_id' => $adminId
             ]
@@ -39,14 +42,19 @@ class ProductsModel extends Model
                 'category' => $requestedData['category'],
                 'count' => $requestedData['count'],
                 'price' => $requestedData['price'],
-                'updated_at' => Carbon::now(),
-                'is_active' => 1
-            ]);
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function setActive(int $productId, int $activeType) : int
     {
-        return $this->where('id', '=', $productId)->update(['is_active' => $activeType]);
+        return $this->where('id', '=', $productId)->update(
+            [
+                'is_active' => $activeType,
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function countProducts() : int

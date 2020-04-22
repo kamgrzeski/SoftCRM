@@ -10,7 +10,11 @@ class SettingsModel extends Model
 
     public function updateSetting(string $key, string $value) : int
     {
-        return $this->where('key', $key)->update(['value' => $value]);
+        return $this->where('key', $key)->update(
+            [
+                'value' => $value,
+                'updated_at' => now()
+            ]);
     }
 
     public static function getSettingValue(string $key)

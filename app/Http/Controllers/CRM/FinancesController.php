@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FinancesStoreRequest;
+use App\Http\Requests\FinanceStoreRequest;
+use App\Http\Requests\FinanceUpdateRequest;
 use App\Services\FinancesService;
 use App\Services\SystemLogService;
 use View;
@@ -53,19 +54,21 @@ class FinancesController extends Controller
         );
     }
 
-    public function processStoreFinance(FinancesStoreRequest $request)
+    public function processStoreFinance(FinanceStoreRequest $request)
     {
-        if ($financeId = $this->financesService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->loadInsertSystemLogs('FinancesModel has been add with id: ' . $financeId, $this->systemLogsService::successCode, $this->getAdminId());
+        $storedFinanceId = $this->financesService->execute($request->validated(), $this->getAdminId());
+
+        if ($storedFinanceId) {
+            $this->systemLogsService->loadInsertSystemLogs('FinancesModel has been add with id: ' . $storedFinanceId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesStore'));
         }
     }
 
-    public function processUpdateFinance(Request $request, $financeId)
+    public function processUpdateFinance(FinanceUpdateRequest $request, $financeId)
     {
-        if ($this->financesService->update($financeId, $request->all())) {
+        if ($this->financesService->update($financeId, $request->validated())) {
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorFinancesUpdate'));
@@ -83,7 +86,7 @@ class FinancesController extends Controller
         return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesDelete'));
     }
 
-    public function processSetIsActive($financeId, $value)
+    public function processFinanceSetIsActive($financeId, $value)
     {
         if ($this->financesService->loadIsActiveFunction($financeId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('FinancesModel has been enabled with id: ' . $financeId, $this->systemLogsService::successCode, $this->getAdminId());

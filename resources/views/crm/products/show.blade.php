@@ -68,10 +68,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">You want delete this products?</h4>
+                    <h4 class="modal-title" id="myModalLabel">You want delete this product?</h4>
                 </div>
                 <div class="modal-body">
-                    Action will delete permanently this products.
+                    Action will delete permanently this product.
                 </div>
                 <div class="modal-footer">
                     {{ Form::open(['url' => 'products/delete/' . $product->id,'class' => 'pull-right']) }}

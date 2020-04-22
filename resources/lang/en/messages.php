@@ -4,6 +4,7 @@ return [
 
     /** All **/
     'InputText' => 'Please write something here...',
+    'cacheReloaded' => 'Information has been reloaded.',
 
     /** Clients Messages **/
     'SuccessClientStore' => 'Client has been added.',
@@ -48,6 +49,8 @@ return [
 
     /** Deals Messages **/
     'SuccessDealsStore' => 'Deal has been added.',
+    'SuccessDealTermStore' => 'Deal term has been added.',
+    'ErrorDealTermStore' => 'Deal term hasn\'t been added yet.',
     'ErrorDealsStore' => 'Deal hasn\'t been added yet.',
     'SuccessDealsUpdate' => 'Deal has been updated.',
     'ErrorDealsUpdate' => 'Deal hasn\'t been updated yet.',
@@ -59,6 +62,7 @@ return [
     'DealsIsDeactivated' => 'Deal has been already deactivated.',
     'ThereIsNoDeals' => 'A deal with this name doesn\'t exist.',
     'SuccessDealsTermsStore' => 'Deal terms has been stored.',
+    'firstDeleteDealTerms' => 'Please delete first deal terms.',
 
     /** Employees Messages **/
     'SuccessEmployeesStore' => 'Employee has been added.',
@@ -99,15 +103,6 @@ return [
     'ErrorFinancesActive' => 'Finances hasn\'t been active yet.',
     'FinancesIsNowDeactivated' => 'Finances has been deactivated.',
     'FinancesIsDeactivated' => 'Finances has been already deactivated.',
-
-    /** Projects Messages **/
-    'SuccessProjectsStore' => 'Projects has been added.',
-    'SuccessProjectsDelete' => 'Projects has been deleted.',
-    'SuccessProjectsUpdate' => 'Projects has been updated.',
-    'SuccessProjectsActive' => 'Projects has been active.',
-    'ErrorProjectsActive' => 'Projects hasn\'t been active yet.',
-    'ProjectsIsNowDeactivated' => 'Projects has been deactivated.',
-    'ProjectsIsDeactivated' => 'Projects has been already deactivated.',
 
     /** Products Messages **/
     'SuccessProductsStore' => 'Products has been added.',

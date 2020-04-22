@@ -41,8 +41,8 @@
                 </ul>
             </li>
         </ul>
-        <ul style="margin-top: 10px; color: #dee7f1;margin-left:-30px;font-size: 14px;">
-            <h4>Informations</h4>
+        <ul style="margin-top: 10px; color: #dee7f1;margin-left:-30px;font-size: 14px;"></a>
+            <h4>Informations <a href="{{ route('reload-info') }}"><span class="refresh-info">Refresh</span></a></h4>
             <li><i class="fa fa-money" aria-hidden="true"></i> Today income:  {{ Cache::get('todayIncome') }}</li>
             <li><i class="fa fa-money" aria-hidden="true"></i> Yesterday income: {{ Cache::get('yesterdayIncome') }}</li>
             <li><i class="fa fa-money" aria-hidden="true"></i> Cash turnover:  {{ Cache::get('cashTurnover') }}</li>

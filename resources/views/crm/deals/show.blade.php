@@ -34,7 +34,7 @@
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
-                                Delete this companise <li class="fa fa-trash-o"></li>
+                                Delete this deal <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
                     </ul>
@@ -137,7 +137,7 @@
 
                             {{ Form::hidden('dealId', $deal->id) }}
 
-                            <div class="col-lg-12 validate_form">
+                            <div class="col-lg-12 validate_form" style="margin-top: 30px">
                                 {{ Form::submit('Save terms of argeement', ['class' => 'btn btn-primary']) }}
                             </div>
 
@@ -230,7 +230,7 @@
                 <div class="modal-footer">
                     {{ Form::open(['url' => 'deals/delete/' . $deal->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this deals', ['class' => 'btn btn-small btn-danger']) }}
+                    {{ Form::submit('Delete this deal', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}
                 </div>
             </div>

@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Config;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Config;
 
 class CompaniesModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'companies';
+    protected $dates = ['deleted_at'];
 
     public function client()
     {
@@ -45,7 +48,7 @@ class CompaniesModel extends Model
                 'fax' => $requestedData['fax'],
                 'description' => $requestedData['description'],
                 'client_id' => $requestedData['client_id'],
-                'created_at' => Carbon::now(),
+                'created_at' => now(),
                 'is_active' => 1,
                 'admin_id' => $adminId
             ]
@@ -67,13 +70,18 @@ class CompaniesModel extends Model
                 'fax' => $requestedData['fax'],
                 'description' => $requestedData['description'],
                 'client_id' => $requestedData['client_id'],
-                'is_active' => 1
+                'is_active' => 1,
+                'updated_at' => now()
             ]);
     }
 
     public function setActive(int $companiesId, int $activeType) : int
     {
-       return $this->where('id', '=', $companiesId)->update(['is_active' => $activeType]);
+       return $this->where('id', '=', $companiesId)->update(
+           [
+               'is_active' => $activeType
+           ]
+       );
     }
 
     public function countCompanies() : int
@@ -83,8 +91,8 @@ class CompaniesModel extends Model
 
     public function getCompaniesInLatestMonth() : float
     {
-        $companiesCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
-        $allCompanies = self::all()->count();
+        $companiesCount = $this->where('created_at', '>=', now()->subMonth())->count();
+        $allCompanies = $this->all()->count();
 
         $percentage = ($allCompanies / 100) * $companiesCount;
 
@@ -104,5 +112,10 @@ class CompaniesModel extends Model
     public function getPaginate()
     {
         return $this->paginate(Config::get('crm_settings.pagination_size'));
+    }
+
+    public function getCompany(int $companyId)
+    {
+        return $this::find($companyId);
     }
 }

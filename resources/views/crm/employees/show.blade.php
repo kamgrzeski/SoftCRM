@@ -111,7 +111,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">You want delete this employees?</h4>
+                    <h4 class="modal-title" id="myModalLabel">You want delete this employee?</h4>
                 </div>
                 <div class="modal-body">
                     Ation will delete permanently this employees.
@@ -119,7 +119,7 @@
                 <div class="modal-footer">
                     {{ Form::open(['url' => 'employees/delete/' . $employee->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this companie', ['class' => 'btn btn-small btn-danger']) }}
+                    {{ Form::submit('Delete this employee', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}
                 </div>
             </div>

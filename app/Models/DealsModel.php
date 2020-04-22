@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Config;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DealsModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'deals';
+    protected $dates = ['deleted_at'];
 
     public function companies()
     {
@@ -23,7 +26,7 @@ class DealsModel extends Model
                 'start_time' => $requestedData['start_time'],
                 'end_time' => $requestedData['end_time'],
                 'companies_id' => $requestedData['companies_id'],
-                'created_at' => Carbon::now(),
+                'created_at' => now(),
                 'is_active' => 1,
                 'admin_id' => $adminId
             ]
@@ -37,13 +40,20 @@ class DealsModel extends Model
                 'name' => $requestedData['name'],
                 'start_time' => $requestedData['start_time'],
                 'end_time' => $requestedData['end_time'],
-                'companies_id' => $requestedData['companies_id']
-            ]);
+                'companies_id' => $requestedData['companies_id'],
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function setActive(int $dealId, bool $activeType) : int
     {
-        return $this->where('id', '=', $dealId)->update(['is_active' => $activeType]);
+        return $this->where('id', '=', $dealId)->update(
+            [
+                'is_active' => $activeType,
+                'updated_at' => now()
+            ]
+        );
     }
 
     public function countDeals() : int
@@ -52,7 +62,7 @@ class DealsModel extends Model
     }
 
     public static function getDealsInLatestMonth() {
-        $dealsCount = self::where('created_at', '>=', Carbon::now()->subMonth())->count();
+        $dealsCount = self::where('created_at', '>=', now()->subMonth())->count();
         $allDeals = self::all()->count();
 
         $percentage = ($allDeals / 100) * $dealsCount;

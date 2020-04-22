@@ -1,4 +1,4 @@
-@include('layouts.template.head')
+@include('layouts.template.header')
 
 @include('layouts.template.body')
 

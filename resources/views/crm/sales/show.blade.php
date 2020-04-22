@@ -24,7 +24,7 @@
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
-                                Delete this product <li class="fa fa-trash-o"></li>
+                                Delete this sale <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
 
@@ -69,10 +69,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">You want delete this products?</h4>
+                    <h4 class="modal-title" id="myModalLabel">You want delete this product?</h4>
                 </div>
                 <div class="modal-body">
-                    Action will delete permanently this products.
+                    Action will delete permanently this product.
                 </div>
                 <div class="modal-footer">
                     {{ Form::open(['url' => 'sales/delete/' . $sale->id,'class' => 'pull-right']) }}

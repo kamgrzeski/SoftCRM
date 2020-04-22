@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
-class FinancesStoreRequest extends FormRequest
+class TaskUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,11 +26,8 @@ class FinancesStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'companies_id' => 'required|integer',
-            'description' => 'required|string',
-            'type' => 'required|string',
-            'gross' => 'required|string',
-            'category' => 'required|string'
+            'employee_id' => 'required|integer',
+            'duration' => 'required|integer'
         ];
     }
 }

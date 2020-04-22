@@ -61,6 +61,10 @@ class AdminModel extends Authenticatable
 
     private function updateAdminPassword(string $newPassword, int $adminId) : int
     {
-        return $this->where('id', $adminId)->update(['password' => Hash::make($newPassword)]);
+        return $this->where('id', $adminId)->update(
+            [
+                'password' => Hash::make($newPassword),
+                'updated_at' => now()
+            ]);
     }
 }

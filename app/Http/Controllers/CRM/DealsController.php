@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DealsStoreRequest;
+use App\Http\Requests\DealStoreRequest;
 use App\Http\Requests\DealsTermsStoreRequest;
+use App\Http\Requests\DealUpdateRequest;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
 use View;
@@ -54,19 +55,21 @@ class DealsController extends Controller
         );
     }
 
-    public function processStoreDeal(DealsStoreRequest $request)
+    public function processStoreDeal(DealStoreRequest $request)
     {
-        if ($dealId = $this->dealsService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->loadInsertSystemLogs('Deal has been add with id: ' . $dealId, $this->systemLogsService::successCode, $this->getAdminId());
+        $storedDealId = $this->dealsService->execute($request->validated(), $this->getAdminId());
+
+        if ($storedDealId) {
+            $this->systemLogsService->loadInsertSystemLogs('Deal has been add with id: ' . $storedDealId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsStore'));
         }
     }
 
-    public function processUpdateDeal(Request $request, int $dealId)
+    public function processUpdateDeal(DealUpdateRequest $request, int $dealId)
     {
-        if ($this->dealsService->update($dealId, $request->all())) {
+        if ($this->dealsService->update($dealId, $request->validated())) {
             return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsUpdate'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsUpdate'));
@@ -75,6 +78,12 @@ class DealsController extends Controller
 
     public function processDeleteDeal(int $dealId)
     {
+        $countDealTerms = $this->dealsService->countDealTerms($dealId);
+
+        if ($countDealTerms > 0) {
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteDealTerms'));
+        }
+
         $dataOfDeals = $this->dealsService->loadDeal($dealId);
         $dataOfDeals->delete();
 
@@ -99,9 +108,9 @@ class DealsController extends Controller
 
         if ($this->dealsService->loadStoreDealTerms($validatedData)) {
             $this->systemLogsService->loadInsertSystemLogs('Deals terms has been enabled with id: ' . $validatedData['dealId'], $this->systemLogsService::successCode, $this->getAdminId());
-            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessDealsActive'));
+            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessDealTermStore'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsActive'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealTermStore'));
         }
     }
 

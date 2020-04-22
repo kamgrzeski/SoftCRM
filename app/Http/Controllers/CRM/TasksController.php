@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TasksStoreRequest;
+use App\Http\Requests\TaskStoreRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
 use View;
@@ -52,19 +53,21 @@ class TasksController extends Controller
         );
     }
 
-    public function processStoreTask(TasksStoreRequest $request)
+    public function processStoreTask(TaskStoreRequest $request)
     {
-        if ($task = $this->tasksService->execute($request->validated(), $this->getAdminId())) {
-            $this->systemLogsService->loadInsertSystemLogs('Task has been add with id: ' . $task, $this->systemLogsService::successCode, $this->getAdminId());
+        $storedTaskId = $this->tasksService->execute($request->validated(), $this->getAdminId());
+
+        if ($storedTaskId) {
+            $this->systemLogsService->loadInsertSystemLogs('Task has been add with id: ' . $storedTaskId, $this->systemLogsService::successCode, $this->getAdminId());
             return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksStore'));
         }
     }
 
-    public function processUpdateTask(Request $request, int $taskId)
+    public function processUpdateTask(TaskUpdateRequest $request, int $taskId)
     {
-        if ($this->tasksService->update($taskId, $request->all())) {
+        if ($this->tasksService->update($taskId, $request->validated())) {
             return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksUpdate'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksUpdate'));
@@ -86,7 +89,7 @@ class TasksController extends Controller
         return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksDelete'));
     }
 
-    public function processSetIsActive(int $taskId, bool $value)
+    public function processTaskSetIsActive(int $taskId, bool $value)
     {
         if ($this->tasksService->loadIsActiveFunction($taskId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('Tasks has been enabled with id: ' . $taskId, $this->systemLogsService::successCode, $this->getAdminId());

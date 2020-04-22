@@ -34,7 +34,7 @@ class FakerFinancesSeeder extends Seeder
                 'net' => $data['net'],
                 'date' => $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now'),
                 'companies_id' => $faker->randomElement($companiesIds),
-                'created_at' => $faker->dateTimeBetween($startDate = '-30 days', $endDate = 'now'),
+                'created_at' => \Carbon\Carbon::now()->subDays(rand(1, 33)),
                 'updated_at' => \Carbon\Carbon::now(),
                 'admin_id' => 1
             ];

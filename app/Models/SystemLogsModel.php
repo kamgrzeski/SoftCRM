@@ -4,17 +4,22 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Request;
 
 class SystemLogsModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'systemlogs';
 
     public $ip = null;
 
     public function __construct()
     {
+        parent::__construct();
+
         $hostName = Request::getHttpHost();
 
         if (strpos($hostName, 'localhost') != 0) {

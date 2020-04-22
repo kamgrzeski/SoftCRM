@@ -92,4 +92,9 @@ class DealsService
     {
         return $this->dealsTermsModel->deleteTerm($termId);
     }
+
+    public function countDealTerms(int $dealId)
+    {
+        return $this->dealsTermsModel->countAssignedDealTerms($dealId);
+    }
 }

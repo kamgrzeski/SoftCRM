@@ -100,8 +100,8 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="messages">
-                            <h4>List of employeees</h4>
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example"
+                            <h4>List of employee's</h4>
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example-sort-employees"
                                    data-sortable>
                                 <thead>
                                 <tr>

@@ -15,6 +15,7 @@ use App\Services\SettingsService;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redirect;
 use View;
 
 class DashboardController extends Controller
@@ -97,5 +98,12 @@ class DashboardController extends Controller
         Cache::put('dealsInLatestMonth', $this->dealsService->loadDealsInLatestMonth(), 99);
         Cache::put('completedTasks', $this->tasksService->loadCompletedTasks(), 99);
         Cache::put('uncompletedTasks', $this->tasksService->loadUncompletedTasks(), 99);
+    }
+    
+    public function processReloadInformation()
+    {
+        $this->storeInCacheUsableVariables();
+
+        return Redirect::back()->with('message_success', $this->getMessage('messages.cacheReloaded'));
     }
 }

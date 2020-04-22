@@ -28,7 +28,7 @@
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
-                                Delete this companise <li class="fa fa-trash-o"></li>
+                                Delete this company <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
                     </ul>
@@ -104,15 +104,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">You want delete this companies?</h4>
+                    <h4 class="modal-title" id="myModalLabel">You want delete this company?</h4>
                 </div>
                 <div class="modal-body">
-                    Ation will delete permanently this companies.
+                    Ation will delete permanently this company.
                 </div>
                 <div class="modal-footer">
                     {{ Form::open(['url' => 'companies/delete/' . $company->id,'class' => 'pull-right']) }}
                     {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this companie', ['class' => 'btn btn-small btn-danger']) }}
+                    {{ Form::submit('Delete this company', ['class' => 'btn btn-small btn-danger']) }}
                     {{ Form::close() }}
                 </div>
             </div>
