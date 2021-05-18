@@ -10,7 +10,7 @@ class ProductsService
 {
     use Language;
 
-    private $productsModel;
+    private ProductsModel $productsModel;
 
     public function __construct()
     {

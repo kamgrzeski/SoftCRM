@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DealStoreRequest;
 use App\Http\Requests\DealsTermsStoreRequest;
@@ -14,12 +15,12 @@ Use Illuminate\Support\Facades\Redirect;
 
 class DealsController extends Controller
 {
-    private $dealsService;
-    private $systemLogsService;
+    private DealsService $dealsService;
+    private SystemLogService $systemLogsService;
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(SystemEnums::middleWareAuth);
 
         $this->dealsService = new DealsService();
         $this->systemLogsService = new SystemLogService();

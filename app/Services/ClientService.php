@@ -9,19 +9,19 @@ class ClientService
 {
     use Language;
 
-    private $clientsModel;
+    private ClientsModel $clientsModel;
 
     public function __construct()
     {
         $this->clientsModel = new ClientsModel();
     }
 
-    public function execute(array $requestedData, int $adminId)
+    public function execute(array $requestedData, int $adminId): int
     {
         return $this->clientsModel->storeClient($requestedData, $adminId);
     }
 
-    public function update(int $clientId, array $requestedData)
+    public function update(int $clientId, array $requestedData): int
     {
         return $this->clientsModel->updateClient($clientId, $requestedData);
     }
@@ -43,7 +43,7 @@ class ClientService
         return true;
     }
 
-    public function loadDeleteClient(int $clientId)
+    public function loadDeleteClient(int $clientId): ?bool
     {
         $data = $this->clientsModel->getClientByGivenClientId($clientId);
 

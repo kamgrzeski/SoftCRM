@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FinanceStoreRequest;
 use App\Http\Requests\FinanceUpdateRequest;
@@ -13,12 +14,12 @@ Use Illuminate\Support\Facades\Redirect;
 
 class FinancesController extends Controller
 {
-    private $financesService;
-    private $systemLogsService;
+    private FinancesService $financesService;
+    private SystemLogService $systemLogsService;
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(SystemEnums::middleWareAuth);
 
         $this->financesService = new FinancesService();
         $this->systemLogsService = new SystemLogService();

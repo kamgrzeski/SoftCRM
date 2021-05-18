@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientStoreRequest;
 use App\Http\Requests\ClientUpdateRequest;
@@ -13,12 +14,12 @@ use View;
 
 class ClientController extends Controller
 {
-    private $clientService;
-    private $systemLogsService;
+    private ClientService $clientService;
+    private SystemLogService $systemLogsService;
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(SystemEnums::middleWareAuth);
 
         $this->clientService = new ClientService();
         $this->systemLogsService = new SystemLogService();

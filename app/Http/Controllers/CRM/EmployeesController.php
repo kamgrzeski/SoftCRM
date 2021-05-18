@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Enums\SystemEnums;
 use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use View;
 use Illuminate\Support\Facades\Redirect;
 
 class EmployeesController extends Controller
 {
-    private $employeesService;
-    private $systemLogsService;
+    private EmployeesService $employeesService;
+    private SystemLogService $systemLogsService;
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(SystemEnums::middleWareAuth);
 
         $this->employeesService = new EmployeesService();
         $this->systemLogsService = new SystemLogService();

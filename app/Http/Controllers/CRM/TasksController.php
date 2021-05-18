@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
@@ -13,12 +14,12 @@ Use Illuminate\Support\Facades\Redirect;
 
 class TasksController extends Controller
 {
-    private $tasksService;
-    private $systemLogsService;
+    private TasksService $tasksService;
+    private SystemLogService $systemLogsService;
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(SystemEnums::middleWareAuth);
 
         $this->tasksService = new TasksService();
         $this->systemLogsService = new SystemLogService();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyStoreRequest;
 use App\Http\Requests\CompanyUpdateRequest;
@@ -13,12 +14,12 @@ use Illuminate\Http\Request;
 
 class CompaniesController extends Controller
 {
-    private $companiesService;
-    private $systemLogsService;
+    private CompaniesService $companiesService;
+    private SystemLogService $systemLogsService;
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(SystemEnums::middleWareAuth);
 
         $this->companiesService = new CompaniesService();
         $this->systemLogsService = new SystemLogService();
@@ -33,7 +34,7 @@ class CompaniesController extends Controller
     {
         return View::make('crm.companies.show')->with(['company' => $this->companiesService->loadCompany($companiesId)]);
     }
-    
+
     public function processListOfCompanies()
     {
         return View::make('crm.companies.index')->with(

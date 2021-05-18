@@ -43,7 +43,7 @@ class AdminModel extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function changeAdminPassword(string $oldPassword, string $newPassword, int $adminId)
+    public function changeAdminPassword(string $oldPassword, string $newPassword, int $adminId): bool|int
     {
         $adminDetails = $this->getAdminDetails($adminId);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SystemEnums;
 use App\Services\CalculateCashService;
 use App\Services\ClientService;
 use App\Services\CompaniesService;
@@ -20,22 +21,24 @@ use View;
 
 class DashboardController extends Controller
 {
-    private $clientService;
-    private $helpersFncService;
-    private $companiesService;
-    private $productsService;
-    private $calculateCashService;
-    private $employeesService;
-    private $dealsService;
-    private $financesService;
-    private $tasksService;
-    private $salesService;
-    private $systemLogService;
-    private $settingsService;
+    private ClientService $clientService;
+    private HelpersFncService $helpersFncService;
+    private CompaniesService $companiesService;
+    private ProductsService $productsService;
+    private CalculateCashService $calculateCashService;
+    private EmployeesService $employeesService;
+    private DealsService $dealsService;
+    private FinancesService $financesService;
+    private TasksService $tasksService;
+    private SalesService $salesService;
+    private SystemLogService $systemLogService;
+    private SettingsService $settingsService;
+
+    private int $cacheTime = 99;
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(SystemEnums::middleWareAuth);
 
         $this->clientService = new ClientService();
         $this->helpersFncService = new helpersFncService();
@@ -62,44 +65,39 @@ class DashboardController extends Controller
                 'dataWithAllTasks' => $this->helpersFncService->formatTasks(),
                 'dataWithAllCompanies' => $this->companiesService->loadCompaniesByCreatedAt(),
                 'dataWithAllProducts' => $this->productsService->loadProductsByCreatedAt(),
-                'currency' => $this->settingsService->loadSettingValue('currency')
+                'currency' => $this->settingsService->loadSettingValue(SystemEnums::currency)
             ]
         );
-    }
-
-    public function calculateTaskEveryMonth($isCompleted)
-    {
-        return $this->calculateCashService->loadTaskEveryMonth($isCompleted);
     }
 
     //cache set for 99 minutes
     private function storeInCacheUsableVariables()
     {
-        Cache::put('countClients', $this->clientService->loadCountClients(), 99);
-        Cache::put('deactivatedClients', $this->clientService->loadDeactivatedClients(), 99);
-        Cache::put('clientsInLatestMonth', $this->clientService->loadClientsInLatestMonth(), 99);
-        Cache::put('countCompanies', $this->companiesService->loadCountCompanies(), 99);
-        Cache::put('countEmployees', $this->employeesService->loadCountEmployees(), 99);
-        Cache::put('countDeals', $this->dealsService->loadCountDeals(), 99);
-        Cache::put('countFinances', $this->financesService->loadCountFinances(), 99);
-        Cache::put('countProducts', $this->productsService->loadCountProducts(), 99);
-        Cache::put('countTasks', $this->tasksService->loadCountTasks(), 99);
-        Cache::put('countSales', $this->salesService->loadCountSales(), 99);
-        Cache::put('deactivatedCompanies', $this->companiesService->loadDeactivatedCompanies(), 99);
-        Cache::put('todayIncome', $this->calculateCashService->loadCountTodayIncome(), 99);
-        Cache::put('yesterdayIncome', $this->calculateCashService->loadCountYesterdayIncome(), 99);
-        Cache::put('cashTurnover', $this->calculateCashService->loadCountCashTurnover(), 99);
-        Cache::put('countAllRowsInDb', $this->calculateCashService->loadCountAllRowsInDb(), 99);
-        Cache::put('countSystemLogs', $this->systemLogService->loadCountLogs(), 99);
-        Cache::put('companiesInLatestMonth', $this->companiesService->loadCompaniesInLatestMonth(), 99);
-        Cache::put('employeesInLatestMonth', $this->employeesService->loadEmployeesInLatestMonth(), 99);
-        Cache::put('deactivatedEmployees', $this->employeesService->loadDeactivatedEmployees(), 99);
-        Cache::put('deactivatedDeals', $this->dealsService->loadDeactivatedDeals(), 99);
-        Cache::put('dealsInLatestMonth', $this->dealsService->loadDealsInLatestMonth(), 99);
-        Cache::put('completedTasks', $this->tasksService->loadCompletedTasks(), 99);
-        Cache::put('uncompletedTasks', $this->tasksService->loadUncompletedTasks(), 99);
+        Cache::put('countClients', $this->clientService->loadCountClients(), $this->cacheTime);
+        Cache::put('deactivatedClients', $this->clientService->loadDeactivatedClients(), $this->cacheTime);
+        Cache::put('clientsInLatestMonth', $this->clientService->loadClientsInLatestMonth(), $this->cacheTime);
+        Cache::put('countCompanies', $this->companiesService->loadCountCompanies(), $this->cacheTime);
+        Cache::put('countEmployees', $this->employeesService->loadCountEmployees(), $this->cacheTime);
+        Cache::put('countDeals', $this->dealsService->loadCountDeals(), $this->cacheTime);
+        Cache::put('countFinances', $this->financesService->loadCountFinances(), $this->cacheTime);
+        Cache::put('countProducts', $this->productsService->loadCountProducts(), $this->cacheTime);
+        Cache::put('countTasks', $this->tasksService->loadCountTasks(), $this->cacheTime);
+        Cache::put('countSales', $this->salesService->loadCountSales(), $this->cacheTime);
+        Cache::put('deactivatedCompanies', $this->companiesService->loadDeactivatedCompanies(), $this->cacheTime);
+        Cache::put('todayIncome', $this->calculateCashService->loadCountTodayIncome(), $this->cacheTime);
+        Cache::put('yesterdayIncome', $this->calculateCashService->loadCountYesterdayIncome(), $this->cacheTime);
+        Cache::put('cashTurnover', $this->calculateCashService->loadCountCashTurnover(), $this->cacheTime);
+        Cache::put('countAllRowsInDb', $this->calculateCashService->loadCountAllRowsInDb(), $this->cacheTime);
+        Cache::put('countSystemLogs', $this->systemLogService->loadCountLogs(), $this->cacheTime);
+        Cache::put('companiesInLatestMonth', $this->companiesService->loadCompaniesInLatestMonth(), $this->cacheTime);
+        Cache::put('employeesInLatestMonth', $this->employeesService->loadEmployeesInLatestMonth(), $this->cacheTime);
+        Cache::put('deactivatedEmployees', $this->employeesService->loadDeactivatedEmployees(), $this->cacheTime);
+        Cache::put('deactivatedDeals', $this->dealsService->loadDeactivatedDeals(), $this->cacheTime);
+        Cache::put('dealsInLatestMonth', $this->dealsService->loadDealsInLatestMonth(), $this->cacheTime);
+        Cache::put('completedTasks', $this->tasksService->loadCompletedTasks(), $this->cacheTime);
+        Cache::put('uncompletedTasks', $this->tasksService->loadUncompletedTasks(), $this->cacheTime);
     }
-    
+
     public function processReloadInformation()
     {
         $this->storeInCacheUsableVariables();

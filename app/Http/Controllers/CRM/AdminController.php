@@ -12,7 +12,7 @@ use Auth;
 
 class AdminController extends Controller
 {
-    private $adminService;
+    private AdminService $adminService;
 
     public function __construct()
     {

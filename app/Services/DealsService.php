@@ -8,8 +8,8 @@ use niklasravnsborg\LaravelPdf\Facades\Pdf;
 
 class DealsService
 {
-    private $dealsModel;
-    private $dealsTermsModel;
+    private DealsModel $dealsModel;
+    private DealsTermsModel $dealsTermsModel;
 
     public function __construct()
     {

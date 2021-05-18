@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class CalculateCashService
 {
-    private $settingsService;
+    private SettingsService $settingsService;
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ class CalculateCashService
     /**
      * @return mixed
      */
-    public function loadCountCashTurnover()
+    public function loadCountCashTurnover(): mixed
     {
         $products = ProductsModel::all();
         $sales = SalesModel::all();
@@ -52,7 +52,7 @@ class CalculateCashService
     /**
      * @return mixed
      */
-    public function loadCountTodayIncome()
+    public function loadCountTodayIncome(): mixed
     {
         $products = ProductsModel::whereDate('created_at', Carbon::today())->get();
         $sales = SalesModel::whereDate('created_at', Carbon::today())->get();
@@ -80,7 +80,7 @@ class CalculateCashService
     /**
      * @return mixed
      */
-    public function loadCountYesterdayIncome()
+    public function loadCountYesterdayIncome(): mixed
     {
         $products = ProductsModel::whereDate('created_at', Carbon::yesterday())->get();
         $sales = SalesModel::whereDate('created_at', Carbon::yesterday())->get();
@@ -107,7 +107,7 @@ class CalculateCashService
     /**
      * @return int
      */
-    public function loadCountAllRowsInDb()
+    public function loadCountAllRowsInDb(): int
     {
         $counter = 0;
         $tables = DB::select('SHOW TABLES');

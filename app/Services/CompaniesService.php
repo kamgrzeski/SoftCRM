@@ -7,7 +7,7 @@ use App\Models\DealsModel;
 
 class CompaniesService
 {
-    private $companiesModel;
+    private CompaniesModel $companiesModel;
 
     public function __construct()
     {

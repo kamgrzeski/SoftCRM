@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Config;
 
 class FinancesService
 {
-    private $financesModel;
+    private FinancesModel $financesModel;
 
     public function __construct()
     {

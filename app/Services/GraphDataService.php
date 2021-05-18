@@ -4,8 +4,8 @@ namespace App\Services;
 
 class GraphDataService
 {
-    private $width = 400;
-    private $height = 200;
+    private int $width = 400;
+    private int $height = 200;
 
     public function taskGraphData() {
 

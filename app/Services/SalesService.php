@@ -7,7 +7,7 @@ use App\Models\SalesModel;
 
 class SalesService
 {
-    private $salesModel;
+    private SalesModel $salesModel;
 
     public function __construct()
     {

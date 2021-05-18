@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleStoreRequest;
 use App\Http\Requests\SaleUpdateRequest;
 use App\Services\SalesService;
 use App\Services\SystemLogService;
 use View;
-use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class SalesController extends Controller
 {
-    private $salesService;
-    private $systemLogsService;
+    private SalesService $salesService;
+    private SystemLogService $systemLogsService;
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(SystemEnums::middleWareAuth);
 
         $this->salesService = new SalesService();
         $this->systemLogsService = new SystemLogService();

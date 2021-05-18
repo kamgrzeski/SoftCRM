@@ -42,13 +42,13 @@ class SystemLogsModel extends Model
                 'admin_id' => 1 ?? $adminId
             ]
         );
+
+        return true;
     }
 
     public function getUserInformation()
     {
-        $geo = unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$this->ip"));
-
-        return $geo;
+        return unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$this->ip"));
     }
 
     public function countRows()

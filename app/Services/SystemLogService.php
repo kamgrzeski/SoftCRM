@@ -8,7 +8,7 @@ class SystemLogService
 {
     const successCode = 201;
 
-    private $systemLogsModel;
+    private SystemLogsModel $systemLogsModel;
 
     public function __construct()
     {

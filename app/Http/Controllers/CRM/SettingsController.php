@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CRM;
 
+use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SettingsStoreRequest;
 use App\Services\HelpersFncService;
@@ -12,13 +13,13 @@ use View;
 
 class SettingsController extends Controller
 {
-    private $helpersFncService;
-    private $settingsService;
-    private $systemLogsService;
+    private HelpersFncService $helpersFncService;
+    private SettingsService $settingsService;
+    private SystemLogService $systemLogsService;
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(SystemEnums::middleWareAuth);
 
         $this->helpersFncService = new HelpersFncService();
         $this->settingsService = new SettingsService();

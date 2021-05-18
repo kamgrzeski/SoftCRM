@@ -7,7 +7,7 @@ use App\Models\TasksModel;
 
 class TasksService
 {
-    private $tasksModel;
+    private TasksModel $tasksModel;
 
     public function __construct()
     {
