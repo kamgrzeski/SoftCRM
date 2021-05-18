@@ -49,7 +49,7 @@ class CompaniesModel extends Model
                 'description' => $requestedData['description'],
                 'client_id' => $requestedData['client_id'],
                 'created_at' => now(),
-                'is_active' => 1,
+                'is_active' => true,
                 'admin_id' => $adminId
             ]
         );
@@ -70,7 +70,7 @@ class CompaniesModel extends Model
                 'fax' => $requestedData['fax'],
                 'description' => $requestedData['description'],
                 'client_id' => $requestedData['client_id'],
-                'is_active' => 1,
+                'is_active' => true,
                 'updated_at' => now()
             ]);
     }

@@ -28,7 +28,7 @@ class SalesModel extends Model
                 'product_id' => $requestedData['product_id'],
                 'price' => $requestedData['price'],
                 'created_at' => now(),
-                'is_active' => 1,
+                'is_active' => true,
                 'admin_id' => $adminId
             ]
         );

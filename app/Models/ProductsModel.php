@@ -28,7 +28,7 @@ class ProductsModel extends Model
                 'count' => $requestedData['count'],
                 'price' => $requestedData['price'] * 100,
                 'created_at' => now(),
-                'is_active' => 1,
+                'is_active' => true,
                 'admin_id' => $adminId
             ]
         );

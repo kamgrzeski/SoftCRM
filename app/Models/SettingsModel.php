@@ -30,13 +30,6 @@ class SettingsModel extends Model
 
     public function getAllSettings()
     {
-        $allSettings = $this->all()->toArray();
-        $container = [];
-
-        foreach($allSettings as $key => $setting) {
-            $container[$setting['key']] = $setting['value'];
-        }
-
-        return $container;
+        return $this->all()->toArray();
     }
 }

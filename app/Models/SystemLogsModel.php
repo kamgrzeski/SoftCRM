@@ -11,7 +11,7 @@ class SystemLogsModel extends Model
 {
     protected $table = 'systemlogs';
 
-    public $ip = null;
+    public string $ip = '66.249.69.115'; // googlebot
 
     public function __construct()
     {
@@ -21,12 +21,10 @@ class SystemLogsModel extends Model
 
         if (strpos($hostName, 'localhost') != 0) {
             $this->ip = Request::ip();
-        } else {
-            $this->ip = '66.249.69.115'; // googlebot
         }
     }
 
-    public function insertSystemLog($actions, int $statusCode, int $adminId)
+    public function insertSystemLog($actions, int $statusCode, int $adminId = 1)
     {
         $userInformation = $this->getUserInformation();
 
@@ -39,7 +37,7 @@ class SystemLogsModel extends Model
                 'ip_address' => $userInformation['geoplugin_request'],
                 'city' => $userInformation['geoplugin_city'],
                 'country' => $userInformation['geoplugin_countryName'],
-                'admin_id' => 1 ?? $adminId
+                'admin_id' => $adminId
             ]
         );
 

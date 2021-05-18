@@ -34,7 +34,15 @@ class SettingsService
 
     public function loadAllSettings()
     {
-        return $this->settingsModel->getAllSettings();
+        $allSettings = $this->settingsModel->getAllSettings();
+
+        $container = [];
+
+        foreach($allSettings as $key => $setting) {
+            $container[$setting['key']] = $setting['value'];
+        }
+
+        return $container;
     }
 
 }

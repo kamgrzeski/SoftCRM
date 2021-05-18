@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\DealsModel;
 use App\Models\DealsTermsModel;
+use Carbon\Carbon;
 use niklasravnsborg\LaravelPdf\Facades\Pdf;
 
 class DealsService
@@ -74,7 +75,20 @@ class DealsService
 
     public function loadDealsTerms(int $dealId)
     {
-        return $this->dealsTermsModel->getDealTerms($dealId);
+        $query = $this->dealsTermsModel->getDealTerms($dealId);
+
+        foreach($query as $key => $value) {
+            $query[$key]['formattedDate'] = $this->generateDate($value['created_at']);
+        }
+
+        return $query;
+    }
+
+    private function generateDate($date)
+    {
+        $formatted = Carbon::parse($date);
+
+        return $formatted->format('d M, Y');
     }
 
     public function loadGenerateDealTermsInPDF(int $termId)

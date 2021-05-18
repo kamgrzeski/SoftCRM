@@ -26,20 +26,7 @@ class DealsTermsModel extends Model
 
     public function getDealTerms(int $dealId)
     {
-        $query = $this->where('deal_id', $dealId)->get();
-
-        foreach($query as $key => $value) {
-            $query[$key]['formattedDate'] = $this->generateDate($value['created_at']);
-        }
-
-        return $query;
-    }
-
-    public function generateDate($date)
-    {
-        $formatted = Carbon::parse($date);
-
-        return $formatted->format('d M, Y');
+        return $this->where('deal_id', $dealId)->get();
     }
 
     public function getTermsBody(int $termId) : string

@@ -40,7 +40,7 @@ class ClientsModel extends Model
                 'city' => $requestedData['city'],
                 'country' => $requestedData['country'],
                 'created_at' => now(),
-                'is_active' => 1,
+                'is_active' => true,
                 'admin_id' => $adminId
             ]
         );

@@ -25,7 +25,7 @@ class TasksModel extends Model
                 'name' => $requestedData['name'],
                 'employee_id' => $requestedData['employee_id'],
                 'duration' => $requestedData['duration'],
-                'is_active' => 1,
+                'is_active' => true,
                 'created_at' => now(),
                 'admin_id' => $adminId
             ]

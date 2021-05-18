@@ -45,7 +45,7 @@ class EmployeesModel extends Model
                 'note' => $requestedData['note'],
                 'client_id' => $requestedData['client_id'],
                 'created_at' => now(),
-                'is_active' => 1,
+                'is_active' => true,
                 'admin_id' => $adminId
             ]
         );

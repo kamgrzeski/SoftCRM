@@ -27,7 +27,7 @@ class DealsModel extends Model
                 'end_time' => $requestedData['end_time'],
                 'companies_id' => $requestedData['companies_id'],
                 'created_at' => now(),
-                'is_active' => 1,
+                'is_active' => true,
                 'admin_id' => $adminId
             ]
         );
