@@ -182,6 +182,7 @@
                                 {{ Form::open(['url' => 'deals/terms/generate-pdf/', 'class' => 'pull-right']) }}
                                 {{ Form::hidden('_method', 'POST') }}
                                 {{ Form::hidden('termId', $terms->id) }}
+                                {{ Form::hidden('dealId', $deal->id) }}
                                 {{ Form::submit('Generate PDF', ['class' => 'btn btn-small btn-padding btn-pdf']) }}
                                 {{ Form::close() }}
                             </td>

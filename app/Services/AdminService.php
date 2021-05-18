@@ -16,11 +16,11 @@ class AdminService
 
     public function loadValidatePassword(string $oldPassword, string $newPassword, string $confirmNewPassword, int $adminId): bool|int
     {
-        if($newPassword != $confirmNewPassword) {
+        if($newPassword !== $confirmNewPassword) {
             return false;
         }
 
-        $adminDetails = $this->adminModel->changeAdminPassword($adminId);
+        $adminDetails = $this->adminModel->getAdminDetails($adminId);
 
         if(Hash::check($oldPassword, $adminDetails->password)) {
             return $this->adminModel->updateAdminPassword($newPassword, $adminId);

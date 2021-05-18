@@ -87,4 +87,9 @@ class DealsModel extends Model
     {
         return $this->find($dealId);
     }
+
+    public function getName(int $dealId)
+    {
+        return $this->where('id', $dealId)->get()->last()->name;
+    }
 }

@@ -118,8 +118,9 @@ class DealsController extends Controller
     public function processGenerateDealTermsInPDF(Request $request)
     {
         $termId = $request->get('termId');
+        $dealId = $request->get('dealId');
 
-        return $this->dealsService->loadGenerateDealTermsInPDF($termId);
+        return $this->dealsService->loadGenerateDealTermsInPDF($termId, $dealId);
     }
 
     public function processDeleteDealTerm(Request $request)

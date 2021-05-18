@@ -147,7 +147,7 @@ class CalculateCashService
                 ->pluck( 'count', 'date' );
         }
 
-        $dates = $dates->merge( $posts )->toArray();
+        $dates = $dates->merge($posts)->toArray();
 
         return array_values($dates);
     }

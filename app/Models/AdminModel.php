@@ -43,7 +43,7 @@ class AdminModel extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function changeAdminPassword(int $adminId)
+    public function getAdminDetails(int $adminId)
     {
         return $this->find($adminId);
     }

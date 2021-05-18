@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Models\DealsModel;
 use App\Models\DealsTermsModel;
+use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
-use niklasravnsborg\LaravelPdf\Facades\Pdf;
 
 class DealsService
 {
@@ -91,15 +91,17 @@ class DealsService
         return $formatted->format('d M, Y');
     }
 
-    public function loadGenerateDealTermsInPDF(int $termId)
+    public function loadGenerateDealTermsInPDF(int $termId, int $dealId)
     {
         $data = [
             'body' => $this->dealsTermsModel->getTermsBody($termId)
         ];
 
+        $dealName = $this->dealsModel->getName($dealId);
+
         $pdf = PDF::loadView('crm.deals.terms-pdf', $data);
 
-        return $pdf->stream('crm.deals.terms-pdf');
+        return $pdf->download($dealName . '.pdf');
     }
 
     public function loadDeleteTerm(int $termId)
