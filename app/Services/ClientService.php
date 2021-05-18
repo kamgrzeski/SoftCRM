@@ -45,9 +45,7 @@ class ClientService
 
     public function loadDeleteClient(int $clientId): ?bool
     {
-        $data = $this->clientsModel->getClientByGivenClientId($clientId);
-
-        return $data->delete();
+        return $this->clientsModel->deleteClient($clientId);
     }
 
     public function loadSetActive(int $clientId, bool $value)

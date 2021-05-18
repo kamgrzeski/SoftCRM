@@ -86,9 +86,7 @@ class DealsService
 
     private function generateDate($date)
     {
-        $formatted = Carbon::parse($date);
-
-        return $formatted->format('d M, Y');
+        return Carbon::parse($date)->format('d M, Y');
     }
 
     public function loadGenerateDealTermsInPDF(int $termId, int $dealId)

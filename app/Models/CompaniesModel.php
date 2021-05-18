@@ -116,4 +116,14 @@ class CompaniesModel extends Model
     {
         return $this::find($companyId);
     }
+
+    public function pluckData()
+    {
+        return $this->pluck('name', 'id');
+    }
+
+    public function getAll()
+    {
+        return $this->all()->sortBy('created_at');
+    }
 }

@@ -122,4 +122,9 @@ class ClientsModel extends Model
     {
         return $this->paginate(Config::get('crm_settings.pagination_size'));
     }
+
+    public function deleteClient(int $clientId)
+    {
+        return $this->where('id', $clientId)->delete();
+    }
 }

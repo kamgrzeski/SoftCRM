@@ -26,7 +26,7 @@ class CompaniesService
 
     public function loadCompanies()
     {
-        return $this->companiesModel::all()->sortBy('created_at');
+        return $this->companiesModel->getAll();
     }
 
     public function loadPagination()
@@ -36,7 +36,7 @@ class CompaniesService
 
     public function pluckData()
     {
-        return $this->companiesModel::pluck('name', 'id');
+        return $this->companiesModel->pluckData();
     }
 
     public function loadCompany(int $companyId)
