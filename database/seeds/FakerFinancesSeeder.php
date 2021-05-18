@@ -26,7 +26,7 @@ class FakerFinancesSeeder extends Seeder
 
             $finances = [
                 'name' => $faker->name,
-                'description' => $faker->text(100),
+                'description' => 'test_desc',
                 'category' => Arr::random($category),
                 'type' => Arr::random($type),
                 'gross' => $rand,

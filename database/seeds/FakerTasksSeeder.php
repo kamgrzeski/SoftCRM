@@ -17,7 +17,7 @@ class FakerTasksSeeder extends Seeder
 
         for ($i = 0; $i<$rowRand; $i++) {
             $tasks = [
-                'name' => $faker->text($maxNbChars = 200),
+                'name' => 'test_task',
                 'employee_id' => $faker->randomElement($employeeIds),
                 'duration' => rand(1,30),
                 'completed' => rand(0,1),

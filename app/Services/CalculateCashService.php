@@ -110,10 +110,10 @@ class CalculateCashService
     public function loadCountAllRowsInDb()
     {
         $counter = 0;
-        $tables = array_map('reset', \DB::select('SHOW TABLES'));
+        $tables = DB::select('SHOW TABLES');
 
         foreach ($tables as $table) {
-            $counter += DB::table($table)->count();
+            $counter += DB::table($table->Tables_in_softcrm)->count();
         }
 
         return $counter;

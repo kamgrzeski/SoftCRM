@@ -26,8 +26,8 @@ class FakerCompaniesSeeder extends Seeder
                 'postal_code' => $faker->postcode,
                 'employees_size' => rand(100,1000),
                 'fax' => $faker->phoneNumber,
-                'description' => $faker->text($maxNbChars = 200),
-                'client_id' => $faker->randomElement($userIds),
+                'description' => 'test description',
+                'client_id' => $userIds[array_rand($userIds)],
                 'created_at' => \Carbon\Carbon::now()->subDays(rand(1, 33)),
                 'updated_at' => \Carbon\Carbon::now(),
                 'admin_id' => 1
