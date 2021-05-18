@@ -69,11 +69,6 @@ class TasksModel extends Model
         return $this->all()->count();
     }
 
-    public static function trySearchTasksByValue($type, $value, $paginationLimit = 10)
-    {
-        return self::where($type, 'LIKE', '%' . $value . '%')->paginate($paginationLimit);
-    }
-
     public function getAllCompletedTasks()
     {
         $tasks = $this->where('completed', '=', 1)->count();
@@ -102,12 +97,9 @@ class TasksModel extends Model
 
     public function getAllUncompletedTasks()
     {
-        $tasks = $this->where('completed', '=', 0)->count();
-
-        $taskAll = $this->all()->count();
-
-        $percentage = round(($tasks / $taskAll) * 100);
-
-        return $tasks . ' (' . $percentage .  '%)';
+        return [
+            'tasks' => $this->where('completed', '=', 0)->count(),
+            'all' => $this->all()->count()
+        ];
     }
 }

@@ -57,7 +57,6 @@ class TasksService
     public function loadCountTasks()
     {
         return $this->tasksModel->countTasks();
-
     }
 
     public function loadCompletedTasks()
@@ -67,6 +66,10 @@ class TasksService
 
     public function loadUncompletedTasks()
     {
-        return $this->tasksModel->getAllUncompletedTasks();
+        $data = $this->tasksModel->getAllUncompletedTasks();
+
+        $percentage = round(($data['tasks'] / $data['taskAll']) * 100);
+
+        return $data['tasks'] . ' (' . $percentage .  '%)';
     }
 }

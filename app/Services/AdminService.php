@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\AdminModel;
+use Illuminate\Support\Facades\Hash;
 
 class AdminService
 {
@@ -19,6 +20,12 @@ class AdminService
             return false;
         }
 
-        return $this->adminModel->changeAdminPassword($oldPassword, $newPassword, $adminId);
+        $adminDetails = $this->adminModel->changeAdminPassword($adminId);
+
+        if(Hash::check($oldPassword, $adminDetails->password)) {
+            return $this->adminModel->updateAdminPassword($newPassword, $adminId);
+        } else {
+            return false;
+        }
     }
 }

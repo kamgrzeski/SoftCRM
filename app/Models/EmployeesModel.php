@@ -86,9 +86,7 @@ class EmployeesModel extends Model
         $employeesCount = $this->where('created_at', '>=', now()->subMonth())->count();
         $allEmployees = $this->all()->count();
 
-        $percentage = ($allEmployees / 100) * $employeesCount;
-
-        return $percentage;
+        return ($allEmployees / 100) * $employeesCount;
     }
 
     public function getDeactivated() : int

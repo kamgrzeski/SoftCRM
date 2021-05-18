@@ -43,28 +43,17 @@ class AdminModel extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function changeAdminPassword(string $oldPassword, string $newPassword, int $adminId): bool|int
-    {
-        $adminDetails = $this->getAdminDetails($adminId);
-
-        if(Hash::check($oldPassword, $adminDetails->password)) {
-            return $this->updateAdminPassword($newPassword, $adminId);
-        } else {
-            return false;
-        }
-    }
-
-    private function getAdminDetails(int $adminId) : self
+    public function changeAdminPassword(int $adminId)
     {
         return $this->find($adminId);
     }
 
-    private function updateAdminPassword(string $newPassword, int $adminId) : int
+    public function updateAdminPassword(string $newPassword, int $adminId) : int
     {
         return $this->where('id', $adminId)->update(
-            [
-                'password' => Hash::make($newPassword),
-                'updated_at' => now()
-            ]);
+        [
+            'password' => Hash::make($newPassword),
+            'updated_at' => now()
+        ]);
     }
 }

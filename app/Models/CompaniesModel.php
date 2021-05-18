@@ -94,9 +94,7 @@ class CompaniesModel extends Model
         $companiesCount = $this->where('created_at', '>=', now()->subMonth())->count();
         $allCompanies = $this->all()->count();
 
-        $percentage = ($allCompanies / 100) * $companiesCount;
-
-        return $percentage;
+        return ($allCompanies / 100) * $companiesCount;
     }
 
     public function getDeactivated() : int

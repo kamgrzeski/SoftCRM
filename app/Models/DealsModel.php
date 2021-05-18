@@ -65,9 +65,7 @@ class DealsModel extends Model
         $dealsCount = self::where('created_at', '>=', now()->subMonth())->count();
         $allDeals = self::all()->count();
 
-        $percentage = ($allDeals / 100) * $dealsCount;
-
-        return $percentage;
+        return ($allDeals / 100) * $dealsCount;
     }
 
     public function getDeactivated() : int

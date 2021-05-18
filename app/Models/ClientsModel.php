@@ -84,9 +84,7 @@ class ClientsModel extends Model
         $clientCount = self::where('created_at', '>=', now()->subMonth())->count();
         $allClient = self::all()->count();
 
-        $new_width = ($allClient / 100) * $clientCount;
-
-        return $new_width;
+        return ($allClient / 100) * $clientCount;
     }
 
     public function getDeactivated() : int
