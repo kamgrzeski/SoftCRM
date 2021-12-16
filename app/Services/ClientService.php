@@ -55,7 +55,7 @@ class ClientService
         if ($this->clientsModel->setClientActive($clientDetails->id, $value)) {
             return $this->getMessage('messages.SuccessClientActive');
         } else {
-            return $this->getMessage('messages.ClientIsActived');
+            return $this->getMessage('messages.ClientIsActivated');
         }
     }
 

@@ -13,6 +13,7 @@ return [
     'ErrorClientUpdate' => 'Client hasn\'t been updated yet.',
     'SuccessClientDelete' => 'Client has been deleted.',
     'SuccessClientActive' => 'Client has been active.',
+    'ClientIsActivated' => 'Client has been already activated.',
     'ErrorClientActive' => 'Client hasn\'t been active yet.',
     'ClientIsNowDeactivated' => 'Client has been deactivated.',
     'ClientIsDeactivated' => 'Client has been already deactivated.',
