@@ -24,11 +24,11 @@ class SystemLogsModel extends Model
         }
     }
 
-    public function insertSystemLog($actions, int $statusCode, int $adminId = 1)
+    public function insertSystemLog($actions, int $statusCode, int $adminId = 1) : self
     {
         $userInformation = $this->getUserInformation();
 
-        self::insert(
+        return self::insert(
             [
                 'user_id' => Auth::id(),
                 'actions' => $actions,
@@ -40,8 +40,6 @@ class SystemLogsModel extends Model
                 'admin_id' => $adminId
             ]
         );
-
-        return true;
     }
 
     public function getUserInformation()
@@ -49,8 +47,8 @@ class SystemLogsModel extends Model
         return unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$this->ip"));
     }
 
-    public function countRows()
+    public function countRows() : int
     {
-        return self::all()->count();
+        return $this->all()->count();
     }
 }

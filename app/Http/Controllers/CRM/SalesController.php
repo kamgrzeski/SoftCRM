@@ -6,6 +6,7 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleStoreRequest;
 use App\Http\Requests\SaleUpdateRequest;
+use App\Services\ProductsService;
 use App\Services\SalesService;
 use App\Services\SystemLogService;
 use View;
@@ -15,18 +16,19 @@ class SalesController extends Controller
 {
     private SalesService $salesService;
     private SystemLogService $systemLogsService;
-
+    private ProductsService $productsService;
     public function __construct()
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
         $this->salesService = new SalesService();
         $this->systemLogsService = new SystemLogService();
+        $this->productsService = new ProductsService();
     }
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.sales.create')->with(['dataOfProducts' => $this->salesService->loadProducts()]);
+        return View::make('crm.sales.create')->with(['dataOfProducts' => $this->productsService->loadProducts()]);
     }
 
     public function processShowSalesDetails($saleId)

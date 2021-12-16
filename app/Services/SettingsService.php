@@ -38,7 +38,7 @@ class SettingsService
 
         $container = [];
 
-        foreach($allSettings as $key => $setting) {
+        foreach($allSettings as $setting) {
             $container[$setting['key']] = $setting['value'];
         }
 

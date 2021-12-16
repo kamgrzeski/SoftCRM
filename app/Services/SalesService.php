@@ -44,11 +44,6 @@ class SalesService
         return $this->salesModel->setActive($saleId, $value);
     }
 
-    public function loadProducts()
-    {
-        return ProductsModel::pluck('name', 'id');
-    }
-
     public function loadCountSales()
     {
         return $this->salesModel->countSales();
