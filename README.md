@@ -1,4 +1,4 @@
-# B2B CRM System in Laravel 6.12 with PHP [>7.3]
+# B2B CRM System in Laravel 8.0 with PHP [>8.0]
 <p align="center">
   <img src="https://i.ibb.co/z8ssKdN/Przechwytywanie.jpg">
 </p>
