@@ -12,6 +12,13 @@
             <strong>Danger!</strong> There is no employees in system. Please create one. <a href="{{ URL::to('employees/create') }}">Click here!</a>
         </div>
     @endif
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> {!! implode('', $errors->all('<div>:message</div>')) !!}
+        </div>
+    @endif
+
     <!-- will be used to show any messages -->
     @if(session()->has('message_success'))
         <div class="alert alert-success">

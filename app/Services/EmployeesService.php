@@ -24,9 +24,9 @@ class EmployeesService
         return $this->employeesModel->updateEmployee($employeeId, $requestedData);
     }
 
-    public function loadEmployees()
+    public function loadEmployees($createForm = false)
     {
-        return $this->employeesModel->getEmployees();
+        return $this->employeesModel->getEmployees($createForm);
     }
 
     public function loadPaginate()

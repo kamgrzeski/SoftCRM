@@ -94,12 +94,15 @@ class EmployeesModel extends Model
         return $this->where('is_active', '=', 0)->count();
     }
 
-    public function getEmployees()
+    public function getEmployees($createForm = false)
     {
+        if($createForm) {
+            return $this->pluck('full_name', 'id');
+        }
+
         $query = $this->all()->sortBy('created_at');
 
         foreach($query as $key => $value) {
-            $query[$key]->is_active = $query[$key]->is_active  ? 'Active' : 'Deactivate';
             Arr::add($query[$key], 'taskCount', $this->getEmployeesTaskCount($value->id));
         }
 

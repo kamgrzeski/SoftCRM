@@ -49,11 +49,6 @@ class TasksService
         return $this->tasksModel->setCompleted($taskId, $value);
     }
 
-    public function pluckEmployees()
-    {
-        return EmployeesModel::pluck('full_name', 'id');
-    }
-
     public function loadCountTasks()
     {
         return $this->tasksModel->countTasks();

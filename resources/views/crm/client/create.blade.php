@@ -7,6 +7,13 @@
 @section('lyric', 'lorem ipsum')
 
 @section('content')
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <strong>Danger!</strong> {!! implode('', $errors->all('<div>:message</div>')) !!}
+        </div>
+    @endif
+
     @if(session()->has('message_success'))
         <div class="alert alert-success">
             <strong>Well done!</strong> {{ session()->get('message_success') }}

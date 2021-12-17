@@ -6,28 +6,30 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
+use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
 use View;
-use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class TasksController extends Controller
 {
     private TasksService $tasksService;
     private SystemLogService $systemLogsService;
+    private EmployeesService $employeesService;
 
-    public function __construct(TasksService $tasksService, SystemLogService $systemLogService)
+    public function __construct(TasksService $tasksService, SystemLogService $systemLogService, EmployeesService $employeesService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
         $this->tasksService = $tasksService;
         $this->systemLogsService = $systemLogService;
+        $this->employeesService = $employeesService;
     }
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.tasks.create')->with(['dataOfEmployees' => $this->tasksService->pluckEmployees()]);
+        return View::make('crm.tasks.create')->with(['dataOfEmployees' => $this->employeesService->loadEmployees(true)]);
     }
 
     public function processListOfTasks()
@@ -49,7 +51,7 @@ class TasksController extends Controller
         return View::make('crm.tasks.edit')->with(
             [
                 'task' => $this->tasksService->loadTask($taskId),
-                'employees' => $this->tasksService->pluckEmployees()
+                'employees' => $this->employeesService->loadEmployees()
             ]
         );
     }

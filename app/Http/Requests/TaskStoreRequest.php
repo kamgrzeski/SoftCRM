@@ -26,7 +26,7 @@ class TaskStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'employee_id' => 'required|integer',
+            'employee_id' => 'required',
             'duration' => 'required|integer'
         ];
     }
