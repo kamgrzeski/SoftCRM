@@ -59,11 +59,6 @@ class FinancesService
         return $this->financesModel->setActive($financeId, $value);
     }
 
-    public function pluckCompanies()
-    {
-        return $this->financesModel->getPluckCompanies();
-    }
-
     public function loadCountFinances()
     {
         return $this->financesModel->countFinances();

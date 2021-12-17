@@ -92,4 +92,14 @@ class DealsModel extends Model
     {
         return $this->where('id', $dealId)->get()->last()->name;
     }
+
+    public function getAssignedDealsForCompanies(int $companiesId)
+    {
+        return $this->where('companies_id', $companiesId)->get()->count();
+    }
+
+    public function getAll()
+    {
+        return $this->all()->sortBy('created_at');
+    }
 }

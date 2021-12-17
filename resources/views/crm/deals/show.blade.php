@@ -65,7 +65,7 @@
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $deal->is_active ? 'Yes' : 'No' }}</td>
+                                    <td>{{ $deal->is_active ? 'Active' : 'Deactivate' }}</td>
                                 </tr>
                                 </tbody>
                             </table>

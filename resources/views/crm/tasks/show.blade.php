@@ -26,11 +26,11 @@
 
                         <div class="text-right">
                                 @if($task->completed == FALSE)
-                                    <a href="{{ URL::to('tasks/completed/' . $task->id) }}">
+                                    <a href="{{ URL::to('tasks/completed/' . $task->id . '/1') }}">
                                         <button type="button" class="btn btn-success">Mark as completed</button>
                                     </a>
                                 @else
-                                    <a href="{{ URL::to('tasks/uncompleted/' . $task->id) }}">
+                                    <a href="{{ URL::to('tasks/completed/' . $task->id . '/0') }}">
                                         <button type="button" class="btn btn-success">Mark as uncompleted</button>
                                     </a>
                                 @endif
@@ -61,7 +61,7 @@
                             </tr>
                             <tr>
                                 <th>Status</th>
-                                <td>{{ $task->is_active ? 'Active' : 'Deactive' }}</td>
+                                <td>{{ $task->is_active ? 'Active' : 'Deactivate' }}</td>
                             </tr>
                             <tr>
                                 <th>Completed</th>

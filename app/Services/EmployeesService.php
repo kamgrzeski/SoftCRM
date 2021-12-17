@@ -66,7 +66,7 @@ class EmployeesService
 
     public function loadEmployeesInLatestMonth()
     {
-        return $this->employeesModel->getEmployeesInLatestMonth() . '%' ? : '0.00%';
+        return $this->employeesModel->getEmployeesInLatestMonth();
     }
 
     public function loadDeactivatedEmployees()

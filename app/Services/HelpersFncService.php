@@ -65,8 +65,6 @@ class HelpersFncService
             ];
         }
 
-        $formatLogs = $tempArray;
-
-        return $formatLogs;
+        return $tempArray;
     }
 }

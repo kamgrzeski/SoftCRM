@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             {{ Form::model($clientDetails, ['route' => ['processUpdateClient', $clientDetails->id], 'method' => 'PUT']) }}
-                            <div class="form-group  input-row">
+                            <div class="form-group input-row">
                                 {{ Form::label('full_name', 'Full name') }}
                                 {{ Form::text('full_name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                             </div>

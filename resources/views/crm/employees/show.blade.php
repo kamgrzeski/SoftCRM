@@ -71,7 +71,7 @@
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $employee->is_active ? 'Yes' : 'No' }}</td>
+                                    <td>{{ $employee->is_active ? 'Active' : 'Deactivate' }}</td>
                                 </tr>
                                 </tbody>
                             </table>

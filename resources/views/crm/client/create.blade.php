@@ -30,7 +30,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             {{ Form::open(['route' => 'processStoreClient']) }}
-                            <div class="form-group  input-row">
+                            <div class="form-group input-row">
                                 {{ Form::label('full_name', 'Full name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
@@ -77,14 +77,6 @@
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
                                     {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('priority', 'Priority') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-child"></i></span>
-                                    {{ Form::select('priority', \App\Services\HelpersFncService::getPrioritySize(), null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
                                 </div>
                             </div>
 

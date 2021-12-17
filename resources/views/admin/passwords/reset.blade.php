@@ -26,15 +26,24 @@
                         <div class="col-lg-12">
                             <div class="form-group input-row">
                                 {{ Form::label('old_password', 'Old password') }}
-                                {{ Form::password('old_password', null, ['class' => 'form-control']) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+                                    {{ Form::text('old_password', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                </div>
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('new_password', 'New password') }}
-                                {{ Form::password('new_password', null, ['class' => 'form-control']) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+                                    {{ Form::text('new_password', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                </div>
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('confirm_password', 'Repeat new password') }}
-                                {{ Form::password('confirm_password', null, ['class' => 'form-control']) }}
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
+                                    {{ Form::text('confirm_password', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">

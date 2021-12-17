@@ -6,28 +6,30 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FinanceStoreRequest;
 use App\Http\Requests\FinanceUpdateRequest;
+use App\Services\CompaniesService;
 use App\Services\FinancesService;
 use App\Services\SystemLogService;
 use View;
-use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class FinancesController extends Controller
 {
     private FinancesService $financesService;
     private SystemLogService $systemLogsService;
+    private CompaniesService $companiesService;
 
-    public function __construct(FinancesService $financesService, SystemLogService $systemLogService)
+    public function __construct(FinancesService $financesService, SystemLogService $systemLogService, CompaniesService $companiesService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
         $this->financesService = $financesService;
         $this->systemLogsService = $systemLogService;
+        $this->companiesService = $companiesService;
     }
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.finances.create')->with(['dataWithPluckOfCompanies' => $this->financesService->pluckCompanies()]);
+        return View::make('crm.finances.create')->with(['dataWithPluckOfCompanies' => $this->companiesService->loadCompanies(true)]);
     }
 
     public function processShowFinancesDetails($financeId)
@@ -50,7 +52,7 @@ class FinancesController extends Controller
         return View::make('crm.finances.edit')->with(
             [
                 'finance' => $this->financesService->loadFinance($financeId),
-                'dataWithPluckOfCompanies' => $this->financesService->pluckCompanies()
+                'dataWithPluckOfCompanies' => $this->companiesService->loadCompanies(true)
             ]
         );
     }

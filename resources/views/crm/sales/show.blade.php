@@ -54,7 +54,7 @@
                             </tr>
                             <tr>
                                 <th>Status</th>
-                                <td>{{ $sale->is_active ? 'Yes' : 'No'  }}</td>
+                                <td>{{ $sale->is_active ? 'Active' : 'Deactivate' }}</td>
                             </tr>
                             </tbody>
                         </table>

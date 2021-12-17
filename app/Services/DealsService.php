@@ -30,7 +30,7 @@ class DealsService
 
     public function loadDeals()
     {
-        return DealsModel::all()->sortBy('created_at');
+        return $this->dealsModel->getAll();
     }
 
     public function loadPaginate()
@@ -65,7 +65,7 @@ class DealsService
 
     public function loadDealsInLatestMonth()
     {
-        return $this->dealsModel->getDealsInLatestMonth() . '%' ? : '0.00%';
+        return $this->dealsModel->getDealsInLatestMonth();
     }
 
     public function loadStoreDealTerms(array $validatedData)
@@ -78,15 +78,10 @@ class DealsService
         $query = $this->dealsTermsModel->getDealTerms($dealId);
 
         foreach($query as $key => $value) {
-            $query[$key]['formattedDate'] = $this->generateDate($value['created_at']);
+            $query[$key]['formattedDate'] = Carbon::parse($value['created_at'])->format('d M, Y');
         }
 
         return $query;
-    }
-
-    private function generateDate($date)
-    {
-        return Carbon::parse($date)->format('d M, Y');
     }
 
     public function loadGenerateDealTermsInPDF(int $termId, int $dealId)
@@ -110,5 +105,10 @@ class DealsService
     public function countDealTerms(int $dealId)
     {
         return $this->dealsTermsModel->countAssignedDealTerms($dealId);
+    }
+
+    public function loadCountAssignedDeals(int $companiesId)
+    {
+        return $this->dealsModel->getAssignedDealsForCompanies($companiesId);
     }
 }

@@ -79,11 +79,6 @@ class FinancesModel extends Model
         return $this->get()->count();
     }
 
-    public function getPluckCompanies()
-    {
-        return CompaniesModel::pluck('name', 'id');
-    }
-
     public function getFinancesSortedByCreatedAt()
     {
         return $this->all()->sortByDesc('created_at');

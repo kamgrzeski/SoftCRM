@@ -24,9 +24,9 @@ class CompaniesService
         return $this->companiesModel->updateCompany($companiesId, $requestedData);
     }
 
-    public function loadCompanies()
+    public function loadCompanies($createForm = false)
     {
-        return $this->companiesModel->getAll();
+        return $this->companiesModel->getAll($createForm);
     }
 
     public function loadPagination()
@@ -42,11 +42,6 @@ class CompaniesService
     public function loadCompany(int $companyId)
     {
         return $this->companiesModel->getCompany($companyId);
-    }
-
-    public function loadCountAssignedDeals(int $companiesId)
-    {
-        return DealsModel::where('companies_id', $companiesId)->get()->count();
     }
 
     public function loadSetActive(int $companiesId, bool $value)
@@ -71,6 +66,6 @@ class CompaniesService
 
     public function loadCompaniesInLatestMonth()
     {
-        return $this->companiesModel->getCompaniesInLatestMonth() . '%' ? : '0.00%';
+        return $this->companiesModel->getCompaniesInLatestMonth();
     }
 }

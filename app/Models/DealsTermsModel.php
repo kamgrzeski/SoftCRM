@@ -16,12 +16,12 @@ class DealsTermsModel extends Model
 
     public function storeDealTerms(array $validatedData)
     {
-        $model = new DealsTermsModel();
-
-        $model->body = $validatedData['body'];
-        $model->deal_id = $validatedData['dealId'];
-
-        return $model->save();
+        return $this->insertGetId(
+            [
+                'body' => $validatedData['body'],
+                'deal_id' => $validatedData['dealId'],
+            ]
+        );
     }
 
     public function getDealTerms(int $dealId)

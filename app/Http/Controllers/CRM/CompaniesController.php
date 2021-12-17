@@ -7,22 +7,24 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyStoreRequest;
 use App\Http\Requests\CompanyUpdateRequest;
 use App\Services\CompaniesService;
+use App\Services\DealsService;
 use App\Services\SystemLogService;
 use View;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Http\Request;
 
 class CompaniesController extends Controller
 {
     private CompaniesService $companiesService;
     private SystemLogService $systemLogsService;
+    private DealsService $dealsService;
 
-    public function __construct(CompaniesService $companiesService, SystemLogService $systemLogService)
+    public function __construct(CompaniesService $companiesService, SystemLogService $systemLogService, DealsService $dealsService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
         $this->companiesService = $companiesService;
         $this->systemLogsService = $systemLogService;
+        $this->dealsService = $dealsService;
     }
 
     public function processRenderCreateForm()
@@ -79,7 +81,7 @@ class CompaniesController extends Controller
     public function processDeleteCompany(int $companiesId)
     {
         $dataOfCompanies = $this->companiesService->loadCompany($companiesId);
-        $countDeals = $this->companiesService->loadCountAssignedDeals($companiesId);
+        $countDeals = $this->dealsService->loadCountAssignedDeals($companiesId);
 
         if ($countDeals > 0) {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteDeals'));

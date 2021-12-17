@@ -30,13 +30,10 @@ class ClientService
     {
         $client = $this->clientsModel->getClientByGivenClientId($clientId);
 
-        $countCompanies = $client->companies()->count();
-        $countEmployees = $client->employees()->count();
-
-        if ($countCompanies > 0) {
+        if ($client->companies()->count() > 0) {
             return $this->getMessage('messages.firstDeleteCompanies');
         }
-        if ($countEmployees > 0) {
+        if ($client->employees()->count() > 0) {
             return $this->getMessage('messages.firstDeleteEmployees');
         }
 
@@ -82,6 +79,6 @@ class ClientService
 
     public function loadClientsInLatestMonth()
     {
-        return $this->clientsModel->getClientsInLatestMonth() . '%' ? : '0.00%';
+        return $this->clientsModel->getClientsInLatestMonth();
     }
 }

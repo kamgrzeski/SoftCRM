@@ -31,11 +31,12 @@ return [
     'ErrorCompaniesActive' => 'Company hasn\'t been active yet.',
     'CompaniesIsNowDeactivated' => 'Company has been deactivated.',
     'CompaniesIsDeactivated' => 'Company has been already deactivated.',
+    'ThereIsNoCompanies' => 'A company with this name doesn\'t exist.',
     'firstDeleteCompanies' => 'Cannot delete this company, have assigned companies.',
     'firstDeleteEmployees' => 'Cannot delete this company, have assigned employees.',
-    'firstDeleteContacts' => 'Cannot delete this company, have assigned contacts.',
     'firstDeleteDeals' => 'Cannot delete company, have assigned deals.',
-    'ThereIsNoCompanies' => 'A company with this name doesn\'t exist.',
+
+
 
     /** Contacts Messages **/
     'SuccessContactsStore' => 'Contact has been added.',
@@ -75,7 +76,9 @@ return [
     'ErrorEmployeesActive' => 'Employee hasn\'t been active yet.',
     'EmployeesIsNowDeactivated' => 'Employee has been deactivated.',
     'EmployeesIsDeactivated' => 'Employee has been already deactivated.',
-    'firstDeleteTasks' => 'Cannot delete, have assigned tasks.',
+    'firstDeleteTasks' => 'You cannot delete this employee that has been assigned a tasks.',
+
+
 
     /** Tasks Messages **/
     'TasksCompleted' => 'Task successfully completed.',
@@ -114,9 +117,8 @@ return [
     'ErrorProductsActive' => 'Product hasn\'t been active yet.',
     'ProductsIsNowDeactivated' => 'Product has been deactivated.',
     'ProductsIsDeactivated' => 'Product has been already deactivated.',
-    'firstDeleteSales' => 'Cannot delete this product, have assigned sales.',
+    'firstDeleteSales' => 'You cannot delete this product that has been assigned a sale.',
 
     /** Admin operations **/
-
     'changeAdminPassword' => 'Your password has been changed.',
 ];

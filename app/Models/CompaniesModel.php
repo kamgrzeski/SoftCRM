@@ -122,8 +122,12 @@ class CompaniesModel extends Model
         return $this->pluck('name', 'id');
     }
 
-    public function getAll()
+    public function getAll($createForm = false)
     {
+        if($createForm) {
+            return $this->pluck('name', 'id');
+        }
+
         return $this->all()->sortBy('created_at');
     }
 }
