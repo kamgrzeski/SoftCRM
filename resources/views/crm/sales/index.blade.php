@@ -68,7 +68,7 @@
                                                 </label>
                                             @endif
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
                                             <a class="btn btn-small btn-primary"
                                                href="{{ URL::to('sales/view/' . $value->id) }}">More information</a>

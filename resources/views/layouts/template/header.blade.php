@@ -19,7 +19,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css"/>
+
     <div class="se-pre-con"></div>
     <style>
         .no-js #loader {
