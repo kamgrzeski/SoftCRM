@@ -89,7 +89,7 @@ class FinancesController extends Controller
 
     public function processFinanceSetIsActive($financeId, $value)
     {
-        if ($this->financesService->loadIsActiveFunction($financeId, $value)) {
+        if ($this->financesService->loadIsActive($financeId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('FinancesModel has been enabled with id: ' . $financeId, $this->systemLogsService::successCode, $this->getAdminId());
 
             $msg = $value ? 'SuccessFinancesActive' : 'FinancesIsNowDeactivated';

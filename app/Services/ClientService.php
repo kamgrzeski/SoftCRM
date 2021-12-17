@@ -55,9 +55,9 @@ class ClientService
         return $this->clientsModel->setClientActive($clientDetails->id, $value);
     }
 
-    public function loadClients()
+    public function loadClients($createForm = false)
     {
-        return $this->clientsModel->getClientSortedBy();
+        return $this->clientsModel->getClientSortedBy($createForm);
     }
 
     public function loadPagination()

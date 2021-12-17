@@ -90,7 +90,7 @@ class SalesController extends Controller
 
     public function processSaleSetIsActive(int $saleId, bool $value)
     {
-        if ($this->salesService->loadIsActiveFunction($saleId, $value)) {
+        if ($this->salesService->loadIsActive($saleId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('SalesModel has been enabled with id: ' . $saleId, $this->systemLogsService::successCode, $this->getAdminId());
 
             $msg = $value ? 'SuccessSalesActive' : 'SalesIsNowDeactivated';

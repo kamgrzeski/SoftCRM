@@ -54,7 +54,7 @@ class FinancesService
         return $this->financesModel::find($financeId);
     }
 
-    public function loadIsActiveFunction(int $financeId, int $value)
+    public function loadIsActive(int $financeId, int $value)
     {
         return $this->financesModel->setActive($financeId, $value);
     }

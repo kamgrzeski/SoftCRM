@@ -39,7 +39,7 @@ class SalesService
         return $this->salesModel->getSale($saleId);
     }
 
-    public function loadIsActiveFunction(int $saleId, int $value)
+    public function loadIsActive(int $saleId, int $value)
     {
         return $this->salesModel->setActive($saleId, $value);
     }

@@ -5,9 +5,11 @@ namespace App\Http\Controllers\CRM;
 use App\Enums\SystemEnums;
 use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
+use App\Services\ClientService;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Http\Controllers\Controller;
+use http\Client;
 use View;
 use Illuminate\Support\Facades\Redirect;
 
@@ -15,18 +17,20 @@ class EmployeesController extends Controller
 {
     private EmployeesService $employeesService;
     private SystemLogService $systemLogsService;
+    private ClientService $clientService;
 
-    public function __construct(EmployeesService $employeesService, SystemLogService $systemLogService)
+    public function __construct(EmployeesService $employeesService, SystemLogService $systemLogService, ClientService $clientService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
         $this->employeesService = $employeesService;
         $this->systemLogsService = $systemLogService;
+        $this->clientService = $clientService;
     }
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.employees.create')->with(['dataOfClients' => $this->employeesService->pluckData()]);
+        return View::make('crm.employees.create')->with(['dataOfClients' => $this->clientService->loadClients(true)]);
     }
 
     public function processShowEmployeeDetails($employeeId)
