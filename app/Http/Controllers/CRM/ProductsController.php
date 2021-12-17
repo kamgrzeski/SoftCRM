@@ -91,7 +91,10 @@ class ProductsController extends Controller
     {
         if ($this->productsService->loadIsActiveFunction($productId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('ProductsModel has been enabled with id: ' . $productId, $this->systemLogsService::successCode, $this->getAdminId());
-            return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsActive'));
+
+            $msg = $value ? 'SuccessProductsActive' : 'ProductsIsNowDeactivated';
+
+            return Redirect::to('products')->with('message_success', $this->getMessage('messages.' . $msg));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ProductsIsActived'));
         }

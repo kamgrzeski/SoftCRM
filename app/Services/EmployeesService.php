@@ -49,7 +49,7 @@ class EmployeesService
         return $dataOfEmployees->tasks()->get()->count();
     }
 
-    public function loadIsActiveFunction(int $employeeId, int $value)
+    public function loadSetActive(int $employeeId, int $value)
     {
         return $this->employeesModel->setActive($employeeId, $value);
     }

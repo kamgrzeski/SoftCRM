@@ -66,7 +66,7 @@
                                     </td>
                                     <td class="text-center">{{ $value->date }}</td>
                                     <td class="text-center">
-                                        @if($value->is_active == TRUE)
+                                        @if($value->is_active)
                                             <label class="switch">
                                                 <input type="checkbox"
                                                        onchange='window.location.assign("{{ URL::to('finances/set-active/' . $value->id . '/0') }}")' checked>

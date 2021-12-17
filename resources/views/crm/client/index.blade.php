@@ -53,7 +53,7 @@
                                                     class="btn btn-default">{{ $value->budget }}</button>
                                         </td>
                                         <td class="text-center">
-                                            @if($value->is_active == TRUE)
+                                            @if($value->is_active)
                                                 <label class="switch">
                                                     <input type="checkbox"
                                                            onchange='window.location.assign("{{ URL::to('clients/set-active/' . $value->id . '/0') }}")' checked>

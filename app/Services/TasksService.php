@@ -39,12 +39,12 @@ class TasksService
         return $this->tasksModel->getTask($taskId);
     }
 
-    public function loadIsActiveFunction(int $taskId, bool $value)
+    public function loadIsActive(int $taskId, bool $value)
     {
         return $this->tasksModel->setActive($taskId, $value);
     }
 
-    public function loadIsCompletedFunction(int $taskId, bool $value)
+    public function loadIsCompleted(int $taskId, bool $value)
     {
         return $this->tasksModel->setCompleted($taskId, $value);
     }

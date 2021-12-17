@@ -49,7 +49,7 @@
                                     <td class="text-center">{{ $value->start_time }}</td>
                                     <td class="text-center">{{ $value->end_time }}</td>
                                     <td class="text-center">
-                                            @if($value->is_active == TRUE)
+                                            @if($value->is_active)
                                                 <label class="switch">
                                                     <input type="checkbox"
                                                            onchange='window.location.assign("{{ URL::to('deals/set-active/' . $value->id . '/0') }}")' checked>

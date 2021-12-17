@@ -91,7 +91,10 @@ class FinancesController extends Controller
     {
         if ($this->financesService->loadIsActiveFunction($financeId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('FinancesModel has been enabled with id: ' . $financeId, $this->systemLogsService::successCode, $this->getAdminId());
-            return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesActive'));
+
+            $msg = $value ? 'SuccessFinancesActive' : 'FinancesIsNowDeactivated';
+
+            return Redirect::to('finances')->with('message_success', $this->getMessage('messages.' . $msg));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesActive'));
         }

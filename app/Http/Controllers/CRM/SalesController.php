@@ -92,9 +92,12 @@ class SalesController extends Controller
     {
         if ($this->salesService->loadIsActiveFunction($saleId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('SalesModel has been enabled with id: ' . $saleId, $this->systemLogsService::successCode, $this->getAdminId());
-            return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesActive'));
+
+            $msg = $value ? 'SuccessSalesActive' : 'SalesIsNowDeactivated';
+
+            return Redirect::to('sales')->with('message_success', $this->getMessage('messages.' . $msg));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.SalesIsActived'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSalesActive'));
         }
     }
 }

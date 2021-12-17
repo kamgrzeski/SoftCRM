@@ -92,9 +92,12 @@ class EmployeesController extends Controller
 
     public function processEmployeeSetIsActive($employeeId, $value)
     {
-        if ($this->employeesService->loadIsActiveFunction($employeeId, $value)) {
+        if ($this->employeesService->loadSetActive($employeeId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('Employees has been enabled with id: ' . $employeeId, $this->systemLogsService::successCode, $this->getAdminId());
-            return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesActive'));
+
+            $msg = $value ? 'SuccessEmployeesActive' : 'EmployeesIsNowDeactivated';
+
+            return Redirect::to('employees')->with('message_success', $this->getMessage('messages.' . $msg));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesActive'));
         }

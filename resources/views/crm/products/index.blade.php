@@ -49,7 +49,7 @@
                                                 class="btn btn-default">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($value->price) }}</button>
                                     </td>
                                     <td class="text-center">
-                                        @if($value->is_active == TRUE)
+                                        @if($value->is_active)
                                             <label class="switch">
                                                 <input type="checkbox"
                                                        onchange='window.location.assign("{{ URL::to('products/set-active/' . $value->id . '/0') }}")'

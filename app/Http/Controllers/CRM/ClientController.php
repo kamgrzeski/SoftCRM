@@ -87,9 +87,10 @@ class ClientController extends Controller
     public function processClientSetIsActive(int $clientId, bool $value)
     {
         if ($this->clientService->loadSetActive($clientId, $value)) {
-            return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientActive'));
+            $msg = $value ? 'ClientIsNowDeactivated' : 'SuccessClientActive';
+            return Redirect::to('clients')->with('message_success', $this->getMessage('messages.' . $msg));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ClientIsActived'));
+            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSettingsUpdate'));
         }
     }
 }

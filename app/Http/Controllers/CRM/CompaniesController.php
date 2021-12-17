@@ -96,7 +96,10 @@ class CompaniesController extends Controller
     {
         if ($this->companiesService->loadSetActive($companiesId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('CompaniesModel has been enabled with id: ' . $companiesId, $this->systemLogsService::successCode, $this->getAdminId());
-            return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesActive'));
+
+            $msg = $value ? 'SuccessCompaniesActive' : 'CompaniesIsNowDeactivated';
+
+            return Redirect::to('companies')->with('message_success', $this->getMessage('messages.' . $msg));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesActive'));
         }

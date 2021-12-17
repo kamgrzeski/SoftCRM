@@ -52,11 +52,7 @@ class ClientService
     {
         $clientDetails = $this->clientsModel->getClientByGivenClientId($clientId);
 
-        if ($this->clientsModel->setClientActive($clientDetails->id, $value)) {
-            return $this->getMessage('messages.SuccessClientActive');
-        } else {
-            return $this->getMessage('messages.ClientIsActivated');
-        }
+        return $this->clientsModel->setClientActive($clientDetails->id, $value);
     }
 
     public function loadClients()

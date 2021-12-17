@@ -84,6 +84,7 @@ return [
     'SuccessTasksStore' => 'Task has been added.',
     'SuccessTasksUpdate' => 'Task has been updated.',
     'SuccessTasksActive' => 'Task has been active.',
+    'TaskIsNowDeactivated' => 'Task has been deactivated.',
     'ThereIsNoTasks' => 'A task with this name doesn\'t exist.',
     'CantDeleteUnompletedTask' => 'Task hasn\'t been completed yet.',
 
@@ -92,9 +93,9 @@ return [
     'SuccessSalesDelete' => 'Sales has been deleted.',
     'SuccessSalesUpdate' => 'Sales has been updated.',
     'SuccessSalesActive' => 'Sales has been active.',
-    'ErrorSalesActive' => 'Sales hasn\'t been active yet.',
     'SalesIsNowDeactivated' => 'Sales has been deactivated.',
     'SalesIsDeactivated' => 'Sales has been already deactivated.',
+    'ErrorSalesActive' => 'Sales hasn\'t been active yet.',
 
     /** Finances Messages **/
     'SuccessFinancesStore' => 'Finances has been added.',
@@ -106,14 +107,14 @@ return [
     'FinancesIsDeactivated' => 'Finances has been already deactivated.',
 
     /** Products Messages **/
-    'SuccessProductsStore' => 'Products has been added.',
-    'SuccessProductsDelete' => 'Products has been deleted.',
-    'SuccessProductsUpdate' => 'Products has been updated.',
-    'SuccessProductsActive' => 'Products has been active.',
-    'ErrorProductsActive' => 'Products hasn\'t been active yet.',
-    'ProductsIsNowDeactivated' => 'Products has been deactivated.',
-    'ProductsIsDeactivated' => 'Products has been already deactivated.',
-    'firstDeleteSales' => 'Cannot delete, have assigned sales.',
+    'SuccessProductsStore' => 'Product has been added.',
+    'SuccessProductsDelete' => 'Product has been deleted.',
+    'SuccessProductsUpdate' => 'Product has been updated.',
+    'SuccessProductsActive' => 'Product has been active.',
+    'ErrorProductsActive' => 'Product hasn\'t been active yet.',
+    'ProductsIsNowDeactivated' => 'Product has been deactivated.',
+    'ProductsIsDeactivated' => 'Product has been already deactivated.',
+    'firstDeleteSales' => 'Cannot delete this product, have assigned sales.',
 
     /** Admin operations **/
 

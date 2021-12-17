@@ -51,7 +51,7 @@
                                                 href="{{ URL::to('clients/view/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
                                     </td>
                                     <td class="text-center">
-                                            @if($value->is_active == TRUE)
+                                            @if($value->is_active)
                                                 <label class="switch">
                                                     <input type="checkbox"
                                                            onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/0') }}")' checked>

@@ -53,7 +53,7 @@
                                         </td>
                                         <td class="text-right">{{ $value->duration . ' days' }}</td>
                                         <td class="text-center">
-                                                @if($value->is_active == TRUE)
+                                                @if($value->is_active)
                                                     <label class="switch">
                                                         <input type="checkbox"
                                                                onchange='window.location.assign("{{ URL::to('tasks/set-active/' . $value->id . '/0') }}")' checked>

@@ -97,7 +97,10 @@ class DealsController extends Controller
     {
         if ($this->dealsService->loadSetActive($dealId, $value)) {
             $this->systemLogsService->loadInsertSystemLogs('Deals has been enabled with id: ' . $dealId, $this->systemLogsService::successCode, $this->getAdminId());
-            return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsActive'));
+
+            $msg = $value ? 'SuccessDealsActive' : 'DealsIsNowDeactivated';
+
+            return Redirect::to('deals')->with('message_success', $this->getMessage('messages.' . $msg));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsActive'));
         }
