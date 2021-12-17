@@ -112,8 +112,10 @@ class CalculateCashService
         $counter = 0;
         $tables = DB::select('SHOW TABLES');
 
+        $databaseName = DB::connection()->getDatabaseName();
+
         foreach ($tables as $table) {
-            $counter += DB::table($table->Tables_in_softcrm)->count();
+            $counter += DB::table($table->{'Tables_in_' . $databaseName})->count();
         }
 
         return $counter;
