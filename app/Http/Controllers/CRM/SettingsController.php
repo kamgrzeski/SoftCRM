@@ -17,13 +17,13 @@ class SettingsController extends Controller
     private SettingsService $settingsService;
     private SystemLogService $systemLogsService;
 
-    public function __construct()
+    public function __construct(HelpersFncService $helpersFncService, SettingsService $settingsService, SystemLogService $systemLogService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
-        $this->helpersFncService = new HelpersFncService();
-        $this->settingsService = new SettingsService();
-        $this->systemLogsService = new SystemLogService();
+        $this->helpersFncService = $helpersFncService;
+        $this->settingsService = $settingsService;
+        $this->systemLogsService = $systemLogService;
     }
 
     public function processListOfSettings()

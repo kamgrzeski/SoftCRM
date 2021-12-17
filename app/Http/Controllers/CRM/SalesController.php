@@ -17,13 +17,14 @@ class SalesController extends Controller
     private SalesService $salesService;
     private SystemLogService $systemLogsService;
     private ProductsService $productsService;
-    public function __construct()
+
+    public function __construct(SalesService $salesService, SystemLogService $systemLogService, ProductsService $productsService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
-        $this->salesService = new SalesService();
-        $this->systemLogsService = new SystemLogService();
-        $this->productsService = new ProductsService();
+        $this->salesService = $salesService;
+        $this->systemLogsService = $systemLogService;
+        $this->productsService = $productsService;
     }
 
     public function processRenderCreateForm()

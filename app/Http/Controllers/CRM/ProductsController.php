@@ -17,12 +17,12 @@ class ProductsController extends Controller
     private ProductsService $productsService;
     private SystemLogService $systemLogsService;
 
-    public function __construct()
+    public function __construct(ProductsService $productsService, SystemLogService $systemLogService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
-        $this->productsService = new ProductsService();
-        $this->systemLogsService = new SystemLogService();
+        $this->productsService = $productsService;
+        $this->systemLogsService = $systemLogService;
     }
 
     public function processRenderCreateForm()

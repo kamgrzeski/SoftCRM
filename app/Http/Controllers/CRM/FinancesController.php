@@ -17,12 +17,12 @@ class FinancesController extends Controller
     private FinancesService $financesService;
     private SystemLogService $systemLogsService;
 
-    public function __construct()
+    public function __construct(FinancesService $financesService, SystemLogService $systemLogService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
-        $this->financesService = new FinancesService();
-        $this->systemLogsService = new SystemLogService();
+        $this->financesService = $financesService;
+        $this->systemLogsService = $systemLogService;
     }
 
     public function processRenderCreateForm()

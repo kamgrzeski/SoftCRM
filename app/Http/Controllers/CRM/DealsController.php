@@ -18,12 +18,12 @@ class DealsController extends Controller
     private DealsService $dealsService;
     private SystemLogService $systemLogsService;
 
-    public function __construct()
+    public function __construct(DealsService $dealsService, SystemLogService $systemLogService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
-        $this->dealsService = new DealsService();
-        $this->systemLogsService = new SystemLogService();
+        $this->dealsService = $dealsService;
+        $this->systemLogsService = $systemLogService;
     }
 
     public function processRenderCreateForm()

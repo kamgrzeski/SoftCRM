@@ -17,12 +17,12 @@ class CompaniesController extends Controller
     private CompaniesService $companiesService;
     private SystemLogService $systemLogsService;
 
-    public function __construct()
+    public function __construct(CompaniesService $companiesService, SystemLogService $systemLogService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
-        $this->companiesService = new CompaniesService();
-        $this->systemLogsService = new SystemLogService();
+        $this->companiesService = $companiesService;
+        $this->systemLogsService = $systemLogService;
     }
 
     public function processRenderCreateForm()

@@ -16,12 +16,12 @@ class EmployeesController extends Controller
     private EmployeesService $employeesService;
     private SystemLogService $systemLogsService;
 
-    public function __construct()
+    public function __construct(EmployeesService $employeesService, SystemLogService $systemLogService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
-        $this->employeesService = new EmployeesService();
-        $this->systemLogsService = new SystemLogService();
+        $this->employeesService = $employeesService;
+        $this->systemLogsService = $systemLogService;
     }
 
     public function processRenderCreateForm()

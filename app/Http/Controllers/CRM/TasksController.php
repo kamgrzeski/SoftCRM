@@ -17,12 +17,12 @@ class TasksController extends Controller
     private TasksService $tasksService;
     private SystemLogService $systemLogsService;
 
-    public function __construct()
+    public function __construct(TasksService $tasksService, SystemLogService $systemLogService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
-        $this->tasksService = new TasksService();
-        $this->systemLogsService = new SystemLogService();
+        $this->tasksService = $tasksService;
+        $this->systemLogsService = $systemLogService;
     }
 
     public function processRenderCreateForm()

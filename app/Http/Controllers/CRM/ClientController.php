@@ -17,12 +17,12 @@ class ClientController extends Controller
     private ClientService $clientService;
     private SystemLogService $systemLogsService;
 
-    public function __construct()
+    public function __construct(ClientService $clientService, SystemLogService $systemLogService)
     {
         $this->middleware(SystemEnums::middleWareAuth);
 
-        $this->clientService = new ClientService();
-        $this->systemLogsService = new SystemLogService();
+        $this->clientService = $clientService;
+        $this->systemLogsService = $systemLogService;
     }
 
     public function processRenderCreateForm()
