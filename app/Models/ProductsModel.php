@@ -83,7 +83,7 @@ class ProductsModel extends Model
 
     public function getPaginate()
     {
-        return $this->paginate(Config::get('crm_settings.pagination_size'));
+        return $this->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
     }
 
     public function getProduct(int $productId) : self

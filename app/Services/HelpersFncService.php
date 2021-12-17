@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\SettingsModel;
 use App\Models\SystemLogsModel;
 use App\Models\TasksModel;
+use Config;
 
 class HelpersFncService
 {
@@ -66,5 +68,10 @@ class HelpersFncService
         }
 
         return $tempArray;
+    }
+
+    public function loadPaginationForLogs()
+    {
+        return SystemLogsModel::paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
     }
 }

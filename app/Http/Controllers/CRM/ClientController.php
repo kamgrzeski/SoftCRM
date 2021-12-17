@@ -44,7 +44,6 @@ class ClientController extends Controller
     {
         return View::make('crm.client.index')->with(
             [
-                'clients' => $this->clientService->loadClients(),
                 'clientsPaginate' => $this->clientService->loadPagination()
             ]
         );

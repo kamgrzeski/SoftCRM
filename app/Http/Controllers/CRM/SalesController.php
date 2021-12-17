@@ -41,7 +41,6 @@ class SalesController extends Controller
     {
         return View::make('crm.sales.edit')->with(
             [
-                'sale' => $this->salesService->loadSale($saleId),
                 'dataWithPluckOfProducts' => $this->salesService->loadProducts()
             ]
         );

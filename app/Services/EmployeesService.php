@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\EmployeesModel;
+use App\Models\SettingsModel;
 use Config;
 
 class EmployeesService
@@ -31,12 +32,7 @@ class EmployeesService
 
     public function loadPaginate()
     {
-        return $this->employeesModel::paginate(Config::get('crm_settings.pagination_size'));
-    }
-
-    public function pluckData()
-    {
-        return $this->employeesModel::pluck('full_name', 'id');
+        return $this->employeesModel::paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
     }
 
     public function loadEmployeeDetails(int $employeeId)

@@ -40,7 +40,6 @@ class DealsController extends Controller
     {
         return View::make('crm.deals.index')->with(
             [
-                'deals' => $this->dealsService->loadDeals(),
                 'dealsPaginate' => $this->dealsService->loadPaginate()
             ]
         );

@@ -70,7 +70,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($logs as $key => $value)
+                                @foreach($logsPaginate as $key => $value)
                                     <tr class="active">
                                         <td>{{ $value['user_id'] }}</td>
                                         <td>{{ $value['actions'] }}</td>
@@ -84,6 +84,7 @@
                             </table>
                         </div>
                     </div>
+                    {!! $logsPaginate->render() !!}
                 </div>
             </div>
         </div>

@@ -42,7 +42,6 @@ class EmployeesController extends Controller
     {
         return View::make('crm.employees.index')->with(
             [
-                'employees' => $this->employeesService->loadEmployees(),
                 'employeesPaginate' => $this->employeesService->loadPaginate()
             ]);
     }

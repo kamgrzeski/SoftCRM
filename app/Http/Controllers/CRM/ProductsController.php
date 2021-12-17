@@ -44,7 +44,6 @@ class ProductsController extends Controller
     {
         return View::make('crm.products.index')->with(
             [
-                'products' => $this->productsService->loadProducts(),
                 'productsPaginate' => $this->productsService->loadPagination()
             ]
         );

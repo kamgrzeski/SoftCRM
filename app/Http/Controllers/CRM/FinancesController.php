@@ -41,7 +41,6 @@ class FinancesController extends Controller
     {
         return View::make('crm.finances.index')->with(
             [
-                'finances' => $this->financesService->loadFinances(),
                 'financesPaginate' => $this->financesService->loadPagination()
             ]
         );

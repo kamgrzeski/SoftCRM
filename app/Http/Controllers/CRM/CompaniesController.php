@@ -41,7 +41,6 @@ class CompaniesController extends Controller
     {
         return View::make('crm.companies.index')->with(
             [
-                'companies' => $this->companiesService->loadCompanies(),
                 'companiesPaginate' => $this->companiesService->loadPagination()
             ]
         );

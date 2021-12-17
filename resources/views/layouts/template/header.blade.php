@@ -42,7 +42,9 @@
             width: 100%;
             height: 100%;
             z-index: 9999;
-            background: url({{ asset("images/loader.gif") }}) center no-repeat #fff;
+            @if(\App\Models\SettingsModel::where('key', 'loading_circle')->get()->last()->value)
+                background: url({{ asset("images/loader.gif") }}) center no-repeat #fff;
+            @endif
         }
     </style>
     <script>

@@ -44,7 +44,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($tasks as $key => $value)
+                            @foreach($tasksPaginate as $key => $value)
                                 @if($value->completed == 0)
                                     <tr class="odd gradeX">
                                         <td class="text-center">{{ $value->name }}</td>
@@ -110,7 +110,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($tasks as $key => $values)
+                            @foreach($tasksPaginate as $key => $values)
                                 @if($values->completed == 1)
                                     <tr class="odd gradeX">
                                         <td class="text-center">{{ $values->name }}</td>

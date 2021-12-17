@@ -34,7 +34,7 @@ class DashboardController extends Controller
     private SystemLogService $systemLogService;
     private SettingsService $settingsService;
 
-    private int $cacheTime = 99;
+    private int $cacheTime = 5940000; //cache set for 99 minutes
 
     public function __construct()
     {
@@ -70,7 +70,6 @@ class DashboardController extends Controller
         );
     }
 
-    //cache set for 99 minutes
     private function storeInCacheUsableVariables()
     {
         Cache::put('countClients', $this->clientService->loadCountClients(), $this->cacheTime);

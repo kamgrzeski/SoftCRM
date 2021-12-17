@@ -36,7 +36,6 @@ class TasksController extends Controller
     {
         return View::make('crm.tasks.index')->with(
             [
-                'tasks' => $this->tasksService->loadTasks(),
                 'tasksPaginate' => $this->tasksService->loadPaginate()
             ]);
     }

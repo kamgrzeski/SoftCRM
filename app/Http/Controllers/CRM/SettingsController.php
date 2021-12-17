@@ -28,10 +28,11 @@ class SettingsController extends Controller
 
     public function processListOfSettings()
     {
-        return view('crm.settings.index')->with(
+        return View::make('crm.settings.index')->with(
             [
                 'settings' => $this->settingsService->loadAllSettings(),
-                'logs' => $this->helpersFncService->formatAllSystemLogs()
+                'logs' => $this->helpersFncService->formatAllSystemLogs(),
+                'logsPaginate' => $this->helpersFncService->loadPaginationForLogs()
             ]
         );
     }

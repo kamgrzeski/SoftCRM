@@ -44,7 +44,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($finances as $key => $value)
+                            @foreach($financesPaginate as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->name }}</td>
                                     <td class="text-center">{{ $value->category }}</td>
