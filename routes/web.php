@@ -78,8 +78,7 @@ Route::group(['prefix' => 'tasks'], function () {
     Route::put('update/{employeeId}', 'CRM\TasksController@processUpdateTask')->name('processUpdateTask');
     Route::delete('delete/{clientId}', 'CRM\TasksController@processDeleteTask')->name('processDeleteTask');
     Route::get('set-active/{id}/{value}', 'CRM\TasksController@processTaskSetIsActive')->name('processSetIsActive');
-    Route::get('/completed/{id}', 'CRM\TasksController@processSetTaskToCompleted')->name('completeTask');
-    Route::get('/uncompleted/{id}', 'CRM\TasksController@processSetTaskToUnCompleted')->name('processSetTaskToUnCompleted');
+    Route::get('/completed/{id}/{value}', 'CRM\TasksController@processSetTaskToCompleted')->name('completeTask');
 });
 
 Route::group(['prefix' => 'sales'], function () {

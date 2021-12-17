@@ -114,14 +114,4 @@ class TasksController extends Controller
             return Redirect::back()->with('message_danger', $this->getMessage('messages.TasksIsNotCompleted'));
         }
     }
-
-    public function processSetTaskToUnCompleted(int $taskId)
-    {
-        if ($this->tasksService->loadIsCompleted($taskId, FALSE)) {
-            $this->systemLogsService->loadInsertSystemLogs('Tasks has been uncompleted with id: ' . $taskId, $this->systemLogsService::successCode, $this->getAdminId());
-            return Redirect::back()->with('message_success', $this->getMessage('messages.TasksunCompleted'));
-        } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.TasksIsNotunCompleted'));
-        }
-    }
 }

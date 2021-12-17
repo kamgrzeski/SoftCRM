@@ -70,11 +70,11 @@
                                         <td class="text-right">{{ $value->completed ? 'Yes' : 'No' }}</td>
                                         <td class="text-right">
                                             @if($value->completed == FALSE)
-                                                <a href="{{ URL::to('tasks/completed/' . $value->id) }}">
+                                                <a href="{{ URL::to('tasks/completed/' . $value->id . '/1') }}">
                                                     <button type="button" class="btn btn-completed small-btn">Mark as completed</button>
                                                 </a>
                                             @else
-                                                <a href="{{ URL::to('tasks/uncompleted/' . $value->id) }}">
+                                                <a href="{{ URL::to('tasks/completed/' . $value->id . '/0') }}">
                                                     <button type="button" class="btn btn-completed small-btn">Mark as uncompleted</button>
                                                 </a>
                                             @endif
