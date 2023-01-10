@@ -40,6 +40,9 @@ composer install
 ```
 
 #### 3. In the next step, open the .env.example file. Change the data of this file to .env and the details of the site, database and email settings.
+```
+cp .env.example .env 
+```
 
 #### 4. Run the command from the main project folder to create database tables. This is our custom command to process all missing functions.
 ```
