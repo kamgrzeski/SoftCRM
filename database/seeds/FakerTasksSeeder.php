@@ -21,7 +21,7 @@ class FakerTasksSeeder extends Seeder
                 'employee_id' => $faker->randomElement($employeeIds),
                 'duration' => rand(1,30),
                 'completed' => rand(0,1),
-                'created_at' => $faker->dateTimeBetween($startDate = '-15 days', $endDate = 'now'),
+                'created_at' => \Carbon\Carbon::today()->subDays(rand(0, 365)),
                 'updated_at' => \Carbon\Carbon::now(),
                 'admin_id' => 1
             ];
