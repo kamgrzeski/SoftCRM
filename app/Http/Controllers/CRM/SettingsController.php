@@ -11,7 +11,6 @@ use App\Services\HelpersFncService;
 use App\Services\SettingsService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Support\Facades\Redirect;
 
 class SettingsController extends Controller
 {
@@ -51,6 +50,6 @@ class SettingsController extends Controller
         $this->dispatchSync(new StoreSystemLogJob('SettingsModel has been changed.', $this->systemLogsService::successCode, auth()->user()));
 
         // Redirect back with a success message
-        return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSettingsUpdate'));
+        return redirect()->back()->with('message_success', $this->getMessage('messages.SuccessSettingsUpdate'));
     }
 }

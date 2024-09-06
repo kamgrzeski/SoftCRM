@@ -11,7 +11,6 @@ use App\Services\ProductsService;
 use App\Services\SalesService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-Use Illuminate\Support\Facades\Redirect;
 
 class SalesController extends Controller
 {
@@ -65,18 +64,18 @@ class SalesController extends Controller
         if ($storedSaleId) {
             $this->dispatchSync(new StoreSystemLogJob('SalesModel has been add with id: ' . $storedSaleId, $this->systemLogsService::successCode, auth()->user()));
 
-            return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
+            return redirect()->to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
         } else {
-            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorSalesStore'));
+            return redirect()->back()->with('message_success', $this->getMessage('messages.ErrorSalesStore'));
         }
     }
 
     public function processUpdateSale(SaleUpdateRequest $request, int $saleId)
     {
         if ($this->salesService->update($saleId, $request->validated())) {
-            return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
+            return redirect()->to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSalesStore'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorSalesStore'));
         }
     }
 
@@ -87,7 +86,7 @@ class SalesController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('SalesModel has been deleted with id: ' . $salesDetails->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesDelete'));
+        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesDelete'));
     }
 
     public function processSaleSetIsActive(int $saleId, bool $value)
@@ -97,9 +96,9 @@ class SalesController extends Controller
 
             $msg = $value ? 'SuccessSalesActive' : 'SalesIsNowDeactivated';
 
-            return Redirect::to('sales')->with('message_success', $this->getMessage('messages.' . $msg));
+            return redirect()->to('sales')->with('message_success', $this->getMessage('messages.' . $msg));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSalesActive'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorSalesActive'));
         }
     }
 }

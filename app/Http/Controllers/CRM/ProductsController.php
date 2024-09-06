@@ -10,7 +10,6 @@ use App\Jobs\StoreSystemLogJob;
 use App\Services\ProductsService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-Use Illuminate\Support\Facades\Redirect;
 
 class ProductsController extends Controller
 {
@@ -56,18 +55,18 @@ class ProductsController extends Controller
 
         if ($storedProductId) {
             $this->dispatchSync(new StoreSystemLogJob('Product has been add with id: ' . $storedProductId, $this->systemLogsService::successCode, auth()->user()));
-            return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
+            return redirect()->to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
         } else {
-            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorProductsStore'));
+            return redirect()->back()->with('message_success', $this->getMessage('messages.ErrorProductsStore'));
         }
     }
 
     public function processUpdateProduct(ProductUpdateRequest $request, int $productId)
     {
         if ($this->productsService->update($productId, $request->validated())) {
-            return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
+            return redirect()->to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorProductsStore'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorProductsStore'));
         }
     }
 
@@ -76,7 +75,7 @@ class ProductsController extends Controller
         $clientAssigned = $this->productsService->checkIfProductHaveAssignedSale($productId);
 
         if (!empty($clientAssigned)) {
-            return Redirect::back()->with('message_danger', $clientAssigned);
+            return redirect()->back()->with('message_danger', $clientAssigned);
         } else {
             $productsDetails = $this->productsService->loadProduct($productId);
             $productsDetails->delete();
@@ -84,7 +83,7 @@ class ProductsController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsDelete'));
+        return redirect()->to('products')->with('message_success', $this->getMessage('messages.SuccessProductsDelete'));
     }
 
     public function processProductSetIsActive(int $productId, bool $value)
@@ -94,9 +93,9 @@ class ProductsController extends Controller
 
             $msg = $value ? 'SuccessProductsActive' : 'ProductsIsNowDeactivated';
 
-            return Redirect::to('products')->with('message_success', $this->getMessage('messages.' . $msg));
+            return redirect()->to('products')->with('message_success', $this->getMessage('messages.' . $msg));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ProductsIsActived'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ProductsIsActived'));
         }
     }
 }

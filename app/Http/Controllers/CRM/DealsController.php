@@ -5,14 +5,12 @@ namespace App\Http\Controllers\CRM;
 use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DealStoreRequest;
-use App\Http\Requests\DealsTermsStoreRequest;
 use App\Http\Requests\DealUpdateRequest;
 use App\Jobs\StoreSystemLogJob;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
-Use Illuminate\Support\Facades\Redirect;
 
 class DealsController extends Controller
 {
@@ -63,18 +61,18 @@ class DealsController extends Controller
 
         if ($storedDealId) {
             $this->dispatchSync(new StoreSystemLogJob('Deal has been add with id: ' . $storedDealId, $this->systemLogsService::successCode, auth()->user()));
-            return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsStore'));
+            return redirect()->to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsStore'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsStore'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorDealsStore'));
         }
     }
 
     public function processUpdateDeal(DealUpdateRequest $request, int $dealId)
     {
         if ($this->dealsService->update($dealId, $request->validated())) {
-            return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsUpdate'));
+            return redirect()->to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsUpdate'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsUpdate'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorDealsUpdate'));
         }
     }
 
@@ -83,7 +81,7 @@ class DealsController extends Controller
         $countDealTerms = $this->dealsService->countDealTerms($dealId);
 
         if ($countDealTerms > 0) {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteDealTerms'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.firstDeleteDealTerms'));
         }
 
         $dataOfDeals = $this->dealsService->loadDeal($dealId);
@@ -91,7 +89,7 @@ class DealsController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('Deals has been deleted with id: ' . $dataOfDeals->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsDelete'));
+        return redirect()->to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsDelete'));
     }
 
     public function processSetIsActive(int $dealId, bool $value)
@@ -101,9 +99,9 @@ class DealsController extends Controller
 
             $msg = $value ? 'SuccessDealsActive' : 'DealsIsNowDeactivated';
 
-            return Redirect::to('deals')->with('message_success', $this->getMessage('messages.' . $msg));
+            return redirect()->to('deals')->with('message_success', $this->getMessage('messages.' . $msg));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsActive'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorDealsActive'));
         }
     }
 
@@ -113,9 +111,9 @@ class DealsController extends Controller
 
         if ($this->dealsService->loadStoreDealTerms($validatedData)) {
             $this->dispatchSync(new StoreSystemLogJob('Deals terms has been enabled with id: ' . $validatedData['dealId'], $this->systemLogsService::successCode, auth()->user()));
-            return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessDealTermStore'));
+            return redirect()->back()->with('message_success', $this->getMessage('messages.SuccessDealTermStore'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealTermStore'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorDealTermStore'));
         }
     }
 
@@ -135,6 +133,6 @@ class DealsController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('Deal terms has been deleted with id: ' . $termId, $this->systemLogsService::successCode, auth()->user()));
 
-        return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessDealsTermDelete'));
+        return redirect()->back()->with('message_success', $this->getMessage('messages.SuccessDealsTermDelete'));
     }
 }

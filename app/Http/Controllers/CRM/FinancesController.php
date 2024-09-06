@@ -11,7 +11,6 @@ use App\Services\CompaniesService;
 use App\Services\FinancesService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-Use Illuminate\Support\Facades\Redirect;
 
 class FinancesController extends Controller
 {
@@ -64,18 +63,18 @@ class FinancesController extends Controller
 
         if ($storedFinanceId) {
             $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been add with id: ' . $storedFinanceId, $this->systemLogsService::successCode, auth()->user()));
-            return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
+            return redirect()->to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesStore'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorFinancesStore'));
         }
     }
 
     public function processUpdateFinance(FinanceUpdateRequest $request, $financeId)
     {
         if ($this->financesService->update($financeId, $request->validated())) {
-            return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
+            return redirect()->to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
         } else {
-            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorFinancesUpdate'));
+            return redirect()->back()->with('message_success', $this->getMessage('messages.ErrorFinancesUpdate'));
         }
     }
 
@@ -87,7 +86,7 @@ class FinancesController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been deleted with id: ' . $dataOfFinances->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesDelete'));
+        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesDelete'));
     }
 
     public function processFinanceSetIsActive($financeId, $value)
@@ -95,9 +94,9 @@ class FinancesController extends Controller
         if ($this->financesService->loadIsActive($financeId, $value)) {
             $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been enabled with id: ' . $financeId, $this->systemLogsService::successCode, auth()->user()));
 
-            return Redirect::to('finances')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessFinancesActive' : 'FinancesIsNowDeactivated'));
+            return redirect()->to('finances')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessFinancesActive' : 'FinancesIsNowDeactivated'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesActive'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorFinancesActive'));
         }
     }
 }

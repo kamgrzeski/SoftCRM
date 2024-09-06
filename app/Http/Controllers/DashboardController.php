@@ -16,7 +16,6 @@ use App\Services\SettingsService;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Redirect;
 
 class DashboardController extends Controller
 {
@@ -100,6 +99,6 @@ class DashboardController extends Controller
     {
         $this->storeInCacheUsableVariables();
 
-        return Redirect::back()->with('message_success', $this->getMessage('messages.cacheReloaded'));
+        return redirect()->back()->with('message_success', $this->getMessage('messages.cacheReloaded'));
     }
 }

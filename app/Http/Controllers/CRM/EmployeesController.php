@@ -11,7 +11,6 @@ use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Support\Facades\Redirect;
 
 class EmployeesController extends Controller
 {
@@ -63,18 +62,18 @@ class EmployeesController extends Controller
 
         if ($storedEmployeeId) {
             $this->dispatchSync(new StoreSystemLogJob('Employees has been add with id: ' . $storedEmployeeId, $this->systemLogsService::successCode, auth()->user()));
-            return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
+            return redirect()->to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
         } else {
-            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));
+            return redirect()->back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));
         }
     }
 
     public function processUpdateEmployee(EmployeeUpdateRequest $request, int $employeeId)
     {
         if ($this->employeesService->update($employeeId, $request->validated())) {
-            return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesUpdate'));
+            return redirect()->to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesUpdate'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesUpdate'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesUpdate'));
         }
     }
 
@@ -84,14 +83,14 @@ class EmployeesController extends Controller
         $countTasks = $this->employeesService->countEmployeeTasks($dataOfEmployees);
 
         if ($countTasks > 0) {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.firstDeleteTasks'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.firstDeleteTasks'));
         }
 
         $dataOfEmployees->delete();
 
         $this->dispatchSync(new StoreSystemLogJob('Employees has been deleted with id: ' . $dataOfEmployees->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesDelete'));
+        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesDelete'));
     }
 
     public function processEmployeeSetIsActive($employeeId, $value)
@@ -101,9 +100,9 @@ class EmployeesController extends Controller
 
             $msg = $value ? 'SuccessEmployeesActive' : 'EmployeesIsNowDeactivated';
 
-            return Redirect::to('employees')->with('message_success', $this->getMessage('messages.' . $msg));
+            return redirect()->to('employees')->with('message_success', $this->getMessage('messages.' . $msg));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesActive'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesActive'));
         }
     }
 }

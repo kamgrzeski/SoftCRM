@@ -10,7 +10,6 @@ use App\Jobs\StoreSystemLogJob;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
-Use Illuminate\Support\Facades\Redirect;
 
 class TasksController extends Controller
 {
@@ -62,18 +61,18 @@ class TasksController extends Controller
         if ($storedTaskId) {
             $this->dispatchSync(new StoreSystemLogJob('Task has been add with id: ' . $storedTaskId, $this->systemLogsService::successCode, auth()->user()));
 
-            return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksStore'));
+            return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksStore'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksStore'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorTasksStore'));
         }
     }
 
     public function processUpdateTask(TaskUpdateRequest $request, int $taskId)
     {
         if ($this->tasksService->update($taskId, $request->validated())) {
-            return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksUpdate'));
+            return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksUpdate'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksUpdate'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorTasksUpdate'));
         }
     }
 
@@ -82,14 +81,14 @@ class TasksController extends Controller
         $dataOfTasks = $this->tasksService->loadTask($taskId);
 
         if ($dataOfTasks->completed == 0) {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.CantDeleteUnompletedTask'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.CantDeleteUnompletedTask'));
         } else {
             $dataOfTasks->delete();
 
             $this->dispatchSync(new StoreSystemLogJob('Tasks has been deleted with id: ' . $dataOfTasks->id, $this->systemLogsService::successCode, auth()->user()));
         }
 
-        return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksDelete'));
+        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksDelete'));
     }
 
     public function processTaskSetIsActive(int $taskId, bool $value)
@@ -97,9 +96,9 @@ class TasksController extends Controller
         if ($this->tasksService->loadIsActive($taskId, $value)) {
             $this->dispatchSync(new StoreSystemLogJob('Tasks has been enabled with id: ' . $taskId, $this->systemLogsService::successCode, auth()->user()));
 
-            return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessTasksActive' : 'TaskIsNowDeactivated'));
+            return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessTasksActive' : 'TaskIsNowDeactivated'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksActive'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorTasksActive'));
         }
     }
 
@@ -107,9 +106,9 @@ class TasksController extends Controller
     {
         if ($this->tasksService->loadIsCompleted($taskId, TRUE)) {
             $this->dispatchSync(new StoreSystemLogJob('Tasks has been completed with id: ' . $taskId, $this->systemLogsService::successCode, auth()->user()));
-            return Redirect::back()->with('message_success', $this->getMessage('messages.TasksCompleted'));
+            return redirect()->back()->with('message_success', $this->getMessage('messages.TasksCompleted'));
         } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.TasksIsNotCompleted'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.TasksIsNotCompleted'));
         }
     }
 }

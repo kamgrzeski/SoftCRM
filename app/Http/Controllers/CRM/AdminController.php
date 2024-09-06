@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\LoginAdminRequest;
 use App\Jobs\ChangePasswordJob;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
@@ -21,10 +19,9 @@ class AdminController extends Controller
         $validatedData = $request->validated();
 
         if (auth()->attempt($validatedData)) {
-            return Redirect::to('/');
+            return redirect()->to('/');
         } else {
-            Session::flash('message-error', 'Wrong email or password!');
-            return Redirect::to('login');
+            return redirect()->to('login')->with('message_error', 'Wrong email or password!');
         }
     }
 
@@ -34,10 +31,7 @@ class AdminController extends Controller
         auth()->logout();
 
         // Redirect to login page
-        Session::flash('message-success', 'You have been logged out form system.');
-
-        // Redirect to login page
-        return Redirect::to('login');
+        return redirect()->to('login')->with('message_success', 'You have been logged out from system.');
     }
 
     public function renderChangePasswordView(): \Illuminate\View\View
@@ -54,6 +48,6 @@ class AdminController extends Controller
         $this->dispatchSync(new ChangePasswordJob($validatedData['old_password'], $validatedData['new_password'], $validatedData['confirm_password'], auth()->user()));
 
         // Redirect to change password page.
-        return Redirect::to('password/reset')->with('message_success', 'Your password has been changed.');
+        return redirect()->to('password/reset')->with('message_success', 'Your password has been changed.');
     }
 }
