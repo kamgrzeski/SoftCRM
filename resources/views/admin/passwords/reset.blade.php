@@ -16,6 +16,8 @@
         </div>
     @endif
 
+    @include('layouts.template.errors')
+
     <!-- /. ROW  -->
     <div class="row">
         <div class="col-lg-12">

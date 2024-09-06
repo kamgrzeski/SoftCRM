@@ -3,29 +3,24 @@
 namespace App\Http\Controllers\CRM;
 
 use App\Http\Controllers\Controller;
-use App\Services\AdminService;
-use Illuminate\Http\Request;
+use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\LoginAdminRequest;
+use App\Jobs\ChangePasswordJob;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
-    private AdminService $adminService;
-
-    public function __construct(AdminService $adminService)
-    {
-        $this->adminService = $adminService;
-    }
-
-    public function showLoginForm()
+    public function showLoginForm(): \Illuminate\View\View
     {
         return view('admin.login');
     }
 
-    public function processLoginAdmin(Request $request)
+    public function processLoginAdmin(LoginAdminRequest $request)
     {
-        //TODO validation request
-        if (auth()->attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
+        $validatedData = $request->validated();
+
+        if (auth()->attempt($validatedData)) {
             return Redirect::to('/');
         } else {
             Session::flash('message-error', 'Wrong email or password!');
@@ -35,30 +30,30 @@ class AdminController extends Controller
 
     public function logout()
     {
-        Session::flash('message-success', 'You have been logged out form system.');
+        // Logout from system
         auth()->logout();
+
+        // Redirect to login page
+        Session::flash('message-success', 'You have been logged out form system.');
+
+        // Redirect to login page
         return Redirect::to('login');
     }
 
-    public function renderChangePasswordView()
+    public function renderChangePasswordView(): \Illuminate\View\View
     {
         return view('admin.passwords.reset');
     }
 
-    public function processChangePassword(Request $request)
+    public function processChangePassword(ChangePasswordRequest $request)
     {
-        if($request->get('old_password') == null || $request->get('new_password') == null || $request->get('confirm_password') == null) {
-            Session::flash('message_danger', 'All fields are required.');
-            return Redirect::to('password/reset');
-        }
+        // Get validated data.
+        $validatedData = $request->validated();
 
-        if($this->adminService->loadValidatePassword($request->get('old_password'), $request->get('new_password'), $request->get('confirm_password'), $this->getAdminId())) {
-            Session::flash('message_success', 'Your password has been changed.');
-            return Redirect::to('password/reset');
+        // Dispatch job to change password.
+        $this->dispatchSync(new ChangePasswordJob($validatedData['old_password'], $validatedData['new_password'], $validatedData['confirm_password'], auth()->user()));
 
-        } else {
-            Session::flash('message_danger', 'You write wrong password!');
-            return Redirect::to('password/reset');
-        }
+        // Redirect to change password page.
+        return Redirect::to('password/reset')->with('message_success', 'Your password has been changed.');
     }
 }
