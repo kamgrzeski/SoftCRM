@@ -2,12 +2,8 @@
 
 namespace App\Models;
 
-use Cknow\Money\Money;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Arr;
-use Config;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ClientsModel extends Model
 {
@@ -15,6 +11,10 @@ class ClientsModel extends Model
 
     protected $table = 'clients';
     protected $dates = ['deleted_at'];
+
+    protected $fillable = [
+        'full_name', 'phone', 'email', 'section', 'budget', 'location', 'zip', 'city', 'country', 'is_active', 'admin_id'
+    ];
 
     public function companies()
     {
@@ -24,54 +24,6 @@ class ClientsModel extends Model
     public function employees()
     {
         return $this->hasMany(EmployeesModel::class, 'id');
-    }
-
-    public function storeClient(array $requestedData, int $adminId) : int
-    {
-        return $this->insertGetId(
-            [
-                'full_name' => $requestedData['full_name'],
-                'phone' => $requestedData['phone'],
-                'email' => $requestedData['email'],
-                'section' => $requestedData['section'],
-                'budget' => $requestedData['budget'],
-                'location' => $requestedData['location'],
-                'zip' => $requestedData['zip'],
-                'city' => $requestedData['city'],
-                'country' => $requestedData['country'],
-                'created_at' => now(),
-                'is_active' => true,
-                'admin_id' => $adminId
-            ]
-        );
-    }
-
-    public function updateClient(int $id, array $requestedData) : int
-    {
-        return $this->where('id', '=', $id)->update(
-            [
-                'full_name' => $requestedData['full_name'],
-                'phone' => $requestedData['phone'],
-                'email' => $requestedData['email'],
-                'section' => $requestedData['section'],
-                'budget' => $requestedData['budget'],
-                'location' => $requestedData['location'],
-                'zip' => $requestedData['zip'],
-                'city' => $requestedData['city'],
-                'country' => $requestedData['country'],
-                'updated_at' => now()
-            ]
-        );
-    }
-
-    public function setClientActive(int $id, int $activeType) : int
-    {
-        return $this->where('id', '=', $id)->update(
-            [
-                'is_active' => $activeType,
-                'updated_at' => now()
-            ]
-        );
     }
 
     public function countClients() : int
@@ -94,41 +46,20 @@ class ClientsModel extends Model
 
     public function getClientByGivenClientId(int $clientId) : self
     {
-        $query = $this->find($clientId);
-
-        if(is_null($query)) {
-            throw new BadRequestHttpException('User with given clientId not exists.');
-        }
-
-        Arr::add($query, 'companiesCount', count($query->companies));
-        Arr::add($query, 'employeesCount', count($query->employees));
-        Arr::add($query, 'formattedBudget', Money::{SettingsModel::getSettingValue('currency')}($query->budget));
-
-        return $query;
+        return $this->find($clientId);
     }
 
-    public function getClientSortedBy($createForm = false)
+    public function getClientSortedBy(bool $createForm = false)
     {
         if($createForm) {
             return $this->pluck('full_name', 'id');
         }
 
-        $query = $this->all()->sortBy('created_at');
-
-        foreach($query as $key => $client) {
-            $query[$key]->budget = Money::{SettingsModel::getSettingValue('currency')}($client->budget);
-        }
-
-        return $query;
+        return $this->all()->sortBy('created_at');
     }
 
     public function getPaginate()
     {
         return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
-    }
-
-    public function deleteClient(int $clientId)
-    {
-        return $this->where('id', $clientId)->delete();
     }
 }

@@ -23,10 +23,10 @@
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <li class=""><a href="#profile" data-toggle="tab">Assigned companies <span
-                                        class="badge badge-warning">{{ $clientDetails->companiesCount }}</span></a>
+                                        class="badge badge-warning">{{ count($clientDetails->companies) }}</span></a>
                         </li>
                         <li class=""><a href="#messages" data-toggle="tab">Assigned employees <span
-                                        class="badge badge-warning">{{ $clientDetails->employeesCount }}</span></a>
+                                        class="badge badge-warning">{{ count($clientDetails->employees) }}</span></a>
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">

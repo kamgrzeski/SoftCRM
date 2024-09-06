@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\ClientsModel;
+use App\Models\SettingsModel;
 use App\Traits\Language;
+use Cknow\Money\Money;
 
 class ClientService
 {
@@ -16,45 +18,15 @@ class ClientService
         $this->clientsModel = new ClientsModel();
     }
 
-    public function execute(array $requestedData, int $adminId): int
+    public function loadClients(bool $createForm = false)
     {
-        return $this->clientsModel->storeClient($requestedData, $adminId);
-    }
+        $query = $this->clientsModel->getClientSortedBy($createForm);
 
-    public function update(int $clientId, array $requestedData): int
-    {
-        return $this->clientsModel->updateClient($clientId, $requestedData);
-    }
-
-    public function checkIfClientHaveAssignedEmployeeOrCompany(int $clientId)
-    {
-        $client = $this->clientsModel->getClientByGivenClientId($clientId);
-
-        if ($client->companies()->count() > 0) {
-            return $this->getMessage('messages.firstDeleteCompanies');
-        }
-        if ($client->employees()->count() > 0) {
-            return $this->getMessage('messages.firstDeleteEmployees');
+        foreach($query as $key => $client) {
+            $query[$key]->budget = Money::{SettingsModel::getSettingValue('currency')}($client->budget);
         }
 
-        return true;
-    }
-
-    public function loadDeleteClient(int $clientId): ?bool
-    {
-        return $this->clientsModel->deleteClient($clientId);
-    }
-
-    public function loadSetActive(int $clientId, bool $value)
-    {
-        $clientDetails = $this->clientsModel->getClientByGivenClientId($clientId);
-
-        return $this->clientsModel->setClientActive($clientDetails->id, $value);
-    }
-
-    public function loadClients($createForm = false)
-    {
-        return $this->clientsModel->getClientSortedBy($createForm);
+        return $query;
     }
 
     public function loadPagination()
@@ -62,9 +34,11 @@ class ClientService
         return $this->clientsModel->getPaginate();
     }
 
-    public function loadClientDetails(int $clientId)
+    public function loadClientDetails(ClientsModel $client)
     {
-        return $this->clientsModel->getClientByGivenClientId($clientId);
+        $client->formattedBudget = Money::{SettingsModel::getSettingValue('currency')}($client->budget);
+
+        return $client;
     }
 
     public function loadCountClients()

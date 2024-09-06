@@ -6,11 +6,13 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientStoreRequest;
 use App\Http\Requests\ClientUpdateRequest;
+use App\Jobs\Client\StoreClientJob;
+use App\Jobs\Client\UpdateClientJob;
 use App\Jobs\StoreSystemLogJob;
+use App\Models\ClientsModel;
 use App\Services\ClientService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Support\Facades\Redirect;
 
 class ClientController extends Controller
 {
@@ -32,65 +34,69 @@ class ClientController extends Controller
         return view('crm.client.create');
     }
 
-    public function processShowClientDetails(int $clientId)
+    public function processShowClientDetails(ClientsModel $client)
     {
-        return view('crm.client.show')->with(['clientDetails' => $this->clientService->loadClientDetails($clientId)]);
+        return view('crm.client.show')->with(['clientDetails' => $this->clientService->loadClientDetails($client)]);
     }
 
-    public function processRenderUpdateForm(int $clientId)
+    public function processRenderUpdateForm(ClientsModel $client)
     {
-        return view('crm.client.edit')->with(['clientDetails' => $this->clientService->loadClientDetails($clientId)]);
+        return view('crm.client.edit')->with(['clientDetails' => $this->clientService->loadClientDetails($client)]);
     }
 
     public function processListOfClients()
     {
-        return view('crm.client.index')->with(
-            [
+        return view('crm.client.index')->with([
                 'clientsPaginate' => $this->clientService->loadPagination()
-            ]
-        );
+        ]);
     }
 
     public function processStoreClient(ClientStoreRequest $request)
     {
-        $storedClientId = $this->clientService->execute($request->validated(), $this->getAdminId());
+        // StoreClientJob is a job that stores the client model.
+        $this->dispatchSync(new StoreClientJob($request->validated(), auth()->user()));
 
-        if ($storedClientId) {
-            $this->dispatchSync(new StoreSystemLogJob('ClientsModel has been add with id: ' . $storedClientId, $this->systemLogsService::successCode, auth()->user()));
-            return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
-        } else {
-            return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorClientStore'));
-        }
+        // StoreSystemLogJob is a job that stores the system log.
+        $this->dispatchSync(new StoreSystemLogJob('ClientsModel has been added.', $this->systemLogsService::successCode, auth()->user()));
+
+        // Redirect to the clients page with a success message.
+        return redirect()->back()->with('message_success', $this->getMessage('messages.success_client_store'));
     }
 
-    public function processUpdateClient(ClientUpdateRequest $request, int $clientId)
+    public function processUpdateClient(ClientUpdateRequest $request, ClientsModel $client)
     {
-        if ($this->clientService->update($clientId, $request->validated())) {
-            return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientUpdate'));
-        } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorClientStore'));
-        }
+        // UpdateClientJob is a job that updates the client model.
+        $this->dispatchSync(new UpdateClientJob($request->validated(), $client));
+
+        // Redirect to the clients page with a success message.
+        return redirect()->back()->with('message_success', $this->getMessage('messages.success_client_update'));
     }
 
-    public function processDeleteClient(int $clientId)
+    public function processDeleteClient(ClientsModel $client)
     {
-        $clientAssigned = $this->clientService->checkIfClientHaveAssignedEmployeeOrCompany($clientId);
-
-        if (!empty($clientAssigned)) {
-            return Redirect::back()->with('message_danger', $clientAssigned);
-        } else {
-            $this->clientService->loadDeleteClient($clientId);
+        // Check if the client has companies or employees.
+        if ($client->companies()->count() > 0) {
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.first_delete_companies'));
         }
 
-        return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientDelete'));
+        // Check if the client has employees.
+        if ($client->employees()->count() > 0) {
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.first_delete_employees'));
+        }
+
+        // Delete the client model.
+        $client->delete();
+
+        // Redirect to the clients page with a success message.
+        return redirect()->to('clients')->with('message_success', $this->getMessage('messages.success_client_delete'));
     }
 
-    public function processClientSetIsActive(int $clientId, bool $value)
+    public function processClientSetIsActive(ClientsModel $client, bool $value)
     {
-        if ($this->clientService->loadSetActive($clientId, $value)) {
-            return Redirect::to('clients')->with('message_success', $this->getMessage('messages.' . $value ? 'ClientIsNowDeactivated' : 'SuccessClientActive'));
-        } else {
-            return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSettingsUpdate'));
-        }
+        // UpdateClientJob is a job that updates the client model.
+        $this->dispatchSync(new UpdateClientJob(['is_active' => $value], $client));
+
+        // Redirect to the clients page with a success message.
+        return redirect()->back()->with('message_success', $this->getMessage('messages.success_client_update'));
     }
 }

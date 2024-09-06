@@ -7,11 +7,11 @@ return [
     'cacheReloaded' => 'Information has been reloaded.',
 
     /** Clients Messages **/
-    'SuccessClientStore' => 'Client has been added.',
+    'success_client_store' => 'Client has been added.',
     'ErrorClientStore' => 'Client hasn\'t been added yet.',
-    'SuccessClientUpdate' => 'Client has been updated.',
+    'success_client_update' => 'Client has been updated.',
     'ErrorClientUpdate' => 'Client hasn\'t been updated yet.',
-    'SuccessClientDelete' => 'Client has been deleted.',
+    'success_client_delete' => 'Client has been deleted.',
     'SuccessClientActive' => 'Client has been active.',
     'ClientIsActivated' => 'Client has been already activated.',
     'ErrorClientActive' => 'Client hasn\'t been active yet.',
@@ -32,8 +32,8 @@ return [
     'CompaniesIsNowDeactivated' => 'Company has been deactivated.',
     'CompaniesIsDeactivated' => 'Company has been already deactivated.',
     'ThereIsNoCompanies' => 'A company with this name doesn\'t exist.',
-    'firstDeleteCompanies' => 'Cannot delete this company, have assigned companies.',
-    'firstDeleteEmployees' => 'Cannot delete this company, have assigned employees.',
+    'first_delete_companies' => 'Cannot delete this company, have assigned companies.',
+    'first_delete_employees' => 'Cannot delete this company, have assigned employees.',
     'firstDeleteDeals' => 'Cannot delete company, have assigned deals.',
 
 
