@@ -21,7 +21,7 @@ class AdminController extends Controller
         if (auth()->attempt($validatedData)) {
             return redirect()->to('/');
         } else {
-            return redirect()->to('login')->with('message_error', 'Wrong email or password!');
+            return redirect()->back()->with('message-error', 'Wrong email or password!');
         }
     }
 

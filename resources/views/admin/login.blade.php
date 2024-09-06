@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>SoftCRM - login panel</title>
-    <link href="css/style.css" rel='stylesheet' type='text/css'/>
+    <link href="{{ asset('css/style.css') }}" rel='stylesheet' type='text/css'/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords"
@@ -25,7 +25,10 @@
                 <strong>Success!</strong> {{ Session::get('message-success') }}
             </div>
         @endif
-        <form method="POST" action="{{ route('login/process') }}" class="login-form">
+
+        @include('layouts.template.errors')
+
+        <form method="POST" action="{{ route('login.process') }}" class="login-form">
             {{ csrf_field() }}
             <input id="email" type="email" name="email" placeholder="Write your email here ..." value="admin@admin.com"/>
             <input id="password" type="password" name="password" placeholder="Write your password here ..." value="admin"/>
