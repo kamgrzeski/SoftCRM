@@ -33,7 +33,7 @@
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                                 </div>
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                                 {{ Form::label('product_id', 'Assign product') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('product_id', $dataOfProducts, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                    {{ Form::select('product_id', $dataOfProducts, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                                     {{ Form::label('quantity', 'Quantity') }}
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                        {{ Form::text('quantity', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                        {{ Form::text('quantity', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                 {{ Form::label('date_of_payment', 'Date of payment') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    {{ Form::date('date_of_payment', \Carbon\Carbon::now(), ['class' => 'form-control', 'required', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                    {{ Form::date('date_of_payment', \Carbon\Carbon::now(), ['class' => 'form-control', 'required', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                                 </div>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                                     {{ Form::label('price', 'Price') }}
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                        {{ Form::text('price', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                        {{ Form::text('price', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                                     </div>
                                 </div>
                             </div>

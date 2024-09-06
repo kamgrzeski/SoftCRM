@@ -50,6 +50,6 @@ class SettingsController extends Controller
         $this->dispatchSync(new StoreSystemLogJob('SettingsModel has been changed.', $this->systemLogsService::successCode, auth()->user()));
 
         // Redirect back with a success message
-        return redirect()->back()->with('message_success', $this->getMessage('messages.SuccessSettingsUpdate'));
+        return redirect()->back()->with('message_success', $this->getMessage('messages.settings_update'));
     }
 }

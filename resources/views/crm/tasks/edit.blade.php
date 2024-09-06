@@ -33,17 +33,17 @@
                             {{ Form::model($task, ['route' => ['tasks.update', $task->id], 'method' => 'PUT']) }}
                             <div class="form-group">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('duration', 'Duration') }}
-                                {{ Form::text('duration', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('duration', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('employee_id', 'Assign employee') }}
-                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')])  }}
+                                {{ Form::select('employee_id', $employees, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
                             </div>
                         </div>
 

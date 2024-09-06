@@ -60,7 +60,7 @@ class ClientController extends Controller
         $this->dispatchSync(new StoreSystemLogJob('ClientsModel has been added.', $this->systemLogsService::successCode, auth()->user()));
 
         // Redirect to the clients page with a success message.
-        return redirect()->back()->with('message_success', $this->getMessage('messages.success_client_store'));
+        return redirect()->back()->with('message_success', $this->getMessage('messages.client_store'));
     }
 
     public function processUpdateClient(ClientUpdateRequest $request, ClientsModel $client)
@@ -69,7 +69,7 @@ class ClientController extends Controller
         $this->dispatchSync(new UpdateClientJob($request->validated(), $client));
 
         // Redirect to the clients page with a success message.
-        return redirect()->back()->with('message_success', $this->getMessage('messages.success_client_update'));
+        return redirect()->back()->with('message_success', $this->getMessage('messages.client_update'));
     }
 
     public function processDeleteClient(ClientsModel $client)
@@ -88,7 +88,7 @@ class ClientController extends Controller
         $client->delete();
 
         // Redirect to the clients page with a success message.
-        return redirect()->to('clients')->with('message_success', $this->getMessage('messages.success_client_delete'));
+        return redirect()->to('clients')->with('message_success', $this->getMessage('messages.client_delete'));
     }
 
     public function processClientSetIsActive(ClientsModel $client, bool $value)
@@ -97,6 +97,6 @@ class ClientController extends Controller
         $this->dispatchSync(new UpdateClientJob(['is_active' => $value], $client));
 
         // Redirect to the clients page with a success message.
-        return redirect()->back()->with('message_success', $this->getMessage('messages.success_client_update'));
+        return redirect()->back()->with('message_success', $this->getMessage('messages.client_update'));
     }
 }

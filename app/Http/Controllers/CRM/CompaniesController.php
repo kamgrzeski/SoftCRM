@@ -62,14 +62,14 @@ class CompaniesController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been added.', $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('companies')->with('message_success', $this->getMessage('messages.success_companies_store'));
+        return redirect()->to('companies')->with('message_success', $this->getMessage('messages.companies_store'));
     }
 
     public function processUpdateCompany(CompanyUpdateRequest $request, CompaniesModel $company)
     {
         $this->dispatchSync(new UpdateCompanyJob($request->validated(), $company));
 
-        return redirect()->to('companies')->with('message_success', $this->getMessage('messages.success_companies_update'));
+        return redirect()->to('companies')->with('message_success', $this->getMessage('messages.companies_update'));
     }
 
     public function processDeleteCompany(CompaniesModel $company)
@@ -86,7 +86,7 @@ class CompaniesController extends Controller
         $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been deleted with id: ' . $company->id, $this->systemLogsService::successCode, auth()->user()));
 
         // Redirect back with message.
-        return redirect()->to('companies')->with('message_success', $this->getMessage('messages.success_companies_delete'));
+        return redirect()->to('companies')->with('message_success', $this->getMessage('messages.companies_delete'));
     }
 
     public function processCompanySetIsActive(CompaniesModel $company, bool $value)
@@ -98,6 +98,6 @@ class CompaniesController extends Controller
         $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been updated.', $this->systemLogsService::successCode, auth()->user()));
 
         // Redirect back with message.
-        return redirect()->back()->with('message_success', $this->getMessage('messages.' . $value ? 'success_companies_active' : 'companies_is_now_deactivated'));
+        return redirect()->back()->with('message_success', $this->getMessage('messages.companies_update'));
     }
 }

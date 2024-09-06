@@ -32,21 +32,21 @@
                             {{ Form::model($product, ['route' => ['products.update', $product->id], 'method' => 'PUT']) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('category', 'Category') }}
-                                {{ Form::text('category', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('category', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('count', 'Count') }}
-                                {{ Form::text('count', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('count', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('price', 'Price') }}
-                                {{ Form::text('price', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('price', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                         </div>
                         <div class="col-lg-12 validate_form">

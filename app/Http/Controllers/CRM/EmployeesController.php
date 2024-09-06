@@ -62,27 +62,27 @@ class EmployeesController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('Employees has been added.', $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
+        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.employee_store'));
     }
 
     public function processUpdateEmployee(EmployeeUpdateRequest $request, EmployeesModel $employee)
     {
         $this->dispatchSync(new UpdateEmployeeJob($request->validated(), $employee));
 
-        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesUpdate'));
+        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.employee_update'));
     }
 
     public function processDeleteEmployee(EmployeesModel $employee)
     {
         if ($employee->tasks()->count() > 0) {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.firstDeleteTasks'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.task_delete_tasks'));
         }
 
         $employee->delete();
 
         $this->dispatchSync(new StoreSystemLogJob('Employees has been deleted with id: ' . $employee->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesDelete'));
+        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.employee_delete'));
     }
 
     public function processEmployeeSetIsActive(EmployeesModel $employee, $value)
@@ -91,7 +91,7 @@ class EmployeesController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('Employees has been enabled with id: ' . $employee->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessEmployeesActive' : 'EmployeesIsNowDeactivated'));
+        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.employee_update'));
     }
 }
 

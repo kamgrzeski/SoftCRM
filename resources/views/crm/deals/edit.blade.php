@@ -33,12 +33,12 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('start_time', 'Start date') }}
-                                {{ Form::date('start_time', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::date('start_time', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                         </div>
 
@@ -46,12 +46,12 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('end_time', 'End date') }}
-                                {{ Form::date('end_time', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::date('end_time', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
 
                             <div class="form-group input-row">
                                 {{ Form::label('companies_id', 'Deal between company:') }}
-                                {{ Form::select('companies_id', $companies, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')])  }}
+                                {{ Form::select('companies_id', $companies, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
                             </div>
 
                         </div>

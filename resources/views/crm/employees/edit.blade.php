@@ -33,29 +33,29 @@
 
                             <div class="form-group">
                                 {{ Form::label('full_name', 'Full name') }}
-                                {{ Form::text('full_name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('full_name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('email', 'Email address') }}
-                                {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('client_id', 'Assign client') }}
-                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')])  }}
+                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {{ Form::label('phone', 'Phone') }}
-                                {{ Form::text('phone', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('phone', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('job', 'Job') }}
-                                {{ Form::text('job', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('job', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('note', 'Notatnik') }}
-                                {{ Form::textarea('note', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::textarea('note', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                         </div>
 

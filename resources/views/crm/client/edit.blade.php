@@ -32,46 +32,46 @@
                             {{ Form::model($clientDetails, ['route' => ['processUpdateClient', $clientDetails->id], 'method' => 'PUT']) }}
                             <div class="form-group input-row">
                                 {{ Form::label('full_name', 'Full name') }}
-                                {{ Form::text('full_name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('full_name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('phone', 'Phone') }}
-                                {{ Form::text('phone', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('phone', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('budget', 'Budget') }}
-                                {{ Form::text('budget', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('budget', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('location', 'Location') }}
-                                {{ Form::text('location', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('location', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('email', 'Emial address') }}
-                                {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('priority', 'Priority') }}
-                                {{ Form::select('priority', [1, 2, 3], null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::select('priority', [1, 2, 3], null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('section', 'Section') }}
-                                {{ Form::select('section', ['transport' => 'transport', 'logistic' => 'logistic', 'finances' => 'finances'], null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::select('section', ['transport' => 'transport', 'logistic' => 'logistic', 'finances' => 'finances'], null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('zip', 'Zip') }}
-                                {{ Form::text('zip', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('zip', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('city', 'City') }}
-                                {{ Form::text('city', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('city', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
                             <div class="form-group input-row">
                                 {{ Form::label('country', 'Country') }}
-                                {{ Form::text('country', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}
+                                {{ Form::text('country', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
                             </div>
 
                         </div>

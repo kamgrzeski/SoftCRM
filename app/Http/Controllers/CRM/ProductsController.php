@@ -56,14 +56,14 @@ class ProductsController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('Product has been added.', $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
+        return redirect()->to('products')->with('message_success', $this->getMessage('messages.product_store'));
     }
 
     public function processUpdateProduct(ProductUpdateRequest $request, ProductsModel $product)
     {
         $this->dispatchSync(new UpdateProductJob($request->validated(), $product));
 
-        return redirect()->to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
+        return redirect()->to('products')->with('message_success', $this->getMessage('messages.product_store'));
     }
 
     public function processDeleteProduct(ProductsModel $product)
@@ -77,7 +77,7 @@ class ProductsController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been deleted with id: ' . $product->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('products')->with('message_success', $this->getMessage('messages.SuccessProductsDelete'));
+        return redirect()->to('products')->with('message_success', $this->getMessage('messages.product_delete'));
     }
 
     public function processProductSetIsActive(ProductsModel $product, bool $value)
@@ -86,6 +86,6 @@ class ProductsController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been enabled with id: ' . $product->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('products')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessProductsActive' : 'ProductsIsNowDeactivated'));
+        return redirect()->to('products')->with('message_success', $this->getMessage('messages.product_update'));
     }
 }

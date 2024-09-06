@@ -62,14 +62,14 @@ class FinancesController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been added.', $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
+        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.finance_store'));
     }
 
     public function processUpdateFinance(FinanceUpdateRequest $request, FinancesModel $finance)
     {
         $this->dispatchSync(new UpdateFinanceJob($request->validated(), $finance));
 
-        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
+        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.finance_update'));
     }
 
     public function processDeleteFinance(FinancesModel $finance)
@@ -78,7 +78,7 @@ class FinancesController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been deleted with id: ' . $finance->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesDelete'));
+        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.finance_delete'));
     }
 
     public function processFinanceSetIsActive(FinancesModel $finance, $value)
@@ -87,6 +87,6 @@ class FinancesController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been enabled with id: ' . $finance->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessFinancesActive' : 'FinancesIsNowDeactivated'));
+        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.finance_update'));
     }
 }

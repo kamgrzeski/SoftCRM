@@ -102,6 +102,6 @@ class DashboardController extends Controller
     {
         $this->storeInCacheUsableVariables();
 
-        return redirect()->back()->with('message_success', $this->getMessage('messages.cacheReloaded'));
+        return redirect()->back()->with('message_success', $this->getMessage('messages.cache_reload'));
     }
 }

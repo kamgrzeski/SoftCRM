@@ -63,27 +63,27 @@ class TasksController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('Task has been added.', $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.success_task_store'));
+        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_store'));
     }
 
     public function processUpdateTask(TaskUpdateRequest $request, TasksModel $task)
     {
         $this->dispatchSync(new UpdateTaskJob($request->validated(), $task));
 
-        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.success_task_update'));
+        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_update'));
     }
 
     public function processDeleteTask(TasksModel $task)
     {
         if ($task->completed == 0) {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.cant_delete_unompleted_task'));
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.task_uncompleted'));
         } else {
             $task->delete();
 
             $this->dispatchSync(new StoreSystemLogJob('Tasks has been deleted with id: ' . $task->id, $this->systemLogsService::successCode, auth()->user()));
         }
 
-        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.success_tasks_delete'));
+        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_delete'));
     }
 
     public function processTaskSetIsActive(TasksModel $task, bool $value)
@@ -92,7 +92,7 @@ class TasksController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('Tasks has been enabled with id: ' . $task->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.' . $value ? 'success_tasks_active' : 'task_is_now_deactivated'));
+        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_update'));
     }
 
     public function processSetTaskToCompleted(TasksModel $task)

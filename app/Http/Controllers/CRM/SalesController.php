@@ -63,14 +63,14 @@ class SalesController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('SalesModel has been added.', $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
+        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.sale_store'));
     }
 
     public function processUpdateSale(SaleUpdateRequest $request, SalesModel $sale)
     {
         $this->dispatchSync(new UpdateSaleJob($request->validated(), $sale));
 
-        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
+        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.sale_store'));
     }
 
     public function processDeleteSale(SalesModel $sale)
@@ -79,7 +79,7 @@ class SalesController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('SalesModel has been deleted with id: ' . $sale->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesDelete'));
+        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.sale_delete'));
     }
 
     public function processSaleSetIsActive(SalesModel $sale, bool $value)
@@ -88,6 +88,6 @@ class SalesController extends Controller
 
         $this->dispatchSync(new StoreSystemLogJob('SalesModel has been enabled with id: ' . $sale->id, $this->systemLogsService::successCode, auth()->user()));
 
-        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessSalesActive' : 'SalesIsNowDeactivated'));
+        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.sale_update'));
     }
 }
