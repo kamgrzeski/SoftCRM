@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 
 class AdminModel extends Authenticatable
 {
-    const normalAdmin = 1;
-    const superAdmin = 2;
-
     protected $table = 'admins';
 
     use Notifiable;

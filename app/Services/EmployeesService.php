@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\EmployeesModel;
-use App\Models\SettingsModel;
 
 class EmployeesService
 {
@@ -22,11 +21,6 @@ class EmployeesService
     public function loadPaginate()
     {
         return $this->employeesModel->getPaginate();
-    }
-
-    public function loadPluckClients()
-    {
-        return $this->employeesModel->getClients();
     }
 
     public function loadCountEmployees()

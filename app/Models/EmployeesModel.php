@@ -79,11 +79,6 @@ class EmployeesModel extends Model
         return $query;
     }
 
-    public function getClients()
-    {
-        return $this->pluck('full_name', 'id');
-    }
-
     private function getEmployeesTaskCount(int $id) : int
     {
         return TasksModel::where('employee_id', $id)->get()->count();

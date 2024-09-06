@@ -7,7 +7,7 @@
 @section('lyric', 'lorem ipsum')
 
 @section('content')
-    @if(count($dataOfClients) == 0)
+    @if(count($clients) == 0)
         <div class="alert alert-danger">
             <strong>Danger!</strong> There is no client in system. Please create one. <a
                     href="{{ URL::to('client/create') }}">Click here!</a>
@@ -74,7 +74,7 @@
                                 {{ Form::label('client_id', 'Assign client') }}
                                 <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                {{ Form::select('client_id', $dataOfClients, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
+                                {{ Form::select('client_id', $clients->pluck('full_name', 'id'), null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
                             </div>
                         </div>
 

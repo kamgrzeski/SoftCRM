@@ -167,10 +167,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                            @foreach($dealsTerms as $key => $terms)
+                            @foreach($deal->dealTerms as $key => $terms)
                                 <tr>
                             <th scope="row">{{ $terms->id }}</th>
-                            <td>{{ $terms->formattedDate }}</td>
+                            <td>{{ $terms->created_at }}</td>
                             <td>
 
                                 {{ Form::open(['route' => ['deals.terms.delete', 'dealTerm' => $terms->id], 'class' => 'pull-right']) }}

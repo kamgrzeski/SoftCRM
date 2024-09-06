@@ -13,6 +13,7 @@ use App\Jobs\Deal\UpdateDealJob;
 use App\Jobs\StoreSystemLogJob;
 use App\Models\DealsModel;
 use App\Models\DealsTermsModel;
+use App\Queries\CompaniesQueries;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -33,15 +34,12 @@ class DealsController extends Controller
 
     public function processRenderCreateForm()
     {
-        return view('crm.deals.create')->with(['dataOfDeals' => $this->dealsService->pluckDeals()]);
+        return view('crm.deals.create')->with(['companies' => CompaniesQueries::getAll()]);
     }
 
     public function processShowDealsDetails(DealsModel $deal)
     {
-        return view('crm.deals.show')->with([
-            'deal' => $deal,
-            'dealsTerms' => $this->dealsService->loadDealsTerms($deal)
-        ]);
+        return view('crm.deals.show')->with(['deal' => $deal]);
     }
 
     public function processListOfDeals()
@@ -58,7 +56,7 @@ class DealsController extends Controller
         return view('crm.deals.edit')->with(
             [
                 'deal' => $deal,
-                'companies' => $this->dealsService->pluckDeals()
+                'companies' => CompaniesQueries::getAll(),
             ]
         );
     }
@@ -112,7 +110,7 @@ class DealsController extends Controller
 
     public function processGenerateDealTermsInPDF(DealsTermsModel $dealTerm, DealsModel $deal)
     {
-        return $this->dealsService->loadGenerateDealTermsInPDF($dealTerm->id, $deal->id);
+        return $this->dealsService->loadGenerateDealTermsInPDF($dealTerm, $deal);
     }
 
     public function processDeleteDealTerm(DealsTermsModel $dealTerm)

@@ -9,6 +9,7 @@ use App\Jobs\Employee\StoreEmployeeJob;
 use App\Jobs\Employee\UpdateEmployeeJob;
 use App\Jobs\StoreSystemLogJob;
 use App\Models\EmployeesModel;
+use App\Queries\ClientsQueries;
 use App\Services\ClientService;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
@@ -33,7 +34,7 @@ class EmployeesController extends Controller
 
     public function processRenderCreateForm()
     {
-        return view('crm.employees.create')->with(['dataOfClients' => $this->clientService->loadClients()]);
+        return view('crm.employees.create')->with(['clients' => ClientsQueries::getAll()]);
     }
 
     public function processShowEmployeeDetails(EmployeesModel $employee)
@@ -52,7 +53,7 @@ class EmployeesController extends Controller
     {
         return view('crm.employees.edit')->with([
             'employee' => $employee,
-            'clients' => $this->employeesService->loadPluckClients()
+            'clients' => ClientsQueries::getAll()
         ]);
     }
 

@@ -35,11 +35,6 @@ class FinancesModel extends Model
         return $this->get()->count();
     }
 
-    public function getFinancesSortedByCreatedAt()
-    {
-        return $this->all()->sortByDesc('created_at');
-    }
-
     public function getPaginate()
     {
         return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);

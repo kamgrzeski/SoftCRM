@@ -23,11 +23,6 @@ class CompaniesService
         return $this->companiesModel->getPaginate();
     }
 
-    public function pluckData()
-    {
-        return $this->companiesModel->pluckData();
-    }
-
     public function loadCompaniesByCreatedAt()
     {
         return $this->companiesModel->getCompaniesSortedByCreatedAt();

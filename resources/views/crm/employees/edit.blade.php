@@ -41,7 +41,7 @@
                             </div>
                             <div class="form-group">
                                 {{ Form::label('client_id', 'Assign client') }}
-                                {{ Form::select('client_id', $clients, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
+                                {{ Form::select('client_id', $clients->pluck('full_name', 'id'), null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
                             </div>
                         </div>
                         <div class="col-lg-6">

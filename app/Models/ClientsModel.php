@@ -44,11 +44,6 @@ class ClientsModel extends Model
         return $this->where('is_active', '=', 0)->count();
     }
 
-    public function getClientByGivenClientId(int $clientId) : self
-    {
-        return $this->find($clientId);
-    }
-
     public function getClientSortedBy()
     {
         return $this->all()->sortBy('created_at');

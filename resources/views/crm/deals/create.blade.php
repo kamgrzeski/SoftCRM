@@ -7,7 +7,7 @@
 @section('lyric', 'lorem ipsum')
 
 @section('content')
-    @if(count($dataOfDeals) == 0)
+    @if(count($companies) == 0)
         <div class="alert alert-danger">
             <strong>Danger!</strong> There is no company in system. Please create one. <a
                     href="{{ URL::to('companies/create') }}">Click here!</a>
@@ -66,7 +66,7 @@
                                 {{ Form::label('companies_id', 'Deal between company:') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('companies_id', $dataOfDeals, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text'),
+                                    {{ Form::select('companies_id', $companies->pluck('name', 'id'), null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text'),
                                     'placeholder' => 'Please select companie'])  }}
                                 </div>
                             </div>

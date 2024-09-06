@@ -28,25 +28,15 @@ class FinancesService
 
         $net = $getGrossValueFromInput - $vat;
 
-        return $result = [
+        return [
             'net' => $net,
             'vat' => $vat,
         ];
     }
 
-    public function loadFinances()
-    {
-        return $this->financesModel->getFinancesSortedByCreatedAt();
-    }
-
     public function loadPagination()
     {
         return $this->financesModel->getPaginate();
-    }
-
-    public function loadFinance(int $financeId)
-    {
-        return $this->financesModel::find($financeId);
     }
 
     public function loadCountFinances()

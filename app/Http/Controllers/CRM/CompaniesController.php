@@ -10,6 +10,7 @@ use App\Jobs\Company\StoreCompanyJob;
 use App\Jobs\Company\UpdateCompanyJob;
 use App\Jobs\StoreSystemLogJob;
 use App\Models\CompaniesModel;
+use App\Queries\ClientsQueries;
 use App\Services\CompaniesService;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
@@ -33,7 +34,7 @@ class CompaniesController extends Controller
 
     public function processRenderCreateForm()
     {
-        return view('crm.companies.create')->with(['dataWithPluckOfClient' => $this->companiesService->pluckData()]);
+        return view('crm.companies.create')->with(['dataWithPluckOfClient' => ClientsQueries::getAll()]);
     }
 
     public function processViewCompanyDetails(CompaniesModel $company)
@@ -52,7 +53,7 @@ class CompaniesController extends Controller
     {
         return view('crm.companies.edit')->with([
             'company' => $company,
-            'clients' => $this->companiesService->pluckData()
+            'clients' => ClientsQueries::getAll()
         ]);
     }
 

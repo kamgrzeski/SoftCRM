@@ -51,7 +51,7 @@
 
                             <div class="form-group input-row">
                                 {{ Form::label('companies_id', 'Deal between company:') }}
-                                {{ Form::select('companies_id', $companies, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
+                                {{ Form::select('companies_id', $companies->pluck('name', 'id'), null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
                             </div>
 
                         </div>

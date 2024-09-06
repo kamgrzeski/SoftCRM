@@ -77,11 +77,6 @@ class CompaniesModel extends Model
         return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
     }
 
-    public function pluckData()
-    {
-        return $this->pluck('name', 'id');
-    }
-
     public function getAll(bool $createForm = false)
     {
         if($createForm) {

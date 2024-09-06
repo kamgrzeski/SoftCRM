@@ -75,13 +75,14 @@ class TasksController extends Controller
 
     public function processDeleteTask(TasksModel $task)
     {
-        if ($task->completed == 0) {
+        if (! $task->completed) {
             return redirect()->back()->with('message_danger', $this->getMessage('messages.task_uncompleted'));
-        } else {
-            $task->delete();
-
-            $this->dispatchSync(new StoreSystemLogJob('Tasks has been deleted with id: ' . $task->id, $this->systemLogsService::successCode, auth()->user()));
         }
+
+        // Delete task.
+        $task->delete();
+
+        $this->dispatchSync(new StoreSystemLogJob('Tasks has been deleted with id: ' . $task->id, $this->systemLogsService::successCode, auth()->user()));
 
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_delete'));
     }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Config;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DealsModel extends Model
@@ -42,33 +41,8 @@ class DealsModel extends Model
         return $this->where('is_active', '=', 0)->count();
     }
 
-    public function getPluckCompanies()
-    {
-        return $this->pluck('name', 'id');
-    }
-
     public function getPaginate()
     {
         return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
-    }
-
-    public function getDeal(int $dealId) : self
-    {
-        return $this->find($dealId);
-    }
-
-    public function getName(int $dealId)
-    {
-        return $this->where('id', $dealId)->get()->last()->name;
-    }
-
-    public function getAssignedDealsForCompanies(int $companiesId)
-    {
-        return $this->where('companies_id', $companiesId)->get()->count();
-    }
-
-    public function getAll()
-    {
-        return $this->all()->sortBy('created_at');
     }
 }

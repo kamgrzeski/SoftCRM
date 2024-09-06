@@ -110,7 +110,7 @@
                                 {{ Form::label('client_id', 'Assign client') }}
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('client_id', $dataWithPluckOfClient, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
+                                    {{ Form::select('client_id', $dataWithPluckOfClient->pluck('full_name', 'id'), null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
                                 </div>
                             </div>
 
