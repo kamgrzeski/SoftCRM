@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Enums\SystemEnums;
 use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
 use App\Jobs\Employee\StoreEmployeeJob;
@@ -25,7 +24,7 @@ class EmployeesController extends Controller
 
     public function __construct(EmployeesService $employeesService, SystemLogService $systemLogService, ClientService $clientService)
     {
-        $this->middleware(SystemEnums::middleWareAuth);
+        $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->employeesService = $employeesService;
         $this->systemLogsService = $systemLogService;

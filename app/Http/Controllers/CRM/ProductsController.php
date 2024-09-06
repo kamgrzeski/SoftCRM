@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
@@ -22,7 +21,7 @@ class ProductsController extends Controller
 
     public function __construct(ProductsService $productsService, SystemLogService $systemLogService)
     {
-        $this->middleware(SystemEnums::middleWareAuth);
+        $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->productsService = $productsService;
         $this->systemLogsService = $systemLogService;

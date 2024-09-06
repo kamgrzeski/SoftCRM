@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\SystemEnums;
 use App\Services\CalculateCashService;
 use App\Services\ClientService;
 use App\Services\CompaniesService;
@@ -37,7 +36,7 @@ class DashboardController extends Controller
 
     public function __construct()
     {
-        $this->middleware(SystemEnums::middleWareAuth);
+        $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->clientService = new ClientService();
         $this->helpersFncService = new helpersFncService();
@@ -66,7 +65,7 @@ class DashboardController extends Controller
                 'dataWithAllTasks' => $this->helpersFncService->formatTasks(),
                 'dataWithAllCompanies' => $this->companiesService->loadCompaniesByCreatedAt(),
                 'dataWithAllProducts' => $this->productsService->loadProductsByCreatedAt(),
-                'currency' => $this->settingsService->loadSettingValue(SystemEnums::currency)
+                'currency' => $this->settingsService->loadSettingValue(self::CURRENCY)
             ]
         );
     }

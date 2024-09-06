@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
@@ -22,7 +21,7 @@ class TasksController extends Controller
 
     public function __construct(TasksService $tasksService, SystemLogService $systemLogService, EmployeesService $employeesService)
     {
-        $this->middleware(SystemEnums::middleWareAuth);
+        $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->tasksService = $tasksService;
         $this->systemLogsService = $systemLogService;

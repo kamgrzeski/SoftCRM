@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\CRM;
 
-use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DealStoreRequest;
 use App\Http\Requests\DealUpdateRequest;
@@ -26,7 +25,7 @@ class DealsController extends Controller
 
     public function __construct(DealsService $dealsService, SystemLogService $systemLogService)
     {
-        $this->middleware(SystemEnums::middleWareAuth);
+        $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->dealsService = $dealsService;
         $this->systemLogsService = $systemLogService;
