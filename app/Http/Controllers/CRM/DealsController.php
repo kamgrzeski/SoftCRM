@@ -16,7 +16,6 @@ use App\Models\DealsTermsModel;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Http\Request;
 
 class DealsController extends Controller
 {

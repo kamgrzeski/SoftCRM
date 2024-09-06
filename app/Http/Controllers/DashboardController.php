@@ -9,6 +9,7 @@ use App\Services\CompaniesService;
 use App\Services\DealsService;
 use App\Services\EmployeesService;
 use App\Services\FinancesService;
+use App\Services\GraphDataService;
 use App\Services\HelpersFncService;
 use App\Services\ProductsService;
 use App\Services\SalesService;
@@ -56,10 +57,12 @@ class DashboardController extends Controller
     {
         $this->storeInCacheUsableVariables();
 
+        $graph = new GraphDataService();
+
         return view('index')->with(
             [
-                'tasksGraphData' => $this->taskGraphData(),
-                'itemsCountGraphData' => $this->itemsCountGraphData(),
+                'tasksGraphData' => $graph->taskGraphData(),
+                'itemsCountGraphData' => $graph->itemsCountGraphData(),
                 'dataWithAllTasks' => $this->helpersFncService->formatTasks(),
                 'dataWithAllCompanies' => $this->companiesService->loadCompaniesByCreatedAt(),
                 'dataWithAllProducts' => $this->productsService->loadProductsByCreatedAt(),
