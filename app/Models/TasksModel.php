@@ -92,7 +92,7 @@ class TasksModel extends Model
 
     public function getPaginate()
     {
-        return $this->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
+        return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
     }
 
     public function getAllUncompletedTasks()

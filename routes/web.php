@@ -36,12 +36,12 @@ Route::group(['prefix' => 'clients'], function () {
 Route::group(['prefix' => 'companies'], function () {
     Route::get('/', 'CRM\CompaniesController@processListOfCompanies')->name('companies');
     Route::get('form/create', 'CRM\CompaniesController@processRenderCreateForm')->name('processRenderCreateForm');
-    Route::get('form/update/{clientId}', 'CRM\CompaniesController@processRenderUpdateForm')->name('processRenderUpdateForm');
-    Route::get('view/{clientId}', 'CRM\CompaniesController@processViewCompanyDetails')->name('viewCompaniesDetails');
+    Route::get('form/update/{company}', 'CRM\CompaniesController@processRenderUpdateForm')->name('processRenderUpdateForm');
+    Route::get('view/{company}', 'CRM\CompaniesController@processViewCompanyDetails')->name('viewCompaniesDetails');
     Route::post('store', 'CRM\CompaniesController@processStoreCompany')->name('processStoreCompanies');
-    Route::put('update/{employeeId}', 'CRM\CompaniesController@processUpdateCompany')->name('processUpdateCompanies');
-    Route::delete('delete/{clientId}', 'CRM\CompaniesController@processDeleteCompany')->name('processDeleteCompanies');
-    Route::get('set-active/{id}/{value}', 'CRM\CompaniesController@processCompanySetIsActive')->name('processSetIsActive');
+    Route::put('update/{company}', 'CRM\CompaniesController@processUpdateCompany')->name('processUpdateCompanies');
+    Route::delete('delete/{company}', 'CRM\CompaniesController@processDeleteCompany')->name('processDeleteCompanies');
+    Route::get('set-active/{company}/{value}', 'CRM\CompaniesController@processCompanySetIsActive')->name('processSetIsActive');
 });
 
 Route::group(['prefix' => 'deals'], function () {

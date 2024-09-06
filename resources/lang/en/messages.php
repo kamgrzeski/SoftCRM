@@ -22,19 +22,19 @@ return [
     'ErrorSettingsUpdate' => 'There is problem with settings update.',
 
     /** Companies Messages **/
-    'SuccessCompaniesStore' => 'Company has been added.',
-    'ErrorCompaniesStore' => 'Company hasn\'t been added yet.',
-    'SuccessCompaniesUpdate' => 'Company has been updated.',
+    'success_companies_store' => 'Company has been added.',
+    'error_companies_store' => 'Company hasn\'t been added yet.',
+    'success_companies_update' => 'Company has been updated.',
     'ErrorCompaniesUpdate' => 'Company hasn\'t been updated yet.',
-    'SuccessCompaniesDelete' => 'Company has been deleted.',
-    'SuccessCompaniesActive' => 'Company has been active.',
+    'success_companies_delete' => 'Company has been deleted.',
+    'success_companies_active' => 'Company has been active.',
     'ErrorCompaniesActive' => 'Company hasn\'t been active yet.',
-    'CompaniesIsNowDeactivated' => 'Company has been deactivated.',
+    'companies_is_now_deactivated' => 'Company has been deactivated.',
     'CompaniesIsDeactivated' => 'Company has been already deactivated.',
     'ThereIsNoCompanies' => 'A company with this name doesn\'t exist.',
     'first_delete_companies' => 'Cannot delete this company, have assigned companies.',
     'first_delete_employees' => 'Cannot delete this company, have assigned employees.',
-    'firstDeleteDeals' => 'Cannot delete company, have assigned deals.',
+    'first_delete_deals' => 'Cannot delete company, have assigned deals.',
 
 
 

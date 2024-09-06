@@ -4,11 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Config;
 
 class CompaniesModel extends Model
 {
     use SoftDeletes;
+
+    protected $fillable = [
+        'name',
+        'tax_number',
+        'phone',
+        'city',
+        'billing_address',
+        'country',
+        'postal_code',
+        'employees_size',
+        'fax',
+        'description',
+        'client_id',
+        'created_at',
+        'is_active',
+        'admin_id'
+    ];
 
     protected $table = 'companies';
     protected $dates = ['deleted_at'];
@@ -31,57 +47,6 @@ class CompaniesModel extends Model
     public function finances()
     {
         return $this->hasMany(FinancesModel::class);
-    }
-
-    public function storeCompany(array $requestedData, int $adminId) : int
-    {
-        return $this->insertGetId(
-            [
-                'name' => $requestedData['name'],
-                'tax_number' => $requestedData['tax_number'],
-                'phone' => $requestedData['phone'],
-                'city' => $requestedData['city'],
-                'billing_address' => $requestedData['billing_address'],
-                'country' => $requestedData['country'],
-                'postal_code' => $requestedData['postal_code'],
-                'employees_size' => $requestedData['employees_size'],
-                'fax' => $requestedData['fax'],
-                'description' => $requestedData['description'],
-                'client_id' => $requestedData['client_id'],
-                'created_at' => now(),
-                'is_active' => true,
-                'admin_id' => $adminId
-            ]
-        );
-    }
-
-    public function updateCompany(int $companiesId, array $requestedData) : int
-    {
-        return $this->where('id', '=', $companiesId)->update(
-            [
-                'name' => $requestedData['name'],
-                'tax_number' => $requestedData['tax_number'],
-                'phone' => $requestedData['phone'],
-                'city' => $requestedData['city'],
-                'billing_address' => $requestedData['billing_address'],
-                'country' => $requestedData['country'],
-                'postal_code' => $requestedData['postal_code'],
-                'employees_size' => $requestedData['employees_size'],
-                'fax' => $requestedData['fax'],
-                'description' => $requestedData['description'],
-                'client_id' => $requestedData['client_id'],
-                'is_active' => true,
-                'updated_at' => now()
-            ]);
-    }
-
-    public function setActive(int $companiesId, int $activeType) : int
-    {
-       return $this->where('id', '=', $companiesId)->update(
-           [
-               'is_active' => $activeType
-           ]
-       );
     }
 
     public function countCompanies() : int
@@ -109,12 +74,7 @@ class CompaniesModel extends Model
 
     public function getPaginate()
     {
-        return $this->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
-    }
-
-    public function getCompany(int $companyId)
-    {
-        return $this::find($companyId);
+        return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
     }
 
     public function pluckData()
@@ -122,7 +82,7 @@ class CompaniesModel extends Model
         return $this->pluck('name', 'id');
     }
 
-    public function getAll($createForm = false)
+    public function getAll(bool $createForm = false)
     {
         if($createForm) {
             return $this->pluck('name', 'id');
