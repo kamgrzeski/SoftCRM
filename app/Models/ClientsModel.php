@@ -49,12 +49,8 @@ class ClientsModel extends Model
         return $this->find($clientId);
     }
 
-    public function getClientSortedBy(bool $createForm = false)
+    public function getClientSortedBy()
     {
-        if($createForm) {
-            return $this->pluck('full_name', 'id');
-        }
-
         return $this->all()->sortBy('created_at');
     }
 

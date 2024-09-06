@@ -11,6 +11,18 @@ class EmployeesModel extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'email',
+        'phone',
+        'company_id',
+        'is_active',
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
+
     protected $table = 'employees';
     protected $dates = ['deleted_at'];
 
@@ -32,48 +44,6 @@ class EmployeesModel extends Model
     public function tasks()
     {
         return $this->hasMany(TasksModel::class, 'employee_id');
-    }
-
-    public function storeEmployee(array $requestedData, int $adminId) : int
-    {
-        return $this->insertGetId(
-            [
-                'full_name' => $requestedData['full_name'],
-                'phone' => $requestedData['phone'],
-                'email' => $requestedData['email'],
-                'job' => $requestedData['job'],
-                'note' => $requestedData['note'],
-                'client_id' => $requestedData['client_id'],
-                'created_at' => now(),
-                'is_active' => true,
-                'admin_id' => $adminId
-            ]
-        );
-    }
-
-    public function updateEmployee(int $employeeId, array $requestedData) : int
-    {
-        return $this->where('id', '=', $employeeId)->update(
-            [
-                'full_name' => $requestedData['full_name'],
-                'phone' => $requestedData['phone'],
-                'email' => $requestedData['email'],
-                'job' => $requestedData['job'],
-                'note' => $requestedData['note'],
-                'client_id' => $requestedData['client_id'],
-                'updated_at' => now(),
-            ]
-        );
-    }
-
-    public function setActive(int $employeeId, int $activeType) : int
-    {
-        return $this->where('id', '=', $employeeId)->update(
-            [
-                'is_active' => $activeType,
-                'updated_at' => now()
-            ]
-        );
     }
 
     public function countEmployees(): int
@@ -109,15 +79,6 @@ class EmployeesModel extends Model
         return $query;
     }
 
-    public function getEmployeeDetails(int $employeeId) : self
-    {
-        $query = $this->find($employeeId);
-
-        Arr::add($query, 'taskCount', count($query->tasks));
-
-        return $query;
-    }
-
     public function getClients()
     {
         return $this->pluck('full_name', 'id');
@@ -126,6 +87,11 @@ class EmployeesModel extends Model
     private function getEmployeesTaskCount(int $id) : int
     {
         return TasksModel::where('employee_id', $id)->get()->count();
+    }
+
+    public function getPaginate()
+    {
+        return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
     }
 }
 

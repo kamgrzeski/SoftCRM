@@ -5,7 +5,10 @@ namespace App\Http\Controllers\CRM;
 use App\Enums\SystemEnums;
 use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
+use App\Jobs\Employee\StoreEmployeeJob;
+use App\Jobs\Employee\UpdateEmployeeJob;
 use App\Jobs\StoreSystemLogJob;
+use App\Models\EmployeesModel;
 use App\Services\ClientService;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
@@ -30,80 +33,65 @@ class EmployeesController extends Controller
 
     public function processRenderCreateForm()
     {
-        return view('crm.employees.create')->with(['dataOfClients' => $this->clientService->loadClients(true)]);
+        return view('crm.employees.create')->with(['dataOfClients' => $this->clientService->loadClients()]);
     }
 
-    public function processShowEmployeeDetails($employeeId)
+    public function processShowEmployeeDetails(EmployeesModel $employee)
     {
-        return view('crm.employees.show')->with(['employee' => $this->employeesService->loadEmployeeDetails($employeeId)]);
+        return view('crm.employees.show')->with(['employee' => $employee]);
     }
 
     public function processListOfEmployees()
     {
-        return view('crm.employees.index')->with(
-            [
-                'employeesPaginate' => $this->employeesService->loadPaginate()
-            ]);
+        return view('crm.employees.index')->with([
+            'employeesPaginate' => $this->employeesService->loadPaginate()
+        ]);
     }
 
-    public function processRenderUpdateForm($employeeId)
+    public function processRenderUpdateForm(EmployeesModel $employee)
     {
-        return view('crm.employees.edit')->with(
-            [
-                'employee' => $this->employeesService->loadEmployeeDetails($employeeId),
-                'clients' => $this->employeesService->loadPluckClients()
-            ]
-        );
+        return view('crm.employees.edit')->with([
+            'employee' => $employee,
+            'clients' => $this->employeesService->loadPluckClients()
+        ]);
     }
 
     public function processStoreEmployee(EmployeeStoreRequest $request)
     {
-        $storedEmployeeId = $this->employeesService->execute($request->validated(), $this->getAdminId());
+        $this->dispatchSync(new StoreEmployeeJob($request->validated(), auth()->user()));
 
-        if ($storedEmployeeId) {
-            $this->dispatchSync(new StoreSystemLogJob('Employees has been add with id: ' . $storedEmployeeId, $this->systemLogsService::successCode, auth()->user()));
-            return redirect()->to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
-        } else {
-            return redirect()->back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));
-        }
+        $this->dispatchSync(new StoreSystemLogJob('Employees has been added.', $this->systemLogsService::successCode, auth()->user()));
+
+        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
     }
 
-    public function processUpdateEmployee(EmployeeUpdateRequest $request, int $employeeId)
+    public function processUpdateEmployee(EmployeeUpdateRequest $request, EmployeesModel $employee)
     {
-        if ($this->employeesService->update($employeeId, $request->validated())) {
-            return redirect()->to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesUpdate'));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesUpdate'));
-        }
+        $this->dispatchSync(new UpdateEmployeeJob($request->validated(), $employee));
+
+        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesUpdate'));
     }
 
-    public function processDeleteEmployee($employeeId)
+    public function processDeleteEmployee(EmployeesModel $employee)
     {
-        $dataOfEmployees = $this->employeesService->loadEmployeeDetails($employeeId);
-        $countTasks = $this->employeesService->countEmployeeTasks($dataOfEmployees);
-
-        if ($countTasks > 0) {
+        if ($employee->tasks()->count() > 0) {
             return redirect()->back()->with('message_danger', $this->getMessage('messages.firstDeleteTasks'));
         }
 
-        $dataOfEmployees->delete();
+        $employee->delete();
 
-        $this->dispatchSync(new StoreSystemLogJob('Employees has been deleted with id: ' . $dataOfEmployees->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Employees has been deleted with id: ' . $employee->id, $this->systemLogsService::successCode, auth()->user()));
 
         return redirect()->to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesDelete'));
     }
 
-    public function processEmployeeSetIsActive($employeeId, $value)
+    public function processEmployeeSetIsActive(EmployeesModel $employee, $value)
     {
-        if ($this->employeesService->loadSetActive($employeeId, $value)) {
-            $this->dispatchSync(new StoreSystemLogJob('Employees has been enabled with id: ' . $employeeId, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new UpdateEmployeeJob(['is_active' => $value], $employee));
 
-            $msg = $value ? 'SuccessEmployeesActive' : 'EmployeesIsNowDeactivated';
+        $this->dispatchSync(new StoreSystemLogJob('Employees has been enabled with id: ' . $employee->id, $this->systemLogsService::successCode, auth()->user()));
 
-            return redirect()->to('employees')->with('message_success', $this->getMessage('messages.' . $msg));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorEmployeesActive'));
-        }
+        return redirect()->to('employees')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessEmployeesActive' : 'EmployeesIsNowDeactivated'));
     }
 }
 

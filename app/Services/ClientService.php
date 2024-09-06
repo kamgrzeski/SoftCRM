@@ -18,9 +18,9 @@ class ClientService
         $this->clientsModel = new ClientsModel();
     }
 
-    public function loadClients(bool $createForm = false)
+    public function loadClients()
     {
-        $query = $this->clientsModel->getClientSortedBy($createForm);
+        $query = $this->clientsModel->getClientSortedBy();
 
         foreach($query as $key => $client) {
             $query[$key]->budget = Money::{SettingsModel::getSettingValue('currency')}($client->budget);

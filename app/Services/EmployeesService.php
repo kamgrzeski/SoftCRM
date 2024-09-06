@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\EmployeesModel;
 use App\Models\SettingsModel;
-use Config;
 
 class EmployeesService
 {
@@ -15,16 +14,6 @@ class EmployeesService
         $this->employeesModel = new EmployeesModel();
     }
 
-    public function execute(array $requestedData, int $adminId)
-    {
-        return $this->employeesModel->storeEmployee($requestedData, $adminId);
-    }
-
-    public function update(int $employeeId, array $requestedData)
-    {
-        return $this->employeesModel->updateEmployee($employeeId, $requestedData);
-    }
-
     public function loadEmployees($createForm = false)
     {
         return $this->employeesModel->getEmployees($createForm);
@@ -32,22 +21,7 @@ class EmployeesService
 
     public function loadPaginate()
     {
-        return $this->employeesModel::paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
-    }
-
-    public function loadEmployeeDetails(int $employeeId)
-    {
-        return $this->employeesModel->getEmployeeDetails($employeeId);
-    }
-
-    public function countEmployeeTasks(EmployeesModel $dataOfEmployees)
-    {
-        return $dataOfEmployees->tasks()->get()->count();
-    }
-
-    public function loadSetActive(int $employeeId, int $value)
-    {
-        return $this->employeesModel->setActive($employeeId, $value);
+        return $this->employeesModel->getPaginate();
     }
 
     public function loadPluckClients()
