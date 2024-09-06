@@ -25,9 +25,9 @@
                 <ul class="dropdown-menu dropdown-user">
                     </li>
                     <li>
-                        <a href="{{ route('settings') }}"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        <a href="{{ route('settings.index') }}"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     <li>
-                        <a href="{{ route('password-reset') }}"><i class="fa fa-gear fa-fw"></i> Password reset</a>
+                        <a href="{{ route('password.reset') }}"><i class="fa fa-gear fa-fw"></i> Password reset</a>
                     </li>
                     <li class="divider"></li>
                     <li>

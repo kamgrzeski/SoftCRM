@@ -29,7 +29,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::model($product, ['route' => ['processUpdateProduct', $product->id], 'method' => 'PUT']) }}
+                            {{ Form::model($product, ['route' => ['products.update', $product->id], 'method' => 'PUT']) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
                                 {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.InputText')]) }}

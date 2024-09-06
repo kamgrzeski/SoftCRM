@@ -20,7 +20,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
-                        {{ Form::open(['route' => 'processUpdateSettings', 'method' => 'PUT']) }}
+                        {{ Form::open(['route' => 'settings.update', 'method' => 'PUT']) }}
                         <div class="col-lg-6">
                             <div class="form-group input-row">
                                 {{ Form::label('pagination_size', 'Pagination size') }}

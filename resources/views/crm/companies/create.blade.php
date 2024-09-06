@@ -34,7 +34,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            {{ Form::open(['route' => 'processStoreCompanies']) }}
+                            {{ Form::open(['route' => 'companies.store']) }}
                             <div class="form-group input-row">
                                 {{ Form::label('name', 'Name') }}
                                 <div class="input-group">

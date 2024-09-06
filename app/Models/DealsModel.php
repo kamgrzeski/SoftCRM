@@ -10,6 +10,8 @@ class DealsModel extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = ['name', 'companies_id', 'is_active'];
+
     protected $table = 'deals';
     protected $dates = ['deleted_at'];
 
@@ -18,42 +20,9 @@ class DealsModel extends Model
         return $this->belongsTo(CompaniesModel::class);
     }
 
-    public function storeDeal(array $requestedData, int $adminId) : bool
+    public function dealTerms()
     {
-        return $this->insert(
-            [
-                'name' => $requestedData['name'],
-                'start_time' => $requestedData['start_time'],
-                'end_time' => $requestedData['end_time'],
-                'companies_id' => $requestedData['companies_id'],
-                'created_at' => now(),
-                'is_active' => true,
-                'admin_id' => $adminId
-            ]
-        );
-    }
-
-    public function updateDeal(int $dealId, array $requestedData) : int
-    {
-        return $this->where('id', '=', $dealId)->update(
-            [
-                'name' => $requestedData['name'],
-                'start_time' => $requestedData['start_time'],
-                'end_time' => $requestedData['end_time'],
-                'companies_id' => $requestedData['companies_id'],
-                'updated_at' => now()
-            ]
-        );
-    }
-
-    public function setActive(int $dealId, bool $activeType) : int
-    {
-        return $this->where('id', '=', $dealId)->update(
-            [
-                'is_active' => $activeType,
-                'updated_at' => now()
-            ]
-        );
+        return $this->hasMany(DealsTermsModel::class, 'deal_id');
     }
 
     public function countDeals(): int

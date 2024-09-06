@@ -24,7 +24,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
-                        {{ Form::open(['route' => 'password-process']) }}
+                        {{ Form::open(['route' => 'password.reset.process']) }}
                         <div class="col-lg-12">
                             <div class="form-group input-row">
                                 {{ Form::label('old_password', 'Old password') }}

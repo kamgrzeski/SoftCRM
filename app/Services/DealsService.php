@@ -73,9 +73,9 @@ class DealsService
         return $this->dealsTermsModel->storeDealTerms($validatedData);
     }
 
-    public function loadDealsTerms(int $dealId)
+    public function loadDealsTerms(DealsModel $deal)
     {
-        $query = $this->dealsTermsModel->getDealTerms($dealId);
+        $query = $deal->dealTerms;
 
         foreach($query as $key => $value) {
             $query[$key]['formattedDate'] = Carbon::parse($value['created_at'])->format('d M, Y');

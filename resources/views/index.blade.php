@@ -14,7 +14,7 @@
                         ({{ Cache::get('deactivatedClients') }})
                     </h3>
                 </div>
-                <a href="{{ route('clients') }}" style="text-decoration: none">
+                <a href="{{ route('clients.index') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-green boxes-font">
                         {{ Cache::get('clientsInLatestMonth') }}% Increase in 30 Days
                     </div>
@@ -29,7 +29,7 @@
                         ({{ Cache::get('deactivatedCompanies') }})
                     </h3>
                 </div>
-                <a href="{{ route('companies') }}" style="text-decoration: none">
+                <a href="{{ route('companies.index') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-blue boxes-font">
                         {{ Cache::get('companiesInLatestMonth') }}% Increase in 30 Days
                     </div>
@@ -44,7 +44,7 @@
                         ({{ Cache::get('deactivatedEmployees') }})
                     </h3>
                 </div>
-                <a href="{{ route('employees') }}" style="text-decoration: none">
+                <a href="{{ route('employees.index') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-red boxes-font">
                         {{ Cache::get('employeesInLatestMonth') }}% Increase in 30 Days
                     </div>
@@ -59,7 +59,7 @@
                         ({{ Cache::get('deactivatedDeals') }})
                     </h3>
                 </div>
-                <a href="{{ route('deals') }}" style="text-decoration: none">
+                <a href="{{ route('deals.index') }}" style="text-decoration: none">
                     <div class="panel-footer back-footer-brown boxes-font">
                         {{ Cache::get('dealsInLatestMonth') }}% Increase in 30 Days
                     </div>

@@ -24,9 +24,9 @@ class DealsTermsModel extends Model
         );
     }
 
-    public function getDealTerms(int $dealId)
+    public function getDealTerms(DealsModel $deal)
     {
-        return $this->where('deal_id', $dealId)->get();
+        return $this->where('deal_id', $deal->id)->get();
     }
 
     public function getTermsBody(int $termId) : string

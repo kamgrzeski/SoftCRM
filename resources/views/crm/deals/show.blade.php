@@ -124,7 +124,7 @@
                             </p>
                         </div>
                         <div class="tab-pane fade" id="messages">
-                            {{ Form::open(['route' => 'processStoreDealTerms']) }}
+                            {{ Form::open(['route' => ['deals.terms.store', 'deal' => $deal->id]]) }}
 
                             <div class="col-lg-12 editor-style">
                                     {!! Form::textarea('body', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
@@ -173,16 +173,15 @@
                             <td>{{ $terms->formattedDate }}</td>
                             <td>
 
-                                {{ Form::open(['url' => 'deals/terms/delete/', 'class' => 'pull-right']) }}
+                                {{ Form::open(['route' => ['deals.terms.delete', 'dealTerm' => $terms->id], 'class' => 'pull-right']) }}
                                 {{ Form::hidden('_method', 'DELETE') }}
                                 {{ Form::hidden('termId', $terms->id) }}
                                 {{ Form::submit('Delete', ['class' => 'btn btn-small btn-danger btn-padding']) }}
                                 {{ Form::close() }}
 
-                                {{ Form::open(['url' => 'deals/terms/generate-pdf/', 'class' => 'pull-right']) }}
+                                {{ Form::open(['url' => 'deals/terms/'. $terms->id . '/generate-pdf/' . $deal->id, 'class' => 'pull-right']) }}
+                                {{ Form::open(['route' => ['deals.terms.generate-pdf', 'dealTerm' => $terms->id, 'deal' => $deal->id], 'class' => 'pull-right']) }}
                                 {{ Form::hidden('_method', 'POST') }}
-                                {{ Form::hidden('termId', $terms->id) }}
-                                {{ Form::hidden('dealId', $deal->id) }}
                                 {{ Form::submit('Generate PDF', ['class' => 'btn btn-small btn-padding btn-pdf']) }}
                                 {{ Form::close() }}
                             </td>
@@ -193,7 +192,7 @@
 
                 </div>
                 <div class="tab-pane fade" id="messages">
-                    {{ Form::open(['route' => 'processStoreDealTerms']) }}
+                    {{ Form::open(['route' => ['deals.terms.store', 'deal' => $deal->id]]) }}
 
                     <div class="col-lg-12 editor-style">
                         {!! Form::textarea('body', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
@@ -203,8 +202,6 @@
                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
                        mollit anim id est laborum.', ['class' => 'form-control', 'id' => 'summary-ckeditor']) !!}
                     </div>
-
-                    {{ Form::hidden('dealId', $deal->id) }}
 
                     <div class="col-lg-12 validate_form">
                         {{ Form::submit('Save terms of argeement', ['class' => 'btn btn-primary']) }}
