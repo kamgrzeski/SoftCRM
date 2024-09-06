@@ -7,21 +7,8 @@
 @section('lyric', '')
 
 @section('content')
-    @if(session()->has('message_success'))
-        <div class="alert alert-success">
-            <strong>Well done!</strong> {{ session()->get('message_success') }}
-        </div>
-    @elseif(session()->has('message_danger'))
-        <div class="alert alert-danger">
-            <strong>Danger!</strong> {{ session()->get('message_danger') }}
-        </div>
-    @endif
 
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <strong>Danger!</strong> {!! implode('', $errors->all('<div>:message</div>')) !!}
-        </div>
-    @endif
+    @include('layouts.template.errors')
 
     <div class="row">
         <div class="col-lg-12">

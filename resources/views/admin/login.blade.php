@@ -5,10 +5,7 @@
     <link href="{{ asset('css/style.css') }}" rel='stylesheet' type='text/css'/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="keywords"
-          content="Simple Login Form,Login Forms,Sign up Forms,Registration Forms,News latter Forms,Elements" ./>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700'
-          rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <div class="login-page">
@@ -16,17 +13,10 @@
         <h1>SoftCRM</h1>
         <h4 class="small-text">Customer relationship management system</h4></div>
     <div class="form">
-        @if(Session::has('message-error'))
-            <div class="alert alert-danger">
-                <strong>Danger!</strong> {{ Session::get('message-error') }}
-            </div>
-            @elseif(Session::has('message-success'))
-            <div class="alert alert-success">
-                <strong>Success!</strong> {{ Session::get('message-success') }}
-            </div>
-        @endif
 
-        @include('layouts.template.errors')
+        <div>
+            @include('layouts.template.errors')
+        </div>
 
         <form method="POST" action="{{ route('login.process') }}" class="login-form">
             {{ csrf_field() }}

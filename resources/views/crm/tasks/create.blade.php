@@ -13,22 +13,7 @@
         </div>
     @endif
 
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <strong>Danger!</strong> {!! implode('', $errors->all('<div>:message</div>')) !!}
-        </div>
-    @endif
-
-    <!-- will be used to show any messages -->
-    @if(session()->has('message_success'))
-        <div class="alert alert-success">
-            <strong>Well done!</strong> {{ session()->get('message_success') }}
-        </div>
-    @elseif(session()->has('message_danger'))
-        <div class="alert alert-danger">
-            <strong>Danger!</strong> {{ session()->get('message_danger') }}
-        </div>
-    @endif
+    @include('layouts.template.errors')
 
     <!-- /. ROW  -->
     <div class="row">
