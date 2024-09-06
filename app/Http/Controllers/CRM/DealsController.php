@@ -9,7 +9,6 @@ use App\Http\Requests\DealsTermsStoreRequest;
 use App\Http\Requests\DealUpdateRequest;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
-use View;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
@@ -28,17 +27,17 @@ class DealsController extends Controller
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.deals.create')->with(['dataOfDeals' => $this->dealsService->pluckDeals()]);
+        return view('crm.deals.create')->with(['dataOfDeals' => $this->dealsService->pluckDeals()]);
     }
 
     public function processShowDealsDetails(int $dealId)
     {
-        return View::make('crm.deals.show')->with(['deal' => $this->dealsService->loadDeal($dealId), 'dealsTerms' => $this->dealsService->loadDealsTerms($dealId)]);
+        return view('crm.deals.show')->with(['deal' => $this->dealsService->loadDeal($dealId), 'dealsTerms' => $this->dealsService->loadDealsTerms($dealId)]);
     }
 
     public function processListOfDeals()
     {
-        return View::make('crm.deals.index')->with(
+        return view('crm.deals.index')->with(
             [
                 'dealsPaginate' => $this->dealsService->loadPaginate()
             ]
@@ -47,7 +46,7 @@ class DealsController extends Controller
 
     public function processRenderUpdateForm(int $dealId)
     {
-        return View::make('crm.deals.edit')->with(
+        return view('crm.deals.edit')->with(
             [
                 'deal' => $this->dealsService->loadDeal($dealId),
                 'companies' => $this->dealsService->pluckDeals()

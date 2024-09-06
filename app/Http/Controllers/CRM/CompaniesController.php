@@ -9,7 +9,6 @@ use App\Http\Requests\CompanyUpdateRequest;
 use App\Services\CompaniesService;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
-use View;
 use Illuminate\Support\Facades\Redirect;
 
 class CompaniesController extends Controller
@@ -29,17 +28,17 @@ class CompaniesController extends Controller
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.companies.create')->with(['dataWithPluckOfClient' => $this->companiesService->pluckData()]);
+        return view('crm.companies.create')->with(['dataWithPluckOfClient' => $this->companiesService->pluckData()]);
     }
 
     public function processViewCompanyDetails(int $companiesId)
     {
-        return View::make('crm.companies.show')->with(['company' => $this->companiesService->loadCompany($companiesId)]);
+        return view('crm.companies.show')->with(['company' => $this->companiesService->loadCompany($companiesId)]);
     }
 
     public function processListOfCompanies()
     {
-        return View::make('crm.companies.index')->with(
+        return view('crm.companies.index')->with(
             [
                 'companiesPaginate' => $this->companiesService->loadPagination()
             ]
@@ -48,7 +47,7 @@ class CompaniesController extends Controller
 
     public function processRenderUpdateForm(int $companiesId)
     {
-        return View::make('crm.companies.edit')->with(
+        return view('crm.companies.edit')->with(
             [
                 'company' => $this->companiesService->loadCompany($companiesId),
                 'clients' => $this->companiesService->pluckData()

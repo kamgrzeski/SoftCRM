@@ -12,7 +12,6 @@ use App\Services\SettingsService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Redirect;
-use View;
 
 class SettingsController extends Controller
 {
@@ -33,13 +32,11 @@ class SettingsController extends Controller
 
     public function processListOfSettings()
     {
-        return View::make('crm.settings.index')->with(
-            [
+        return view('crm.settings.index')->with([
                 'settings' => $this->settingsService->loadAllSettings(),
                 'logs' => $this->helpersFncService->formatAllSystemLogs(),
                 'logsPaginate' => $this->helpersFncService->loadPaginationForLogs()
-            ]
-        );
+            ]);
     }
 
     public function processUpdateSettings(SettingsStoreRequest $request)

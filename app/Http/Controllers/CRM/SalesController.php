@@ -9,7 +9,6 @@ use App\Http\Requests\SaleUpdateRequest;
 use App\Services\ProductsService;
 use App\Services\SalesService;
 use App\Services\SystemLogService;
-use View;
 Use Illuminate\Support\Facades\Redirect;
 
 class SalesController extends Controller
@@ -29,17 +28,17 @@ class SalesController extends Controller
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.sales.create')->with(['dataOfProducts' => $this->productsService->loadProducts()]);
+        return view('crm.sales.create')->with(['dataOfProducts' => $this->productsService->loadProducts()]);
     }
 
     public function processShowSalesDetails($saleId)
     {
-        return View::make('crm.sales.show')->with(['sale' => $this->salesService->loadSale($saleId)]);
+        return view('crm.sales.show')->with(['sale' => $this->salesService->loadSale($saleId)]);
     }
 
     public function processRenderUpdateForm($saleId)
     {
-        return View::make('crm.sales.edit')->with(
+        return view('crm.sales.edit')->with(
             [
                 'dataWithPluckOfProducts' => $this->salesService->loadProducts()
             ]
@@ -48,7 +47,7 @@ class SalesController extends Controller
 
     public function processListOfSales()
     {
-        return View::make('crm.sales.index')->with(
+        return view('crm.sales.index')->with(
             [
                 'sales' => $this->salesService->loadSales(),
                 'salesPaginate' => $this->salesService->loadPaginate()

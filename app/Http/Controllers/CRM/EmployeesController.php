@@ -9,8 +9,6 @@ use App\Services\ClientService;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Http\Controllers\Controller;
-use http\Client;
-use View;
 use Illuminate\Support\Facades\Redirect;
 
 class EmployeesController extends Controller
@@ -30,17 +28,17 @@ class EmployeesController extends Controller
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.employees.create')->with(['dataOfClients' => $this->clientService->loadClients(true)]);
+        return view('crm.employees.create')->with(['dataOfClients' => $this->clientService->loadClients(true)]);
     }
 
     public function processShowEmployeeDetails($employeeId)
     {
-        return View::make('crm.employees.show')->with(['employee' => $this->employeesService->loadEmployeeDetails($employeeId)]);
+        return view('crm.employees.show')->with(['employee' => $this->employeesService->loadEmployeeDetails($employeeId)]);
     }
 
     public function processListOfEmployees()
     {
-        return View::make('crm.employees.index')->with(
+        return view('crm.employees.index')->with(
             [
                 'employeesPaginate' => $this->employeesService->loadPaginate()
             ]);
@@ -48,7 +46,7 @@ class EmployeesController extends Controller
 
     public function processRenderUpdateForm($employeeId)
     {
-        return View::make('crm.employees.edit')->with(
+        return view('crm.employees.edit')->with(
             [
                 'employee' => $this->employeesService->loadEmployeeDetails($employeeId),
                 'clients' => $this->employeesService->loadPluckClients()

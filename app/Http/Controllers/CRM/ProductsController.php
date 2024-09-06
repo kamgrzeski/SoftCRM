@@ -8,8 +8,6 @@ use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Services\ProductsService;
 use App\Services\SystemLogService;
-use View;
-use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class ProductsController extends Controller
@@ -27,22 +25,22 @@ class ProductsController extends Controller
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.products.create');
+        return view('crm.products.create');
     }
 
     public function processShowProductsDetails(int $productId)
     {
-        return View::make('crm.products.show')->with(['product' => $this->productsService->loadProduct($productId)]);
+        return view('crm.products.show')->with(['product' => $this->productsService->loadProduct($productId)]);
     }
 
     public function processRenderUpdateForm(int $productId)
     {
-        return View::make('crm.products.edit')->with(['product' => $this->productsService->loadProduct($productId)]);
+        return view('crm.products.edit')->with(['product' => $this->productsService->loadProduct($productId)]);
     }
 
     public function processListOfProducts()
     {
-        return View::make('crm.products.index')->with(
+        return view('crm.products.index')->with(
             [
                 'productsPaginate' => $this->productsService->loadPagination()
             ]

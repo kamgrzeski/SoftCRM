@@ -7,7 +7,6 @@ use App\Services\AdminService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
-use View;
 use Auth;
 
 class AdminController extends Controller
@@ -21,7 +20,7 @@ class AdminController extends Controller
 
     public function showLoginForm()
     {
-        return View::make('admin.login');
+        return view('admin.login');
     }
 
     public function processLoginAdmin(Request $request)
@@ -44,7 +43,7 @@ class AdminController extends Controller
 
     public function renderChangePasswordView()
     {
-        return View::make('admin.passwords.reset');
+        return view('admin.passwords.reset');
     }
 
     public function processChangePassword(Request $request)

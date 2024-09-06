@@ -9,7 +9,6 @@ use App\Http\Requests\FinanceUpdateRequest;
 use App\Services\CompaniesService;
 use App\Services\FinancesService;
 use App\Services\SystemLogService;
-use View;
 Use Illuminate\Support\Facades\Redirect;
 
 class FinancesController extends Controller
@@ -29,17 +28,17 @@ class FinancesController extends Controller
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.finances.create')->with(['dataWithPluckOfCompanies' => $this->companiesService->loadCompanies(true)]);
+        return view('crm.finances.create')->with(['dataWithPluckOfCompanies' => $this->companiesService->loadCompanies(true)]);
     }
 
     public function processShowFinancesDetails($financeId)
     {
-        return View::make('crm.finances.show')->with(['finance' => $this->financesService->loadFinance($financeId)]);
+        return view('crm.finances.show')->with(['finance' => $this->financesService->loadFinance($financeId)]);
     }
 
     public function processListOfFinances()
     {
-        return View::make('crm.finances.index')->with(
+        return view('crm.finances.index')->with(
             [
                 'financesPaginate' => $this->financesService->loadPagination()
             ]
@@ -48,7 +47,7 @@ class FinancesController extends Controller
 
     public function processRenderUpdateForm($financeId)
     {
-        return View::make('crm.finances.edit')->with(
+        return view('crm.finances.edit')->with(
             [
                 'finance' => $this->financesService->loadFinance($financeId),
                 'dataWithPluckOfCompanies' => $this->companiesService->loadCompanies(true)

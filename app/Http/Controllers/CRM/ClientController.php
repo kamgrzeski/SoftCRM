@@ -8,9 +8,7 @@ use App\Http\Requests\ClientStoreRequest;
 use App\Http\Requests\ClientUpdateRequest;
 use App\Services\ClientService;
 use App\Services\SystemLogService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use View;
 
 class ClientController extends Controller
 {
@@ -27,22 +25,22 @@ class ClientController extends Controller
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.client.create');
+        return view('crm.client.create');
     }
 
     public function processShowClientDetails(int $clientId)
     {
-        return View::make('crm.client.show')->with(['clientDetails' => $this->clientService->loadClientDetails($clientId)]);
+        return view('crm.client.show')->with(['clientDetails' => $this->clientService->loadClientDetails($clientId)]);
     }
 
     public function processRenderUpdateForm(int $clientId)
     {
-        return View::make('crm.client.edit')->with(['clientDetails' => $this->clientService->loadClientDetails($clientId)]);
+        return view('crm.client.edit')->with(['clientDetails' => $this->clientService->loadClientDetails($clientId)]);
     }
 
     public function processListOfClients()
     {
-        return View::make('crm.client.index')->with(
+        return view('crm.client.index')->with(
             [
                 'clientsPaginate' => $this->clientService->loadPagination()
             ]

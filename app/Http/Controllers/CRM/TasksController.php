@@ -9,7 +9,6 @@ use App\Http\Requests\TaskUpdateRequest;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
-use View;
 Use Illuminate\Support\Facades\Redirect;
 
 class TasksController extends Controller
@@ -29,12 +28,12 @@ class TasksController extends Controller
 
     public function processRenderCreateForm()
     {
-        return View::make('crm.tasks.create')->with(['dataOfEmployees' => $this->employeesService->loadEmployees(true)]);
+        return view('crm.tasks.create')->with(['dataOfEmployees' => $this->employeesService->loadEmployees(true)]);
     }
 
     public function processListOfTasks()
     {
-        return View::make('crm.tasks.index')->with(
+        return view('crm.tasks.index')->with(
             [
                 'tasksPaginate' => $this->tasksService->loadPaginate()
             ]);
@@ -42,12 +41,12 @@ class TasksController extends Controller
 
     public function processShowTasksDetails(int $taskId)
     {
-        return View::make('crm.tasks.show')->with(['task' => $this->tasksService->loadTask($taskId)]);
+        return view('crm.tasks.show')->with(['task' => $this->tasksService->loadTask($taskId)]);
     }
 
     public function processRenderUpdateForm(int $taskId)
     {
-        return View::make('crm.tasks.edit')->with(
+        return view('crm.tasks.edit')->with(
             [
                 'task' => $this->tasksService->loadTask($taskId),
                 'employees' => $this->employeesService->loadEmployees()

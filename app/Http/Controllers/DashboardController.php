@@ -17,7 +17,6 @@ use App\Services\SystemLogService;
 use App\Services\TasksService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
-use View;
 
 class DashboardController extends Controller
 {
@@ -58,7 +57,7 @@ class DashboardController extends Controller
     {
         $this->storeInCacheUsableVariables();
 
-        return View::make('index')->with(
+        return view('index')->with(
             [
                 'tasksGraphData' => $this->taskGraphData(),
                 'itemsCountGraphData' => $this->itemsCountGraphData(),
