@@ -81,15 +81,15 @@ return [
 
 
     /** Tasks Messages **/
-    'TasksCompleted' => 'Task successfully completed.',
+    'task_completed' => 'Task successfully completed.',
     'TasksunCompleted' => 'Task successfully uncompleted.',
-    'SuccessTasksDelete' => 'Task has been deleted.',
-    'SuccessTasksStore' => 'Task has been added.',
-    'SuccessTasksUpdate' => 'Task has been updated.',
-    'SuccessTasksActive' => 'Task has been active.',
-    'TaskIsNowDeactivated' => 'Task has been deactivated.',
+    'success_tasks_delete' => 'Task has been deleted.',
+    'success_task_store' => 'Task has been added.',
+    'success_task_update' => 'Task has been updated.',
+    'success_tasks_active' => 'Task has been active.',
+    'task_is_now_deactivated' => 'Task has been deactivated.',
     'ThereIsNoTasks' => 'A task with this name doesn\'t exist.',
-    'CantDeleteUnompletedTask' => 'Task hasn\'t been completed yet.',
+    'cant_delete_unompleted_task' => 'Task hasn\'t been completed yet.',
 
     /** Sales Messages **/
     'SuccessSalesStore' => 'Sales has been added.',

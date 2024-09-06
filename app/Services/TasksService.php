@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\EmployeesModel;
 use App\Models\TasksModel;
 
 class TasksService
@@ -14,39 +13,9 @@ class TasksService
         $this->tasksModel = new TasksModel();
     }
 
-    public function execute(array $validateData, int $adminId)
-    {
-        return $this->tasksModel->storeTask($validateData, $adminId);
-    }
-
-    public function update(int $taskId, array $validatedData)
-    {
-        return $this->tasksModel->updateTask($taskId, $validatedData);
-    }
-
-    public function loadTasks()
-    {
-        return $this->tasksModel->getTasks();
-    }
-
     public function loadPaginate()
     {
         return $this->tasksModel->getPaginate();
-    }
-
-    public function loadTask(int $taskId)
-    {
-        return $this->tasksModel->getTask($taskId);
-    }
-
-    public function loadIsActive(int $taskId, bool $value)
-    {
-        return $this->tasksModel->setActive($taskId, $value);
-    }
-
-    public function loadIsCompleted(int $taskId, bool $value)
-    {
-        return $this->tasksModel->setCompleted($taskId, $value);
     }
 
     public function loadCountTasks()

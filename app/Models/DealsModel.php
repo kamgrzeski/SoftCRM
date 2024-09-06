@@ -56,7 +56,7 @@ class DealsModel extends Model
         );
     }
 
-    public function countDeals() : int
+    public function countDeals(): int
     {
         return $this->get()->count();
     }
@@ -68,7 +68,7 @@ class DealsModel extends Model
         return ($allDeals / 100) * $dealsCount;
     }
 
-    public function getDeactivated() : int
+    public function getDeactivated(): int
     {
         return $this->where('is_active', '=', 0)->count();
     }

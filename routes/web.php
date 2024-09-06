@@ -72,13 +72,13 @@ Route::group(['prefix' => 'employees'], function () {
 Route::group(['prefix' => 'tasks'], function () {
     Route::get('/', 'CRM\TasksController@processListOfTasks')->name('tasks');
     Route::get('form/create', 'CRM\TasksController@processRenderCreateForm')->name('processRenderCreateForm');
-    Route::get('form/update/{clientId}', 'CRM\TasksController@processRenderUpdateForm')->name('processRenderUpdateForm');
-    Route::get('view/{clientId}', 'CRM\TasksController@processShowTasksDetails')->name('viewTasksDetails');
+    Route::get('form/update/{task}', 'CRM\TasksController@processRenderUpdateForm')->name('processRenderUpdateForm');
+    Route::get('view/{task}', 'CRM\TasksController@processShowTasksDetails')->name('viewTasksDetails');
     Route::post('store', 'CRM\TasksController@processStoreTask')->name('processStoreTask');
-    Route::put('update/{employeeId}', 'CRM\TasksController@processUpdateTask')->name('processUpdateTask');
-    Route::delete('delete/{clientId}', 'CRM\TasksController@processDeleteTask')->name('processDeleteTask');
-    Route::get('set-active/{id}/{value}', 'CRM\TasksController@processTaskSetIsActive')->name('processSetIsActive');
-    Route::get('/completed/{id}/{value}', 'CRM\TasksController@processSetTaskToCompleted')->name('completeTask');
+    Route::put('update/{task}', 'CRM\TasksController@processUpdateTask')->name('processUpdateTask');
+    Route::delete('delete/{task}', 'CRM\TasksController@processDeleteTask')->name('processDeleteTask');
+    Route::get('set-active/{task}/{value}', 'CRM\TasksController@processTaskSetIsActive')->name('processSetIsActive');
+    Route::get('/completed/{task}/{value}', 'CRM\TasksController@processSetTaskToCompleted')->name('completeTask');
 });
 
 Route::group(['prefix' => 'sales'], function () {

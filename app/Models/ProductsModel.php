@@ -57,7 +57,7 @@ class ProductsModel extends Model
         );
     }
 
-    public function countProducts() : int
+    public function countProducts(): int
     {
         return $this->get()->count();
     }

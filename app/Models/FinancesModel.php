@@ -74,7 +74,7 @@ class FinancesModel extends Model
         );
     }
 
-    public function countFinances() : int
+    public function countFinances(): int
     {
         return $this->get()->count();
     }

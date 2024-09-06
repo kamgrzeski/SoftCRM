@@ -26,7 +26,7 @@ class ClientsModel extends Model
         return $this->hasMany(EmployeesModel::class, 'id');
     }
 
-    public function countClients() : int
+    public function countClients(): int
     {
         return $this->all()->count();
     }
@@ -39,7 +39,7 @@ class ClientsModel extends Model
         return ($allClient / 100) * $clientCount;
     }
 
-    public function getDeactivated() : int
+    public function getDeactivated(): int
     {
         return $this->where('is_active', '=', 0)->count();
     }

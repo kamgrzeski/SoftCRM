@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Config;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TasksModel extends Model
 {
     use SoftDeletes;
+
+    protected $fillable = ['name', 'employee_id', 'duration', 'is_active', 'completed', 'admin_id'];
 
     protected $table = 'tasks';
     protected $dates = ['deleted_at'];
@@ -18,58 +19,12 @@ class TasksModel extends Model
         return $this->belongsTo(EmployeesModel::class, 'employee_id');
     }
 
-    public function storeTask(array $requestedData, int $adminId)
-    {
-        return $this->insertGetId(
-            [
-                'name' => $requestedData['name'],
-                'employee_id' => $requestedData['employee_id'],
-                'duration' => $requestedData['duration'],
-                'is_active' => true,
-                'created_at' => now(),
-                'admin_id' => $adminId
-            ]
-        );
-    }
-
-    public function updateTask(int $taskId, array $requestedData) : int
-    {
-        return $this->where('id', '=', $taskId)->update(
-            [
-                'name' => $requestedData['name'],
-                'employee_id' => $requestedData['employee_id'],
-                'duration' => $requestedData['duration'],
-                'updated_at' => now()
-            ]
-        );
-    }
-
-    public function setActive(int $taskId, int $activeType) : int
-    {
-        return $this->where('id', '=', $taskId)->update(
-            [
-                'is_active' => $activeType,
-                'updated_at' => now()
-            ]
-        );
-    }
-
-    public function setCompleted(int $taskId, int $completeType) : int
-    {
-        return $this->where('id', '=', $taskId)->update(
-            [
-                'completed' => $completeType,
-                'updated_at' => now()
-            ]
-        );
-    }
-
-    public function countTasks()
+    public function countTasks(): int
     {
         return $this->all()->count();
     }
 
-    public function getAllCompletedTasks()
+    public function getAllCompletedTasks(): string
     {
         $tasks = $this->where('completed', '=', 1)->count();
 
@@ -78,16 +33,6 @@ class TasksModel extends Model
         $percentage = round(($tasks / $taskAll) * 100);
 
         return $tasks . ' (' . $percentage .  '%)';
-    }
-
-    public function getTask(int $taskId)
-    {
-        return $this->find($taskId);
-    }
-
-    public function getTasks()
-    {
-        return $this->all()->sortBy('created_at');
     }
 
     public function getPaginate()

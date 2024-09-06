@@ -49,7 +49,7 @@ class CompaniesModel extends Model
         return $this->hasMany(FinancesModel::class);
     }
 
-    public function countCompanies() : int
+    public function countCompanies(): int
     {
         return $this->all()->count();
     }
@@ -62,7 +62,7 @@ class CompaniesModel extends Model
         return ($allCompanies / 100) * $companiesCount;
     }
 
-    public function getDeactivated() : int
+    public function getDeactivated(): int
     {
         return $this->where('is_active', '=', 0)->count();
     }

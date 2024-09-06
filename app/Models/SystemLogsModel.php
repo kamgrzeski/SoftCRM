@@ -26,7 +26,7 @@ class SystemLogsModel extends Model
         }
     }
 
-    public function countRows() : int
+    public function countRows(): int
     {
         return $this->all()->count();
     }

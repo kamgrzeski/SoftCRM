@@ -76,7 +76,7 @@ class EmployeesModel extends Model
         );
     }
 
-    public function countEmployees() : int
+    public function countEmployees(): int
     {
         return $this->all()->count();
     }
@@ -89,7 +89,7 @@ class EmployeesModel extends Model
         return ($allEmployees / 100) * $employeesCount;
     }
 
-    public function getDeactivated() : int
+    public function getDeactivated(): int
     {
         return $this->where('is_active', '=', 0)->count();
     }

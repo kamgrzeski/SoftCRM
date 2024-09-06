@@ -58,7 +58,7 @@ class SalesModel extends Model
         );
     }
 
-    public function countSales() : int
+    public function countSales(): int
     {
         return $this->all()->count();
     }

@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Jobs\StoreSystemLogJob;
+use App\Jobs\Task\StoreTaskJob;
+use App\Jobs\Task\UpdateTaskJob;
+use App\Models\TasksModel;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
@@ -39,16 +42,16 @@ class TasksController extends Controller
             ]);
     }
 
-    public function processShowTasksDetails(int $taskId)
+    public function processShowTasksDetails(TasksModel $task)
     {
-        return view('crm.tasks.show')->with(['task' => $this->tasksService->loadTask($taskId)]);
+        return view('crm.tasks.show')->with(['task' => $task]);
     }
 
-    public function processRenderUpdateForm(int $taskId)
+    public function processRenderUpdateForm(TasksModel $task)
     {
         return view('crm.tasks.edit')->with(
             [
-                'task' => $this->tasksService->loadTask($taskId),
+                'task' => $task,
                 'employees' => $this->employeesService->loadEmployees()
             ]
         );
@@ -56,59 +59,48 @@ class TasksController extends Controller
 
     public function processStoreTask(TaskStoreRequest $request)
     {
-        $storedTaskId = $this->tasksService->execute($request->validated(), $this->getAdminId());
+        $this->dispatchSync(new StoreTaskJob($request->validated(), auth()->user()));
 
-        if ($storedTaskId) {
-            $this->dispatchSync(new StoreSystemLogJob('Task has been add with id: ' . $storedTaskId, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Task has been added.', $this->systemLogsService::successCode, auth()->user()));
 
-            return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksStore'));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorTasksStore'));
-        }
+        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.success_task_store'));
     }
 
-    public function processUpdateTask(TaskUpdateRequest $request, int $taskId)
+    public function processUpdateTask(TaskUpdateRequest $request, TasksModel $task)
     {
-        if ($this->tasksService->update($taskId, $request->validated())) {
-            return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksUpdate'));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorTasksUpdate'));
-        }
+        $this->dispatchSync(new UpdateTaskJob($request->validated(), $task));
+
+        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.success_task_update'));
     }
 
-    public function processDeleteTask(int $taskId)
+    public function processDeleteTask(TasksModel $task)
     {
-        $dataOfTasks = $this->tasksService->loadTask($taskId);
-
-        if ($dataOfTasks->completed == 0) {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.CantDeleteUnompletedTask'));
+        if ($task->completed == 0) {
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.cant_delete_unompleted_task'));
         } else {
-            $dataOfTasks->delete();
+            $task->delete();
 
-            $this->dispatchSync(new StoreSystemLogJob('Tasks has been deleted with id: ' . $dataOfTasks->id, $this->systemLogsService::successCode, auth()->user()));
+            $this->dispatchSync(new StoreSystemLogJob('Tasks has been deleted with id: ' . $task->id, $this->systemLogsService::successCode, auth()->user()));
         }
 
-        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksDelete'));
+        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.success_tasks_delete'));
     }
 
-    public function processTaskSetIsActive(int $taskId, bool $value)
+    public function processTaskSetIsActive(TasksModel $task, bool $value)
     {
-        if ($this->tasksService->loadIsActive($taskId, $value)) {
-            $this->dispatchSync(new StoreSystemLogJob('Tasks has been enabled with id: ' . $taskId, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new UpdateTaskJob(['is_active' => $value], $task));
 
-            return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessTasksActive' : 'TaskIsNowDeactivated'));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorTasksActive'));
-        }
+        $this->dispatchSync(new StoreSystemLogJob('Tasks has been enabled with id: ' . $task->id, $this->systemLogsService::successCode, auth()->user()));
+
+        return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.' . $value ? 'success_tasks_active' : 'task_is_now_deactivated'));
     }
 
-    public function processSetTaskToCompleted(int $taskId)
+    public function processSetTaskToCompleted(TasksModel $task)
     {
-        if ($this->tasksService->loadIsCompleted($taskId, TRUE)) {
-            $this->dispatchSync(new StoreSystemLogJob('Tasks has been completed with id: ' . $taskId, $this->systemLogsService::successCode, auth()->user()));
-            return redirect()->back()->with('message_success', $this->getMessage('messages.TasksCompleted'));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.TasksIsNotCompleted'));
-        }
+        $this->dispatchSync(new UpdateTaskJob(['completed' => true], $task));
+
+        $this->dispatchSync(new StoreSystemLogJob('Tasks has been completed with id: ' . $task->id, $this->systemLogsService::successCode, auth()->user()));
+
+        return redirect()->back()->with('message_success', $this->getMessage('messages.task_completed'));
     }
 }
