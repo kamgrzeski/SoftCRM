@@ -67,10 +67,9 @@
                                                 </label>
                                             @endif
                                         </td>
-                                        <td class="text-right" style="text-align: center">>
+                                        <td class="text-right" style="text-align: center">
                                             <div class="btn-group">
-                                                <a class="btn btn-small btn-primary"
-                                                   href="{{ URL::to('clients/view/' . $value->id) }}">More information</a>
+                                                <a class="btn btn-small btn-primary" href="{{ URL::to('clients/view/' . $value->id) }}">More information</a>
                                                 <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="{{ URL::to('clients/form/update/' . $value->id) }}">Edit</a></li>

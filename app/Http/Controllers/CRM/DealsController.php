@@ -7,13 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DealStoreRequest;
 use App\Http\Requests\DealsTermsStoreRequest;
 use App\Http\Requests\DealUpdateRequest;
+use App\Jobs\StoreSystemLogJob;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 Use Illuminate\Support\Facades\Redirect;
 
 class DealsController extends Controller
 {
+    use DispatchesJobs;
     private DealsService $dealsService;
     private SystemLogService $systemLogsService;
 
@@ -59,7 +62,7 @@ class DealsController extends Controller
         $storedDealId = $this->dealsService->execute($request->validated(), $this->getAdminId());
 
         if ($storedDealId) {
-            $this->systemLogsService->loadInsertSystemLogs('Deal has been add with id: ' . $storedDealId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('Deal has been add with id: ' . $storedDealId, $this->systemLogsService::successCode, auth()->user()));
             return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealsStore'));
@@ -86,7 +89,7 @@ class DealsController extends Controller
         $dataOfDeals = $this->dealsService->loadDeal($dealId);
         $dataOfDeals->delete();
 
-        $this->systemLogsService->loadInsertSystemLogs('Deals has been deleted with id: ' . $dataOfDeals->id, $this->systemLogsService::successCode, $this->getAdminId());
+        $this->dispatchSync(new StoreSystemLogJob('Deals has been deleted with id: ' . $dataOfDeals->id, $this->systemLogsService::successCode, auth()->user()));
 
         return Redirect::to('deals')->with('message_success', $this->getMessage('messages.SuccessDealsDelete'));
     }
@@ -94,7 +97,7 @@ class DealsController extends Controller
     public function processSetIsActive(int $dealId, bool $value)
     {
         if ($this->dealsService->loadSetActive($dealId, $value)) {
-            $this->systemLogsService->loadInsertSystemLogs('Deals has been enabled with id: ' . $dealId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('Deals has been enabled with id: ' . $dealId, $this->systemLogsService::successCode, auth()->user()));
 
             $msg = $value ? 'SuccessDealsActive' : 'DealsIsNowDeactivated';
 
@@ -109,7 +112,7 @@ class DealsController extends Controller
         $validatedData = $request->all();
 
         if ($this->dealsService->loadStoreDealTerms($validatedData)) {
-            $this->systemLogsService->loadInsertSystemLogs('Deals terms has been enabled with id: ' . $validatedData['dealId'], $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('Deals terms has been enabled with id: ' . $validatedData['dealId'], $this->systemLogsService::successCode, auth()->user()));
             return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessDealTermStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorDealTermStore'));
@@ -130,7 +133,7 @@ class DealsController extends Controller
 
         $this->dealsService->loadDeleteTerm($termId);
 
-        $this->systemLogsService->loadInsertSystemLogs('Deal terms has been deleted with id: ' . $termId, $this->systemLogsService::successCode, $this->getAdminId());
+        $this->dispatchSync(new StoreSystemLogJob('Deal terms has been deleted with id: ' . $termId, $this->systemLogsService::successCode, auth()->user()));
 
         return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessDealsTermDelete'));
     }

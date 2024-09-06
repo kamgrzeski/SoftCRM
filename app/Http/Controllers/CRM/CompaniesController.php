@@ -6,13 +6,16 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyStoreRequest;
 use App\Http\Requests\CompanyUpdateRequest;
+use App\Jobs\StoreSystemLogJob;
 use App\Services\CompaniesService;
 use App\Services\DealsService;
 use App\Services\SystemLogService;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Redirect;
 
 class CompaniesController extends Controller
 {
+    use DispatchesJobs;
     private CompaniesService $companiesService;
     private SystemLogService $systemLogsService;
     private DealsService $dealsService;
@@ -60,7 +63,8 @@ class CompaniesController extends Controller
         $storedCompanyId = $this->companiesService->execute($request->validated(), $this->getAdminId());
 
         if ($storedCompanyId) {
-            $this->systemLogsService->loadInsertSystemLogs('CompaniesModel has been add with id: ' . $storedCompanyId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been add with id: ' . $storedCompanyId, $this->systemLogsService::successCode, auth()->user()));
+
             return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorCompaniesStore'));
@@ -87,7 +91,7 @@ class CompaniesController extends Controller
 
         $dataOfCompanies->delete();
 
-        $this->systemLogsService->loadInsertSystemLogs('CompaniesModel has been deleted with id: ' . $dataOfCompanies->id, $this->systemLogsService::successCode, $this->getAdminId());
+        $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been deleted with id: ' . $dataOfCompanies->id, $this->systemLogsService::successCode, auth()->user()));
 
         return Redirect::to('companies')->with('message_success', $this->getMessage('messages.SuccessCompaniesDelete'));
     }
@@ -95,7 +99,7 @@ class CompaniesController extends Controller
     public function processCompanySetIsActive(int $companiesId, bool $value)
     {
         if ($this->companiesService->loadSetActive($companiesId, $value)) {
-            $this->systemLogsService->loadInsertSystemLogs('CompaniesModel has been enabled with id: ' . $companiesId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been enabled with id: ' . $companiesId, $this->systemLogsService::successCode, auth()->user()));
 
             $msg = $value ? 'SuccessCompaniesActive' : 'CompaniesIsNowDeactivated';
 

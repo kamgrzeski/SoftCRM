@@ -70,7 +70,7 @@
                                                 </label>
                                             @endif
                                     </td>
-                                    <td class="text-right" style="text-align: center">>
+                                    <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
                                             <a class="btn btn-small btn-primary"
                                                href="{{ URL::to('companies/view/' . $value->id) }}">More information</a>

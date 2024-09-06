@@ -2,13 +2,15 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\CRM\SystemLogsController;
-use App\Services\SystemLogService;
+use App\Jobs\StoreSystemLogJob;
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Request;
 
 class processSoftCRM extends Command
 {
+    use DispatchesJobs;
+
     /**
      * The name and signature of the console command.
      *
@@ -38,7 +40,7 @@ class processSoftCRM extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $this->info('Welcome in SoftCRM!');
 
@@ -58,7 +60,6 @@ class processSoftCRM extends Command
         $this->info('Everything looks perfect! Now you can start use SoftCRM!');
         $this->info('If you have any question please contact with me by email: kamil.grzechulskii@gmail.com');
 
-        $systemLogs = new SystemLogService();
-        $systemLogs->loadInsertSystemLogs('First usage of process-softcrm command', 200, 1);
+        $this->dispatchSync(new StoreSystemLogJob('First usage of process-softcrm command', 200, 1));
     }
 }

@@ -5,14 +5,17 @@ namespace App\Http\Controllers\CRM;
 use App\Enums\SystemEnums;
 use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
+use App\Jobs\StoreSystemLogJob;
 use App\Services\ClientService;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Redirect;
 
 class EmployeesController extends Controller
 {
+    use DispatchesJobs;
     private EmployeesService $employeesService;
     private SystemLogService $systemLogsService;
     private ClientService $clientService;
@@ -59,7 +62,7 @@ class EmployeesController extends Controller
         $storedEmployeeId = $this->employeesService->execute($request->validated(), $this->getAdminId());
 
         if ($storedEmployeeId) {
-            $this->systemLogsService->loadInsertSystemLogs('Employees has been add with id: ' . $storedEmployeeId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('Employees has been add with id: ' . $storedEmployeeId, $this->systemLogsService::successCode, auth()->user()));
             return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorEmployeesStore'));
@@ -86,7 +89,7 @@ class EmployeesController extends Controller
 
         $dataOfEmployees->delete();
 
-        $this->systemLogsService->loadInsertSystemLogs('Employees has been deleted with id: ' . $dataOfEmployees->id, $this->systemLogsService::successCode, $this->getAdminId());
+        $this->dispatchSync(new StoreSystemLogJob('Employees has been deleted with id: ' . $dataOfEmployees->id, $this->systemLogsService::successCode, auth()->user()));
 
         return Redirect::to('employees')->with('message_success', $this->getMessage('messages.SuccessEmployeesDelete'));
     }
@@ -94,7 +97,7 @@ class EmployeesController extends Controller
     public function processEmployeeSetIsActive($employeeId, $value)
     {
         if ($this->employeesService->loadSetActive($employeeId, $value)) {
-            $this->systemLogsService->loadInsertSystemLogs('Employees has been enabled with id: ' . $employeeId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('Employees has been enabled with id: ' . $employeeId, $this->systemLogsService::successCode, auth()->user()));
 
             $msg = $value ? 'SuccessEmployeesActive' : 'EmployeesIsNowDeactivated';
 

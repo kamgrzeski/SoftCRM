@@ -6,12 +6,16 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientStoreRequest;
 use App\Http\Requests\ClientUpdateRequest;
+use App\Jobs\StoreSystemLogJob;
 use App\Services\ClientService;
 use App\Services\SystemLogService;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Redirect;
 
 class ClientController extends Controller
 {
+    use DispatchesJobs;
+
     private ClientService $clientService;
     private SystemLogService $systemLogsService;
 
@@ -52,7 +56,7 @@ class ClientController extends Controller
         $storedClientId = $this->clientService->execute($request->validated(), $this->getAdminId());
 
         if ($storedClientId) {
-            $this->systemLogsService->loadInsertSystemLogs('ClientsModel has been add with id: ' . $storedClientId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('ClientsModel has been add with id: ' . $storedClientId, $this->systemLogsService::successCode, auth()->user()));
             return Redirect::to('clients')->with('message_success', $this->getMessage('messages.SuccessClientStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorClientStore'));
@@ -84,8 +88,7 @@ class ClientController extends Controller
     public function processClientSetIsActive(int $clientId, bool $value)
     {
         if ($this->clientService->loadSetActive($clientId, $value)) {
-            $msg = $value ? 'ClientIsNowDeactivated' : 'SuccessClientActive';
-            return Redirect::to('clients')->with('message_success', $this->getMessage('messages.' . $msg));
+            return Redirect::to('clients')->with('message_success', $this->getMessage('messages.' . $value ? 'ClientIsNowDeactivated' : 'SuccessClientActive'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorSettingsUpdate'));
         }

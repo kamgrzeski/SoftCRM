@@ -6,13 +6,16 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FinanceStoreRequest;
 use App\Http\Requests\FinanceUpdateRequest;
+use App\Jobs\StoreSystemLogJob;
 use App\Services\CompaniesService;
 use App\Services\FinancesService;
 use App\Services\SystemLogService;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 Use Illuminate\Support\Facades\Redirect;
 
 class FinancesController extends Controller
 {
+    use DispatchesJobs;
     private FinancesService $financesService;
     private SystemLogService $systemLogsService;
     private CompaniesService $companiesService;
@@ -60,7 +63,7 @@ class FinancesController extends Controller
         $storedFinanceId = $this->financesService->execute($request->validated(), $this->getAdminId());
 
         if ($storedFinanceId) {
-            $this->systemLogsService->loadInsertSystemLogs('FinancesModel has been add with id: ' . $storedFinanceId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been add with id: ' . $storedFinanceId, $this->systemLogsService::successCode, auth()->user()));
             return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesStore'));
@@ -82,7 +85,7 @@ class FinancesController extends Controller
 
         $dataOfFinances->delete();
 
-        $this->systemLogsService->loadInsertSystemLogs('FinancesModel has been deleted with id: ' . $dataOfFinances->id, $this->systemLogsService::successCode, $this->getAdminId());
+        $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been deleted with id: ' . $dataOfFinances->id, $this->systemLogsService::successCode, auth()->user()));
 
         return Redirect::to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesDelete'));
     }
@@ -90,11 +93,9 @@ class FinancesController extends Controller
     public function processFinanceSetIsActive($financeId, $value)
     {
         if ($this->financesService->loadIsActive($financeId, $value)) {
-            $this->systemLogsService->loadInsertSystemLogs('FinancesModel has been enabled with id: ' . $financeId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been enabled with id: ' . $financeId, $this->systemLogsService::successCode, auth()->user()));
 
-            $msg = $value ? 'SuccessFinancesActive' : 'FinancesIsNowDeactivated';
-
-            return Redirect::to('finances')->with('message_success', $this->getMessage('messages.' . $msg));
+            return Redirect::to('finances')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessFinancesActive' : 'FinancesIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorFinancesActive'));
         }

@@ -6,13 +6,16 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleStoreRequest;
 use App\Http\Requests\SaleUpdateRequest;
+use App\Jobs\StoreSystemLogJob;
 use App\Services\ProductsService;
 use App\Services\SalesService;
 use App\Services\SystemLogService;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 Use Illuminate\Support\Facades\Redirect;
 
 class SalesController extends Controller
 {
+    use DispatchesJobs;
     private SalesService $salesService;
     private SystemLogService $systemLogsService;
     private ProductsService $productsService;
@@ -60,7 +63,8 @@ class SalesController extends Controller
         $storedSaleId = $this->salesService->execute($request->validated(), $this->getAdminId());
 
         if ($storedSaleId) {
-            $this->systemLogsService->loadInsertSystemLogs('SalesModel has been add with id: ' . $storedSaleId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('SalesModel has been add with id: ' . $storedSaleId, $this->systemLogsService::successCode, auth()->user()));
+
             return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorSalesStore'));
@@ -81,7 +85,7 @@ class SalesController extends Controller
         $salesDetails = $this->salesService->loadSale($saleId);
         $salesDetails->delete();
 
-        $this->systemLogsService->loadInsertSystemLogs('SalesModel has been deleted with id: ' . $salesDetails->id, $this->systemLogsService::successCode, $this->getAdminId());
+        $this->dispatchSync(new StoreSystemLogJob('SalesModel has been deleted with id: ' . $salesDetails->id, $this->systemLogsService::successCode, auth()->user()));
 
         return Redirect::to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesDelete'));
     }
@@ -89,7 +93,7 @@ class SalesController extends Controller
     public function processSaleSetIsActive(int $saleId, bool $value)
     {
         if ($this->salesService->loadIsActive($saleId, $value)) {
-            $this->systemLogsService->loadInsertSystemLogs('SalesModel has been enabled with id: ' . $saleId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('SalesModel has been enabled with id: ' . $saleId, $this->systemLogsService::successCode, auth()->user()));
 
             $msg = $value ? 'SuccessSalesActive' : 'SalesIsNowDeactivated';
 

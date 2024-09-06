@@ -6,6 +6,7 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
+use App\Jobs\StoreSystemLogJob;
 use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
@@ -59,7 +60,8 @@ class TasksController extends Controller
         $storedTaskId = $this->tasksService->execute($request->validated(), $this->getAdminId());
 
         if ($storedTaskId) {
-            $this->systemLogsService->loadInsertSystemLogs('Task has been add with id: ' . $storedTaskId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('Task has been add with id: ' . $storedTaskId, $this->systemLogsService::successCode, auth()->user()));
+
             return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksStore'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksStore'));
@@ -84,7 +86,7 @@ class TasksController extends Controller
         } else {
             $dataOfTasks->delete();
 
-            $this->systemLogsService->loadInsertSystemLogs('Tasks has been deleted with id: ' . $dataOfTasks->id, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('Tasks has been deleted with id: ' . $dataOfTasks->id, $this->systemLogsService::successCode, auth()->user()));
         }
 
         return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.SuccessTasksDelete'));
@@ -93,11 +95,9 @@ class TasksController extends Controller
     public function processTaskSetIsActive(int $taskId, bool $value)
     {
         if ($this->tasksService->loadIsActive($taskId, $value)) {
-            $this->systemLogsService->loadInsertSystemLogs('Tasks has been enabled with id: ' . $taskId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('Tasks has been enabled with id: ' . $taskId, $this->systemLogsService::successCode, auth()->user()));
 
-            $msg = $value ? 'SuccessTasksActive' : 'TaskIsNowDeactivated';
-
-            return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.' . $msg));
+            return Redirect::to('tasks')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessTasksActive' : 'TaskIsNowDeactivated'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.ErrorTasksActive'));
         }
@@ -106,7 +106,7 @@ class TasksController extends Controller
     public function processSetTaskToCompleted(int $taskId)
     {
         if ($this->tasksService->loadIsCompleted($taskId, TRUE)) {
-            $this->systemLogsService->loadInsertSystemLogs('Tasks has been completed with id: ' . $taskId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('Tasks has been completed with id: ' . $taskId, $this->systemLogsService::successCode, auth()->user()));
             return Redirect::back()->with('message_success', $this->getMessage('messages.TasksCompleted'));
         } else {
             return Redirect::back()->with('message_danger', $this->getMessage('messages.TasksIsNotCompleted'));

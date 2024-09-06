@@ -56,4 +56,9 @@ class AdminModel extends Authenticatable
             'updated_at' => now()
         ]);
     }
+
+    public function getUserInformation()
+    {
+        return unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$this->ip"));
+    }
 }

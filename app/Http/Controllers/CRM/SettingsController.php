@@ -5,7 +5,7 @@ namespace App\Http\Controllers\CRM;
 use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SettingsStoreRequest;
-use App\Jobs\StoreCurrencySearch;
+use App\Jobs\StoreSystemLogJob;
 use App\Jobs\UpdateSettingsJob;
 use App\Services\HelpersFncService;
 use App\Services\SettingsService;
@@ -47,7 +47,8 @@ class SettingsController extends Controller
         // Dispatch the UpdateSettingsJob to update the settings
         $this->dispatchSync(new UpdateSettingsJob($validatedData));
 
-        $this->systemLogsService->loadInsertSystemLogs('SettingsModel has been changed.', $this->systemLogsService::successCode, $this->getAdminId());
+        // Dispatch the StoreSystemLogJob to store the system log
+        $this->dispatchSync(new StoreSystemLogJob('SettingsModel has been changed.', $this->systemLogsService::successCode, auth()->user()));
 
         // Redirect back with a success message
         return Redirect::back()->with('message_success', $this->getMessage('messages.SuccessSettingsUpdate'));

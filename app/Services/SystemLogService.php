@@ -15,11 +15,6 @@ class SystemLogService
         $this->systemLogsModel = new SystemLogsModel();
     }
 
-    public function loadInsertSystemLogs(string $actions, int $statusCode, int $adminId)
-    {
-        return $this->systemLogsModel->insertSystemLog($actions, $statusCode, $adminId);
-    }
-
     public function loadCountLogs()
     {
         return $this->systemLogsModel->countRows();

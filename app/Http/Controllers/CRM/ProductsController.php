@@ -6,12 +6,15 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
+use App\Jobs\StoreSystemLogJob;
 use App\Services\ProductsService;
 use App\Services\SystemLogService;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 Use Illuminate\Support\Facades\Redirect;
 
 class ProductsController extends Controller
 {
+    use DispatchesJobs;
     private ProductsService $productsService;
     private SystemLogService $systemLogsService;
 
@@ -52,7 +55,7 @@ class ProductsController extends Controller
         $storedProductId = $this->productsService->execute($request->validated(), $this->getAdminId());
 
         if ($storedProductId) {
-            $this->systemLogsService->loadInsertSystemLogs('Product has been add with id: ' . $storedProductId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('Product has been add with id: ' . $storedProductId, $this->systemLogsService::successCode, auth()->user()));
             return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
         } else {
             return Redirect::back()->with('message_success', $this->getMessage('messages.ErrorProductsStore'));
@@ -79,7 +82,7 @@ class ProductsController extends Controller
             $productsDetails->delete();
         }
 
-        $this->systemLogsService->loadInsertSystemLogs('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogsService::successCode, $this->getAdminId());
+        $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogsService::successCode, auth()->user()));
 
         return Redirect::to('products')->with('message_success', $this->getMessage('messages.SuccessProductsDelete'));
     }
@@ -87,7 +90,7 @@ class ProductsController extends Controller
     public function processProductSetIsActive(int $productId, bool $value)
     {
         if ($this->productsService->loadIsActiveFunction($productId, $value)) {
-            $this->systemLogsService->loadInsertSystemLogs('ProductsModel has been enabled with id: ' . $productId, $this->systemLogsService::successCode, $this->getAdminId());
+            $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been enabled with id: ' . $productId, $this->systemLogsService::successCode, auth()->user()));
 
             $msg = $value ? 'SuccessProductsActive' : 'ProductsIsNowDeactivated';
 
