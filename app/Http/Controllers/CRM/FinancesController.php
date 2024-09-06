@@ -6,7 +6,10 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FinanceStoreRequest;
 use App\Http\Requests\FinanceUpdateRequest;
+use App\Jobs\Finance\StoreFinanceJob;
+use App\Jobs\Finance\UpdateFinanceJob;
 use App\Jobs\StoreSystemLogJob;
+use App\Models\FinancesModel;
 use App\Services\CompaniesService;
 use App\Services\FinancesService;
 use App\Services\SystemLogService;
@@ -33,70 +36,57 @@ class FinancesController extends Controller
         return view('crm.finances.create')->with(['dataWithPluckOfCompanies' => $this->companiesService->loadCompanies(true)]);
     }
 
-    public function processShowFinancesDetails($financeId)
+    public function processShowFinancesDetails(FinancesModel $finance)
     {
-        return view('crm.finances.show')->with(['finance' => $this->financesService->loadFinance($financeId)]);
+        return view('crm.finances.show')->with(['finance' => $finance]);
     }
 
     public function processListOfFinances()
     {
-        return view('crm.finances.index')->with(
-            [
-                'financesPaginate' => $this->financesService->loadPagination()
-            ]
-        );
+        return view('crm.finances.index')->with([
+            'financesPaginate' => $this->financesService->loadPagination()
+        ]);
     }
 
-    public function processRenderUpdateForm($financeId)
+    public function processRenderUpdateForm(FinancesModel $finance)
     {
-        return view('crm.finances.edit')->with(
-            [
-                'finance' => $this->financesService->loadFinance($financeId),
-                'dataWithPluckOfCompanies' => $this->companiesService->loadCompanies(true)
-            ]
-        );
+        return view('crm.finances.edit')->with([
+            'finance' => $finance,
+            'dataWithPluckOfCompanies' => $this->companiesService->loadCompanies(true)
+        ]);
     }
 
     public function processStoreFinance(FinanceStoreRequest $request)
     {
-        $storedFinanceId = $this->financesService->execute($request->validated(), $this->getAdminId());
+        $this->dispatchSync(new StoreFinanceJob($request->validated(), auth()->user()));
 
-        if ($storedFinanceId) {
-            $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been add with id: ' . $storedFinanceId, $this->systemLogsService::successCode, auth()->user()));
-            return redirect()->to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorFinancesStore'));
-        }
+        $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been added.', $this->systemLogsService::successCode, auth()->user()));
+
+        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesStore'));
     }
 
-    public function processUpdateFinance(FinanceUpdateRequest $request, $financeId)
+    public function processUpdateFinance(FinanceUpdateRequest $request, FinancesModel $finance)
     {
-        if ($this->financesService->update($financeId, $request->validated())) {
-            return redirect()->to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
-        } else {
-            return redirect()->back()->with('message_success', $this->getMessage('messages.ErrorFinancesUpdate'));
-        }
+        $this->dispatchSync(new UpdateFinanceJob($request->validated(), $finance));
+
+        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesUpdate'));
     }
 
-    public function processDeleteFinance($financeId)
+    public function processDeleteFinance(FinancesModel $finance)
     {
-        $dataOfFinances = $this->financesService->loadFinance($financeId);
+        $finance->delete();
 
-        $dataOfFinances->delete();
-
-        $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been deleted with id: ' . $dataOfFinances->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been deleted with id: ' . $finance->id, $this->systemLogsService::successCode, auth()->user()));
 
         return redirect()->to('finances')->with('message_success', $this->getMessage('messages.SuccessFinancesDelete'));
     }
 
-    public function processFinanceSetIsActive($financeId, $value)
+    public function processFinanceSetIsActive(FinancesModel $finance, $value)
     {
-        if ($this->financesService->loadIsActive($financeId, $value)) {
-            $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been enabled with id: ' . $financeId, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new UpdateFinanceJob(['is_active' => $value], $finance));
 
-            return redirect()->to('finances')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessFinancesActive' : 'FinancesIsNowDeactivated'));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorFinancesActive'));
-        }
+        $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been enabled with id: ' . $finance->id, $this->systemLogsService::successCode, auth()->user()));
+
+        return redirect()->to('finances')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessFinancesActive' : 'FinancesIsNowDeactivated'));
     }
 }

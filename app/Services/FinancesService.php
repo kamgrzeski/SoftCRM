@@ -14,11 +14,6 @@ class FinancesService
         $this->financesModel = new FinancesModel();
     }
 
-    public function execute(array $requestedData, int $adminId)
-    {
-        return $this->financesModel->storeFinance($requestedData, $adminId);
-    }
-
     public function update(int $financeId, array $requestedData)
     {
         return $this->financesModel->updateFinance($financeId, $requestedData);
@@ -52,11 +47,6 @@ class FinancesService
     public function loadFinance(int $financeId)
     {
         return $this->financesModel::find($financeId);
-    }
-
-    public function loadIsActive(int $financeId, int $value)
-    {
-        return $this->financesModel->setActive($financeId, $value);
     }
 
     public function loadCountFinances()

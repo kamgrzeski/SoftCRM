@@ -106,12 +106,12 @@ Route::group(['prefix' => 'products'], function () {
 Route::group(['prefix' => 'finances'], function () {
     Route::get('/', 'CRM\FinancesController@processListOfFinances')->name('finances');
     Route::get('form/create', 'CRM\FinancesController@processRenderCreateForm')->name('processRenderCreateForm');
-    Route::get('form/update/{clientId}', 'CRM\FinancesController@processRenderUpdateForm')->name('processRenderUpdateForm');
-    Route::get('view/{clientId}', 'CRM\FinancesController@processShowFinancesDetails')->name('viewFinancesDetails');
+    Route::get('form/update/{finance}', 'CRM\FinancesController@processRenderUpdateForm')->name('processRenderUpdateForm');
+    Route::get('view/{finance}', 'CRM\FinancesController@processShowFinancesDetails')->name('viewFinancesDetails');
     Route::post('store', 'CRM\FinancesController@processStoreFinance')->name('processStoreFinance');
-    Route::put('update/{employeeId}', 'CRM\FinancesController@processUpdateFinance')->name('processUpdateFinance');
-    Route::delete('delete/{clientId}', 'CRM\FinancesController@processDeleteFinance')->name('processDeleteFinance');
-    Route::get('set-active/{id}/{value}', 'CRM\FinancesController@processFinanceSetIsActive')->name('processSetIsActive');
+    Route::put('update/{finance}', 'CRM\FinancesController@processUpdateFinance')->name('processUpdateFinance');
+    Route::delete('delete/{finance}', 'CRM\FinancesController@processDeleteFinance')->name('processDeleteFinance');
+    Route::get('set-active/{finance}/{value}', 'CRM\FinancesController@processFinanceSetIsActive')->name('processSetIsActive');
 });
 
 Route::group(['prefix' => 'settings'], function () {
