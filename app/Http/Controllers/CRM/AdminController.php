@@ -7,7 +7,6 @@ use App\Services\AdminService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
-use Auth;
 
 class AdminController extends Controller
 {
