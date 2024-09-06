@@ -30,7 +30,7 @@ class SystemLogsModel extends Model
 
         return self::insert(
             [
-                'user_id' => Auth::id(),
+                'user_id' => auth()->id(),
                 'actions' => $actions,
                 'status_code' => $statusCode,
                 'date' => Carbon::now(),

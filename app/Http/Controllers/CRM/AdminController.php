@@ -26,7 +26,7 @@ class AdminController extends Controller
     public function processLoginAdmin(Request $request)
     {
         //TODO validation request
-        if (Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
+        if (auth()->attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
             return Redirect::to('/');
         } else {
             Session::flash('message-error', 'Wrong email or password!');
@@ -37,7 +37,7 @@ class AdminController extends Controller
     public function logout()
     {
         Session::flash('message-success', 'You have been logged out form system.');
-        Auth::logout();
+        auth()->logout();
         return Redirect::to('login');
     }
 

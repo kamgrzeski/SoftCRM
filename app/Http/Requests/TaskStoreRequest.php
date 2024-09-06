@@ -14,7 +14,7 @@ class TaskStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check();
+        return auth()->check();
     }
 
     /**

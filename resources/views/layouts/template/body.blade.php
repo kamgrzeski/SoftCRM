@@ -19,7 +19,7 @@
             </span>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                    <img src="{{ asset('./images/avatar.png') }}"> Welcome {{{ Auth::user()->name }}} <i
+                    <img src="{{ asset('./images/avatar.png') }}"> Welcome {{{ auth()->user()->name }}} <i
                             class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">

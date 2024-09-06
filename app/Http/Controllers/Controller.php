@@ -30,11 +30,11 @@ class Controller extends BaseController
 
     public function getAdminRoleType()
     {
-        return Auth::user()->role_type;
+        return auth()->user()->role_type;
     }
 
     public function getAdminId()
     {
-        return Auth::id();
+        return auth()->id();
     }
 }
