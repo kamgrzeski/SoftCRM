@@ -6,7 +6,10 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleStoreRequest;
 use App\Http\Requests\SaleUpdateRequest;
+use App\Jobs\Sale\StoreSaleJob;
+use App\Jobs\Sale\UpdateSaleJob;
 use App\Jobs\StoreSystemLogJob;
+use App\Models\SalesModel;
 use App\Services\ProductsService;
 use App\Services\SalesService;
 use App\Services\SystemLogService;
@@ -33,72 +36,58 @@ class SalesController extends Controller
         return view('crm.sales.create')->with(['dataOfProducts' => $this->productsService->loadProducts()]);
     }
 
-    public function processShowSalesDetails($saleId)
+    public function processShowSalesDetails(SalesModel $sale)
     {
-        return view('crm.sales.show')->with(['sale' => $this->salesService->loadSale($saleId)]);
+        return view('crm.sales.show')->with(['sale' => $sale]);
     }
 
-    public function processRenderUpdateForm($saleId)
+    public function processRenderUpdateForm(SalesModel $sale)
     {
-        return view('crm.sales.edit')->with(
-            [
-                'dataWithPluckOfProducts' => $this->salesService->loadProducts()
-            ]
-        );
+        return view('crm.sales.edit')->with([
+            'sale' => $sale,
+            'dataWithPluckOfProducts' => $this->productsService->loadProducts()
+        ]);
     }
 
     public function processListOfSales()
     {
-        return view('crm.sales.index')->with(
-            [
-                'sales' => $this->salesService->loadSales(),
-                'salesPaginate' => $this->salesService->loadPaginate()
-            ]
-        );
+        return view('crm.sales.index')->with([
+            'sales' => $this->salesService->loadSales(),
+            'salesPaginate' => $this->salesService->loadPaginate()
+        ]);
     }
 
     public function processStoreSale(SaleStoreRequest $request)
     {
-        $storedSaleId = $this->salesService->execute($request->validated(), $this->getAdminId());
+        $this->dispatchSync(new StoreSaleJob($request->validated(), auth()->user()));
 
-        if ($storedSaleId) {
-            $this->dispatchSync(new StoreSystemLogJob('SalesModel has been add with id: ' . $storedSaleId, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('SalesModel has been added.', $this->systemLogsService::successCode, auth()->user()));
 
-            return redirect()->to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
-        } else {
-            return redirect()->back()->with('message_success', $this->getMessage('messages.ErrorSalesStore'));
-        }
+        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
     }
 
-    public function processUpdateSale(SaleUpdateRequest $request, int $saleId)
+    public function processUpdateSale(SaleUpdateRequest $request, SalesModel $sale)
     {
-        if ($this->salesService->update($saleId, $request->validated())) {
-            return redirect()->to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorSalesStore'));
-        }
+        $this->dispatchSync(new UpdateSaleJob($request->validated(), $sale));
+
+        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesStore'));
     }
 
-    public function processDeleteSale(int $saleId)
+    public function processDeleteSale(SalesModel $sale)
     {
-        $salesDetails = $this->salesService->loadSale($saleId);
-        $salesDetails->delete();
+        $sale->delete();
 
-        $this->dispatchSync(new StoreSystemLogJob('SalesModel has been deleted with id: ' . $salesDetails->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('SalesModel has been deleted with id: ' . $sale->id, $this->systemLogsService::successCode, auth()->user()));
 
         return redirect()->to('sales')->with('message_success', $this->getMessage('messages.SuccessSalesDelete'));
     }
 
-    public function processSaleSetIsActive(int $saleId, bool $value)
+    public function processSaleSetIsActive(SalesModel $sale, bool $value)
     {
-        if ($this->salesService->loadIsActive($saleId, $value)) {
-            $this->dispatchSync(new StoreSystemLogJob('SalesModel has been enabled with id: ' . $saleId, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new UpdateSaleJob(['is_active' => $value], $sale));
 
-            $msg = $value ? 'SuccessSalesActive' : 'SalesIsNowDeactivated';
+        $this->dispatchSync(new StoreSystemLogJob('SalesModel has been enabled with id: ' . $sale->id, $this->systemLogsService::successCode, auth()->user()));
 
-            return redirect()->to('sales')->with('message_success', $this->getMessage('messages.' . $msg));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorSalesActive'));
-        }
+        return redirect()->to('sales')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessSalesActive' : 'SalesIsNowDeactivated'));
     }
 }

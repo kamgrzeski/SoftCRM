@@ -84,12 +84,12 @@ Route::group(['prefix' => 'tasks'], function () {
 Route::group(['prefix' => 'sales'], function () {
     Route::get('/', 'CRM\SalesController@processListOfSales')->name('sales');
     Route::get('form/create', 'CRM\SalesController@processRenderCreateForm')->name('processRenderCreateForm');
-    Route::get('form/update/{clientId}', 'CRM\SalesController@processRenderUpdateForm')->name('processRenderUpdateForm');
-    Route::get('view/{clientId}', 'CRM\SalesController@processShowSalesDetails')->name('viewSalesDetails');
+    Route::get('form/update/{sale}', 'CRM\SalesController@processRenderUpdateForm')->name('processRenderUpdateForm');
+    Route::get('view/{sale}', 'CRM\SalesController@processShowSalesDetails')->name('viewSalesDetails');
     Route::post('store', 'CRM\SalesController@processStoreSale')->name('processStoreSale');
-    Route::put('update/{employeeId}', 'CRM\SalesController@processUpdateSale')->name('processUpdateSale');
-    Route::delete('delete/{clientId}', 'CRM\SalesController@processDeleteSale')->name('processDeleteSale');
-    Route::get('set-active/{id}/{value}', 'CRM\SalesController@processSaleSetIsActive')->name('processSetIsActive');
+    Route::put('update/{sale}', 'CRM\SalesController@processUpdateSale')->name('processUpdateSale');
+    Route::delete('delete/{sale}', 'CRM\SalesController@processDeleteSale')->name('processDeleteSale');
+    Route::get('set-active/{sale}/{value}', 'CRM\SalesController@processSaleSetIsActive')->name('processSetIsActive');
 });
 
 Route::group(['prefix' => 'products'], function () {
