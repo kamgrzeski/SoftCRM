@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Arr;
-use Config;
 
 class ProductsModel extends Model
 {
@@ -14,47 +12,11 @@ class ProductsModel extends Model
     protected $table = 'products';
     protected $dates = ['deleted_at'];
 
+    protected $fillable = ['name', 'category', 'count', 'price', 'is_active', 'admin_id'];
+
     public function sales()
     {
         return $this->hasMany(SalesModel::class, 'id');
-    }
-
-    public function storeProduct(array $requestedData, int $adminId) : int
-    {
-        return $this->insertGetId(
-            [
-                'name' => $requestedData['name'],
-                'category' => $requestedData['category'],
-                'count' => $requestedData['count'],
-                'price' => $requestedData['price'] * 100,
-                'created_at' => now(),
-                'is_active' => true,
-                'admin_id' => $adminId
-            ]
-        );
-    }
-
-    public function updateProduct(int $productId, array $requestedData) : int
-    {
-        return $this->where('id', '=', $productId)->update(
-            [
-                'name' => $requestedData['name'],
-                'category' => $requestedData['category'],
-                'count' => $requestedData['count'],
-                'price' => $requestedData['price'],
-                'updated_at' => now()
-            ]
-        );
-    }
-
-    public function setActive(int $productId, int $activeType) : int
-    {
-        return $this->where('id', '=', $productId)->update(
-            [
-                'is_active' => $activeType,
-                'updated_at' => now()
-            ]
-        );
     }
 
     public function countProducts(): int
@@ -67,15 +29,6 @@ class ProductsModel extends Model
         return $this->all()->sortBy('created_at', 0, true)->slice(0, 5);
     }
 
-    public function findClientByGivenClientId(int $productId)
-    {
-        $query = $this->find($productId);
-
-        Arr::add($query, 'salesCount', count($query->sales));
-
-        return $query;
-    }
-
     public function getProducts()
     {
         return $this->all()->sortBy('created_at');
@@ -84,10 +37,5 @@ class ProductsModel extends Model
     public function getPaginate()
     {
         return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
-    }
-
-    public function getProduct(int $productId) : self
-    {
-        return $this->find($productId);
     }
 }

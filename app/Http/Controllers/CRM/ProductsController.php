@@ -6,7 +6,10 @@ use App\Enums\SystemEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
+use App\Jobs\Product\StoreProductJob;
+use App\Jobs\Product\UpdateProductJob;
 use App\Jobs\StoreSystemLogJob;
+use App\Models\ProductsModel;
 use App\Services\ProductsService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -30,72 +33,59 @@ class ProductsController extends Controller
         return view('crm.products.create');
     }
 
-    public function processShowProductsDetails(int $productId)
+    public function processShowProductsDetails(ProductsModel $product)
     {
-        return view('crm.products.show')->with(['product' => $this->productsService->loadProduct($productId)]);
+        return view('crm.products.show')->with(['product' => $product]);
     }
 
-    public function processRenderUpdateForm(int $productId)
+    public function processRenderUpdateForm(ProductsModel $product)
     {
-        return view('crm.products.edit')->with(['product' => $this->productsService->loadProduct($productId)]);
+        return view('crm.products.edit')->with(['product' => $product]);
     }
 
     public function processListOfProducts()
     {
-        return view('crm.products.index')->with(
-            [
-                'productsPaginate' => $this->productsService->loadPagination()
-            ]
-        );
+        return view('crm.products.index')->with([
+            'productsPaginate' => $this->productsService->loadPagination()
+        ]);
     }
 
     public function processStoreProduct(ProductStoreRequest $request)
     {
-        $storedProductId = $this->productsService->execute($request->validated(), $this->getAdminId());
+        $this->dispatchSync(new StoreProductJob($request->validated(), auth()->user()));
 
-        if ($storedProductId) {
-            $this->dispatchSync(new StoreSystemLogJob('Product has been add with id: ' . $storedProductId, $this->systemLogsService::successCode, auth()->user()));
-            return redirect()->to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
-        } else {
-            return redirect()->back()->with('message_success', $this->getMessage('messages.ErrorProductsStore'));
-        }
+        $this->dispatchSync(new StoreSystemLogJob('Product has been added.', $this->systemLogsService::successCode, auth()->user()));
+
+        return redirect()->to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
     }
 
-    public function processUpdateProduct(ProductUpdateRequest $request, int $productId)
+    public function processUpdateProduct(ProductUpdateRequest $request, ProductsModel $product)
     {
-        if ($this->productsService->update($productId, $request->validated())) {
-            return redirect()->to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ErrorProductsStore'));
-        }
+        $this->dispatchSync(new UpdateProductJob($request->validated(), $product));
+
+        return redirect()->to('products')->with('message_success', $this->getMessage('messages.SuccessProductsStore'));
     }
 
-    public function processDeleteProduct(int $productId)
+    public function processDeleteProduct(ProductsModel $product)
     {
-        $clientAssigned = $this->productsService->checkIfProductHaveAssignedSale($productId);
-
-        if (!empty($clientAssigned)) {
-            return redirect()->back()->with('message_danger', $clientAssigned);
-        } else {
-            $productsDetails = $this->productsService->loadProduct($productId);
-            $productsDetails->delete();
+        if ($product->sales()->count() > 0) {
+            return redirect()->back()->with('message_danger', $this->getMessage('messages.ProductsCannotBeDeleted'));
         }
 
-        $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been deleted with id: ' . $productsDetails->id, $this->systemLogsService::successCode, auth()->user()));
+        // Delete the product.
+        $product->delete();
+
+        $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been deleted with id: ' . $product->id, $this->systemLogsService::successCode, auth()->user()));
 
         return redirect()->to('products')->with('message_success', $this->getMessage('messages.SuccessProductsDelete'));
     }
 
-    public function processProductSetIsActive(int $productId, bool $value)
+    public function processProductSetIsActive(ProductsModel $product, bool $value)
     {
-        if ($this->productsService->loadIsActiveFunction($productId, $value)) {
-            $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been enabled with id: ' . $productId, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new UpdateProductJob(['is_active' => $value], $product));
 
-            $msg = $value ? 'SuccessProductsActive' : 'ProductsIsNowDeactivated';
+        $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been enabled with id: ' . $product->id, $this->systemLogsService::successCode, auth()->user()));
 
-            return redirect()->to('products')->with('message_success', $this->getMessage('messages.' . $msg));
-        } else {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ProductsIsActived'));
-        }
+        return redirect()->to('products')->with('message_success', $this->getMessage('messages.' . $value ? 'SuccessProductsActive' : 'ProductsIsNowDeactivated'));
     }
 }
