@@ -66,8 +66,9 @@ class DealsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function processListOfDeals()
+    public function processListOfDeals(): \Illuminate\View\View
     {
+        // Load the deal records with pagination.
         return view('crm.deals.index')->with([
             'dealsPaginate' => $this->dealsService->loadPaginate()
         ]);

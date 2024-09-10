@@ -98,7 +98,7 @@ class ClientController extends Controller
         $this->dispatchSync(new StoreSystemLogJob('ClientsModel has been added.', 201, auth()->user()));
 
         // Redirect to the clients page with a success message.
-        return redirect()->back()->with('message_success', $this->getMessage('messages.client_store'));
+        return redirect()->to('clients')->with('message_success', $this->getMessage('messages.client_store'));
     }
 
     /**

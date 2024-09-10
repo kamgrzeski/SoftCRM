@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\AdminModel;
 use App\Models\SystemLogsModel;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,18 +17,18 @@ class StoreSystemLogJob implements ShouldQueue
 
     private string $actions;
     private int $statusCode;
-    private AdminModel $admin;
+    private Authenticatable $authUser;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(string $actions, int $statusCode, AdminModel $admin)
+    public function __construct(string $actions, int $statusCode, Authenticatable $authUser)
     {
         $this->actions = $actions;
         $this->statusCode = $statusCode;
-        $this->admin = $admin;
+        $this->authUser = $authUser;
     }
 
     /**
@@ -37,11 +38,11 @@ class StoreSystemLogJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $userInformation = $this->admin->getUserInformation();
+        $userInformation = $this->authUser->getUserInformation();
 
         $model = new SystemLogsModel();
 
-        $model->admin_id = $this->admin->id;
+        $model->admin_id = $this->authUser->id;
         $model->actions = $this->actions;
         $model->status_code = $this->statusCode;
         $model->date = now();

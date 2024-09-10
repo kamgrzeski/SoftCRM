@@ -43,6 +43,7 @@ class TasksController extends Controller
      */
     public function processRenderCreateForm(): \Illuminate\View\View
     {
+        // Load the employees for the task.
         return view('crm.tasks.create')->with(['dataOfEmployees' => $this->employeesService->loadEmployees(true)]);
     }
 
@@ -53,9 +54,8 @@ class TasksController extends Controller
      */
     public function processListOfTasks(): \Illuminate\View\View
     {
-        return view('crm.tasks.index')->with([
-            'tasksPaginate' => $this->tasksService->loadPaginate()
-        ]);
+        // Load the tasks with pagination.
+        return view('crm.tasks.index')->with(['tasksPaginate' => $this->tasksService->loadPaginate()]);
     }
 
     /**
@@ -66,6 +66,7 @@ class TasksController extends Controller
      */
     public function processShowTasksDetails(TasksModel $task): \Illuminate\View\View
     {
+        // Load the task record.
         return view('crm.tasks.show')->with(['task' => $task]);
     }
 
@@ -77,6 +78,7 @@ class TasksController extends Controller
      */
     public function processRenderUpdateForm(TasksModel $task): \Illuminate\View\View
     {
+        // Load the task record for editing.
         return view('crm.tasks.edit')->with([
             'task' => $task,
             'employees' => $this->employeesService->loadEmployees()
@@ -92,10 +94,13 @@ class TasksController extends Controller
      */
     public function processStoreTask(TaskStoreRequest $request): \Illuminate\Http\RedirectResponse
     {
+        // Store task.
         $this->dispatchSync(new StoreTaskJob($request->validated(), auth()->user()));
 
+        // Log the task creation.
         $this->dispatchSync(new StoreSystemLogJob('Task has been added.', 201, auth()->user()));
 
+        // Redirect to the tasks page with a success message.
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_store'));
     }
 
@@ -109,8 +114,10 @@ class TasksController extends Controller
      */
     public function processUpdateTask(TaskUpdateRequest $request, TasksModel $task): \Illuminate\Http\RedirectResponse
     {
+        // Update task.
         $this->dispatchSync(new UpdateTaskJob($request->validated(), $task));
 
+        // Log the task update.
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_update'));
     }
 
@@ -123,6 +130,7 @@ class TasksController extends Controller
      */
     public function processDeleteTask(TasksModel $task): \Illuminate\Http\RedirectResponse
     {
+        // Check if the task is completed.
         if (! $task->completed) {
             return redirect()->back()->with('message_danger', $this->getMessage('messages.task_uncompleted'));
         }
@@ -130,8 +138,10 @@ class TasksController extends Controller
         // Delete task.
         $task->delete();
 
+        // Log the task deletion.
         $this->dispatchSync(new StoreSystemLogJob('Tasks has been deleted with id: ' . $task->id, 201, auth()->user()));
 
+        // Redirect to the tasks page with a success message.
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_delete'));
     }
 
@@ -145,10 +155,13 @@ class TasksController extends Controller
      */
     public function processTaskSetIsActive(TasksModel $task, bool $value): \Illuminate\Http\RedirectResponse
     {
+        // Update the task status.
         $this->dispatchSync(new UpdateTaskJob(['is_active' => $value], $task));
 
+        // Log the task status change.
         $this->dispatchSync(new StoreSystemLogJob('Tasks has been enabled with id: ' . $task->id, 201, auth()->user()));
 
+        // Redirect to the tasks page with a success message.
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_update'));
     }
 
@@ -161,10 +174,13 @@ class TasksController extends Controller
      */
     public function processSetTaskToCompleted(TasksModel $task): \Illuminate\Http\RedirectResponse
     {
+        // Update the task to complete.
         $this->dispatchSync(new UpdateTaskJob(['completed' => true], $task));
 
+        // Log the task completion.
         $this->dispatchSync(new StoreSystemLogJob('Tasks has been completed with id: ' . $task->id, 201, auth()->user()));
 
+        // Redirect to the tasks page with a success message.
         return redirect()->back()->with('message_success', $this->getMessage('messages.task_completed'));
     }
 }

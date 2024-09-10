@@ -45,6 +45,7 @@ class SalesController extends Controller
      */
     public function processRenderCreateForm(): \Illuminate\View\View
     {
+        // Load the products data to be used in the form.
         return view('crm.sales.create')->with(['dataOfProducts' => $this->productsService->loadProducts()]);
     }
 
@@ -56,6 +57,7 @@ class SalesController extends Controller
      */
     public function processShowSalesDetails(SalesModel $sale): \Illuminate\View\View
     {
+        // Load the sale record details.
         return view('crm.sales.show')->with(['sale' => $sale]);
     }
 
@@ -67,6 +69,7 @@ class SalesController extends Controller
      */
     public function processRenderUpdateForm(SalesModel $sale): \Illuminate\View\View
     {
+        // Load the sale record details and the products data to be used in the form.
         return view('crm.sales.edit')->with([
             'sale' => $sale,
             'dataWithPluckOfProducts' => $this->productsService->loadProducts()
@@ -80,6 +83,7 @@ class SalesController extends Controller
      */
     public function processListOfSales(): \Illuminate\View\View
     {
+        // Load the sale records with pagination.
         return view('crm.sales.index')->with([
             'sales' => $this->salesService->loadSales(),
             'salesPaginate' => $this->salesService->loadPaginate()
@@ -95,10 +99,13 @@ class SalesController extends Controller
      */
     public function processStoreSale(SaleStoreRequest $request): \Illuminate\Http\RedirectResponse
     {
+        // Dispatch the job to store the sale record.
         $this->dispatchSync(new StoreSaleJob($request->validated(), auth()->user()));
 
+        // Dispatch the job to store the system log.
         $this->dispatchSync(new StoreSystemLogJob('SalesModel has been added.', 201, auth()->user()));
 
+        // Redirect to the sales list page with a success message.
         return redirect()->to('sales')->with('message_success', $this->getMessage('messages.sale_store'));
     }
 
@@ -112,8 +119,10 @@ class SalesController extends Controller
      */
     public function processUpdateSale(SaleUpdateRequest $request, SalesModel $sale): \Illuminate\Http\RedirectResponse
     {
+        // Dispatch the job to update the sale record.
         $this->dispatchSync(new UpdateSaleJob($request->validated(), $sale));
 
+        // Dispatch the job to store the system log.
         return redirect()->to('sales')->with('message_success', $this->getMessage('messages.sale_store'));
     }
 
@@ -126,10 +135,13 @@ class SalesController extends Controller
      */
     public function processDeleteSale(SalesModel $sale): \Illuminate\Http\RedirectResponse
     {
+        // Delete the sale record.
         $sale->delete();
 
+        // Dispatch the job to store the system log.
         $this->dispatchSync(new StoreSystemLogJob('SalesModel has been deleted with id: ' . $sale->id, 201, auth()->user()));
 
+        // Redirect to the sales list page with a success message.
         return redirect()->to('sales')->with('message_success', $this->getMessage('messages.sale_delete'));
     }
 
@@ -143,10 +155,13 @@ class SalesController extends Controller
      */
     public function processSaleSetIsActive(SalesModel $sale, bool $value): \Illuminate\Http\RedirectResponse
     {
+        // Dispatch the job to update the sale record.
         $this->dispatchSync(new UpdateSaleJob(['is_active' => $value], $sale));
 
+        // Dispatch the job to store the system log.
         $this->dispatchSync(new StoreSystemLogJob('SalesModel has been enabled with id: ' . $sale->id, 201, auth()->user()));
 
+        // Redirect to the sales list page with a success message.
         return redirect()->to('sales')->with('message_success', $this->getMessage('messages.sale_update'));
     }
 }
