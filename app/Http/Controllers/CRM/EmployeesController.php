@@ -11,7 +11,6 @@ use App\Models\EmployeesModel;
 use App\Queries\ClientsQueries;
 use App\Services\ClientService;
 use App\Services\EmployeesService;
-use App\Services\SystemLogService;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -24,22 +23,19 @@ class EmployeesController extends Controller
 {
     use DispatchesJobs;
     private EmployeesService $employeesService;
-    private SystemLogService $systemLogsService;
     private ClientService $clientService;
 
     /**
      * EmployeesController constructor.
      *
      * @param EmployeesService $employeesService
-     * @param SystemLogService $systemLogService
      * @param ClientService $clientService
      */
-    public function __construct(EmployeesService $employeesService, SystemLogService $systemLogService, ClientService $clientService)
+    public function __construct(EmployeesService $employeesService, ClientService $clientService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->employeesService = $employeesService;
-        $this->systemLogsService = $systemLogService;
         $this->clientService = $clientService;
     }
 
@@ -101,7 +97,7 @@ class EmployeesController extends Controller
     {
         $this->dispatchSync(new StoreEmployeeJob($request->validated(), auth()->user()));
 
-        $this->dispatchSync(new StoreSystemLogJob('Employees has been added.', $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Employees has been added.', 201, auth()->user()));
 
         return redirect()->to('employees')->with('message_success', $this->getMessage('messages.employee_store'));
     }
@@ -136,7 +132,7 @@ class EmployeesController extends Controller
 
         $employee->delete();
 
-        $this->dispatchSync(new StoreSystemLogJob('Employees has been deleted with id: ' . $employee->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Employees has been deleted with id: ' . $employee->id, 201, auth()->user()));
 
         return redirect()->to('employees')->with('message_success', $this->getMessage('messages.employee_delete'));
     }
@@ -153,7 +149,7 @@ class EmployeesController extends Controller
     {
         $this->dispatchSync(new UpdateEmployeeJob(['is_active' => $value], $employee));
 
-        $this->dispatchSync(new StoreSystemLogJob('Employees has been enabled with id: ' . $employee->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Employees has been enabled with id: ' . $employee->id, 201, auth()->user()));
 
         return redirect()->to('employees')->with('message_success', $this->getMessage('messages.employee_update'));
     }

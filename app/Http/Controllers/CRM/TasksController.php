@@ -10,7 +10,6 @@ use App\Jobs\Task\StoreTaskJob;
 use App\Jobs\Task\UpdateTaskJob;
 use App\Models\TasksModel;
 use App\Services\EmployeesService;
-use App\Services\SystemLogService;
 use App\Services\TasksService;
 
 /**
@@ -21,22 +20,19 @@ use App\Services\TasksService;
 class TasksController extends Controller
 {
     private TasksService $tasksService;
-    private SystemLogService $systemLogsService;
     private EmployeesService $employeesService;
 
     /**
      * TasksController constructor.
      *
      * @param TasksService $tasksService
-     * @param SystemLogService $systemLogService
      * @param EmployeesService $employeesService
      */
-    public function __construct(TasksService $tasksService, SystemLogService $systemLogService, EmployeesService $employeesService)
+    public function __construct(TasksService $tasksService, EmployeesService $employeesService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->tasksService = $tasksService;
-        $this->systemLogsService = $systemLogService;
         $this->employeesService = $employeesService;
     }
 
@@ -98,7 +94,7 @@ class TasksController extends Controller
     {
         $this->dispatchSync(new StoreTaskJob($request->validated(), auth()->user()));
 
-        $this->dispatchSync(new StoreSystemLogJob('Task has been added.', $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Task has been added.', 201, auth()->user()));
 
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_store'));
     }
@@ -134,7 +130,7 @@ class TasksController extends Controller
         // Delete task.
         $task->delete();
 
-        $this->dispatchSync(new StoreSystemLogJob('Tasks has been deleted with id: ' . $task->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Tasks has been deleted with id: ' . $task->id, 201, auth()->user()));
 
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_delete'));
     }
@@ -151,7 +147,7 @@ class TasksController extends Controller
     {
         $this->dispatchSync(new UpdateTaskJob(['is_active' => $value], $task));
 
-        $this->dispatchSync(new StoreSystemLogJob('Tasks has been enabled with id: ' . $task->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Tasks has been enabled with id: ' . $task->id, 201, auth()->user()));
 
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_update'));
     }
@@ -167,7 +163,7 @@ class TasksController extends Controller
     {
         $this->dispatchSync(new UpdateTaskJob(['completed' => true], $task));
 
-        $this->dispatchSync(new StoreSystemLogJob('Tasks has been completed with id: ' . $task->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Tasks has been completed with id: ' . $task->id, 201, auth()->user()));
 
         return redirect()->back()->with('message_success', $this->getMessage('messages.task_completed'));
     }

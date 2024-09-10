@@ -10,7 +10,6 @@ use App\Jobs\Client\UpdateClientJob;
 use App\Jobs\StoreSystemLogJob;
 use App\Models\ClientsModel;
 use App\Services\ClientService;
-use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -23,20 +22,16 @@ class ClientController extends Controller
     use DispatchesJobs;
 
     private ClientService $clientService;
-    private SystemLogService $systemLogsService;
-
     /**
      * ClientController constructor.
      *
      * @param ClientService $clientService
-     * @param SystemLogService $systemLogService
      */
-    public function __construct(ClientService $clientService, SystemLogService $systemLogService)
+    public function __construct(ClientService $clientService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->clientService = $clientService;
-        $this->systemLogsService = $systemLogService;
     }
 
     /**
@@ -100,7 +95,7 @@ class ClientController extends Controller
         $this->dispatchSync(new StoreClientJob($request->validated(), auth()->user()));
 
         // StoreSystemLogJob is a job that stores the system log.
-        $this->dispatchSync(new StoreSystemLogJob('ClientsModel has been added.', $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('ClientsModel has been added.', 201, auth()->user()));
 
         // Redirect to the clients page with a success message.
         return redirect()->back()->with('message_success', $this->getMessage('messages.client_store'));

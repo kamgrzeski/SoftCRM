@@ -14,7 +14,6 @@ use App\Models\DealsModel;
 use App\Models\DealsTermsModel;
 use App\Queries\CompaniesQueries;
 use App\Services\DealsService;
-use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -26,20 +25,17 @@ class DealsController extends Controller
 {
     use DispatchesJobs;
     private DealsService $dealsService;
-    private SystemLogService $systemLogsService;
 
     /**
      * DealsController constructor.
      *
      * @param DealsService $dealsService
-     * @param SystemLogService $systemLogService
      */
-    public function __construct(DealsService $dealsService, SystemLogService $systemLogService)
+    public function __construct(DealsService $dealsService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->dealsService = $dealsService;
-        $this->systemLogsService = $systemLogService;
     }
 
     /**
@@ -105,7 +101,7 @@ class DealsController extends Controller
         $this->dispatchSync(new StoreDealJob($request->validated(), auth()->user()));
 
         // Log the action.
-        $this->dispatchSync(new StoreSystemLogJob('Deal has been added.', $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Deal has been added.', 201, auth()->user()));
 
         // Redirect back with a success message.
         return redirect()->to('deals')->with('message_success', $this->getMessage('messages.deal_store'));
@@ -146,7 +142,7 @@ class DealsController extends Controller
         $deal->delete();
 
         // Log the action.
-        $this->dispatchSync(new StoreSystemLogJob('Deals has been deleted with id: ' . $deal->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Deals has been deleted with id: ' . $deal->id, 201, auth()->user()));
 
         // Redirect back with a success message.
         return redirect()->to('deals')->with('message_success', $this->getMessage('messages.deal_delete'));
@@ -166,7 +162,7 @@ class DealsController extends Controller
         $this->dispatchSync(new UpdateDealJob(['is_active' => $value], $deal));
 
         // Log the action.
-        $this->dispatchSync(new StoreSystemLogJob('Deals has been enabled with id: ' . $deal->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Deals has been enabled with id: ' . $deal->id, 201, auth()->user()));
 
         // Redirect back with a success message.
         return redirect()->to('deals')->with('message_success', $this->getMessage('messages.' . $value ? 'deal_update' : 'deal_update'));
@@ -186,7 +182,7 @@ class DealsController extends Controller
         $this->dispatchSync(new StoreDealTermJob($request->validated(), $deal));
 
         // Log the action.
-        $this->dispatchSync(new StoreSystemLogJob('Deals terms has been added.', $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Deals terms has been added.', 201, auth()->user()));
 
         // Redirect back with a success message.
         return redirect()->back()->with('message_success', $this->getMessage('messages.deal_term_store'));
@@ -218,7 +214,7 @@ class DealsController extends Controller
         $dealTerm->delete();
 
         // Log the action.
-        $this->dispatchSync(new StoreSystemLogJob('Deal terms has been deleted with id: ' . $dealTerm->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Deal terms has been deleted with id: ' . $dealTerm->id, 201, auth()->user()));
 
         // Redirect back with a success message.
         return redirect()->back()->with('message_success', $this->getMessage('messages.deal_term_delete'));

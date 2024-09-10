@@ -12,7 +12,6 @@ use App\Models\FinancesModel;
 use App\Queries\FinancesQueries;
 use App\Services\CompaniesService;
 use App\Services\FinancesService;
-use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -25,22 +24,19 @@ class FinancesController extends Controller
     use DispatchesJobs;
 
     private FinancesService $financesService;
-    private SystemLogService $systemLogsService;
     private CompaniesService $companiesService;
 
     /**
      * FinancesController constructor.
      *
      * @param FinancesService $financesService
-     * @param SystemLogService $systemLogService
      * @param CompaniesService $companiesService
      */
-    public function __construct(FinancesService $financesService, SystemLogService $systemLogService, CompaniesService $companiesService)
+    public function __construct(FinancesService $financesService, CompaniesService $companiesService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->financesService = $financesService;
-        $this->systemLogsService = $systemLogService;
         $this->companiesService = $companiesService;
     }
 
@@ -108,7 +104,7 @@ class FinancesController extends Controller
         $this->dispatchSync(new StoreFinanceJob($request->validated(), auth()->user()));
 
         // StoreSystemLogJob is a job that stores the system log.
-        $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been added.', $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been added.', 201, auth()->user()));
 
         // Redirect to the finances page with a success message.
         return redirect()->to('finances')->with('message_success', $this->getMessage('messages.finance_store'));
@@ -144,7 +140,7 @@ class FinancesController extends Controller
         $finance->delete();
 
         // StoreSystemLogJob is a job that stores the system log.
-        $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been deleted with id: ' . $finance->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been deleted with id: ' . $finance->id, 201, auth()->user()));
 
         // Redirect to the finances page with a success message.
         return redirect()->to('finances')->with('message_success', $this->getMessage('messages.finance_delete'));
@@ -164,7 +160,7 @@ class FinancesController extends Controller
         $this->dispatchSync(new UpdateFinanceJob(['is_active' => $value], $finance));
 
         // StoreSystemLogJob is a job that stores the system log.
-        $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been enabled with id: ' . $finance->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been enabled with id: ' . $finance->id, 201, auth()->user()));
 
         // Redirect to the finances page with a success message.
         return redirect()->to('finances')->with('message_success', $this->getMessage('messages.finance_update'));

@@ -9,7 +9,6 @@ use App\Jobs\UpdateSettingsJob;
 use App\Queries\SystemLogsQueries;
 use App\Services\HelpersFncService;
 use App\Services\SettingsService;
-use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -23,22 +22,19 @@ class SettingsController extends Controller
 
     private HelpersFncService $helpersFncService;
     private SettingsService $settingsService;
-    private SystemLogService $systemLogsService;
 
     /**
      * SettingsController constructor.
      *
      * @param HelpersFncService $helpersFncService
      * @param SettingsService $settingsService
-     * @param SystemLogService $systemLogService
      */
-    public function __construct(HelpersFncService $helpersFncService, SettingsService $settingsService, SystemLogService $systemLogService)
+    public function __construct(HelpersFncService $helpersFncService, SettingsService $settingsService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->helpersFncService = $helpersFncService;
         $this->settingsService = $settingsService;
-        $this->systemLogsService = $systemLogService;
     }
 
     /**
@@ -71,7 +67,7 @@ class SettingsController extends Controller
         $this->dispatchSync(new UpdateSettingsJob($validatedData));
 
         // Dispatch the StoreSystemLogJob to store the system log
-        $this->dispatchSync(new StoreSystemLogJob('SettingsModel has been changed.', $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('SettingsModel has been changed.', 201, auth()->user()));
 
         // Redirect back with a success message
         return redirect()->back()->with('message_success', $this->getMessage('messages.settings_update'));

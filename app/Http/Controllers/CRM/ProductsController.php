@@ -10,7 +10,6 @@ use App\Jobs\Product\UpdateProductJob;
 use App\Jobs\StoreSystemLogJob;
 use App\Models\ProductsModel;
 use App\Services\ProductsService;
-use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -22,20 +21,17 @@ class ProductsController extends Controller
 {
     use DispatchesJobs;
     private ProductsService $productsService;
-    private SystemLogService $systemLogsService;
 
     /**
      * ProductsController constructor.
      *
      * @param ProductsService $productsService
-     * @param SystemLogService $systemLogService
      */
-    public function __construct(ProductsService $productsService, SystemLogService $systemLogService)
+    public function __construct(ProductsService $productsService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->productsService = $productsService;
-        $this->systemLogsService = $systemLogService;
     }
 
     /**
@@ -99,7 +95,7 @@ class ProductsController extends Controller
         $this->dispatchSync(new StoreProductJob($request->validated(), auth()->user()));
 
         // Store a system log.
-        $this->dispatchSync(new StoreSystemLogJob('Product has been added.', $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('Product has been added.', 201, auth()->user()));
 
         // Redirect to the products page with a success message.
         return redirect()->to('products')->with('message_success', $this->getMessage('messages.product_store'));
@@ -140,7 +136,7 @@ class ProductsController extends Controller
         $product->delete();
 
         // Store a system log.
-        $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been deleted with id: ' . $product->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been deleted with id: ' . $product->id, 201, auth()->user()));
 
         // Redirect to the products page with a success message.
         return redirect()->to('products')->with('message_success', $this->getMessage('messages.product_delete'));
@@ -160,7 +156,7 @@ class ProductsController extends Controller
         $this->dispatchSync(new UpdateProductJob(['is_active' => $value], $product));
 
         // Store a system log.
-        $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been enabled with id: ' . $product->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been enabled with id: ' . $product->id, 201, auth()->user()));
 
         // Redirect to the products page with a success message.
         return redirect()->to('products')->with('message_success', $this->getMessage('messages.product_update'));

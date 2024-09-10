@@ -11,7 +11,6 @@ use App\Jobs\StoreSystemLogJob;
 use App\Models\SalesModel;
 use App\Services\ProductsService;
 use App\Services\SalesService;
-use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -23,22 +22,19 @@ class SalesController extends Controller
 {
     use DispatchesJobs;
     private SalesService $salesService;
-    private SystemLogService $systemLogsService;
     private ProductsService $productsService;
 
     /**
      * SalesController constructor.
      *
      * @param SalesService $salesService
-     * @param SystemLogService $systemLogService
      * @param ProductsService $productsService
      */
-    public function __construct(SalesService $salesService, SystemLogService $systemLogService, ProductsService $productsService)
+    public function __construct(SalesService $salesService, ProductsService $productsService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->salesService = $salesService;
-        $this->systemLogsService = $systemLogService;
         $this->productsService = $productsService;
     }
 
@@ -101,7 +97,7 @@ class SalesController extends Controller
     {
         $this->dispatchSync(new StoreSaleJob($request->validated(), auth()->user()));
 
-        $this->dispatchSync(new StoreSystemLogJob('SalesModel has been added.', $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('SalesModel has been added.', 201, auth()->user()));
 
         return redirect()->to('sales')->with('message_success', $this->getMessage('messages.sale_store'));
     }
@@ -132,7 +128,7 @@ class SalesController extends Controller
     {
         $sale->delete();
 
-        $this->dispatchSync(new StoreSystemLogJob('SalesModel has been deleted with id: ' . $sale->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('SalesModel has been deleted with id: ' . $sale->id, 201, auth()->user()));
 
         return redirect()->to('sales')->with('message_success', $this->getMessage('messages.sale_delete'));
     }
@@ -149,7 +145,7 @@ class SalesController extends Controller
     {
         $this->dispatchSync(new UpdateSaleJob(['is_active' => $value], $sale));
 
-        $this->dispatchSync(new StoreSystemLogJob('SalesModel has been enabled with id: ' . $sale->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('SalesModel has been enabled with id: ' . $sale->id, 201, auth()->user()));
 
         return redirect()->to('sales')->with('message_success', $this->getMessage('messages.sale_update'));
     }

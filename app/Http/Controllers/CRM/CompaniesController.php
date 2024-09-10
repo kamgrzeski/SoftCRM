@@ -12,7 +12,6 @@ use App\Models\CompaniesModel;
 use App\Queries\ClientsQueries;
 use App\Services\CompaniesService;
 use App\Services\DealsService;
-use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -24,22 +23,19 @@ class CompaniesController extends Controller
 {
     use DispatchesJobs;
     private CompaniesService $companiesService;
-    private SystemLogService $systemLogsService;
     private DealsService $dealsService;
 
     /**
      * CompaniesController constructor.
      *
      * @param CompaniesService $companiesService
-     * @param SystemLogService $systemLogService
      * @param DealsService $dealsService
      */
-    public function __construct(CompaniesService $companiesService, SystemLogService $systemLogService, DealsService $dealsService)
+    public function __construct(CompaniesService $companiesService, DealsService $dealsService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
 
         $this->companiesService = $companiesService;
-        $this->systemLogsService = $systemLogService;
         $this->dealsService = $dealsService;
     }
 
@@ -107,7 +103,7 @@ class CompaniesController extends Controller
         $this->dispatchSync(new StoreCompanyJob($request->validated(), auth()->user()));
 
         // Store system log.
-        $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been added.', $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been added.', 201, auth()->user()));
 
         // Redirect back with message.
         return redirect()->to('companies')->with('message_success', $this->getMessage('messages.companies_store'));
@@ -148,7 +144,7 @@ class CompaniesController extends Controller
         $company->delete();
 
         // Store system log.
-        $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been deleted with id: ' . $company->id, $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been deleted with id: ' . $company->id, 201, auth()->user()));
 
         // Redirect back with message.
         return redirect()->to('companies')->with('message_success', $this->getMessage('messages.companies_delete'));
@@ -168,7 +164,7 @@ class CompaniesController extends Controller
         $this->dispatchSync(new UpdateCompanyJob(['is_active' => $value], $company));
 
         // Store system log.
-        $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been updated.', $this->systemLogsService::successCode, auth()->user()));
+        $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been updated.', 201, auth()->user()));
 
         // Redirect back with message.
         return redirect()->back()->with('message_success', $this->getMessage('messages.companies_update'));
