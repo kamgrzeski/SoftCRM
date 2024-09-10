@@ -4,55 +4,86 @@ namespace App\Services;
 
 use App\Models\ClientsModel;
 use App\Models\SettingsModel;
+use App\Queries\ClientsQueries;
+use App\Queries\SettingsQueries;
 use App\Traits\Language;
 use Cknow\Money\Money;
 
+/**
+ * Class ClientService
+ *
+ * Service class for handling operations related to the ClientsModel.
+ */
 class ClientService
 {
     use Language;
 
     private ClientsModel $clientsModel;
 
+    /**
+     * ClientService constructor.
+     *
+     * Initializes a new instance of the ClientsModel.
+     */
     public function __construct()
     {
         $this->clientsModel = new ClientsModel();
     }
 
-    public function loadClients()
+    /**
+     * Load paginated list of clients.
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function loadPagination(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        $query = $this->clientsModel->getClientSortedBy();
-
-        foreach($query as $key => $client) {
-            $query[$key]->budget = Money::{SettingsModel::getSettingValue('currency')}($client->budget);
-        }
-
-        return $query;
+        return ClientsQueries::getPaginate();
     }
 
-    public function loadPagination()
+    /**
+     * Load details of a specific client.
+     *
+     * @param ClientsModel $client
+     * @return ClientsModel
+     */
+    public function loadClientDetails(ClientsModel $client): ClientsModel
     {
-        return $this->clientsModel->getPaginate();
-    }
-
-    public function loadClientDetails(ClientsModel $client)
-    {
-        $client->formattedBudget = Money::{SettingsModel::getSettingValue('currency')}($client->budget);
+        $client->formattedBudget = Money::{SettingsQueries::findByKey('currency')}($client->budget);
 
         return $client;
     }
 
-    public function loadCountClients()
+    /**
+     * Load the count of all clients.
+     *
+     * @return int
+     */
+    public function loadCountClients(): int
     {
-        return $this->clientsModel->countClients();
+        return ClientsQueries::getCountAll();
     }
 
-    public function loadDeactivatedClients()
+    /**
+     * Load the list of deactivated clients.
+     *
+     * @return int
+     */
+    public function loadDeactivatedClients(): int
     {
-        return $this->clientsModel->getDeactivated();
+        return ClientsQueries::getDeactivated();
     }
 
-    public function loadClientsInLatestMonth()
+    /**
+     * Load the list of clients added in the latest month.
+     *
+     * @return float
+     */
+    public function loadClientsInLatestMonth(): float
     {
-        return $this->clientsModel->getClientsInLatestMonth();
+        $clientsCountInLatestMonth = ClientsQueries::getCountAllInLatestMonth();
+
+        $allClientCount = ClientsQueries::getCountAll();
+
+        return ($allClientCount / 100) * $clientsCountInLatestMonth;
     }
 }

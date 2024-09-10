@@ -2,10 +2,7 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use Request;
 
 class SystemLogsModel extends Model
 {
@@ -19,15 +16,10 @@ class SystemLogsModel extends Model
     {
         parent::__construct();
 
-        $hostName = Request::getHttpHost();
+        $hostName = request()->getHttpHost();
 
         if (strpos($hostName, 'localhost') != 0) {
-            $this->ip = Request::ip();
+            $this->ip = request()->ip();
         }
-    }
-
-    public function countRows(): int
-    {
-        return $this->all()->count();
     }
 }

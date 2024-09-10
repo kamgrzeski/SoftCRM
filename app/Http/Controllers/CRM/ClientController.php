@@ -13,6 +13,11 @@ use App\Services\ClientService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+/**
+ * Class ClientController
+ *
+ * Controller for handling client-related operations in the CRM.
+ */
 class ClientController extends Controller
 {
     use DispatchesJobs;
@@ -20,6 +25,12 @@ class ClientController extends Controller
     private ClientService $clientService;
     private SystemLogService $systemLogsService;
 
+    /**
+     * ClientController constructor.
+     *
+     * @param ClientService $clientService
+     * @param SystemLogService $systemLogService
+     */
     public function __construct(ClientService $clientService, SystemLogService $systemLogService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
@@ -28,29 +39,62 @@ class ClientController extends Controller
         $this->systemLogsService = $systemLogService;
     }
 
-    public function processRenderCreateForm()
+    /**
+     * Render the form for creating a new client record.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function processRenderCreateForm(): \Illuminate\View\View
     {
+        // Return the view for creating a new client record.
         return view('crm.client.create');
     }
 
-    public function processShowClientDetails(ClientsModel $client)
+    /**
+     * Show the details of a specific client record.
+     *
+     * @param ClientsModel $client
+     * @return \Illuminate\View\View
+     */
+    public function processShowClientDetails(ClientsModel $client): \Illuminate\View\View
     {
+        // Return the view with the client details.
         return view('crm.client.show')->with(['clientDetails' => $this->clientService->loadClientDetails($client)]);
     }
 
-    public function processRenderUpdateForm(ClientsModel $client)
+    /**
+     * Render the form for updating an existing client record.
+     *
+     * @param ClientsModel $client
+     * @return \Illuminate\View\View
+     */
+    public function processRenderUpdateForm(ClientsModel $client): \Illuminate\View\View
     {
+        // Return the view for updating the client record.
         return view('crm.client.edit')->with(['clientDetails' => $this->clientService->loadClientDetails($client)]);
     }
 
-    public function processListOfClients()
+    /**
+     * List all client records with pagination.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function processListOfClients(): \Illuminate\View\View
     {
+        // Return the view with the paginated list of clients.
         return view('crm.client.index')->with([
-                'clientsPaginate' => $this->clientService->loadPagination()
+            'clientsPaginate' => $this->clientService->loadPagination()
         ]);
     }
 
-    public function processStoreClient(ClientStoreRequest $request)
+    /**
+     * Store a new client record.
+     *
+     * @param ClientStoreRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processStoreClient(ClientStoreRequest $request): \Illuminate\Http\RedirectResponse
     {
         // StoreClientJob is a job that stores the client model.
         $this->dispatchSync(new StoreClientJob($request->validated(), auth()->user()));
@@ -62,6 +106,14 @@ class ClientController extends Controller
         return redirect()->back()->with('message_success', $this->getMessage('messages.client_store'));
     }
 
+    /**
+     * Update an existing client record.
+     *
+     * @param ClientUpdateRequest $request
+     * @param ClientsModel $client
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
     public function processUpdateClient(ClientUpdateRequest $request, ClientsModel $client)
     {
         // UpdateClientJob is a job that updates the client model.
@@ -71,7 +123,14 @@ class ClientController extends Controller
         return redirect()->back()->with('message_success', $this->getMessage('messages.client_update'));
     }
 
-    public function processDeleteClient(ClientsModel $client)
+    /**
+     * Delete a client record.
+     *
+     * @param ClientsModel $client
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processDeleteClient(ClientsModel $client): \Illuminate\Http\RedirectResponse
     {
         // Check if the client has companies or employees.
         if ($client->companies()->count() > 0) {
@@ -90,7 +149,15 @@ class ClientController extends Controller
         return redirect()->to('clients')->with('message_success', $this->getMessage('messages.client_delete'));
     }
 
-    public function processClientSetIsActive(ClientsModel $client, bool $value)
+    /**
+     * Set the active status of a client record.
+     *
+     * @param ClientsModel $client
+     * @param bool $value
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processClientSetIsActive(ClientsModel $client, bool $value): \Illuminate\Http\RedirectResponse
     {
         // UpdateClientJob is a job that updates the client model.
         $this->dispatchSync(new UpdateClientJob(['is_active' => $value], $client));

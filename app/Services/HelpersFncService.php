@@ -2,32 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\SettingsModel;
-use App\Models\SystemLogsModel;
 use App\Models\TasksModel;
+use App\Queries\SystemLogsQueries;
 
 class HelpersFncService
 {
     /**
      * @return array
      */
-    public static function getPrioritySize()
-    {
-        $sizeFromConfig = config('crm_settings.priority_size');
-        $arrayFromIteration = [];
-
-        for ($i = 1; $i <= $sizeFromConfig; $i++) {
-            $arrayFromIteration[] = $i;
-        }
-        return $arrayFromIteration;
-    }
-
-    /**
-     * @return array
-     */
     public function formatTasks()
     {
         $tasks = TasksModel::all()->sortBy('created_at', 0, true)->slice(0, 5);
+
         $arrayWithFormattedTasks = [];
 
         foreach ($tasks as $key => $task) {
@@ -48,9 +34,10 @@ class HelpersFncService
     /**
      * @return array
      */
-    public function formatAllSystemLogs()
+    public function formatAllSystemLogs(): array
     {
-        $allLogs = SystemLogsModel::all();
+        $allLogs = SystemLogsQueries::getAll();
+
         $tempArray = [];
 
         foreach ($allLogs as $key => $result)
@@ -67,10 +54,5 @@ class HelpersFncService
         }
 
         return $tempArray;
-    }
-
-    public function loadPaginationForLogs()
-    {
-        return SystemLogsModel::paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
     }
 }

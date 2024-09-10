@@ -2,29 +2,42 @@
 
 namespace App\Services;
 
-use App\Models\SalesModel;
+use App\Queries\SalesQueries;
 
+/**
+ * Class SalesService
+ *
+ * Service class for handling operations related to the SalesModel.
+ */
 class SalesService
 {
-    private SalesModel $salesModel;
-
-    public function __construct()
+    /**
+     * Load sales sorted by creation date.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function loadSales(): \Illuminate\Database\Eloquent\Collection
     {
-        $this->salesModel = new SalesModel();
+        return SalesQueries::getSalesSortedByCreatedAt();
     }
 
-    public function loadSales()
+    /**
+     * Load paginated list of sales.
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function loadPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return $this->salesModel->getSalesSortedByCreatedAt();
+        return SalesQueries::getPaginate();
     }
 
-    public function loadPaginate()
+    /**
+     * Load the count of all sales.
+     *
+     * @return int
+     */
+    public function loadCountSales(): int
     {
-        return $this->salesModel->getPaginate();
-    }
-
-    public function loadCountSales()
-    {
-        return $this->salesModel->countSales();
+        return SalesQueries::countAll();
     }
 }

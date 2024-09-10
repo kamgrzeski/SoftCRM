@@ -13,12 +13,23 @@ use App\Services\ProductsService;
 use App\Services\SystemLogService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
+/**
+ * Class ProductsController
+ *
+ * Controller for handling product-related operations in the CRM.
+ */
 class ProductsController extends Controller
 {
     use DispatchesJobs;
     private ProductsService $productsService;
     private SystemLogService $systemLogsService;
 
+    /**
+     * ProductsController constructor.
+     *
+     * @param ProductsService $productsService
+     * @param SystemLogService $systemLogService
+     */
     public function __construct(ProductsService $productsService, SystemLogService $systemLogService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
@@ -27,46 +38,100 @@ class ProductsController extends Controller
         $this->systemLogsService = $systemLogService;
     }
 
-    public function processRenderCreateForm()
+    /**
+     * Render the form for creating a new product record.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function processRenderCreateForm(): \Illuminate\View\View
     {
+        // Render the create form.
         return view('crm.products.create');
     }
 
-    public function processShowProductsDetails(ProductsModel $product)
+    /**
+     * Show the details of a specific product record.
+     *
+     * @param ProductsModel $product
+     * @return \Illuminate\View\View
+     */
+    public function processShowProductsDetails(ProductsModel $product): \Illuminate\View\View
     {
+        // Load the product details and render the show page.
         return view('crm.products.show')->with(['product' => $product]);
     }
 
-    public function processRenderUpdateForm(ProductsModel $product)
+    /**
+     * Render the form for updating an existing product record.
+     *
+     * @param ProductsModel $product
+     * @return \Illuminate\View\View
+     */
+    public function processRenderUpdateForm(ProductsModel $product): \Illuminate\View\View
     {
+        // Load the product details and render the update form.
         return view('crm.products.edit')->with(['product' => $product]);
     }
 
-    public function processListOfProducts()
+    /**
+     * List all product records with pagination.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function processListOfProducts(): \Illuminate\View\View
     {
+        // Load the products with pagination.
         return view('crm.products.index')->with([
             'productsPaginate' => $this->productsService->loadPagination()
         ]);
     }
 
-    public function processStoreProduct(ProductStoreRequest $request)
+    /**
+     * Store a new product record.
+     *
+     * @param ProductStoreRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processStoreProduct(ProductStoreRequest $request): \Illuminate\Http\RedirectResponse
     {
+        // Store the product.
         $this->dispatchSync(new StoreProductJob($request->validated(), auth()->user()));
 
+        // Store a system log.
         $this->dispatchSync(new StoreSystemLogJob('Product has been added.', $this->systemLogsService::successCode, auth()->user()));
 
+        // Redirect to the products page with a success message.
         return redirect()->to('products')->with('message_success', $this->getMessage('messages.product_store'));
     }
 
-    public function processUpdateProduct(ProductUpdateRequest $request, ProductsModel $product)
+    /**
+     * Update an existing product record.
+     *
+     * @param ProductUpdateRequest $request
+     * @param ProductsModel $product
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processUpdateProduct(ProductUpdateRequest $request, ProductsModel $product): \Illuminate\Http\RedirectResponse
     {
+        // Update the product.
         $this->dispatchSync(new UpdateProductJob($request->validated(), $product));
 
+        // Store a system log.
         return redirect()->to('products')->with('message_success', $this->getMessage('messages.product_store'));
     }
 
-    public function processDeleteProduct(ProductsModel $product)
+    /**
+     * Delete a product record.
+     *
+     * @param ProductsModel $product
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processDeleteProduct(ProductsModel $product): \Illuminate\Http\RedirectResponse
     {
+        // Check if the product has any sales records.
         if ($product->sales()->count() > 0) {
             return redirect()->back()->with('message_danger', $this->getMessage('messages.ProductsCannotBeDeleted'));
         }
@@ -74,17 +139,30 @@ class ProductsController extends Controller
         // Delete the product.
         $product->delete();
 
+        // Store a system log.
         $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been deleted with id: ' . $product->id, $this->systemLogsService::successCode, auth()->user()));
 
+        // Redirect to the products page with a success message.
         return redirect()->to('products')->with('message_success', $this->getMessage('messages.product_delete'));
     }
 
-    public function processProductSetIsActive(ProductsModel $product, bool $value)
+    /**
+     * Set the active status of a product record.
+     *
+     * @param ProductsModel $product
+     * @param bool $value
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processProductSetIsActive(ProductsModel $product, bool $value): \Illuminate\Http\RedirectResponse
     {
+        // Update the product's active status.
         $this->dispatchSync(new UpdateProductJob(['is_active' => $value], $product));
 
+        // Store a system log.
         $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been enabled with id: ' . $product->id, $this->systemLogsService::successCode, auth()->user()));
 
+        // Redirect to the products page with a success message.
         return redirect()->to('products')->with('message_success', $this->getMessage('messages.product_update'));
     }
 }

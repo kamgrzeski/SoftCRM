@@ -25,32 +25,4 @@ class ClientsModel extends Model
     {
         return $this->hasMany(EmployeesModel::class, 'id');
     }
-
-    public function countClients(): int
-    {
-        return $this->all()->count();
-    }
-
-    public static function getClientsInLatestMonth() : float
-    {
-        $clientCount = self::where('created_at', '>=', now()->subMonth())->count();
-        $allClient = self::all()->count();
-
-        return ($allClient / 100) * $clientCount;
-    }
-
-    public function getDeactivated(): int
-    {
-        return $this->where('is_active', '=', 0)->count();
-    }
-
-    public function getClientSortedBy()
-    {
-        return $this->all()->sortBy('created_at');
-    }
-
-    public function getPaginate()
-    {
-        return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
-    }
 }

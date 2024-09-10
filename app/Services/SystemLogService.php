@@ -2,21 +2,15 @@
 
 namespace App\Services;
 
-use App\Models\SystemLogsModel;
-
+/**
+ * Class SystemLogService
+ *
+ * Service class for handling operations related to the SystemLogsModel.
+ */
 class SystemLogService
 {
+    /**
+     * Success code constant.
+     */
     const successCode = 201;
-
-    private SystemLogsModel $systemLogsModel;
-
-    public function __construct()
-    {
-        $this->systemLogsModel = new SystemLogsModel();
-    }
-
-    public function loadCountLogs()
-    {
-        return $this->systemLogsModel->countRows();
-    }
 }

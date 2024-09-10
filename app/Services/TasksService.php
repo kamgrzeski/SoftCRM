@@ -2,38 +2,62 @@
 
 namespace App\Services;
 
-use App\Models\TasksModel;
+use App\Queries\TasksQueries;
 
+/**
+ * Class TasksService
+ *
+ * Service class for handling operations related to the TasksModel.
+ */
 class TasksService
 {
-    private TasksModel $tasksModel;
-
-    public function __construct()
+    /**
+     * Load paginated list of tasks.
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function loadPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        $this->tasksModel = new TasksModel();
+        return TasksQueries::getPaginate();
     }
 
-    public function loadPaginate()
+    /**
+     * Load the count of all tasks.
+     *
+     * @return int
+     */
+    public function loadCountTasks(): int
     {
-        return $this->tasksModel->getPaginate();
+        return TasksQueries::countAll();
     }
 
-    public function loadCountTasks()
+    /**
+     * Load all completed tasks with percentage.
+     *
+     * @return string
+     */
+    public function loadCompletedTasks(): string
     {
-        return $this->tasksModel->countTasks();
+        $countCompletedTasks = TasksQueries::getCountCompleted();
+        $countAllTasks = TasksQueries::countAll();
+
+        $percentage = round(($countCompletedTasks / $countAllTasks) * 100);
+
+        return $countCompletedTasks . ' (' . $percentage .  '%)';
     }
 
-    public function loadCompletedTasks()
+    /**
+     * Load all uncompleted tasks with percentage.
+     *
+     * @return string A string representing the number of uncompleted tasks and their percentage of the total tasks.
+     */
+    public function loadUncompletedTasks(): string
     {
-        return $this->tasksModel->getAllCompletedTasks();
-    }
+        $uncompletedTasksCount = TasksQueries::getAllUncompletedTasks();
+        $countAllTasks = TasksQueries::countAll();
 
-    public function loadUncompletedTasks()
-    {
-        $data = $this->tasksModel->getAllUncompletedTasks();
+        $percentage = round(($uncompletedTasksCount / $countAllTasks) * 100);
 
-        $percentage = round(($data['tasks'] / $data['all']) * 100);
-
-        return $data['tasks'] . ' (' . $percentage .  '%)';
+        return $uncompletedTasksCount . ' (' . $percentage .  '%)';
     }
 }

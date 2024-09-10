@@ -2,37 +2,55 @@
 
 namespace App\Services;
 
-use App\Models\ProductsModel;
+use App\Queries\ProductsQueries;
 use App\Traits\Language;
 
+/**
+ * Class ProductsService
+ *
+ * Service class for handling operations related to the ProductsModel.
+ */
 class ProductsService
 {
     use Language;
 
-    private ProductsModel $productsModel;
-
-    public function __construct()
+    /**
+     * Load all products.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function loadProducts(): \Illuminate\Database\Eloquent\Collection
     {
-        $this->productsModel = new ProductsModel();
+        return ProductsQueries::getAll();
     }
 
-    public function loadProducts()
+    /**
+     * Load paginated list of products.
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function loadPagination(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return $this->productsModel->getProducts();
+        return ProductsQueries::getPaginate();
     }
 
-    public function loadPagination()
+    /**
+     * Load products sorted by creation date.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function loadProductsByCreatedAt(): \Illuminate\Database\Eloquent\Collection
     {
-        return $this->productsModel->getPaginate();
+        return ProductsQueries::getProductsByCreatedAt();
     }
 
-    public function loadProductsByCreatedAt()
+    /**
+     * Load the count of all products.
+     *
+     * @return int
+     */
+    public function loadCountProducts(): int
     {
-        return $this->productsModel->getProductsByCreatedAt();
-    }
-
-    public function loadCountProducts()
-    {
-        return $this->productsModel->countProducts();
+        return ProductsQueries::countAll();
     }
 }

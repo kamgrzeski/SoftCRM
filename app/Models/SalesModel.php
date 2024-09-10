@@ -18,19 +18,4 @@ class SalesModel extends Model
     {
         return $this->belongsTo(ProductsModel::class, 'product_id');
     }
-
-    public function countSales(): int
-    {
-        return $this->all()->count();
-    }
-
-    public function getPaginate()
-    {
-        return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
-    }
-
-    public function getSalesSortedByCreatedAt()
-    {
-        return $this->all()->sortBy('created_at');
-    }
 }

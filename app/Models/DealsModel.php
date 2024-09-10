@@ -23,26 +23,4 @@ class DealsModel extends Model
     {
         return $this->hasMany(DealsTermsModel::class, 'deal_id');
     }
-
-    public function countDeals(): int
-    {
-        return $this->get()->count();
-    }
-
-    public static function getDealsInLatestMonth() {
-        $dealsCount = self::where('created_at', '>=', now()->subMonth())->count();
-        $allDeals = self::all()->count();
-
-        return ($allDeals / 100) * $dealsCount;
-    }
-
-    public function getDeactivated(): int
-    {
-        return $this->where('is_active', '=', 0)->count();
-    }
-
-    public function getPaginate()
-    {
-        return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
-    }
 }

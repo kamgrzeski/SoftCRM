@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Queries\SystemLogsQueries;
 use App\Services\CalculateCashService;
 use App\Services\ClientService;
 use App\Services\CompaniesService;
@@ -15,6 +16,7 @@ use App\Services\SalesService;
 use App\Services\SettingsService;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
@@ -68,7 +70,7 @@ class DashboardController extends Controller
         );
     }
 
-    private function storeInCacheUsableVariables()
+    private function storeInCacheUsableVariables(): void
     {
         Cache::put('countClients', $this->clientService->loadCountClients(), env('CACHE_TIME'));
         Cache::put('deactivatedClients', $this->clientService->loadDeactivatedClients(), env('CACHE_TIME'));
@@ -85,7 +87,7 @@ class DashboardController extends Controller
         Cache::put('yesterdayIncome', $this->calculateCashService->loadCountYesterdayIncome(), env('CACHE_TIME'));
         Cache::put('cashTurnover', $this->calculateCashService->loadCountCashTurnover(), env('CACHE_TIME'));
         Cache::put('countAllRowsInDb', $this->calculateCashService->loadCountAllRowsInDb(), env('CACHE_TIME'));
-        Cache::put('countSystemLogs', $this->systemLogService->loadCountLogs(), env('CACHE_TIME'));
+        Cache::put('countSystemLogs', SystemLogsQueries::countAll(), env('CACHE_TIME'));
         Cache::put('companiesInLatestMonth', $this->companiesService->loadCompaniesInLatestMonth(), env('CACHE_TIME'));
         Cache::put('employeesInLatestMonth', $this->employeesService->loadEmployeesInLatestMonth(), env('CACHE_TIME'));
         Cache::put('deactivatedEmployees', $this->employeesService->loadDeactivatedEmployees(), env('CACHE_TIME'));
@@ -95,10 +97,15 @@ class DashboardController extends Controller
         Cache::put('uncompletedTasks', $this->tasksService->loadUncompletedTasks(), env('CACHE_TIME'));
     }
 
-    public function processReloadInformation()
+    /**
+     * @return RedirectResponse
+     */
+    public function processReloadInformation(): \Illuminate\Http\RedirectResponse
     {
+        // Clear cache.
         $this->storeInCacheUsableVariables();
 
+        // Redirect back with success message.
         return redirect()->back()->with('message_success', $this->getMessage('messages.cache_reload'));
     }
 }

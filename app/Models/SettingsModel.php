@@ -12,9 +12,4 @@ class SettingsModel extends Model
     {
         return self::where('key', $key)->get()->last()?->value;
     }
-
-    public function getAllSettings()
-    {
-        return $this->all();
-    }
 }

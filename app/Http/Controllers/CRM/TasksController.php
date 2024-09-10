@@ -13,12 +13,24 @@ use App\Services\EmployeesService;
 use App\Services\SystemLogService;
 use App\Services\TasksService;
 
+/**
+ * Class TasksController
+ *
+ * Controller for handling task-related operations in the CRM.
+ */
 class TasksController extends Controller
 {
     private TasksService $tasksService;
     private SystemLogService $systemLogsService;
     private EmployeesService $employeesService;
 
+    /**
+     * TasksController constructor.
+     *
+     * @param TasksService $tasksService
+     * @param SystemLogService $systemLogService
+     * @param EmployeesService $employeesService
+     */
     public function __construct(TasksService $tasksService, SystemLogService $systemLogService, EmployeesService $employeesService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
@@ -28,35 +40,61 @@ class TasksController extends Controller
         $this->employeesService = $employeesService;
     }
 
-    public function processRenderCreateForm()
+    /**
+     * Render the form for creating a new task record.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function processRenderCreateForm(): \Illuminate\View\View
     {
         return view('crm.tasks.create')->with(['dataOfEmployees' => $this->employeesService->loadEmployees(true)]);
     }
 
-    public function processListOfTasks()
+    /**
+     * List all task records with pagination.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function processListOfTasks(): \Illuminate\View\View
     {
-        return view('crm.tasks.index')->with(
-            [
-                'tasksPaginate' => $this->tasksService->loadPaginate()
-            ]);
+        return view('crm.tasks.index')->with([
+            'tasksPaginate' => $this->tasksService->loadPaginate()
+        ]);
     }
 
-    public function processShowTasksDetails(TasksModel $task)
+    /**
+     * Show the details of a specific task record.
+     *
+     * @param TasksModel $task
+     * @return \Illuminate\View\View
+     */
+    public function processShowTasksDetails(TasksModel $task): \Illuminate\View\View
     {
         return view('crm.tasks.show')->with(['task' => $task]);
     }
 
-    public function processRenderUpdateForm(TasksModel $task)
+    /**
+     * Render the form for updating an existing task record.
+     *
+     * @param TasksModel $task
+     * @return \Illuminate\View\View
+     */
+    public function processRenderUpdateForm(TasksModel $task): \Illuminate\View\View
     {
-        return view('crm.tasks.edit')->with(
-            [
-                'task' => $task,
-                'employees' => $this->employeesService->loadEmployees()
-            ]
-        );
+        return view('crm.tasks.edit')->with([
+            'task' => $task,
+            'employees' => $this->employeesService->loadEmployees()
+        ]);
     }
 
-    public function processStoreTask(TaskStoreRequest $request)
+    /**
+     * Store a new task record.
+     *
+     * @param TaskStoreRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processStoreTask(TaskStoreRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->dispatchSync(new StoreTaskJob($request->validated(), auth()->user()));
 
@@ -65,14 +103,29 @@ class TasksController extends Controller
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_store'));
     }
 
-    public function processUpdateTask(TaskUpdateRequest $request, TasksModel $task)
+    /**
+     * Update an existing task record.
+     *
+     * @param TaskUpdateRequest $request
+     * @param TasksModel $task
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processUpdateTask(TaskUpdateRequest $request, TasksModel $task): \Illuminate\Http\RedirectResponse
     {
         $this->dispatchSync(new UpdateTaskJob($request->validated(), $task));
 
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_update'));
     }
 
-    public function processDeleteTask(TasksModel $task)
+    /**
+     * Delete a task record.
+     *
+     * @param TasksModel $task
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processDeleteTask(TasksModel $task): \Illuminate\Http\RedirectResponse
     {
         if (! $task->completed) {
             return redirect()->back()->with('message_danger', $this->getMessage('messages.task_uncompleted'));
@@ -86,7 +139,15 @@ class TasksController extends Controller
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_delete'));
     }
 
-    public function processTaskSetIsActive(TasksModel $task, bool $value)
+    /**
+     * Set the active status of a task record.
+     *
+     * @param TasksModel $task
+     * @param bool $value
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processTaskSetIsActive(TasksModel $task, bool $value): \Illuminate\Http\RedirectResponse
     {
         $this->dispatchSync(new UpdateTaskJob(['is_active' => $value], $task));
 
@@ -95,7 +156,14 @@ class TasksController extends Controller
         return redirect()->to('tasks')->with('message_success', $this->getMessage('messages.task_update'));
     }
 
-    public function processSetTaskToCompleted(TasksModel $task)
+    /**
+     * Set a task record to complete.
+     *
+     * @param TasksModel $task
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function processSetTaskToCompleted(TasksModel $task): \Illuminate\Http\RedirectResponse
     {
         $this->dispatchSync(new UpdateTaskJob(['completed' => true], $task));
 

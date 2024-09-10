@@ -4,38 +4,67 @@ namespace App\Services;
 
 use App\Models\DealsModel;
 use App\Models\DealsTermsModel;
+use App\Queries\DealsQueries;
 use Barryvdh\DomPDF\Facade as PDF;
 
+/**
+ * Class DealsService
+ *
+ * Service class for handling operations related to the DealsModel.
+ */
 class DealsService
 {
-    private DealsModel $dealsModel;
-
-    public function __construct()
+    /**
+     * Load paginated list of deals.
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function loadPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        $this->dealsModel = new DealsModel();
+        return DealsQueries::getPaginate();
     }
 
-    public function loadPaginate()
+    /**
+     * Load the count of all deals.
+     *
+     * @return int
+     */
+    public function loadCountDeals(): int
     {
-        return $this->dealsModel->getPaginate();
+        return DealsQueries::countAll();
     }
 
-    public function loadCountDeals()
+    /**
+     * Load the list of deactivated deals.
+     *
+     * @returnint
+     */
+    public function loadDeactivatedDeals(): int
     {
-        return $this->dealsModel->countDeals();
+        return DealsQueries::getDeactivated();
     }
 
-    public function loadDeactivatedDeals()
+    /**
+     * Load the list of deals added in the latest month.
+     *
+     * @return int
+     */
+    public function loadDealsInLatestMonth(): int
     {
-        return $this->dealsModel->getDeactivated();
+        $dealsInLatestMonth = DealsQueries::getDealsInLatestMonth();
+        $allDeals = DealsQueries::countAll();
+
+        return ($allDeals / 100) * count($dealsInLatestMonth);
     }
 
-    public function loadDealsInLatestMonth()
-    {
-        return $this->dealsModel->getDealsInLatestMonth();
-    }
-
-    public function loadGenerateDealTermsInPDF(DealsTermsModel $dealTerm, DealsModel $deal)
+    /**
+     * Generate a PDF of deal terms.
+     *
+     * @param DealsTermsModel $dealTerm The deal terms to be included in the PDF.
+     * @param DealsModel $deal The deal associated with the terms.
+     * @return \Barryvdh\DomPDF\PDF The generated PDF file.
+     */
+    public function loadGenerateDealTermsInPDF(DealsTermsModel $dealTerm, DealsModel $deal): \Barryvdh\DomPDF\PDF
     {
         $data = [
             'body' => $dealTerm->body

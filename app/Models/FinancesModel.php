@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Services\FinancesService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -28,15 +27,5 @@ class FinancesModel extends Model
     public function companies()
     {
         return $this->belongsTo(CompaniesModel::class);
-    }
-
-    public function countFinances(): int
-    {
-        return $this->get()->count();
-    }
-
-    public function getPaginate()
-    {
-        return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
     }
 }

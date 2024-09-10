@@ -18,33 +18,4 @@ class TasksModel extends Model
     {
         return $this->belongsTo(EmployeesModel::class, 'employee_id');
     }
-
-    public function countTasks(): int
-    {
-        return $this->all()->count();
-    }
-
-    public function getAllCompletedTasks(): string
-    {
-        $tasks = $this->where('completed', '=', 1)->count();
-
-        $taskAll = $this->all()->count();
-
-        $percentage = round(($tasks / $taskAll) * 100);
-
-        return $tasks . ' (' . $percentage .  '%)';
-    }
-
-    public function getPaginate()
-    {
-        return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
-    }
-
-    public function getAllUncompletedTasks()
-    {
-        return [
-            'tasks' => $this->where('completed', '=', 0)->count(),
-            'all' => $this->all()->count()
-        ];
-    }
 }

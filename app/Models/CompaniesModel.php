@@ -48,41 +48,4 @@ class CompaniesModel extends Model
     {
         return $this->hasMany(FinancesModel::class);
     }
-
-    public function countCompanies(): int
-    {
-        return $this->all()->count();
-    }
-
-    public function getCompaniesInLatestMonth() : float
-    {
-        $companiesCount = $this->where('created_at', '>=', now()->subMonth())->count();
-        $allCompanies = $this->all()->count();
-
-        return ($allCompanies / 100) * $companiesCount;
-    }
-
-    public function getDeactivated(): int
-    {
-        return $this->where('is_active', '=', 0)->count();
-    }
-
-    public function getCompaniesSortedByCreatedAt()
-    {
-        return $this->all()->sortBy('created_at', 0, true)->slice(0, 5);
-    }
-
-    public function getPaginate()
-    {
-        return $this->orderByDesc('id')->paginate(SettingsModel::where('key', 'pagination_size')->get()->last()->value);
-    }
-
-    public function getAll(bool $createForm = false)
-    {
-        if($createForm) {
-            return $this->pluck('name', 'id');
-        }
-
-        return $this->all()->sortBy('created_at');
-    }
 }

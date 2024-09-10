@@ -2,44 +2,76 @@
 
 namespace App\Services;
 
-use App\Models\CompaniesModel;
+use App\Queries\CompaniesQueries;
 
+/**
+ * Class CompaniesService
+ *
+ * Service class for handling operations related to the CompaniesModel.
+ */
 class CompaniesService
 {
-    private CompaniesModel $companiesModel;
-
-    public function __construct()
-    {
-        $this->companiesModel = new CompaniesModel();
-    }
-
+    /**
+     * Load all companies, optionally for creating a form.
+     *
+     * @param bool $createForm Whether to load companies for creating a form.
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function loadCompanies(bool $createForm = false)
     {
-        return $this->companiesModel->getAll($createForm);
+        return CompaniesQueries::getAll($createForm);
     }
 
-    public function loadPagination()
+    /**
+     * Load paginated list of companies.
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function loadPagination(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return $this->companiesModel->getPaginate();
+        return CompaniesQueries::getPaginate();
     }
 
-    public function loadCompaniesByCreatedAt()
+    /**
+     * Load companies sorted by creation date.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function loadCompaniesByCreatedAt(): \Illuminate\Database\Eloquent\Collection
     {
-        return $this->companiesModel->getCompaniesSortedByCreatedAt();
+        return CompaniesQueries::getCompaniesSortedByCreatedAt();
     }
 
-    public function loadCountCompanies()
+    /**
+     * Load the count of all companies.
+     *
+     * @return int
+     */
+    public function loadCountCompanies(): int
     {
-        return $this->companiesModel->countCompanies();
+        return CompaniesQueries::countAll();
     }
 
-    public function loadDeactivatedCompanies()
+    /**
+     * Load the list of deactivated companies.
+     *
+     * @return int
+     */
+    public function loadDeactivatedCompanies(): int
     {
-        return $this->companiesModel->getDeactivated();
+        return CompaniesQueries::getDeactivated();
     }
 
-    public function loadCompaniesInLatestMonth()
+    /**
+     * Load the list of companies added in the latest month.
+     *
+     * @return float
+     */
+    public function loadCompaniesInLatestMonth(): float
     {
-        return $this->companiesModel->getCompaniesInLatestMonth();
+        $companiesCount = CompaniesQueries::getCompaniesInLatestMonth();
+        $allCompanies = CompaniesQueries::countAll();
+
+        return ($allCompanies / 100) * $companiesCount;
     }
 }
