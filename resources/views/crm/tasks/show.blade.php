@@ -12,19 +12,6 @@
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a></li>
-
-                        @if(! $task->completed)
-                            <a href="{{ URL::to('tasks/completed/' . $task->id . '/1') }}">
-                                <button type="button" class="btn btn-success">Mark as completed</button>
-                            </a>
-                        @else
-                            <a href="{{ URL::to('tasks/completed/' . $task->id . '/0') }}">
-                                <button type="button" class="btn btn-success">Mark as uncompleted</button>
-                            </a>
-                        @endif
-                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteTaskModal">
-                            Delete this task <li class="fa fa-trash-o"></li>
-                        </button>
                     </ul>
 
                     <div class="tab-pane fade active in">

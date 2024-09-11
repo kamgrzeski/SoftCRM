@@ -130,7 +130,7 @@ class ProductsController extends Controller
     {
         // Check if the product has any sales records.
         if ($product->sales()->count() > 0) {
-            return redirect()->back()->with('message_error', $this->getMessage('messages.ProductsCannotBeDeleted'));
+            return redirect()->back()->with('message_error', $this->getMessage('messages.product_first_delete_sales'));
         }
 
         // Delete the product.

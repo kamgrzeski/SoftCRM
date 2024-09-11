@@ -19,7 +19,6 @@
                                 Delete this sale <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
-
                     </ul>
                     <div class="tab-pane fade active in" id="home">
                         <table class="table table-striped table-bordered">

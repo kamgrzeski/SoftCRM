@@ -55,4 +55,5 @@ return [
     'product_store' => 'Product has been added.',
     'product_delete' => 'Product has been deleted.',
     'product_update' => 'Product has been deactivated.',
+    'product_first_delete_sales' => 'Cannot delete this product, have assigned sales.',
 ];

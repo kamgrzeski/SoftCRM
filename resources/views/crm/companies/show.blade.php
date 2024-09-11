@@ -16,18 +16,17 @@
                 </div>
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
+                        <li class="active">
+                            <a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <div class="text-right">
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteCompanyModal">
                                 Delete this company <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade active in" id="home">
-
-
                             <table class="table table-striped table-bordered">
                                 <tbody class="text-right">
                                 <tr>
@@ -91,20 +90,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">You want delete this company?</h4>
-                </div>
-                <div class="modal-body">
-                    Action will delete permanently this company.
-                </div>
-                <div class="modal-footer">
-                    @include('crm.companies.forms.delete_company_form')
-                </div>
-            </div>
-        </div>
-    </div>
+
+    @include('crm.companies.modals.delete_company_modal')
 @endsection

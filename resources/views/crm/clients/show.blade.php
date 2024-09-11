@@ -14,14 +14,14 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
-                        <li class=""><a href="#profile" data-toggle="tab">Assigned companies <span
-                                        class="badge badge-warning">{{ count($clientDetails->companies) }}</span></a>
+                        <li class="">
+                            <a href="#profile" data-toggle="tab">Assigned companies <span class="badge badge-warning">{{ count($clientDetails->companies) }}</span></a>
                         </li>
-                        <li class=""><a href="#messages" data-toggle="tab">Assigned employees <span
-                                        class="badge badge-warning">{{ count($clientDetails->employees) }}</span></a>
+                        <li class="">
+                            <a href="#messages" data-toggle="tab">Assigned employees <span class="badge badge-warning">{{ count($clientDetails->employees) }}</span></a>
                         </li>
                         <div class="text-right">
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteClientModal">
                                 Delete this client
                                 <li class="fa fa-trash-o"></li>
                             </button>
@@ -51,8 +51,7 @@
                                 <tr>
                                     <th>Budget</th>
                                     <td>
-                                        <button type="submit"
-                                                class="btn btn-default">{{ $clientDetails->formattedBudget }}</button>
+                                        <button type="submit" class="btn btn-default">{{ $clientDetails->formattedBudget }}</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -114,23 +113,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">You want delete this client?</h4>
-                </div>
-                <div class="modal-body">
-                    Action will delete permanently this client.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 15px;">
-                        Close
-                    </button>
-                    @include('crm.clients.forms.delete_client_form')
-                </div>
-            </div>
-        </div>
-    </div>
+
+    @include('crm.clients.modals.delete_client_modal')
 @endsection

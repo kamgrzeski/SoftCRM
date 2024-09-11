@@ -15,7 +15,7 @@
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <div class="text-right">
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteProductModal">
                                 Delete this product <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
@@ -51,20 +51,5 @@
         </div>
     </div>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">You want delete this product?</h4>
-                </div>
-                <div class="modal-body">
-                    Action will delete permanently this product.
-                </div>
-                <div class="modal-footer">
-                   @include('crm.products.forms.delete_product_form')
-                </div>
-            </div>
-        </div>
-    </div>
+   @include('crm.products.modals.delete_product_modal')
 @endsection

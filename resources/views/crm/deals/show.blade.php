@@ -17,11 +17,14 @@
 
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#home" data-toggle="tab">The basic information</a>
+                        <li class="active">
+                            <a href="#home" data-toggle="tab">The basic information</a>
                         </li>
-                        <li class=""><a href="#profile" data-toggle="tab">Company</a>
+                        <li class="">
+                            <a href="#profile" data-toggle="tab">Company</a>
                         </li>
-                        <li class=""><a href="#storeDealTerm" data-toggle="tab">Terms of agreement <span class="badge badge-danger">VERY IMPORTANT</span></a>
+                        <li class="">
+                            <a href="#storeDealTerm" data-toggle="tab">Terms of agreement <span class="badge badge-danger">VERY IMPORTANT</span></a>
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#deleteDealTermModal">
@@ -32,8 +35,6 @@
 
                     <div class="tab-content">
                         <div class="tab-pane fade active in" id="home">
-
-
                             <table class="table table-striped table-bordered">
                                 <tbody class="text-right">
                                 <tr>

@@ -9,8 +9,7 @@
 @section('content')
     @if(count($companies) == 0)
         <div class="alert alert-danger">
-            <strong>Danger!</strong> There is no companies in system. Please create any client. <a
-                    href="{{ URL::to('companies/create') }}">Click here!</a>
+            <strong>Danger!</strong> There is no companies in system. Please create any client. <a href="{{ URL::to('companies/create') }}">Click here!</a>
         </div>
     @endif
 

@@ -50,14 +50,12 @@
                                     <td class="text-center">
                                             @if($value->is_active)
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('companies/set-active/' . $value->id . '/0') }}")' checked>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('companies/set-active/' . $value->id . '/0') }}")' checked>
                                                     <span class="slider"></span>
                                                 </label>
                                             @else
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('companies/set-active/' . $value->id . '/1') }}")'>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('companies/set-active/' . $value->id . '/1') }}")'>
                                                     <span class="slider"></span>
                                                 </label>
                                             @endif

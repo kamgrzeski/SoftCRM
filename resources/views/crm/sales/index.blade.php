@@ -41,21 +41,19 @@
                                             ($value->quantity * $value->products->price) }}
                                         </button>
                                     </td>
-                                    <td class="text-center"><a
-                                                href="{{ URL::to('products/view/' . $value->products->id) }}">{{ $value->products->name }}</a>
+                                    <td class="text-center">
+                                        <a href="{{ URL::to('products/view/' . $value->products->id) }}">{{ $value->products->name }}</a>
                                     </td>
                                     <td class="text-center">{{ $value->date_of_payment }}</td>
                                     <td class="text-center">
                                             @if($value->is_active)
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('sales/set-active/' . $value->id . '/0') }}")' checked>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('sales/set-active/' . $value->id . '/0') }}")' checked>
                                                     <span class="slider"></span>
                                                 </label>
                                             @else
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('sales/set-active/' . $value->id . '/1') }}")'>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('sales/set-active/' . $value->id . '/1') }}")'>
                                                     <span class="slider"></span>
                                                 </label>
                                             @endif

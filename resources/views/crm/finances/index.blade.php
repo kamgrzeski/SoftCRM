@@ -42,40 +42,34 @@
                                     <td class="text-center">{{ $value->category }}</td>
                                     <td class="text-center">{{ $value->type }}</td>
                                     <td>
-                                        <button type="submit"
-                                                class="btn btn-default" style="background-color: rgba(130,113,243,0.22)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($value->gross) }}</button>
+                                        <button type="submit" class="btn btn-default" style="background-color: rgba(130,113,243,0.22)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($value->gross) }}</button>
                                     </td>
                                     <td>
-                                        <button type="submit"
-                                                class="btn btn-default" style="background-color: rgba(113,243,110,0.45)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($value->net) }}</button>
+                                        <button type="submit" class="btn btn-default" style="background-color: rgba(113,243,110,0.45)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($value->net) }}</button>
                                     </td>
                                     <td>
-                                        <button type="submit"
-                                                class="btn btn-default" style="background-color: rgba(217,243,30,0.45)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($value->vat) }}</button>
+                                        <button type="submit" class="btn btn-default" style="background-color: rgba(217,243,30,0.45)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($value->vat) }}</button>
                                     </td>
-                                    <td class="text-center"><a
-                                                href="{{ URL::to('companies/view/' . $value->companies->id) }}">{{ $value->companies->name }}</a>
+                                    <td class="text-center">
+                                        <a href="{{ URL::to('companies/view/' . $value->companies->id) }}">{{ $value->companies->name }}</a>
                                     </td>
                                     <td class="text-center">{{ $value->date }}</td>
                                     <td class="text-center">
                                         @if($value->is_active)
                                             <label class="switch">
-                                                <input type="checkbox"
-                                                       onchange='window.location.assign("{{ URL::to('finances/set-active/' . $value->id . '/0') }}")' checked>
+                                                <input type="checkbox" onchange='window.location.assign("{{ URL::to('finances/set-active/' . $value->id . '/0') }}")' checked>
                                                 <span class="slider"></span>
                                             </label>
                                         @else
                                             <label class="switch">
-                                                <input type="checkbox"
-                                                       onchange='window.location.assign("{{ URL::to('finances/set-active/' . $value->id . '/1') }}")'>
+                                                <input type="checkbox" onchange='window.location.assign("{{ URL::to('finances/set-active/' . $value->id . '/1') }}")'>
                                                 <span class="slider"></span>
                                             </label>
                                         @endif
                                     </td>
                                     <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
-                                            <a class="btn btn-small btn-primary"
-                                               href="{{ URL::to('finances/view/' . $value->id) }}">More information</a>
+                                            <a class="btn btn-small btn-primary" href="{{ URL::to('finances/view/' . $value->id) }}">More information</a>
                                             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ URL::to('finances/form/update/' . $value->id) }}">Edit</a></li>

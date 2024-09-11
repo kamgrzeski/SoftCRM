@@ -45,22 +45,19 @@
                                     <td class="text-center">
                                             @if($value->is_active)
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/0') }}")' checked>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/0') }}")' checked>
                                                     <span class="slider"></span>
                                                 </label>
                                             @else
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/1') }}")'>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/1') }}")'>
                                                     <span class="slider"></span>
                                                 </label>
                                             @endif
                                     </td>
                                     <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
-                                            <a class="btn btn-small btn-primary"
-                                               href="{{ URL::to('employees/view/' . $value->id) }}">More information</a>
+                                            <a class="btn btn-small btn-primary" href="{{ URL::to('employees/view/' . $value->id) }}">More information</a>
                                             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ URL::to('employees/form/update/' . $value->id) }}">Edit</a></li>

@@ -14,7 +14,7 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a></li>
                         <div class="text-right">
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteFinanceModal">
                                 Delete this finance <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
@@ -72,20 +72,5 @@
         </div>
     </div>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">You want delete this finance?</h4>
-                </div>
-                <div class="modal-body">
-                    Action will delete permanently this finance.
-                </div>
-                <div class="modal-footer">
-                    @include('crm.finances.forms.delete_finance_form')
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('crm.finances.modals.delete_finance_modal')
 @endsection
