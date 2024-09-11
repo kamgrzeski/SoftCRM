@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Hash;
 
 class ChangePasswordJob implements ShouldQueue
 {
@@ -23,11 +24,12 @@ class ChangePasswordJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(string $oldPassword, string $newPassword, string $confirmNewPassword, AdminModel $adminModel)
+    public function __construct(array $validatedData, AdminModel $adminModel)
     {
-        $this->oldPassword = $oldPassword;
-        $this->newPassword = $newPassword;
-        $this->confirmNewPassword = $confirmNewPassword;
+        $this->oldPassword = $validatedData['old_password'];
+        $this->newPassword = $validatedData['new_password'];
+        $this->confirmNewPassword = $validatedData['confirm_password'];
+
         $this->adminModel = $adminModel;
     }
 
@@ -38,6 +40,9 @@ class ChangePasswordJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->adminModel->updateAdminPassword($this->newPassword, $this->adminModel->id);
+        $this->adminModel->update([
+            'password' => Hash::make($this->newPassword),
+            'updated_at' => now()
+        ]);
     }
 }

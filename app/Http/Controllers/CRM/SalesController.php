@@ -9,6 +9,8 @@ use App\Jobs\Sale\StoreSaleJob;
 use App\Jobs\Sale\UpdateSaleJob;
 use App\Jobs\StoreSystemLogJob;
 use App\Models\SalesModel;
+use App\Queries\ProductsQueries;
+use App\Queries\SalesQueries;
 use App\Services\ProductsService;
 use App\Services\SalesService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -46,7 +48,7 @@ class SalesController extends Controller
     public function processRenderCreateForm(): \Illuminate\View\View
     {
         // Load the products data to be used in the form.
-        return view('crm.sales.create')->with(['dataOfProducts' => $this->productsService->loadProducts()]);
+        return view('crm.sales.create')->with(['products' => ProductsQueries::getAll()]);
     }
 
     /**
@@ -72,7 +74,7 @@ class SalesController extends Controller
         // Load the sale record details and the products data to be used in the form.
         return view('crm.sales.edit')->with([
             'sale' => $sale,
-            'dataWithPluckOfProducts' => $this->productsService->loadProducts()
+            'products' => ProductsQueries::getAll()
         ]);
     }
 
@@ -85,8 +87,7 @@ class SalesController extends Controller
     {
         // Load the sale records with pagination.
         return view('crm.sales.index')->with([
-            'sales' => $this->salesService->loadSales(),
-            'salesPaginate' => $this->salesService->loadPaginate()
+            'sales' => SalesQueries::getPaginate()
         ]);
     }
 

@@ -9,6 +9,7 @@ use App\Jobs\Client\StoreClientJob;
 use App\Jobs\Client\UpdateClientJob;
 use App\Jobs\StoreSystemLogJob;
 use App\Models\ClientsModel;
+use App\Queries\ClientsQueries;
 use App\Services\ClientService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -42,7 +43,7 @@ class ClientController extends Controller
     public function processRenderCreateForm(): \Illuminate\View\View
     {
         // Return the view for creating a new client record.
-        return view('crm.client.create');
+        return view('crm.clients.create');
     }
 
     /**
@@ -54,7 +55,7 @@ class ClientController extends Controller
     public function processShowClientDetails(ClientsModel $client): \Illuminate\View\View
     {
         // Return the view with the client details.
-        return view('crm.client.show')->with(['clientDetails' => $this->clientService->loadClientDetails($client)]);
+        return view('crm.clients.show')->with(['clientDetails' => $this->clientService->loadClientDetails($client)]);
     }
 
     /**
@@ -66,7 +67,7 @@ class ClientController extends Controller
     public function processRenderUpdateForm(ClientsModel $client): \Illuminate\View\View
     {
         // Return the view for updating the client record.
-        return view('crm.client.edit')->with(['clientDetails' => $this->clientService->loadClientDetails($client)]);
+        return view('crm.clients.edit')->with(['clientDetails' => $this->clientService->loadClientDetails($client)]);
     }
 
     /**
@@ -77,8 +78,8 @@ class ClientController extends Controller
     public function processListOfClients(): \Illuminate\View\View
     {
         // Return the view with the paginated list of clients.
-        return view('crm.client.index')->with([
-            'clientsPaginate' => $this->clientService->loadPagination()
+        return view('crm.clients.index')->with([
+            'clients' => ClientsQueries::getPaginate()
         ]);
     }
 
@@ -127,16 +128,6 @@ class ClientController extends Controller
      */
     public function processDeleteClient(ClientsModel $client): \Illuminate\Http\RedirectResponse
     {
-        // Check if the client has companies or employees.
-        if ($client->companies()->count() > 0) {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.first_delete_companies'));
-        }
-
-        // Check if the client has employees.
-        if ($client->employees()->count() > 0) {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.first_delete_employees'));
-        }
-
         // Delete the client model.
         $client->delete();
 

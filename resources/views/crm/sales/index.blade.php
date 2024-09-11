@@ -7,15 +7,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            @if(session()->has('message_success'))
-                <div class="alert alert-success">
-                    <strong>Well done!</strong> {{ session()->get('message_success') }}
-                </div>
-            @elseif(session()->has('message_danger'))
-                <div class="alert alert-danger">
-                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
-                </div>
-            @endif
+            @include('layouts.template.messages')
             <a href="{{ URL::to('sales/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add sales</button>
             </a>
@@ -39,7 +31,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($salesPaginate as $key => $value)
+                            @foreach($sales as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->name }}</td>
                                     <td class="text-center">{{ $value->quantity }}</td>
@@ -49,21 +41,19 @@
                                             ($value->quantity * $value->products->price) }}
                                         </button>
                                     </td>
-                                    <td class="text-center"><a
-                                                href="{{ URL::to('products/view/' . $value->products->id) }}">{{ $value->products->name }}</a>
+                                    <td class="text-center">
+                                        <a href="{{ URL::to('products/view/' . $value->products->id) }}">{{ $value->products->name }}</a>
                                     </td>
                                     <td class="text-center">{{ $value->date_of_payment }}</td>
                                     <td class="text-center">
                                             @if($value->is_active)
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('sales/set-active/' . $value->id . '/0') }}")' checked>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('sales/set-active/' . $value->id . '/0') }}")' checked>
                                                     <span class="slider"></span>
                                                 </label>
                                             @else
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('sales/set-active/' . $value->id . '/1') }}")'>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('sales/set-active/' . $value->id . '/1') }}")'>
                                                     <span class="slider"></span>
                                                 </label>
                                             @endif
@@ -85,7 +75,7 @@
                             </tbody>
                         </table>
                     </div>
-                    {!! $salesPaginate->render() !!}
+                    {!! $sales->render() !!}
                 </div>
             </div>
         </div>

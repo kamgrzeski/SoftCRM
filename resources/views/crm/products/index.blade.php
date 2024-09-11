@@ -7,15 +7,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            @if(session()->has('message_success'))
-                <div class="alert alert-success">
-                    <strong>Well done!</strong> {{ session()->get('message_success') }}
-                </div>
-            @elseif(session()->has('message_danger'))
-                <div class="alert alert-danger">
-                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
-                </div>
-            @endif
+            @include('layouts.template.messages')
             <a href="{{ URL::to('products/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add products</button>
             </a>
@@ -39,7 +31,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($productsPaginate as $key => $value)
+                            @foreach($products as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->name }}</td>
                                     <td class="text-center">{{ $value->category }}</td>
@@ -66,8 +58,7 @@
                                     </td>
                                     <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
-                                            <a class="btn btn-small btn-primary"
-                                               href="{{ URL::to('products/view/' . $value->id) }}">More information</a>
+                                            <a class="btn btn-small btn-primary" href="{{ URL::to('products/view/' . $value->id) }}">More information</a>
                                             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span
                                                         class="caret"></span></button>
                                             <ul class="dropdown-menu">
@@ -84,7 +75,7 @@
                             </tbody>
                         </table>
                     </div>
-                    {!! $productsPaginate->render() !!}
+                    {!! $products->render() !!}
                 </div>
             </div>
         </div>

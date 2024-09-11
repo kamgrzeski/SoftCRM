@@ -13,6 +13,7 @@ use App\Jobs\StoreSystemLogJob;
 use App\Models\DealsModel;
 use App\Models\DealsTermsModel;
 use App\Queries\CompaniesQueries;
+use App\Queries\DealsQueries;
 use App\Services\DealsService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -58,7 +59,10 @@ class DealsController extends Controller
     public function processShowDealsDetails(DealsModel $deal): \Illuminate\View\View
     {
         // Load the deal record details.
-        return view('crm.deals.show')->with(['deal' => $deal]);
+        return view('crm.deals.show')->with([
+            'deal' => $deal,
+            'companies' => CompaniesQueries::getAll()
+        ]);
     }
 
     /**
@@ -70,7 +74,7 @@ class DealsController extends Controller
     {
         // Load the deal records with pagination.
         return view('crm.deals.index')->with([
-            'dealsPaginate' => $this->dealsService->loadPaginate()
+            'deals' => DealsQueries::getPaginate()
         ]);
     }
 
@@ -136,7 +140,7 @@ class DealsController extends Controller
     {
         // Check if the deal has any deal terms.
         if ($deal->dealTerms()->count() > 0) {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.deal_first_delete_deal|_term'));
+            return redirect()->back()->with('message_error', $this->getMessage('messages.deal_first_delete_deal|_term'));
         }
 
         // Delete the deal record.
@@ -166,7 +170,7 @@ class DealsController extends Controller
         $this->dispatchSync(new StoreSystemLogJob('Deals has been enabled with id: ' . $deal->id, 201, auth()->user()));
 
         // Redirect back with a success message.
-        return redirect()->to('deals')->with('message_success', $this->getMessage('messages.' . $value ? 'deal_update' : 'deal_update'));
+        return redirect()->to('deals')->with('message_success', $this->getMessage('messages.deal_update'));
     }
 
     /**

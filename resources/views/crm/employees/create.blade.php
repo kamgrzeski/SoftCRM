@@ -9,74 +9,17 @@
 @section('content')
     @if(count($clients) == 0)
         <div class="alert alert-danger">
-            <strong>Danger!</strong> There is no client in system. Please create one. <a
-                    href="{{ URL::to('client/create') }}">Click here!</a>
+            <strong>Danger!</strong> There is no client in system. Please create one. <a href="{{ URL::to('client/create') }}">Click here!</a>
         </div>
     @endif
 
-    @include('layouts.template.errors')
+    @include('layouts.template.messages')
 
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            {{ Form::open(['route' => 'employees.store']) }}
-                            <div class="form-group input-row">
-                                {{ Form::label('full_name', 'Full name') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('full_name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('phone', 'Phone') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
-                                    {{ Form::text('phone', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('email', 'Email') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                    {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('job', 'Job') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-building"></i></span>
-                                    {{ Form::text('job', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group input-row">
-                                {{ Form::label('client_id', 'Assign client') }}
-                                <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                {{ Form::select('client_id', $clients->pluck('full_name', 'id'), null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
-                            </div>
-                        </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('note', 'Note') }}
-                                {{ Form::textarea('note', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Add employee', ['class' => 'btn btn-primary']) }}
-                        </div>
-
-                    {{ Form::close() }}
-                    </div>
+                    @include('crm.employees.forms.store_employee_form')
                 </div>
             </div>
         </div>

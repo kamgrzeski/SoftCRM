@@ -9,15 +9,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            @if(session()->has('message_success'))
-                <div class="alert alert-success">
-                    <strong>Well done!</strong> {{ session()->get('message_success') }}
-                </div>
-            @elseif(session()->has('message_danger'))
-                <div class="alert alert-danger">
-                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
-                </div>
-            @endif
+            @include('layouts.template.messages')
             <a href="{{ URL::to('employees/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add employees</button>
             </a>
@@ -41,7 +33,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($employeesPaginate as $key => $value)
+                            @foreach($employees as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->full_name }}</td>
                                     <td class="text-center">{{ $value->phone }}</td>
@@ -53,22 +45,19 @@
                                     <td class="text-center">
                                             @if($value->is_active)
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/0') }}")' checked>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/0') }}")' checked>
                                                     <span class="slider"></span>
                                                 </label>
                                             @else
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/1') }}")'>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/1') }}")'>
                                                     <span class="slider"></span>
                                                 </label>
                                             @endif
                                     </td>
                                     <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
-                                            <a class="btn btn-small btn-primary"
-                                               href="{{ URL::to('employees/view/' . $value->id) }}">More information</a>
+                                            <a class="btn btn-small btn-primary" href="{{ URL::to('employees/view/' . $value->id) }}">More information</a>
                                             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ URL::to('employees/form/update/' . $value->id) }}">Edit</a></li>
@@ -82,7 +71,7 @@
                             </tbody>
                         </table>
                     </div>
-                    {!! $employeesPaginate->render() !!}
+                    {!! $employees->render() !!}
 
                 </div>
             </div>

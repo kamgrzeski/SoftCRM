@@ -7,69 +7,13 @@
 @section('lyric', 'lorem ipsum')
 
 @section('content')
-    @include('layouts.template.errors')
+    @include('layouts.template.messages')
 
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            {{ Form::model($sale, ['route' => ['sales.update', $sale->id], 'method' => 'PUT']) }}
-                            <div class="form-group input-row">
-                                {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, ['class' => 'form-control']) }}
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group input-row">
-                                {{ Form::label('product_id', 'Assign product') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('product_id', $dataWithPluckOfProducts, null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group input-row">
-                                <div class="form-group input-row">
-                                    {{ Form::label('quantity', 'Quantity') }}
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                        {{ Form::text('quantity', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                {{ Form::label('date_of_payment', 'Date of payment') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    {{ Form::date('date_of_payment', null, ['class' => 'form-control', 'required', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                {{ Form::label('price', 'Price') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    {{ Form::text('price', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                        </div>
-
-                        <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Edit sales', ['class' => 'btn btn-primary']) }}
-                        </div>
-
-                        {{ Form::close() }}
-                    </div>
+                    @include('crm.sales.forms.update_sale_form')
                 </div>
             </div>
         </div>

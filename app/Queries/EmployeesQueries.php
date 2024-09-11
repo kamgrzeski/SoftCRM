@@ -29,10 +29,7 @@ class EmployeesQueries
      */
     public static function getEmployeesInLatestMonth(): float
     {
-        $employeesCount = EmployeesModel::where('created_at', '>=', now()->subMonth())->count();
-        $allEmployees = self::countAll();
-
-        return ($allEmployees / 100) * $employeesCount;
+        return EmployeesModel::where('created_at', '>=', now()->subMonth())->count();
     }
 
     /**

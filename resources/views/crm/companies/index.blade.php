@@ -9,15 +9,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            @if(session()->has('message_success'))
-                <div class="alert alert-success">
-                    <strong>Well done!</strong> {{ session()->get('message_success') }}
-                </div>
-            @elseif(session()->has('message_danger'))
-                <div class="alert alert-danger">
-                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
-                </div>
-            @endif
+            @include('layouts.template.messages')
             <a href="{{ URL::to('companies/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add companies</button>
             </a>
@@ -43,7 +35,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($companiesPaginate as $key => $value)
+                            @foreach($companies as $key => $value)
                                 <tr class="odd gradeX">
 
                                     <td class="text-center">{{ $value->name }}</td>
@@ -58,14 +50,12 @@
                                     <td class="text-center">
                                             @if($value->is_active)
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('companies/set-active/' . $value->id . '/0') }}")' checked>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('companies/set-active/' . $value->id . '/0') }}")' checked>
                                                     <span class="slider"></span>
                                                 </label>
                                             @else
                                                 <label class="switch">
-                                                    <input type="checkbox"
-                                                           onchange='window.location.assign("{{ URL::to('companies/set-active/' . $value->id . '/1') }}")'>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('companies/set-active/' . $value->id . '/1') }}")'>
                                                     <span class="slider"></span>
                                                 </label>
                                             @endif
@@ -87,7 +77,7 @@
                             </tbody>
                         </table>
                     </div>
-                    {!! $companiesPaginate->render() !!}
+                    {!! $companies->render() !!}
                 </div>
             </div>
         </div>

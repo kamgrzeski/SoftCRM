@@ -9,9 +9,8 @@ use App\Jobs\Finance\StoreFinanceJob;
 use App\Jobs\Finance\UpdateFinanceJob;
 use App\Jobs\StoreSystemLogJob;
 use App\Models\FinancesModel;
+use App\Queries\CompaniesQueries;
 use App\Queries\FinancesQueries;
-use App\Services\CompaniesService;
-use App\Services\FinancesService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -23,23 +22,6 @@ class FinancesController extends Controller
 {
     use DispatchesJobs;
 
-    private FinancesService $financesService;
-    private CompaniesService $companiesService;
-
-    /**
-     * FinancesController constructor.
-     *
-     * @param FinancesService $financesService
-     * @param CompaniesService $companiesService
-     */
-    public function __construct(FinancesService $financesService, CompaniesService $companiesService)
-    {
-        $this->middleware(self::MIDDLEWARE_AUTH);
-
-        $this->financesService = $financesService;
-        $this->companiesService = $companiesService;
-    }
-
     /**
      * Render the form for creating a new finance record.
      *
@@ -48,7 +30,7 @@ class FinancesController extends Controller
     public function processRenderCreateForm()
     {
         // Return the view with the companies.
-        return view('crm.finances.create')->with(['dataWithPluckOfCompanies' => $this->companiesService->loadCompanies(true)]);
+        return view('crm.finances.create')->with(['companies' => CompaniesQueries::getAll(true)]);
     }
 
     /**
@@ -72,7 +54,7 @@ class FinancesController extends Controller
     {
         // Return the view with the finances and the pagination.
         return view('crm.finances.index')->with([
-            'financesPaginate' => FinancesQueries::getPaginate()
+            'finances' => FinancesQueries::getPaginate()
         ]);
     }
 
@@ -87,7 +69,7 @@ class FinancesController extends Controller
         // Return the view with the finance record and the companies.
         return view('crm.finances.edit')->with([
             'finance' => $finance,
-            'dataWithPluckOfCompanies' => $this->companiesService->loadCompanies(true)
+            'companies' => CompaniesQueries::getAll(true)
         ]);
     }
 

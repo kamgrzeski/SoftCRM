@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\AdminModel;
-
 /**
  * Class AdminService
  *
@@ -11,15 +9,4 @@ use App\Models\AdminModel;
  */
 class AdminService
 {
-    private AdminModel $adminModel;
-
-    /**
-     * AdminService constructor.
-     *
-     * Initializes a new instance of the AdminModel.
-     */
-    public function __construct()
-    {
-        $this->adminModel = new AdminModel();
-    }
 }

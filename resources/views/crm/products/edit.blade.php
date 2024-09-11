@@ -8,39 +8,13 @@
 
 @section('content')
 
-    @include('layouts.template.errors')
+    @include('layouts.template.messages')
 
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            {{ Form::model($product, ['route' => ['products.update', $product->id], 'method' => 'PUT']) }}
-                            <div class="form-group input-row">
-                                {{ Form::label('name', 'Name') }}
-                                {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                            </div>
-                            <div class="form-group input-row">
-                                {{ Form::label('category', 'Category') }}
-                                {{ Form::text('category', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group input-row">
-                                {{ Form::label('count', 'Count') }}
-                                {{ Form::text('count', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                            </div>
-                            <div class="form-group input-row">
-                                {{ Form::label('price', 'Price') }}
-                                {{ Form::text('price', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                            </div>
-                        </div>
-                        <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Edit product', ['class' => 'btn btn-primary']) }}
-                        </div>
-                    {{ Form::close() }}
-                    </div>
+                    @include('crm.products.forms.update_product_form')
                 </div>
             </div>
         </div>

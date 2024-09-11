@@ -7,113 +7,19 @@
 @section('lyric', '')
 
 @section('content')
-    @if(count($dataWithPluckOfClient) == 0)
+    @if(count($clients) == 0)
         <div class="alert alert-danger">
             <strong>Danger!</strong> There is no  in system. Please create any client. <a href="{{ URL::to('client/create') }}">Click here!</a>
         </div>
     @endif
 
-    @include('layouts.template.errors')
+    @include('layouts.template.messages')
 
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            {{ Form::open(['route' => 'companies.store']) }}
-                            <div class="form-group input-row">
-                                {{ Form::label('name', 'Name') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('tax_number', 'Tax number') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-slack"></i></span>
-                                    {{ Form::text('tax_number', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('phone', 'Phone') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
-                                    {{ Form::text('phone', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('city', 'City') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                    {{ Form::text('city', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('billing_address', 'Billing address') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-home"></i></span>
-                                    {{ Form::text('billing_address', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('country', 'Country') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-home"></i></span>
-                                    {{ Form::text('country', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group input-row">
-                                {{ Form::label('postal_code', 'Postal code') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-address-card"></i></span>
-                                    {{ Form::text('postal_code', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div></div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('employees_size', 'Employee size') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-crop"></i></span>
-                                    {{ Form::text('employees_size', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div></div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('fax', 'Fax number') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-home"></i></span>
-                                    {{ Form::text('fax', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div></div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('client_id', 'Assign client') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-handshake-o"></i></span>
-                                    {{ Form::select('client_id', $dataWithPluckOfClient->pluck('full_name', 'id'), null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')])  }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('description', 'Description') }}
-                                {{ Form::textarea('description', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-
-                        </div>
-
-                        <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Add companie', ['class' => 'btn btn-primary']) }}
-                        </div>
-
-                    {{ Form::close() }}
-                    </div>
+                    @include('crm.companies.forms.store_company_form')
                 </div>
             </div>
         </div>

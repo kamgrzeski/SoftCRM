@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
 
 class AdminModel extends Authenticatable
 {
@@ -39,20 +38,11 @@ class AdminModel extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getAdminDetails(int $adminId)
-    {
-        return $this->find($adminId);
-    }
-
-    public function updateAdminPassword(string $newPassword, int $adminId) : int
-    {
-        return $this->where('id', $adminId)->update(
-        [
-            'password' => Hash::make($newPassword),
-            'updated_at' => now()
-        ]);
-    }
-
+    /**
+     * Get user information by IP.
+     *
+     * @return mixed
+     */
     public function getUserInformation()
     {
         return unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$this->ip"));

@@ -4,6 +4,7 @@ namespace App\Queries;
 
 use App\Models\SettingsModel;
 use App\Models\TasksModel;
+use Illuminate\Support\Collection;
 
 /**
  * Class TasksQueries
@@ -65,5 +66,15 @@ class TasksQueries
     public static function getEmployeesTaskCount(mixed $id): int
     {
         return TasksModel::where('employee_id', $id)->get()->count();
+    }
+
+    /**
+     *  Get the count of tasks assigned to a specific project.
+     *
+     * @return Collection
+     */
+    public static function getAllForFormat(): \Illuminate\Support\Collection
+    {
+        return TasksModel::all()->sortBy('created_at', 0, true)->slice(0, 5);
     }
 }

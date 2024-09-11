@@ -15,7 +15,7 @@
     <div class="form">
 
         <div>
-            @include('layouts.template.errors')
+            @include('layouts.template.messages')
         </div>
 
         <form method="POST" action="{{ route('login.process') }}" class="login-form">

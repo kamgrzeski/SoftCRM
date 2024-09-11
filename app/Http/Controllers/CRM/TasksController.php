@@ -9,8 +9,9 @@ use App\Jobs\StoreSystemLogJob;
 use App\Jobs\Task\StoreTaskJob;
 use App\Jobs\Task\UpdateTaskJob;
 use App\Models\TasksModel;
+use App\Queries\TasksQueries;
 use App\Services\EmployeesService;
-use App\Services\TasksService;
+use Illuminate\Http\RedirectResponse;
 
 /**
  * Class TasksController
@@ -19,20 +20,17 @@ use App\Services\TasksService;
  */
 class TasksController extends Controller
 {
-    private TasksService $tasksService;
     private EmployeesService $employeesService;
 
     /**
      * TasksController constructor.
      *
-     * @param TasksService $tasksService
      * @param EmployeesService $employeesService
      */
-    public function __construct(TasksService $tasksService, EmployeesService $employeesService)
+    public function __construct(EmployeesService $employeesService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
 
-        $this->tasksService = $tasksService;
         $this->employeesService = $employeesService;
     }
 
@@ -44,7 +42,7 @@ class TasksController extends Controller
     public function processRenderCreateForm(): \Illuminate\View\View
     {
         // Load the employees for the task.
-        return view('crm.tasks.create')->with(['dataOfEmployees' => $this->employeesService->loadEmployees(true)]);
+        return view('crm.tasks.create')->with(['employees' => $this->employeesService->loadEmployees(true)]);
     }
 
     /**
@@ -55,7 +53,7 @@ class TasksController extends Controller
     public function processListOfTasks(): \Illuminate\View\View
     {
         // Load the tasks with pagination.
-        return view('crm.tasks.index')->with(['tasksPaginate' => $this->tasksService->loadPaginate()]);
+        return view('crm.tasks.index')->with(['tasks' => TasksQueries::getPaginate()]);
     }
 
     /**
@@ -132,7 +130,7 @@ class TasksController extends Controller
     {
         // Check if the task is completed.
         if (! $task->completed) {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.task_uncompleted'));
+            return redirect()->back()->with('message_error', $this->getMessage('messages.task_uncompleted'));
         }
 
         // Delete task.
@@ -169,13 +167,14 @@ class TasksController extends Controller
      * Set a task record to complete.
      *
      * @param TasksModel $task
-     * @return \Illuminate\Http\RedirectResponse
+     * @param bool $value
+     * @return RedirectResponse
      * @throws \Exception
      */
-    public function processSetTaskToCompleted(TasksModel $task): \Illuminate\Http\RedirectResponse
+    public function processSetTaskToCompleted(TasksModel $task, bool $value): \Illuminate\Http\RedirectResponse
     {
         // Update the task to complete.
-        $this->dispatchSync(new UpdateTaskJob(['completed' => true], $task));
+        $this->dispatchSync(new UpdateTaskJob(['completed' => $value], $task));
 
         // Log the task completion.
         $this->dispatchSync(new StoreSystemLogJob('Tasks has been completed with id: ' . $task->id, 201, auth()->user()));

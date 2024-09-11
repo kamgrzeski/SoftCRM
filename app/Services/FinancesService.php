@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Queries\FinancesQueries;
 use Illuminate\Support\Facades\Config;
 
 /**
@@ -18,8 +17,9 @@ class FinancesService
      * @param float $gross The gross amount.
      * @return array An array containing the net and VAT amounts.
      */
-    public function loadCalculateNetAndVatByGivenGross($gross): array
+    public function loadCalculateNetAndVatByGivenGross(float $gross): array
     {
+        // TODO: Move this to settings table.
         $getTaxValueFromConfig = Config::get('crm_settings.invoice_tax')  / 100;
         $getGrossValueFromInput = $gross;
 
@@ -31,15 +31,5 @@ class FinancesService
             'net' => $net,
             'vat' => $vat,
         ];
-    }
-
-    /**
-     * Load the count of all finances.
-     *
-     * @return int
-     */
-    public function loadCountFinances(): int
-    {
-        return FinancesQueries::countAll();
     }
 }

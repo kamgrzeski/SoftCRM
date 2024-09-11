@@ -10,6 +10,7 @@ use App\Jobs\Company\UpdateCompanyJob;
 use App\Jobs\StoreSystemLogJob;
 use App\Models\CompaniesModel;
 use App\Queries\ClientsQueries;
+use App\Queries\CompaniesQueries;
 use App\Services\CompaniesService;
 use App\Services\DealsService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -47,7 +48,7 @@ class CompaniesController extends Controller
     public function processRenderCreateForm(): \Illuminate\View\View
     {
         // Return view with clients.
-        return view('crm.companies.create')->with(['dataWithPluckOfClient' => ClientsQueries::getAll()]);
+        return view('crm.companies.create')->with(['clients' => ClientsQueries::getAll()]);
     }
 
     /**
@@ -71,7 +72,7 @@ class CompaniesController extends Controller
     {
         // Return view with companies pagination.
         return view('crm.companies.index')->with([
-            'companiesPaginate' => $this->companiesService->loadPagination()
+            'companies' => CompaniesQueries::getPaginate()
         ]);
     }
 
@@ -137,7 +138,7 @@ class CompaniesController extends Controller
     {
         // Check if company has deals.
         if ($company->deals()->count() > 0) {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.first_delete_deals'));
+            return redirect()->back()->with('message_error', $this->getMessage('messages.first_delete_deals'));
         }
 
         // Delete company.

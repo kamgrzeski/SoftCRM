@@ -6,83 +6,54 @@
 
 @section('content')
 
-    @include('layouts.template.errors')
+    @include('layouts.template.messages')
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="row">
-                        {{ Form::open(['route' => 'settings.update', 'method' => 'PUT']) }}
-                        <div class="col-lg-6">
-                            <div class="form-group input-row">
-                                {{ Form::label('pagination_size', 'Pagination size') }}
-                                {{ Form::text('pagination_size', $settings['pagination_size'], ['class' => 'form-control']) }}
-                            </div>
-                            <div class="form-group input-row">
-                                {{ Form::label('priority_size', 'Priority size') }}
-                                {{ Form::text('priority_size', $settings['priority_size'], ['class' => 'form-control']) }}
-                            </div>
-                            <div class="form-group input-row">
-                                {{ Form::label('loading_circle', 'Loading circle') }}
-                                {{ Form::select('loading_circle', [1 => 'Show', 0 =>'Don\'t show'], $settings['loading_circle'], ['class'=>'form-control']) }}
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group input-row">
-                                {{ Form::label('currency', 'Currency type') }}
-                                {{ Form::select('currency', ['PLN' => 'PLN', 'EUR' => 'EUR', 'USD' => 'USD'], $settings['currency'], ['class' => 'form-control']) }}
-                            </div>
-                            <div class="form-group input-row">
-                                {{ Form::label('invoice_tax', 'Tax') }}
-                                {{ Form::text('invoice_tax', $settings['invoice_tax'], ['class' => 'form-control']) }}
-                            </div>
-                        </div>
-                        <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Save settings', ['class' => 'btn btn-primary']) }}
-                        </div>
-                        {{ Form::close() }}
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <h4>System logs</h4>
-                            <br>
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>User Id</th>
-                                    <th>Action</th>
-                                    <th>City</th>
-                                    <th>Country</th>
-                                    <th>IP Address</th>
-                                    <th>Date</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($logsPaginate as $key => $value)
-                                    <tr class="active">
-                                        <td>{{ $value['user_id'] }}</td>
-                                        <td>{{ $value['actions'] }}</td>
-                                        <td>{{ $value['city'] }}</td>
-                                        <td>{{ $value['country'] }}</td>
-                                        <td>{{ $value['ip_address'] }}</td>
-                                        <td>{{ $value['date'] }}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    {!! $logsPaginate->render() !!}
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    @include('crm.settings.forms.update_settings_form')
                 </div>
             </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>System logs</h4>
+                        <br>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>User Id</th>
+                                <th>Action</th>
+                                <th>City</th>
+                                <th>Country</th>
+                                <th>IP Address</th>
+                                <th>Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($logs as $key => $value)
+                                <tr class="active">
+                                    <td>{{ $value['user_id'] }}</td>
+                                    <td>{{ $value['actions'] }}</td>
+                                    <td>{{ $value['city'] }}</td>
+                                    <td>{{ $value['country'] }}</td>
+                                    <td>{{ $value['ip_address'] }}</td>
+                                    <td>{{ $value['date'] }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {!! $logs->render() !!}
+            </div>
+        </div>
     </div>
-        <script>
+
+    <script>
             $(document).ready(function () {
                 //create formValidator object
                 //there are a lot of configuration options that need to be passed,

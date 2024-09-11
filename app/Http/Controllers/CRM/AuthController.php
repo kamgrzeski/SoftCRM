@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\LoginAdminRequest;
 use App\Jobs\ChangePasswordJob;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class AdminController
  *
  * Controller for handling admin-related operations in the CRM.
  */
-class AdminController extends Controller
+class AuthController extends Controller
 {
     /**
      * Show the login form for admin.
@@ -22,7 +23,7 @@ class AdminController extends Controller
     public function showLoginForm(): \Illuminate\View\View
     {
         // Render the login form.
-        return view('admin.login');
+        return view('crm.auth.login');
     }
 
     /**
@@ -37,7 +38,7 @@ class AdminController extends Controller
         if (auth()->attempt($request->validated())) {
             return redirect()->to('/');
         } else {
-            return redirect()->back()->with('message-error', 'Wrong email or password!');
+            return redirect()->back()->with('message_error', 'Wrong email or password!');
         }
     }
 
@@ -63,7 +64,7 @@ class AdminController extends Controller
     public function renderChangePasswordView(): \Illuminate\View\View
     {
         // Render the change password view.
-        return view('admin.passwords.reset');
+        return view('crm.auth.passwords.reset');
     }
 
     /**
@@ -77,8 +78,18 @@ class AdminController extends Controller
         // Get validated data.
         $validatedData = $request->validated();
 
+        // Check if old password is correct.
+        if (!Hash::check($validatedData['old_password'], auth()->user()->password)) {
+            return redirect()->to('password/reset')->with('message_danger', 'Old password is incorrect.');
+        }
+
+        // Check if new password and confirm password match.
+        if ($validatedData['new_password'] !== $validatedData['confirm_password']) {
+            return redirect()->to('password/reset')->with('message_danger', 'New password and confirm password do not match.');
+        }
+
         // Dispatch job to change password.
-        $this->dispatchSync(new ChangePasswordJob($validatedData['old_password'], $validatedData['new_password'], $validatedData['confirm_password'], auth()->user()));
+        $this->dispatchSync(new ChangePasswordJob($validatedData, auth()->user()));
 
         // Redirect to change password page.
         return redirect()->to('password/reset')->with('message_success', 'Your password has been changed.');

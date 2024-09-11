@@ -11,6 +11,10 @@ class SalesModel extends Model
 
     protected $fillable = ['name', 'quantity', 'date_of_payment', 'product_id', 'price', 'is_active', 'admin_id'];
 
+    protected $casts = [
+        'date_of_payment' => 'datetime'
+    ];
+
     protected $table = 'sales';
     protected $dates = ['deleted_at'];
 

@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\SettingsModel;
-use App\Queries\SettingsQueries;
 
 /**
  * Class SettingsService
@@ -33,23 +32,5 @@ class SettingsService
     public function loadSettingValue(string $key) : string
     {
         return $this->settingsModel->getSettingValue($key);
-    }
-
-    /**
-     * Load all settings as an associative array.
-     *
-     * @return array An associative array of all settings, with keys as setting keys and values as setting values.
-     */
-    public function loadAllSettings(): array
-    {
-        $allSettings = SettingsQueries::getAll();
-
-        $container = [];
-
-        foreach($allSettings as $setting) {
-            $container[$setting['key']] = $setting['value'];
-        }
-
-        return $container;
     }
 }
