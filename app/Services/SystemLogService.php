@@ -9,8 +9,5 @@ namespace App\Services;
  */
 class SystemLogService
 {
-    /**
-     * Success code constant.
-     */
-    const successCode = 201;
+
 }

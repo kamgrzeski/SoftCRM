@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\ClientsModel;
 use App\Models\SettingsModel;
 use App\Queries\ClientsQueries;
-use App\Queries\SettingsQueries;
 use App\Traits\Language;
 use Cknow\Money\Money;
 
@@ -18,28 +17,6 @@ class ClientService
 {
     use Language;
 
-    private ClientsModel $clientsModel;
-
-    /**
-     * ClientService constructor.
-     *
-     * Initializes a new instance of the ClientsModel.
-     */
-    public function __construct()
-    {
-        $this->clientsModel = new ClientsModel();
-    }
-
-    /**
-     * Load paginated list of clients.
-     *
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
-    public function loadPagination(): \Illuminate\Pagination\LengthAwarePaginator
-    {
-        return ClientsQueries::getPaginate();
-    }
-
     /**
      * Load details of a specific client.
      *
@@ -48,29 +25,9 @@ class ClientService
      */
     public function loadClientDetails(ClientsModel $client): ClientsModel
     {
-        $client->formattedBudget = Money::{SettingsQueries::findByKey('currency')}($client->budget);
+        $client->formattedBudget = Money::{SettingsModel::getSettingValue('currency')}($client->budget);
 
         return $client;
-    }
-
-    /**
-     * Load the count of all clients.
-     *
-     * @return int
-     */
-    public function loadCountClients(): int
-    {
-        return ClientsQueries::getCountAll();
-    }
-
-    /**
-     * Load the list of deactivated clients.
-     *
-     * @return int
-     */
-    public function loadDeactivatedClients(): int
-    {
-        return ClientsQueries::getDeactivated();
     }
 
     /**

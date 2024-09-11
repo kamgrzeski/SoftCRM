@@ -9,21 +9,11 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <!-- will be used to show any messages -->
-            @if(session()->has('message_success'))
-                <div class="alert alert-success">
-                    <strong>Well done!</strong> {{ session()->get('message_success') }}
-                </div>
-            @elseif(session()->has('message_danger'))
-                <div class="alert alert-danger">
-                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
-                </div>
-            @endif
+            @include('layouts.template.messages')
             <a href="{{ URL::to('tasks/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add tasks</button>
             </a>
             <br>
-            <!-- Advanced Tables -->
             <h4 class="page-header">
                 <i class="fa fa-code-fork" aria-hidden="true"></i> List of uncompleted tasks
             </h4>
@@ -44,7 +34,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($tasksPaginate as $key => $value)
+                            @foreach($tasks as $key => $value)
                                 @if($value->completed == 0)
                                     <tr class="odd gradeX">
                                         <td class="text-center">{{ $value->name }}</td>
@@ -89,15 +79,14 @@
                             </tbody>
                         </table>
                     </div>
-                    {!! $tasksPaginate->render() !!}
+                    {!! $tasks->render() !!}
                 </div>
             </div>
-            <!--End Advanced Tables -->
 
-            <!-- Advanced Tables -->
             <h4 class="page-header">
                 <i class="fa fa-code-fork" aria-hidden="true"></i> List of completed tasks
             </h4>
+
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="table" style="color: grey;">
@@ -110,18 +99,18 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($tasksPaginate as $key => $values)
-                                @if($values->completed == 1)
+                            @foreach($tasks as $key => $task)
+                                @if($task->completed)
                                     <tr class="odd gradeX">
-                                        <td class="text-center">{{ $values->name }}</td>
-                                        <td class="text-center">{{ $values->employees->full_name }}</td>
+                                        <td class="text-center">{{ $task->name }}</td>
+                                        <td class="text-center">{{ $task->employees->full_name }}</td>
                                         <td class="text-right">
-                                            @if($values->completed == FALSE)
-                                                <a href="{{ URL::to('tasks/completed/' . $values->id) }}">
+                                            @if(! $task->completed)
+                                                <a href="{{ URL::to('tasks/completed/' . $task->id . '/1') }}">
                                                     <button type="button" class="btn btn-completed small-btn" style="background-color: grey !important; border-color: grey">Mark as completed</button>
                                                 </a>
                                             @else
-                                                <a href="{{ URL::to('tasks/uncompleted/' . $values->id) }}">
+                                                <a href="{{ URL::to('tasks/completed/' . $task->id . '/0') }}">
                                                     <button type="button" class="btn btn-completed small-btn" style="background-color: grey !important; border-color: grey">Mark as uncompleted</button>
                                                 </a>
                                             @endif
@@ -132,11 +121,9 @@
                             </tbody>
                         </table>
                     </div>
-                    {!! $tasksPaginate->render() !!}
+                    {!! $tasks->render() !!}
                 </div>
             </div>
-            <!--End Advanced Tables -->
-
         </div>
     </div>
 @endsection

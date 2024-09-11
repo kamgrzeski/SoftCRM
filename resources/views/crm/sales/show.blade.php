@@ -7,15 +7,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12 col-sm-6">
-            @if(session()->has('message_success'))
-                <div class="alert alert-success">
-                    <strong>Well done!</strong> {{ session()->get('message_success') }}
-                </div>
-            @elseif(session()->has('message_danger'))
-                <div class="alert alert-danger">
-                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
-                </div>
-            @endif
+            @include('layouts.template.messages')
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -23,15 +15,13 @@
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <div class="text-right">
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteSaleModal">
                                 Delete this sale <li class="fa fa-trash-o"></li>
                             </button>
                         </div>
 
                     </ul>
                     <div class="tab-pane fade active in" id="home">
-                        <h4></h4>
-
                         <table class="table table-striped table-bordered">
                             <tbody class="text-right">
                             <tr>
@@ -64,23 +54,5 @@
         </div>
     </div>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">You want delete this product?</h4>
-                </div>
-                <div class="modal-body">
-                    Action will delete permanently this product.
-                </div>
-                <div class="modal-footer">
-                    {{ Form::open(['url' => 'sales/delete/' . $sale->id,'class' => 'pull-right']) }}
-                    {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this sale', ['class' => 'btn btn-small btn-danger']) }}
-                    {{ Form::close() }}
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('crm.sales.modals.delete_sale_modal')
 @endsection

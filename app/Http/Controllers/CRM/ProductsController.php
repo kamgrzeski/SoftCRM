@@ -9,6 +9,7 @@ use App\Jobs\Product\StoreProductJob;
 use App\Jobs\Product\UpdateProductJob;
 use App\Jobs\StoreSystemLogJob;
 use App\Models\ProductsModel;
+use App\Queries\ProductsQueries;
 use App\Services\ProductsService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -78,7 +79,7 @@ class ProductsController extends Controller
     {
         // Load the products with pagination.
         return view('crm.products.index')->with([
-            'productsPaginate' => $this->productsService->loadPagination()
+            'products' => ProductsQueries::getPaginate()
         ]);
     }
 
@@ -129,7 +130,7 @@ class ProductsController extends Controller
     {
         // Check if the product has any sales records.
         if ($product->sales()->count() > 0) {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.ProductsCannotBeDeleted'));
+            return redirect()->back()->with('message_error', $this->getMessage('messages.ProductsCannotBeDeleted'));
         }
 
         // Delete the product.

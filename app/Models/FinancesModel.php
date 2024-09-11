@@ -20,6 +20,10 @@ class FinancesModel extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+
     protected $dates = ['deleted_at'];
 
     protected $table = 'finances';

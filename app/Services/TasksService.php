@@ -12,26 +12,6 @@ use App\Queries\TasksQueries;
 class TasksService
 {
     /**
-     * Load paginated list of tasks.
-     *
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
-    public function loadPaginate(): \Illuminate\Pagination\LengthAwarePaginator
-    {
-        return TasksQueries::getPaginate();
-    }
-
-    /**
-     * Load the count of all tasks.
-     *
-     * @return int
-     */
-    public function loadCountTasks(): int
-    {
-        return TasksQueries::countAll();
-    }
-
-    /**
      * Load all completed tasks with percentage.
      *
      * @return string
@@ -59,5 +39,31 @@ class TasksService
         $percentage = round(($uncompletedTasksCount / $countAllTasks) * 100);
 
         return $uncompletedTasksCount . ' (' . $percentage .  '%)';
+    }
+
+    /**
+     * Format tasks for display.
+     *
+     * @return array
+     */
+    public function formatTasks(): array
+    {
+        $tasks = TasksQueries::getAllForFormat();
+
+        $arrayWithFormattedTasks = [];
+
+        foreach ($tasks as $key => $task) {
+            $nameTask = substr($task->name, 0, 70);
+            $nameTask .= '[..]';
+
+            $arrayWithFormattedTasks[$key] = [
+                'id' => $task->id,
+                'name' => $nameTask,
+                'duration' => $task->duration,
+                'created_at' => $task->created_at
+            ];
+        }
+
+        return $arrayWithFormattedTasks;
     }
 }

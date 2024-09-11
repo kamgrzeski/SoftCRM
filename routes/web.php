@@ -11,7 +11,7 @@
 |
 */
 
-use App\Http\Controllers\CRM\AdminController;
+use App\Http\Controllers\CRM\AuthController;
 use App\Http\Controllers\CRM\ClientController;
 use App\Http\Controllers\CRM\CompaniesController;
 use App\Http\Controllers\CRM\DealsController;
@@ -22,12 +22,13 @@ use App\Http\Controllers\CRM\SalesController;
 use App\Http\Controllers\CRM\SettingsController;
 use App\Http\Controllers\CRM\TasksController;
 use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('login', [AdminController::class, 'showLoginForm'])->name('login');
-Route::post('login/process', [AdminController::class, 'processLoginAdmin'])->name('login.process');
-Route::get('logout', [AdminController::class, 'logout'])->name('logout');
-Route::get('password/reset', [AdminController::class, 'renderChangePasswordView'])->name('password.reset');
-Route::post('password/reset/process', [AdminController::class, 'processChangePassword'])->name('password.reset.process');
+Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('login/process', [AuthController::class, 'processLoginAdmin'])->name('login.process');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('password/reset', [AuthController::class, 'renderChangePasswordView'])->name('password.reset');
+Route::post('password/reset/process', [AuthController::class, 'processChangePassword'])->name('password.reset.process');
 
 Route::get('/', [DashboardController::class, 'index'])->name('home');
 Route::get('/reload-info', [DashboardController::class, 'processReloadInformation'])->name('reload.info');

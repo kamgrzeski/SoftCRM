@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SettingsStoreRequest;
 use App\Jobs\StoreSystemLogJob;
 use App\Jobs\UpdateSettingsJob;
+use App\Queries\SettingsQueries;
 use App\Queries\SystemLogsQueries;
-use App\Services\HelpersFncService;
 use App\Services\SettingsService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -20,20 +20,17 @@ class SettingsController extends Controller
 {
     use DispatchesJobs;
 
-    private HelpersFncService $helpersFncService;
     private SettingsService $settingsService;
 
     /**
      * SettingsController constructor.
      *
-     * @param HelpersFncService $helpersFncService
      * @param SettingsService $settingsService
      */
-    public function __construct(HelpersFncService $helpersFncService, SettingsService $settingsService)
+    public function __construct(SettingsService $settingsService)
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
 
-        $this->helpersFncService = $helpersFncService;
         $this->settingsService = $settingsService;
     }
 
@@ -45,9 +42,8 @@ class SettingsController extends Controller
     public function processListOfSettings(): \Illuminate\View\View
     {
         return view('crm.settings.index')->with([
-            'settings' => $this->settingsService->loadAllSettings(),
-            'logs' => $this->helpersFncService->formatAllSystemLogs(),
-            'logsPaginate' => SystemLogsQueries::getPaginate()
+            'settings' => SettingsQueries::getAll(),
+            'logs' => SystemLogsQueries::getPaginate()
         ]);
     }
 

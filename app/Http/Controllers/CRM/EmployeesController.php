@@ -9,8 +9,7 @@ use App\Jobs\Employee\UpdateEmployeeJob;
 use App\Jobs\StoreSystemLogJob;
 use App\Models\EmployeesModel;
 use App\Queries\ClientsQueries;
-use App\Services\ClientService;
-use App\Services\EmployeesService;
+use App\Queries\EmployeesQueries;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -22,21 +21,10 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 class EmployeesController extends Controller
 {
     use DispatchesJobs;
-    private EmployeesService $employeesService;
-    private ClientService $clientService;
 
-    /**
-     * EmployeesController constructor.
-     *
-     * @param EmployeesService $employeesService
-     * @param ClientService $clientService
-     */
-    public function __construct(EmployeesService $employeesService, ClientService $clientService)
+    public function __construct()
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
-
-        $this->employeesService = $employeesService;
-        $this->clientService = $clientService;
     }
 
     /**
@@ -71,7 +59,7 @@ class EmployeesController extends Controller
     {
         // Load the employee records and render the list page.
         return view('crm.employees.index')->with([
-            'employeesPaginate' => $this->employeesService->loadPaginate()
+            'employees' => EmployeesQueries::getPaginate()
         ]);
     }
 
@@ -137,7 +125,7 @@ class EmployeesController extends Controller
     {
         // Check if the employee has any tasks assigned.
         if ($employee->tasks()->count() > 0) {
-            return redirect()->back()->with('message_danger', $this->getMessage('messages.task_delete_tasks'));
+            return redirect()->back()->with('message_error', $this->getMessage('messages.task_delete_tasks'));
         }
 
         // Dispatch the job to delete the employee record.

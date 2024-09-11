@@ -18,15 +18,14 @@ class EmployeesService
      * Load all employees, optionally for creating a form.
      *
      * @param bool $createForm Whether to load employees for creating a form.
-     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function loadEmployees(bool $createForm = false): \Illuminate\Database\Eloquent\Collection
+    public function loadEmployees(bool $createForm = false): \Illuminate\Support\Collection
     {
         if($createForm) {
             return EmployeesModel::pluck('full_name', 'id');
         }
 
-        $query = EmployeesModel::all()->sortBy('created_at');
+        $query = EmployeesModel::orderBy('created_at')->get();
 
         foreach($query as $key => $value) {
             Arr::add($query[$key], 'taskCount', TasksQueries::getEmployeesTaskCount($value->id));
@@ -36,42 +35,15 @@ class EmployeesService
     }
 
     /**
-     * Load paginated list of employees.
-     *
-     * @return \Illuminate\Pagination\LengthAwarePaginator
-     */
-    public function loadPaginate(): \Illuminate\Pagination\LengthAwarePaginator
-    {
-        return EmployeesQueries::getPaginate();
-    }
-
-    /**
-     * Load the count of all employees.
-     *
-     * @return int
-     */
-    public function loadCountEmployees(): int
-    {
-        return EmployeesQueries::countAll();
-    }
-
-    /**
      * Load the list of employees added in the latest month.
      *
      * @return int
      */
     public function loadEmployeesInLatestMonth(): int
     {
-        return EmployeesQueries::getEmployeesInLatestMonth();
-    }
+        $employeesCountInLatestMonth = EmployeesQueries::getEmployeesInLatestMonth();
+        $allEmployees = EmployeesQueries::countAll();
 
-    /**
-     * Load the list of deactivated employees.
-     *
-     * @return int
-     */
-    public function loadDeactivatedEmployees(): int
-    {
-        return EmployeesQueries::getDeactivated();
+        return ($allEmployees / 100) * $employeesCountInLatestMonth;
     }
 }

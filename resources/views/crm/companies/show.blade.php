@@ -9,15 +9,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12 col-sm-6">
-            @if(session()->has('message_success'))
-                <div class="alert alert-success">
-                    <strong>Well done!</strong> {{ session()->get('message_success') }}
-                </div>
-            @elseif(session()->has('message_danger'))
-                <div class="alert alert-danger">
-                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
-                </div>
-            @endif
+            @include('layouts.template.messages')
             <div class="panel panel-default">
                 <div class="panel-heading">
                     More information about {{ $company->name }}
@@ -34,7 +26,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade active in" id="home">
-                            <h4></h4>
+
 
                             <table class="table table-striped table-bordered">
                                 <tbody class="text-right">
@@ -107,13 +99,10 @@
                     <h4 class="modal-title" id="myModalLabel">You want delete this company?</h4>
                 </div>
                 <div class="modal-body">
-                    Ation will delete permanently this company.
+                    Action will delete permanently this company.
                 </div>
                 <div class="modal-footer">
-                    {{ Form::open(['url' => 'companies/delete/' . $company->id,'class' => 'pull-right']) }}
-                    {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Delete this company', ['class' => 'btn btn-small btn-danger']) }}
-                    {{ Form::close() }}
+                    @include('crm.companies.forms.delete_company_form')
                 </div>
             </div>
         </div>

@@ -8,54 +8,13 @@
 
 @section('content')
 
-    @include('layouts.template.errors')
+    @include('layouts.template.messages')
 
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            {{ Form::open(['route' => 'products.store']) }}
-                            <div class="form-group input-row">
-                                {{ Form::label('name', 'Name') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('category', 'Category') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-podcast"></i></span>
-                                    {{ Form::text('category', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group input-row">
-                                {{ Form::label('count', 'Count') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::text('count', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-                            <div class="form-group input-row">
-                                {{ Form::label('price', 'Price') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-cog"></i></span>
-                                    {{ Form::text('price', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Add product', ['class' => 'btn btn-primary']) }}
-                        </div>
-                    {{ Form::close() }}
-                    </div>
+                   @include('crm.products.forms.store_product_form')
                 </div>
             </div>
         </div>

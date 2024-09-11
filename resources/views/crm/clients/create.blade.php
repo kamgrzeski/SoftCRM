@@ -8,95 +8,13 @@
 
 @section('content')
 
-    @include('layouts.template.errors')
+    @include('layouts.template.messages')
 
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            {{ Form::open(['route' => 'clients.store']) }}
-                            <div class="form-group input-row">
-                                {{ Form::label('full_name', 'Full name') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                    {{ Form::text('full_name', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('phone', 'Phone') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
-                                    {{ Form::text('phone', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('budget', 'Budget') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-shopping-cart"></i></span>
-                                    {{ Form::text('budget', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('city', 'City') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                    {{ Form::text('city', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('country', 'Country') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                    {{ Form::text('country', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group input-row">
-                                {{ Form::label('email', 'Emial address') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                    {{ Form::text('email', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('section', 'Section') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-feed"></i></span>
-                                    {{ Form::select('section', ['transport' => 'transport', 'logistic' => 'logistic', 'finances' => 'finances'], null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('location', 'Location') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-pie-chart"></i></span>
-                                    {{ Form::text('location', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                            <div class="form-group input-row">
-                                {{ Form::label('zip', 'ZIP') }}
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-registered"></i></span>
-                                    {{ Form::text('zip', null, ['class' => 'form-control', 'placeholder' => App\Traits\Language::getMessage('messages.input_text')]) }}
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-12 validate_form">
-                            {{ Form::submit('Add client', ['class' => 'btn btn-primary']) }}
-                        </div>
-                        {{ Form::close() }}
-                    </div>
+                    @include('crm.clients.forms.store_client_form')
                 </div>
             </div>
         </div>

@@ -9,15 +9,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            @if(session()->has('message_success'))
-                <div class="alert alert-success">
-                    <strong>Well done!</strong> {{ session()->get('message_success') }}
-                </div>
-            @elseif(session()->has('message_danger'))
-                <div class="alert alert-danger">
-                    <strong>Danger!</strong> {{ session()->get('message_danger') }}
-                </div>
-            @endif
+            @include('layouts.template.messages')
             <a href="{{ URL::to('employees/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add employees</button>
             </a>
@@ -41,7 +33,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($employeesPaginate as $key => $value)
+                            @foreach($employees as $key => $value)
                                 <tr class="odd gradeX">
                                     <td class="text-center">{{ $value->full_name }}</td>
                                     <td class="text-center">{{ $value->phone }}</td>
@@ -82,7 +74,7 @@
                             </tbody>
                         </table>
                     </div>
-                    {!! $employeesPaginate->render() !!}
+                    {!! $employees->render() !!}
 
                 </div>
             </div>
