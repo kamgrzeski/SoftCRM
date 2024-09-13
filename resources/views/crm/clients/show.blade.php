@@ -15,10 +15,10 @@
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <li class="">
-                            <a href="#profile" data-toggle="tab">Assigned companies <span class="badge badge-warning">{{ count($clientDetails->companies) }}</span></a>
+                            <a href="#companies" data-toggle="tab">Assigned companies <span class="badge badge-warning">{{ count($clientDetails->companies) }}</span></a>
                         </li>
                         <li class="">
-                            <a href="#messages" data-toggle="tab">Assigned employees <span class="badge badge-warning">{{ count($clientDetails->employees) }}</span></a>
+                            <a href="#employees" data-toggle="tab">Assigned employees <span class="badge badge-warning">{{ count($clientDetails->employees) }}</span></a>
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#deleteClientModal">
@@ -61,7 +61,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane fade" id="profile">
+                        <div class="tab-pane fade" id="companies">
                             <h4>List of companies</h4>
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example"
                                    data-sortable>
@@ -70,7 +70,6 @@
                                     <th>Name</th>
                                     <th>Phone</th>
                                     <th>Tax number</th>
-                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 @foreach($clientDetails->companies as $company)
@@ -84,7 +83,7 @@
                                     </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane fade">
+                        <div class="tab-pane fade" id="employees">
                             <h4>List of employee's</h4>
                             <table class="table table-striped table-bordered table-hover" id="dataTables-example-sort-employees" data-sortable>
                                 <thead>
@@ -93,7 +92,6 @@
                                     <th>Phone</th>
                                     <th>Email address</th>
                                     <th>Job</th>
-                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 @foreach($clientDetails->employees as $employees)

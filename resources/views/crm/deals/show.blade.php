@@ -44,7 +44,7 @@
                                 <tr>
                                     <th>Deal between company</th>
                                     <td>
-                                        <a href="{{ URL::to('companies/view/' . $deal->companies->id) }}">{{ $deal->companies->name }}</a>
+                                        <a href="{{ url()->to('companies/view/' . $deal->companies->id) }}">{{ $deal->companies->name }}</a>
                                     </td>
                                 </tr>
                                 <tr>

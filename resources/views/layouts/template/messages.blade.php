@@ -1,10 +1,10 @@
-@if(Session::has('message_error'))
+@if(session()->has('message_error'))
     <div class="alert alert-danger">
-        <strong>Danger!</strong> {{ Session::get('message_error') }}
+        <strong>Danger!</strong> {{ session()->get('message_error') }}
     </div>
-@elseif(Session::has('message_success'))
+@elseif(session()->has('message_success'))
     <div class="alert alert-success">
-        <strong>Success!</strong> {{ Session::get('message_success') }}
+        <strong>Success!</strong> {{ session()->get('message_success') }}
     </div>
 @endif
 

@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-12">
             @include('layouts.template.messages')
-            <a href="{{ URL::to('employees/form/create') }}">
+            <a href="{{ url()->to('employees/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add employees</button>
             </a>
             <br><br>
@@ -40,27 +40,27 @@
                                     <td class="text-center">{{ $value->email }}</td>
                                     <td class="text-center">{{ $value->job }}</td>
                                     <td class="text-center"><a
-                                                href="{{ URL::to('clients/view/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
+                                                href="{{ url()->to('clients/view/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
                                     </td>
                                     <td class="text-center">
                                             @if($value->is_active)
                                                 <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/0') }}")' checked>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('employees/set-active/' . $value->id . '/0') }}")' checked>
                                                     <span class="slider"></span>
                                                 </label>
                                             @else
                                                 <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('employees/set-active/' . $value->id . '/1') }}")'>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('employees/set-active/' . $value->id . '/1') }}")'>
                                                     <span class="slider"></span>
                                                 </label>
                                             @endif
                                     </td>
                                     <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
-                                            <a class="btn btn-small btn-primary" href="{{ URL::to('employees/view/' . $value->id) }}">More information</a>
+                                            <a class="btn btn-small btn-primary" href="{{ url()->to('employees/view/' . $value->id) }}">More information</a>
                                             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ URL::to('employees/form/update/' . $value->id) }}">Edit</a></li>
+                                                <li><a href="{{ url()->to('employees/form/update/' . $value->id) }}">Edit</a></li>
                                                 <li class="divider"></li>
                                                 <li><a href="#">Some option</a></li>
                                             </ul>

@@ -9,7 +9,7 @@
 @section('content')
     @if(count($employees) == 0)
         <div class="alert alert-danger">
-            <strong>Danger!</strong> There is no employees in system. Please create one. <a href="{{ URL::to('employees/create') }}">Click here!</a>
+            <strong>Danger!</strong> There is no employees in system. Please create one. <a href="{{ url()->to('employees/create') }}">Click here!</a>
         </div>
     @endif
 
