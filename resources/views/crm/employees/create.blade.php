@@ -9,7 +9,7 @@
 @section('content')
     @if(count($clients) == 0)
         <div class="alert alert-danger">
-            <strong>Danger!</strong> There is no client in system. Please create one. <a href="{{ URL::to('client/create') }}">Click here!</a>
+            <strong>Danger!</strong> There is no client in system. Please create one. <a href="{{ url()->to('client/create') }}">Click here!</a>
         </div>
     @endif
 

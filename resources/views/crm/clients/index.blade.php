@@ -11,7 +11,7 @@
         <div class="col-md-12">
             @include('layouts.template.messages')
 
-            <a href="{{ URL::to('clients/form/create') }}">
+            <a href="{{ url()->to('clients/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add client</button>
             </a>
             <br><br>
@@ -34,35 +34,34 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($clients as $key => $value)
+                                @foreach($clients as $key => $client)
                                     <tr class="odd gradeX">
-                                        <td class="text-center">{{ $value->full_name }}</td>
-                                        <td class="text-center">{{ $value->phone }}</td>
-                                        <td class="text-center">{{ $value->email }}</td>
-                                        <td class="text-center">{{ $value->section }}</td>
+                                        <td class="text-center">{{ $client->full_name }}</td>
+                                        <td class="text-center">{{ $client->phone }}</td>
+                                        <td class="text-center">{{ $client->email }}</td>
+                                        <td class="text-center">{{ $client->section }}</td>
                                         <td class="text-center">
-                                            <button type="submit"
-                                                    class="btn btn-default">{{ $value->budget }}</button>
+                                            <button type="submit" class="btn btn-default">{{ \Cknow\Money\Money::{\App\Models\SettingsModel::getSettingValue('currency')}($client->budget) }}</button>
                                         </td>
                                         <td class="text-center">
-                                            @if($value->is_active)
+                                            @if($client->is_active)
                                                 <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('clients/set-active/' . $value->id . '/0') }}")' checked>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('clients/set-active/' . $client->id . '/0') }}")' checked>
                                                     <span class="slider"></span>
                                                 </label>
                                             @else
                                                 <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('clients/set-active/' . $value->id . '/1') }}")'>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('clients/set-active/' . $client->id . '/1') }}")'>
                                                     <span class="slider"></span>
                                                 </label>
                                             @endif
                                         </td>
                                         <td class="text-right" style="text-align: center">
                                             <div class="btn-group">
-                                                <a class="btn btn-small btn-primary" href="{{ URL::to('clients/view/' . $value->id) }}">More information</a>
+                                                <a class="btn btn-small btn-primary" href="{{ url()->to('clients/view/' . $client->id) }}">More information</a>
                                                 <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="{{ URL::to('clients/form/update/' . $value->id) }}">Edit</a></li>
+                                                    <li><a href="{{ url()->to('clients/form/update/' . $client->id) }}">Edit</a></li>
                                                     <li class="divider"></li>
                                                     <li><a href="#">Some option</a></li>
                                                 </ul>

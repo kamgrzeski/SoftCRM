@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-12">
             @include('layouts.template.messages')
-            <a href="{{ URL::to('sales/form/create') }}">
+            <a href="{{ url()->to('sales/form/create') }}">
                 <button type="button" class="btn btn-primary btn active">Add sales</button>
             </a>
             <br><br>
@@ -42,18 +42,18 @@
                                         </button>
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ URL::to('products/view/' . $value->products->id) }}">{{ $value->products->name }}</a>
+                                        <a href="{{ url()->to('products/view/' . $value->products->id) }}">{{ $value->products->name }}</a>
                                     </td>
                                     <td class="text-center">{{ $value->date_of_payment }}</td>
                                     <td class="text-center">
                                             @if($value->is_active)
                                                 <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('sales/set-active/' . $value->id . '/0') }}")' checked>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('sales/set-active/' . $value->id . '/0') }}")' checked>
                                                     <span class="slider"></span>
                                                 </label>
                                             @else
                                                 <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ URL::to('sales/set-active/' . $value->id . '/1') }}")'>
+                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('sales/set-active/' . $value->id . '/1') }}")'>
                                                     <span class="slider"></span>
                                                 </label>
                                             @endif
@@ -61,10 +61,10 @@
                                     <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
                                             <a class="btn btn-small btn-primary"
-                                               href="{{ URL::to('sales/view/' . $value->id) }}">More information</a>
+                                               href="{{ url()->to('sales/view/' . $value->id) }}">More information</a>
                                             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ URL::to('sales/form/update/' . $value->id) }}">Edit</a></li>
+                                                <li><a href="{{ url()->to('sales/form/update/' . $value->id) }}">Edit</a></li>
                                                 <li class="divider"></li>
                                                 <li><a href="#">Some option</a></li>
                                             </ul>
