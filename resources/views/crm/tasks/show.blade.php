@@ -24,7 +24,7 @@
                             <tr>
                                 <th>Assigned employee</th>
                                 <td>
-                                    <a href="{{ url()->to('employees/view/' . $task->employees->id) }}">{{ $task->employees->full_name }}</a>
+                                    <a href="{{ route('employees.view', $task->employee->id) }}">{{ $task->employee->full_name }}</a>
                                 </td>
                             </tr>
                             <tr>

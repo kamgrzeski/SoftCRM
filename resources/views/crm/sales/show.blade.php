@@ -38,7 +38,7 @@
                             <tr>
                                 <th>Assigned Product</th>
                                 <td>
-                                    <a href="{{ url()->to('products/view/' . $sale->products->id) }}">{{ $sale->products->name }}</a>
+                                    <a href="{{ route('products.view', $sale->product) }}">{{ $sale->product->name }}</a>
                                 </td>
                             </tr>
                             <tr>

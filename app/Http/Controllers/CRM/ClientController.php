@@ -55,7 +55,7 @@ class ClientController extends Controller
     public function processShowClientDetails(ClientsModel $client): \Illuminate\View\View
     {
         // Return the view with the client details.
-        return view('crm.clients.show')->with(['clientDetails' => $this->clientService->loadClientDetails($client)]);
+        return view('crm.clients.show')->with(['client' => $this->clientService->loadClientDetails($client)]);
     }
 
     /**
@@ -67,7 +67,7 @@ class ClientController extends Controller
     public function processRenderUpdateForm(ClientsModel $client): \Illuminate\View\View
     {
         // Return the view for updating the client record.
-        return view('crm.clients.edit')->with(['clientDetails' => $this->clientService->loadClientDetails($client)]);
+        return view('crm.clients.edit')->with(['client' => $this->clientService->loadClientDetails($client)]);
     }
 
     /**
@@ -139,14 +139,13 @@ class ClientController extends Controller
      * Set the active status of a client record.
      *
      * @param ClientsModel $client
-     * @param bool $value
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processClientSetIsActive(ClientsModel $client, bool $value): \Illuminate\Http\RedirectResponse
+    public function processClientSetIsActive(ClientsModel $client): \Illuminate\Http\RedirectResponse
     {
         // UpdateClientJob is a job that updates the client model.
-        $this->dispatchSync(new UpdateClientJob(['is_active' => $value], $client));
+        $this->dispatchSync(new UpdateClientJob(['is_active' => ! $client->is_active], $client));
 
         // Redirect to the clients page with a success message.
         return redirect()->back()->with('message_success', $this->getMessage('messages.client_update'));

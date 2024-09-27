@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Relations\Belongs\BelongsToClient;
+use App\Relations\Belongs\BelongsToDeal;
+use App\Relations\Has\HasManyCompanies;
+use App\Relations\Has\HasManyTasks;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EmployeesModel extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasManyCompanies, BelongsToDeal, BelongsToClient, HasManyTasks;
 
     protected $fillable = [
         'first_name',
@@ -23,25 +27,5 @@ class EmployeesModel extends Model
 
     protected $table = 'employees';
     protected $dates = ['deleted_at'];
-
-    public function companies()
-    {
-        return $this->hasMany(CompaniesModel::class);
-    }
-
-    public function deals()
-    {
-        return $this->belongsTo(DealsModel::class);
-    }
-
-    public function client()
-    {
-        return $this->belongsTo(ClientsModel::class);
-    }
-
-    public function tasks()
-    {
-        return $this->hasMany(TasksModel::class, 'employee_id');
-    }
 }
 

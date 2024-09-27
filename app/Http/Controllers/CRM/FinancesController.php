@@ -132,14 +132,13 @@ class FinancesController extends Controller
      * Set the active status of a finance record.
      *
      * @param FinancesModel $finance
-     * @param bool $value
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processFinanceSetIsActive(FinancesModel $finance, $value)
+    public function processFinanceSetIsActive(FinancesModel $finance)
     {
         // UpdateFinanceJob is a job that updates the finance model.
-        $this->dispatchSync(new UpdateFinanceJob(['is_active' => $value], $finance));
+        $this->dispatchSync(new UpdateFinanceJob(['is_active' => ! $finance->is_active], $finance));
 
         // StoreSystemLogJob is a job that stores the system log.
         $this->dispatchSync(new StoreSystemLogJob('FinancesModel has been enabled with id: ' . $finance->id, 201, auth()->user()));

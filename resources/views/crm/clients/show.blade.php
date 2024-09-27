@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
-@section('caption', 'Information about client: ' . $clientDetails->full_name)
+@section('caption', 'Information about client: ' . $client->full_name)
 
-@section('title', 'Information about client: ' . $clientDetails->full_name)
+@section('title', 'Information about client: ' . $client->full_name)
 
 @section('content')
     <div class="row">
@@ -15,10 +15,10 @@
                         <li class="active"><a href="#home" data-toggle="tab">Basic information</a>
                         </li>
                         <li class="">
-                            <a href="#companies" data-toggle="tab">Assigned companies <span class="badge badge-warning">{{ count($clientDetails->companies) }}</span></a>
+                            <a href="#companies" data-toggle="tab">Assigned companies <span class="badge badge-warning">{{ count($client->companies) }}</span></a>
                         </li>
                         <li class="">
-                            <a href="#employees" data-toggle="tab">Assigned employees <span class="badge badge-warning">{{ count($clientDetails->employees) }}</span></a>
+                            <a href="#employees" data-toggle="tab">Assigned employees <span class="badge badge-warning">{{ count($client->employees) }}</span></a>
                         </li>
                         <div class="text-right">
                             <button class="btn btn-danger" data-toggle="modal" data-target="#deleteClientModal">
@@ -34,29 +34,29 @@
                                 <tbody class="text-right">
                                 <tr>
                                     <th>Full name</th>
-                                    <td>{{ $clientDetails->full_name }}</td>
+                                    <td>{{ $client->full_name }}</td>
                                 </tr>
                                 <tr>
                                     <th>Phone</th>
-                                    <td>{{ $clientDetails->phone }}</td>
+                                    <td>{{ $client->phone }}</td>
                                 </tr>
                                 <tr>
                                     <th>Email address</th>
-                                    <td>{{ $clientDetails->email }}</td>
+                                    <td>{{ $client->email }}</td>
                                 </tr>
                                 <tr>
                                     <th>Section</th>
-                                    <td>{{ $clientDetails->section }}</td>
+                                    <td>{{ $client->section }}</td>
                                 </tr>
                                 <tr>
                                     <th>Budget</th>
                                     <td>
-                                        <button type="submit" class="btn btn-default">{{ $clientDetails->formattedBudget }}</button>
+                                        <button type="submit" class="btn btn-default">{{ $client->formattedBudget }}</button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $clientDetails->is_active ? 'Active' : 'Deactivate' }}</td>
+                                    <td>{{ $client->is_active ? 'Active' : 'Deactivate' }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -72,7 +72,7 @@
                                     <th>Tax number</th>
                                 </tr>
                                 </thead>
-                                @foreach($clientDetails->companies as $company)
+                                @foreach($client->companies as $company)
                                     <tbody>
                                     <tr class="odd gradeX">
                                         <td>{{ $company->name }}</td>
@@ -94,7 +94,7 @@
                                     <th>Job</th>
                                 </tr>
                                 </thead>
-                                @foreach($clientDetails->employees as $employees)
+                                @foreach($client->employees as $employees)
                                     <tbody>
                                     <tr class="odd gradeX">
                                         <td>{{ $employees->full_name }}</td>

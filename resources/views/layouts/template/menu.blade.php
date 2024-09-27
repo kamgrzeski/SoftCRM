@@ -6,7 +6,7 @@
                 <a class="active-menu" href="#"><i class="fa fa-dashboard"></i>System<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ url()->to('/') }}">Dashboard</a>
+                        <a href="{{ route('home') }}">Dashboard</a>
                         <a href="{{ route('settings.index') }}">Settings</a>
                     </li>
                 </ul>

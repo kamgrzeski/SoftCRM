@@ -11,7 +11,7 @@
         <div class="col-md-12">
             @include('layouts.template.messages')
 
-            <a href="{{ url()->to('deals/form/create') }}">
+            <a href="{{ route('deals.create.form') }}">
                 <button type="button" class="btn btn-primary btn active">Add deals</button>
             </a>
             <br><br>
@@ -33,33 +33,29 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($deals as $key => $value)
+                            @foreach($deals as $key => $deal)
                                 <tr class="odd gradeX">
-                                    <td class="text-center">{{ $value->name }}</td>
+                                    <td class="text-center">{{ $deal->name }}</td>
                                     <td class="text-center">
-                                        <a href="{{ url()->to('companies/view/' . $value->companies->id) }}">{{ $value->companies->name }}</a>
+                                        <a href="{{ route('companies.view', $deal->company->id) }}">{{ $deal->company->name }}</a>
                                     </td>
-                                    <td class="text-center">{{ $value->start_time }}</td>
-                                    <td class="text-center">{{ $value->end_time }}</td>
+                                    <td class="text-center">{{ $deal->start_time }}</td>
+                                    <td class="text-center">{{ $deal->end_time }}</td>
                                     <td class="text-center">
-                                            @if($value->is_active)
-                                                <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('deals/set-active/' . $value->id . '/0') }}")' checked>
+                                        <form method="POST" action="{{ route('deals.set.active', $deal) }}">
+                                            @csrf
+                                            <label class="switch">
+                                                <input type="checkbox" onchange="this.form.submit()" @if($deal->is_active) checked @endif>
                                                     <span class="slider"></span>
-                                                </label>
-                                            @else
-                                                <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('deals/set-active/' . $value->id . '/1') }}")'>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @endif
+                                            </label>
+                                        </form>
                                     </td>
                                     <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
-                                            <a class="btn btn-small btn-primary" href="{{ url()->to('deals/view/' . $value->id) }}">More information</a>
+                                            <a class="btn btn-small btn-primary" href="{{ route('deals.view', $deal) }}">More information</a>
                                             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ url()->to('deals/form/update/' . $value->id) }}">Edit</a></li>
+                                                <li><a href="{{ route('deals.update.form', $deal) }}">Edit</a></li>
                                                 <li class="divider"></li>
                                                 <li><a href="#">Some option</a></li>
                                             </ul>

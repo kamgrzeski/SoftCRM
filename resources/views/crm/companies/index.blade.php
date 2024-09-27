@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-12">
             @include('layouts.template.messages')
-            <a href="{{ url()->to('companies/form/create') }}">
+            <a href="{{ route('companies.create.form') }}">
                 <button type="button" class="btn btn-primary btn active">Add companies</button>
             </a>
             <br><br>
@@ -35,38 +35,32 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($companies as $key => $value)
+                            @foreach($companies as $key => $company)
                                 <tr class="odd gradeX">
-
-                                    <td class="text-center">{{ $value->name }}</td>
-                                    <td class="text-center">{{ $value->phone }}</td>
-                                    <td class="text-center">{{ $value->city }}</td>
-                                    <td class="text-center">{{ $value->country }}</td>
-                                    <td class="text-center">{{ $value->employees_size }}</td>
-                                    <td class="text-center">{{ $value->tax_number }}</td>
+                                    <td class="text-center">{{ $company->name }}</td>
+                                    <td class="text-center">{{ $company->phone }}</td>
+                                    <td class="text-center">{{ $company->city }}</td>
+                                    <td class="text-center">{{ $company->country }}</td>
+                                    <td class="text-center">{{ $company->employees_size }}</td>
+                                    <td class="text-center">{{ $company->tax_number }}</td>
                                     <td class="text-center">
-                                        <a href="{{ url()->to('clients/view/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
+                                        <a href="{{ route('clients.view', $company->client) }}">{{ $company->client->full_name }}</a>
                                     </td>
                                     <td class="text-center">
-                                            @if($value->is_active)
-                                                <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('companies/set-active/' . $value->id . '/0') }}")' checked>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @else
-                                                <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('companies/set-active/' . $value->id . '/1') }}")'>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @endif
+                                        <form method="POST" action="{{ route('companies.set.active', $company) }}">
+                                            @csrf
+                                            <label class="switch">
+                                                <input type="checkbox" onchange="this.form.submit()" @if($company->is_active) checked @endif>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </form>
                                     </td>
                                     <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
-                                            <a class="btn btn-small btn-primary"
-                                               href="{{ url()->to('companies/view/' . $value->id) }}">More information</a>
+                                            <a class="btn btn-small btn-primary" href="{{ route('companies.view', $company) }}">More information</a>
                                             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ url()->to('companies/form/update/' . $value->id) }}">Edit</a></li>
+                                                <li><a href="{{ route('companies.update.form', $company) }}">Edit</a></li>
                                                 <li class="divider"></li>
                                                 <li><a href="#">Some option</a></li>
                                             </ul>
