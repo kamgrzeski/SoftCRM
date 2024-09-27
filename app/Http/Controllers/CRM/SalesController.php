@@ -150,14 +150,13 @@ class SalesController extends Controller
      * Set the active status of a sale record.
      *
      * @param SalesModel $sale
-     * @param bool $value
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processSaleSetIsActive(SalesModel $sale, bool $value): \Illuminate\Http\RedirectResponse
+    public function processSaleSetIsActive(SalesModel $sale): \Illuminate\Http\RedirectResponse
     {
         // Dispatch the job to update the sale record.
-        $this->dispatchSync(new UpdateSaleJob(['is_active' => $value], $sale));
+        $this->dispatchSync(new UpdateSaleJob(['is_active' => ! $sale->is_active], $sale));
 
         // Dispatch the job to store the system log.
         $this->dispatchSync(new StoreSystemLogJob('SalesModel has been enabled with id: ' . $sale->id, 201, auth()->user()));

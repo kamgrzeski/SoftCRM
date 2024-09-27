@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-12">
             @include('layouts.template.messages')
-            <a href="{{ url()->to('employees/form/create') }}">
+            <a href="{{ route('employees.create.form') }}">
                 <button type="button" class="btn btn-primary btn active">Add employees</button>
             </a>
             <br><br>
@@ -33,34 +33,30 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($employees as $key => $value)
+                            @foreach($employees as $key => $employee)
                                 <tr class="odd gradeX">
-                                    <td class="text-center">{{ $value->full_name }}</td>
-                                    <td class="text-center">{{ $value->phone }}</td>
-                                    <td class="text-center">{{ $value->email }}</td>
-                                    <td class="text-center">{{ $value->job }}</td>
+                                    <td class="text-center">{{ $employee->full_name }}</td>
+                                    <td class="text-center">{{ $employee->phone }}</td>
+                                    <td class="text-center">{{ $employee->email }}</td>
+                                    <td class="text-center">{{ $employee->job }}</td>
                                     <td class="text-center"><a
-                                                href="{{ url()->to('clients/view/' . $value->client->id) }}">{{ $value->client->full_name }}</a>
+                                                href="{{ route('clients.view', $employee->client->id) }}">{{ $employee->client->full_name }}</a>
                                     </td>
                                     <td class="text-center">
-                                            @if($value->is_active)
-                                                <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('employees/set-active/' . $value->id . '/0') }}")' checked>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @else
-                                                <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('employees/set-active/' . $value->id . '/1') }}")'>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @endif
+                                                <form method="POST" action="{{ route('employees.set.active', $employee) }}">
+                                                    @csrf
+                                                    <label class="switch">
+                                                        <input type="checkbox" onchange="this.form.submit()" @if($employee->is_active) checked @endif>
+                                                        <span class="slider"></span>
+                                                    </label>
+                                                </form>
                                     </td>
                                     <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
-                                            <a class="btn btn-small btn-primary" href="{{ url()->to('employees/view/' . $value->id) }}">More information</a>
+                                            <a class="btn btn-small btn-primary" href="{{ route('employees.view', $employee) }}">More information</a>
                                             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ url()->to('employees/form/update/' . $value->id) }}">Edit</a></li>
+                                                <li><a href="{{ route('employees.update.form', $employee) }}">Edit</a></li>
                                                 <li class="divider"></li>
                                                 <li><a href="#">Some option</a></li>
                                             </ul>

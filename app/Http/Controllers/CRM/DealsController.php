@@ -157,14 +157,13 @@ class DealsController extends Controller
      * Set the active status of a deal record.
      *
      * @param DealsModel $deal
-     * @param bool $value
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processSetIsActive(DealsModel $deal, bool $value): \Illuminate\Http\RedirectResponse
+    public function processSetIsActive(DealsModel $deal): \Illuminate\Http\RedirectResponse
     {
         // Update the deal status.
-        $this->dispatchSync(new UpdateDealJob(['is_active' => $value], $deal));
+        $this->dispatchSync(new UpdateDealJob(['is_active' => $deal->is_active], $deal));
 
         // Log the action.
         $this->dispatchSync(new StoreSystemLogJob('Deals has been enabled with id: ' . $deal->id, 201, auth()->user()));

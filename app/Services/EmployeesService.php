@@ -25,13 +25,13 @@ class EmployeesService
             return EmployeesModel::pluck('full_name', 'id');
         }
 
-        $query = EmployeesModel::orderBy('created_at')->get();
+        $employees = EmployeesModel::orderBy('created_at')->get();
 
-        foreach($query as $key => $value) {
-            Arr::add($query[$key], 'taskCount', TasksQueries::getEmployeesTaskCount($value->id));
+        foreach($employees as $key => $employee) {
+            Arr::add($employees[$key], 'taskCount', TasksQueries::getEmployeesTaskCount($employee->id));
         }
 
-        return $query;
+        return $employees;
     }
 
     /**

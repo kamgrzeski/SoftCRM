@@ -56,7 +56,7 @@
                                 <tr>
                                     <th>Assigned client</th>
                                     <td>
-                                        <a href="{{ url()->to('clients/view/' . $employee->client->id) }}">{{ $employee->client->full_name }}</a>
+                                        <a href="{{ route('clients.view', $employee->client->id) }}">{{ $employee->client->full_name }}</a>
                                     </td>
 
                                 </tr>
@@ -80,7 +80,7 @@
                                     <tr class="odd gradeX">
                                         <td>{{ $tasks->name }}</td>
                                         <td>
-                                            <a class="btn btn-small btn-primary" href="{{ url()->to('tasks/view/' . $tasks->id) }}">More information</a>
+                                            <a class="btn btn-small btn-primary" href="{{ route('tasks.view',  $tasks->id) }}">More information</a>
                                         </td>
                                     </tr>
                                     @endforeach

@@ -6,14 +6,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{ url()->to('/') }}"><i class="fa fa-comments"></i> SoftCRM</a>
+        <a class="navbar-brand" href="{{ route('home') }}"><i class="fa fa-comments"></i> SoftCRM</a>
     </div>
     <ul class="nav navbar-top-links navbar-right">
             <span style="margin-right: 25px">
                 <span class="clock">
-                            {{ \Carbon\Carbon::now()->format('d F Y') }} |
-            </span>
-            <span id="localclock" class="clock"></span>
+                    {{ \Carbon\Carbon::now()->format('d F Y') }} |
+                </span>
+                <span id="localclock" class="clock"></span>
             </span>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">

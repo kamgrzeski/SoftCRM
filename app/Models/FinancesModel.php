@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Relations\Belongs\BelongsToCompany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FinancesModel extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BelongsToCompany;
 
     protected $fillable = [
         'companies_id',
@@ -27,9 +28,4 @@ class FinancesModel extends Model
     protected $dates = ['deleted_at'];
 
     protected $table = 'finances';
-
-    public function companies()
-    {
-        return $this->belongsTo(CompaniesModel::class);
-    }
 }

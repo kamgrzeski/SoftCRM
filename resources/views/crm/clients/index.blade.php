@@ -11,7 +11,7 @@
         <div class="col-md-12">
             @include('layouts.template.messages')
 
-            <a href="{{ url()->to('clients/form/create') }}">
+            <a href="{{ route('clients.create.form') }}">
                 <button type="button" class="btn btn-primary btn active">Add client</button>
             </a>
             <br><br>
@@ -44,24 +44,20 @@
                                             <button type="submit" class="btn btn-default">{{ \Cknow\Money\Money::{\App\Models\SettingsModel::getSettingValue('currency')}($client->budget) }}</button>
                                         </td>
                                         <td class="text-center">
-                                            @if($client->is_active)
+                                            <form method="POST" action="{{ route('clients.set.active', $client) }}">
+                                                @csrf
                                                 <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('clients/set-active/' . $client->id . '/0') }}")' checked>
-                                                    <span class="slider"></span>
+                                                    <input type="checkbox" onchange="this.form.submit()" @if($client->is_active) checked @endif>
+                                                        <span class="slider"></span>
                                                 </label>
-                                            @else
-                                                <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('clients/set-active/' . $client->id . '/1') }}")'>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @endif
+                                            </form>
                                         </td>
                                         <td class="text-right" style="text-align: center">
                                             <div class="btn-group">
-                                                <a class="btn btn-small btn-primary" href="{{ url()->to('clients/view/' . $client->id) }}">More information</a>
+                                                <a class="btn btn-small btn-primary" href="{{ route('clients.view', $client) }}">More information</a>
                                                 <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="{{ url()->to('clients/form/update/' . $client->id) }}">Edit</a></li>
+                                                    <li><a href="{{ route('clients.update.form', $client) }}">Edit</a></li>
                                                     <li class="divider"></li>
                                                     <li><a href="#">Some option</a></li>
                                                 </ul>

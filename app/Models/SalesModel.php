@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Relations\Belongs\BelongsToProduct;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SalesModel extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BelongsToProduct;
 
     protected $fillable = ['name', 'quantity', 'date_of_payment', 'product_id', 'price', 'is_active', 'admin_id'];
 
@@ -17,9 +18,4 @@ class SalesModel extends Model
 
     protected $table = 'sales';
     protected $dates = ['deleted_at'];
-
-    public function products()
-    {
-        return $this->belongsTo(ProductsModel::class, 'product_id');
-    }
 }

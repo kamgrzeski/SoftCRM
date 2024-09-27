@@ -155,14 +155,13 @@ class CompaniesController extends Controller
      * Set the active status of a company record.
      *
      * @param CompaniesModel $company
-     * @param bool $value
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processCompanySetIsActive(CompaniesModel $company, bool $value): \Illuminate\Http\RedirectResponse
+    public function processCompanySetIsActive(CompaniesModel $company): \Illuminate\Http\RedirectResponse
     {
         // Update company status.
-        $this->dispatchSync(new UpdateCompanyJob(['is_active' => $value], $company));
+        $this->dispatchSync(new UpdateCompanyJob(['is_active' => ! $company->is_active], $company));
 
         // Store system log.
         $this->dispatchSync(new StoreSystemLogJob('CompaniesModel has been updated.', 201, auth()->user()));

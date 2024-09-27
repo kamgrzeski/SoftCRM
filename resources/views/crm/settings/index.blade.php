@@ -34,14 +34,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($logs as $key => $value)
+                            @foreach($logs as $key => $log)
                                 <tr class="active">
-                                    <td>{{ $value['user_id'] }}</td>
-                                    <td>{{ $value['actions'] }}</td>
-                                    <td>{{ $value['city'] }}</td>
-                                    <td>{{ $value['country'] }}</td>
-                                    <td>{{ $value['ip_address'] }}</td>
-                                    <td>{{ $value['date'] }}</td>
+                                    <td>{{ $log['user_id'] }}</td>
+                                    <td>{{ $log['actions'] }}</td>
+                                    <td>{{ $log['city'] }}</td>
+                                    <td>{{ $log['country'] }}</td>
+                                    <td>{{ $log['ip_address'] }}</td>
+                                    <td>{{ $log['date'] }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-12">
             @include('layouts.template.messages')
-            <a href="{{ url()->to('sales/form/create') }}">
+            <a href="{{ route('sales.create.form') }}">
                 <button type="button" class="btn btn-primary btn active">Add sales</button>
             </a>
             <br><br>
@@ -31,40 +31,35 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($sales as $key => $value)
+                            @foreach($sales as $key => $sale)
                                 <tr class="odd gradeX">
-                                    <td class="text-center">{{ $value->name }}</td>
-                                    <td class="text-center">{{ $value->quantity }}</td>
+                                    <td class="text-center">{{ $sale->name }}</td>
+                                    <td class="text-center">{{ $sale->quantity }}</td>
                                     <td class="text-center">
                                         <button type="submit"class="btn btn-default">
                                             {{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}
-                                            ($value->quantity * $value->products->price) }}
+                                            ($sale->quantity * $sale->product->price) }}
                                         </button>
                                     </td>
                                     <td class="text-center">
-                                        <a href="{{ url()->to('products/view/' . $value->products->id) }}">{{ $value->products->name }}</a>
+                                        <a href="{{ route('products.view', $sale->product) }}">{{ $sale->product->name }}</a>
                                     </td>
-                                    <td class="text-center">{{ $value->date_of_payment }}</td>
+                                    <td class="text-center">{{ $sale->date_of_payment }}</td>
                                     <td class="text-center">
-                                            @if($value->is_active)
-                                                <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('sales/set-active/' . $value->id . '/0') }}")' checked>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @else
-                                                <label class="switch">
-                                                    <input type="checkbox" onchange='window.location.assign("{{ url()->to('sales/set-active/' . $value->id . '/1') }}")'>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            @endif
+                                    <form method="POST" action="{{ route('sales.set.active', $sale) }}">
+                                    @csrf
+                                        <label class="switch">
+                                            <input type="checkbox" onchange="this.form.submit()" @if($sale->is_active) checked @endif>
+                                                <span class="slider"></span>
+                                        </label>
+                                    </form>
                                     </td>
                                     <td class="text-right" style="text-align: center">
                                         <div class="btn-group">
-                                            <a class="btn btn-small btn-primary"
-                                               href="{{ url()->to('sales/view/' . $value->id) }}">More information</a>
+                                            <a class="btn btn-small btn-primary" href="{{ route('sales.view', $sale) }}">More information</a>
                                             <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ url()->to('sales/form/update/' . $value->id) }}">Edit</a></li>
+                                                <li><a href="{{ route('sales.update.form', $sale) }}">Edit</a></li>
                                                 <li class="divider"></li>
                                                 <li><a href="#">Some option</a></li>
                                             </ul>

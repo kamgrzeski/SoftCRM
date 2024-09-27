@@ -44,7 +44,7 @@
                                 <tr>
                                     <th>Deal between company</th>
                                     <td>
-                                        <a href="{{ url()->to('companies/view/' . $deal->companies->id) }}">{{ $deal->companies->name }}</a>
+                                        <a href="{{ route('companies.view', $deal->company->id) }}">{{ $deal->company->name }}</a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -65,51 +65,51 @@
                         <div class="tab-pane fade" id="profile">
                             <p>
                             <table class="table table-striped table-bordered">
-                                <h4>Full information about <strong>{{ $deal->companies->name }}</strong></h4><br>
+                                <h4>Full information about <strong>{{ $deal->company->name }}</strong></h4><br>
                                 <tbody class="text-right">
                                 <tr>
                                     <th>Name</th>
-                                    <td>{{ $deal->companies->name }}</td>
+                                    <td>{{ $deal->company->name }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tax number</th>
-                                    <td>{{ $deal->companies->tax_number }}</td>
+                                    <td>{{ $deal->company->tax_number }}</td>
                                 </tr>
                                 <tr>
                                     <th>Phone</th>
-                                    <td>{{ $deal->companies->phone }}</td>
+                                    <td>{{ $deal->company->phone }}</td>
                                 </tr>
                                 <tr>
                                     <th>City</th>
-                                    <td>{{ $deal->companies->city }}</td>
+                                    <td>{{ $deal->company->city }}</td>
                                 </tr>
                                 <tr>
                                     <th>Billing address</th>
-                                    <td>{{ $deal->companies->billing_address }}</td>
+                                    <td>{{ $deal->company->billing_address }}</td>
                                 </tr>
                                 <tr>
                                     <th>Country</th>
-                                    <td>{{ $deal->companies->country }}</td>
+                                    <td>{{ $deal->company->country }}</td>
                                 </tr>
                                 <tr>
                                     <th>Postal code</th>
-                                    <td>{{ $deal->companies->postal_code }}</td>
+                                    <td>{{ $deal->company->postal_code }}</td>
                                 </tr>
                                 <tr>
                                     <th>Employees size</th>
-                                    <td>{{ $deal->companies->employees_size }}</td>
+                                    <td>{{ $deal->company->employees_size }}</td>
                                 </tr>
                                 <tr>
                                     <th>Fax</th>
-                                    <td>{{ $deal->companies->fax }}</td>
+                                    <td>{{ $deal->company->fax }}</td>
                                 </tr>
                                 <tr height="100px">
                                     <th>Description</th>
-                                    <td>{{ $deal->companies->description }}</td>
+                                    <td>{{ $deal->company->description }}</td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $deal->companies->is_active ? 'Yes' : 'No' }}</td>
+                                    <td>{{ $deal->company->is_active ? 'Yes' : 'No' }}</td>
                                 </tr>
                                 </tbody>
                             </table>

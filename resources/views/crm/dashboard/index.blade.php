@@ -95,7 +95,7 @@
                     <div class="list-group">
                         @if(count($dataWithAllTasks) > 0)
                             @foreach ($dataWithAllTasks as $result)
-                                <a href="{{ url()->to('tasks/view/' . $result['id']) }}" class="list-group-item">
+                                <a href="{{ route('tasks.view', $result['id']) }}" class="list-group-item">
                                     <span class="badge badge"
                                           style="background-color: #428bca !important;">{{ $result['created_at']->diffForHumans() }}</span>
                                     <span class="badge badge"
@@ -108,7 +108,7 @@
                         @endif
                     </div>
                     <div class="text-right">
-                        <a href="{{ url()->to('tasks') }}">More Tasks <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('tasks.index') }}">More Tasks <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -122,7 +122,7 @@
                     <div class="list-group">
                         @if(count($dataWithAllCompanies) > 0)
                             @foreach ($dataWithAllCompanies as $result)
-                                <a href="{{ url()->to('companies/view/' . $result->id) }}" class="list-group-item">
+                                <a href="{{ route('companies.view', $result->id) }}" class="list-group-item">
                                     <i class="fa fa-compass"></i> {{ $result->name }}
                                     <span class="badge badge"
                                           style="background-color: #ff9800 !important;">Phone: {{ $result->phone }}</span>
@@ -133,7 +133,7 @@
                         @endif
                     </div>
                     <div class="text-right">
-                        <a href="{{ url()->to('companies') }}">More companies <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('companies.index') }}">More companies <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -148,7 +148,7 @@
                     <div class="list-group">
                         @if(count($dataWithAllProducts) > 0)
                             @foreach ($dataWithAllProducts as $result)
-                                <a href="{{ url()->to('products/view/' . $result->id) }}" class="list-group-item">
+                                <a href="{{ route('products.view', $result->id) }}" class="list-group-item">
                                     <span class="badge badge"
                                           style="background-color: #428bca !important;">{{ $result->created_at->diffForHumans() }}</span>
                                     <span class="badge badge" style="background-color: #8a3a44 !important;">
@@ -163,7 +163,7 @@
                         @endif
                     </div>
                     <div class="text-right">
-                        <a href="{{ url()->to('products') }}">More products <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('products.index') }}">More products <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>

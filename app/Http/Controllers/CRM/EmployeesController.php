@@ -142,14 +142,13 @@ class EmployeesController extends Controller
      * Set the active status of an employee record.
      *
      * @param EmployeesModel $employee
-     * @param bool $value
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processEmployeeSetIsActive(EmployeesModel $employee, bool $value): \Illuminate\Http\RedirectResponse
+    public function processEmployeeSetIsActive(EmployeesModel $employee): \Illuminate\Http\RedirectResponse
     {
         // Dispatch the job to update the employee record.
-        $this->dispatchSync(new UpdateEmployeeJob(['is_active' => $value], $employee));
+        $this->dispatchSync(new UpdateEmployeeJob(['is_active' => ! $employee->is_active], $employee));
 
         // Dispatch the job to store the system log.
         $this->dispatchSync(new StoreSystemLogJob('Employees has been enabled with id: ' . $employee->id, 201, auth()->user()));

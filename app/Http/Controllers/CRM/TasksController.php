@@ -147,14 +147,13 @@ class TasksController extends Controller
      * Set the active status of a task record.
      *
      * @param TasksModel $task
-     * @param bool $value
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processTaskSetIsActive(TasksModel $task, bool $value): \Illuminate\Http\RedirectResponse
+    public function processTaskSetIsActive(TasksModel $task): \Illuminate\Http\RedirectResponse
     {
         // Update the task status.
-        $this->dispatchSync(new UpdateTaskJob(['is_active' => $value], $task));
+        $this->dispatchSync(new UpdateTaskJob(['is_active' => $task->is_active], $task));
 
         // Log the task status change.
         $this->dispatchSync(new StoreSystemLogJob('Tasks has been enabled with id: ' . $task->id, 201, auth()->user()));
@@ -167,14 +166,13 @@ class TasksController extends Controller
      * Set a task record to complete.
      *
      * @param TasksModel $task
-     * @param bool $value
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function processSetTaskToCompleted(TasksModel $task, bool $value): \Illuminate\Http\RedirectResponse
+    public function processSetTaskToCompleted(TasksModel $task): \Illuminate\Http\RedirectResponse
     {
         // Update the task to complete.
-        $this->dispatchSync(new UpdateTaskJob(['completed' => $value], $task));
+        $this->dispatchSync(new UpdateTaskJob(['completed' => ! $task->completed], $task));
 
         // Log the task completion.
         $this->dispatchSync(new StoreSystemLogJob('Tasks has been completed with id: ' . $task->id, 201, auth()->user()));

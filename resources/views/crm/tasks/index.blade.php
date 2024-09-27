@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-12">
             @include('layouts.template.messages')
-            <a href="{{ url()->to('tasks/form/create') }}">
+            <a href="{{ route('tasks.create.form') }}">
                 <button type="button" class="btn btn-primary btn active">Add tasks</button>
             </a>
             <h4 class="page-header">
@@ -37,29 +37,27 @@
                                     <tr class="odd gradeX">
                                         <td class="text-center">{{ $task->name }}</td>
                                         <td class="text-center">
-                                            <a href="{{ url()->to('employees/view/' . $task->employees->id) }}">{{ $task->employees->full_name }}</a>
+                                            <a href="{{ route('employees.view',$task->employee->id) }}">{{ $task->employee->full_name }}</a>
                                         </td>
                                         <td class="text-right">{{ $task->duration . ' days' }}</td>
                                         <td class="text-center">
-                                           @if($task->is_active)
-                                               <label class="switch">
-                                               <input type="checkbox" onchange='window.location.assign("{{ url()->to('tasks/set-active/' . $task->id . '/0') }}")' checked>
-                                               <span class="slider"></span>
-                                               </label>
-                                           @else
-                                               <label class="switch">
-                                               <input type="checkbox" onchange='window.location.assign("{{ url()->to('tasks/set-active/' . $task->id . '/1') }}")'>
-                                               <span class="slider"></span>
-                                               </label>
-                                           @endif
+                                            <form method="POST" action="{{ route('tasks.set.active', $task) }}">
+                                            @csrf
+                                                <label class="switch">
+                                                    <input type="checkbox" onchange="this.form.submit()" @if($task->is_active) checked @endif>
+                                                    <span class="slider"></span>
+                                                </label>
+                                            </form>
                                         </td>
                                         <td class="text-right">{{ $task->completed ? 'Yes' : 'No' }}</td>
                                         <td class="text-right">
-                                            <a href="{{ url()->to('tasks/completed/' . $task->id . '/1') }}">
-                                                <button type="button" class="btn btn-completed small-btn">Mark as completed</button>
-                                            </a>
-                                            <a class="btn btn-small btn-success small-btn" href="{{ url()->to('tasks/view/' . $task->id) }}">More information</a>
-                                            <a class="btn btn-small btn-info small-btn" href="{{ url()->to('tasks/form/update/' . $task->id) }}">Edit</a>
+                                            <form method="POST" action="{{ route('tasks.complete', $task) }}">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-completed small-btn">Mark as completed</button>
+                                            </form>
+                                            <a class="btn btn-small btn-success small-btn" href="{{ route('tasks.view',  $task->id) }}">More information</a>
+                                            <a class="btn btn-small btn-info small-btn" href="{{ route('tasks.update.form', $task->id) }}">Edit</a>
                                         </td>
                                     </tr>
                             @endforeach
@@ -89,11 +87,13 @@
                             @foreach($tasks->where('completed', true) as $key => $task)
                                     <tr class="odd gradeX">
                                         <td class="text-center">{{ $task->name }}</td>
-                                        <td class="text-center">{{ $task->employees->full_name }}</td>
+                                        <td class="text-center">{{ $task->employee->full_name }}</td>
                                         <td class="text-right">
-                                            <a href="{{ url()->to('tasks/completed/' . $task->id . '/0') }}">
-                                                <button type="button" class="btn btn-completed small-btn" style="background-color: grey !important; border-color: grey">Mark as uncompleted</button>
-                                            </a>
+                                            <form method="POST" action="{{ route('tasks.complete', $task) }}">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-completed small-btn">Mark as uncompleted</button>
+                                            </form>
                                         </td>
                                     </tr>
                             @endforeach

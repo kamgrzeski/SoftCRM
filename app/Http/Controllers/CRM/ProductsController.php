@@ -147,14 +147,13 @@ class ProductsController extends Controller
      * Set the active status of a product record.
      *
      * @param ProductsModel $product
-     * @param bool $value
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processProductSetIsActive(ProductsModel $product, bool $value): \Illuminate\Http\RedirectResponse
+    public function processProductSetIsActive(ProductsModel $product): \Illuminate\Http\RedirectResponse
     {
         // Update the product's active status.
-        $this->dispatchSync(new UpdateProductJob(['is_active' => $value], $product));
+        $this->dispatchSync(new UpdateProductJob(['is_active' => $product->is_active], $product));
 
         // Store a system log.
         $this->dispatchSync(new StoreSystemLogJob('ProductsModel has been enabled with id: ' . $product->id, 201, auth()->user()));

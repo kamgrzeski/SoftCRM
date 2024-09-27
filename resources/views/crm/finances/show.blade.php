@@ -57,7 +57,7 @@
                             <tr>
                                 <th>Assigned companies</th>
                                 <td>
-                                    <a href="{{ url()->to('companies/view/' . $finance->companies->id) }}">{{ $finance->companies->name }}</a>
+                                    <a href="{{ route('companies.view', $finance->company->id) }}">{{ $finance->company->name }}</a>
                                 </td>
                             </tr>
                             <tr>
