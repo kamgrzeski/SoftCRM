@@ -12,6 +12,7 @@
 <div id="wrapper">
     @include('layouts.template.navbar')
     @include('layouts.template.menu')
+
     <div id="page-wrapper">
         <div id="page-inner">
             @include('layouts.template.title')
