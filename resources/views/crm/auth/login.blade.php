@@ -2,10 +2,9 @@
 <html>
 <head>
     <title>SoftCRM - login panel</title>
-    <link href="{{ asset('css/style.css') }}" rel='stylesheet' type='text/css'/>
+    <link href="{{ asset('css/login-page.css') }}" rel='stylesheet' type='text/css'/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <div class="login-page">

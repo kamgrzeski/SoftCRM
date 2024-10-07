@@ -68,7 +68,7 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="profile">
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
+                            <table class="table table-striped table-bordered table-hover" id="dataTables">
                                 <thead>
                                 <tr>
                                     <th>Name</th>

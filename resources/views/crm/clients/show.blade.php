@@ -63,8 +63,7 @@
                         </div>
                         <div class="tab-pane fade" id="companies">
                             <h4>List of companies</h4>
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example"
-                                   data-sortable>
+                            <table class="table table-striped table-bordered table-hover" id="dataTables">
                                 <thead>
                                 <tr>
                                     <th>Name</th>
@@ -85,7 +84,7 @@
                         </div>
                         <div class="tab-pane fade" id="employees">
                             <h4>List of employee's</h4>
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example-sort-employees" data-sortable>
+                            <table class="table table-striped table-bordered table-hover" id="dataTables">
                                 <thead>
                                 <tr>
                                     <th>Full name</th>

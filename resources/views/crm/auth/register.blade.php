@@ -8,10 +8,6 @@
     <link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet" />
     <!-- FontAwesome Styles-->
     <link href="{{ asset('/css/font-awesome.css') }}" rel="stylesheet" />
-    <!-- Morris Chart Styles-->
-    <link href="{{ asset('/js/morris/morris-0.4.3.min.css') }}" rel="stylesheet" />
-    <!-- Custom Styles-->
-    <link href="{{ asset('/css/custom-styles-form.css') }}" rel="stylesheet" />
     <!-- Google Fonts-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>

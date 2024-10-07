@@ -18,7 +18,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="table">
-                        <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
+                        <table class="table table-striped table-bordered table-hover" id="dataTables">
                             <thead>
                             <tr>
                                 <th class="text-center">Name</th>
