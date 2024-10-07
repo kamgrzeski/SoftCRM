@@ -9,6 +9,7 @@ use App\Queries\EmployeesQueries;
 use App\Queries\FinancesQueries;
 use App\Queries\ProductsQueries;
 use App\Queries\SalesQueries;
+use App\Queries\SettingsQueries;
 use App\Queries\SystemLogsQueries;
 use App\Queries\TasksQueries;
 use App\Services\CalculateCashService;
@@ -99,6 +100,9 @@ class DashboardController extends Controller
         Cache::put('dealsInLatestMonth', $this->dealsService->loadDealsInLatestMonth(), env('CACHE_TIME'));
         Cache::put('completedTasks', $this->tasksService->loadCompletedTasks(), env('CACHE_TIME'));
         Cache::put('uncompletedTasks', $this->tasksService->loadUncompletedTasks(), env('CACHE_TIME'));
+
+        //loading circle
+        Cache::put('loadingCircle', SettingsQueries::getByKey('loading_circle'), env('CACHE_TIME'));
     }
 
     /**

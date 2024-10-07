@@ -32,3 +32,18 @@
     });
 
 }(jQuery));
+
+$(document).ready(function () {
+    $('#dataTables').DataTable({
+        "paging": false,
+        "ordering": true,
+        "info": false
+    });
+});
+
+$(window).load(function () {
+    $(".se-pre-con").delay(500).fadeOut("slow");
+});
+$(document).ready(function () {
+    $('#localclock').jsclock();
+});

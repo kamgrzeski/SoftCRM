@@ -4,6 +4,11 @@
 @include('layouts.template.header')
 
 <body>
+
+@if(cache()->get('loadingCircle'))
+    <div class="se-pre-con"></div>
+@endif
+
 <div id="wrapper">
     @include('layouts.template.navbar')
     @include('layouts.template.menu')

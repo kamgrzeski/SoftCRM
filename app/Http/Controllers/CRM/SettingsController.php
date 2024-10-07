@@ -65,6 +65,9 @@ class SettingsController extends Controller
         // Dispatch the StoreSystemLogJob to store the system log
         $this->dispatchSync(new StoreSystemLogJob('SettingsModel has been changed.', 201, auth()->user()));
 
+        //forgot cache of loading circle
+        cache()->forget('loadingCircle');
+
         // Redirect back with a success message
         return redirect()->back()->with('message_success', $this->getMessage('messages.settings_update'));
     }

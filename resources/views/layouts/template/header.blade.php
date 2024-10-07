@@ -16,54 +16,8 @@
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js" defer></script>
     <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js" defer></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css"/>
-
-    <div class="se-pre-con"></div>
-    <style>
-        .no-js #loader {
-            display: none;
-        }
-
-        .js #loader {
-            display: block;
-            position: absolute;
-            left: 100px;
-            top: 0;
-            filter: blur(0px) !important;
-            -webkit-filter: blur(0px) !important;
-        }
-
-        .se-pre-con {
-            position: fixed;
-            left: 0px;
-            top: 0px;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            @if(\App\Models\SettingsModel::where('key', 'loading_circle')->get()->last()->value)
-                background: url({{ asset("images/loader.gif") }}) center no-repeat #fff;
-            @endif
-        }
-    </style>
-    <script>
-        $(window).load(function () {
-            $(".se-pre-con").delay(500).fadeOut("slow");
-        });
-    </script>
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            $('#localclock').jsclock();
-        });
-
-        $(document).ready(function () {
-            $('#dataTables').DataTable({
-                "paging": false,
-                "ordering": true,
-                "info": false
-            });
-        });
-    </script>
 </head>
+
 
 
 
