@@ -10,7 +10,7 @@
     "require": {
         "php": "^8.2.14",
         "laravel/framework": "^11.0",
-        "laravel/tinker": "v2.9.0"
+        "laravel/tinker": "^2.9"
     },
     "require-dev": {
         "laravel/pint": "^1.13",
