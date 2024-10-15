@@ -116,7 +116,7 @@ class ClientController extends Controller
         $this->dispatchSync(new UpdateClientJob($request->validated(), $client));
 
         // Redirect to the clients page with a success message.
-        return redirect()->back()->with('message_success', $this->getMessage('messages.client_update'));
+        return redirect()->to('clients')->with('message_success', $this->getMessage('messages.client_update'));
     }
 
     /**

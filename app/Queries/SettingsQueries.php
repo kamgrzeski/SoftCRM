@@ -25,4 +25,9 @@ class SettingsQueries
     {
         return SettingsModel::where('key', $key)->get()->last();
     }
+
+    public static function getSettingValue(string $key)
+    {
+        return SettingsModel::where('key', $key)->get()->last()->value;
+    }
 }

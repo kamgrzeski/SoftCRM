@@ -6,19 +6,13 @@ use App\Models\FinancesModel;
 use App\Models\ProductsModel;
 use App\Models\SalesModel;
 use App\Models\TasksModel;
+use App\Queries\SettingsQueries;
 use Carbon\Carbon;
 use Cknow\Money\Money;
 use Illuminate\Support\Facades\DB;
 
 class CalculateCashService
 {
-    private SettingsService $settingsService;
-
-    public function __construct()
-    {
-        $this->settingsService = new SettingsService();
-    }
-
     /**
      * @return mixed
      */
@@ -46,7 +40,7 @@ class CalculateCashService
 
         $officialSum = $productSum + $salesSum + $financesSum;
 
-        return Money::{$this->settingsService->loadSettingValue('currency')}($officialSum);
+        return Money::{SettingsQueries::getSettingValue('currency')}($officialSum);
     }
 
     /**
@@ -74,7 +68,7 @@ class CalculateCashService
 
         $todayIncome = $productSum + $salesSum + $financesSum;
 
-        return Money::{$this->settingsService->loadSettingValue('currency')}($todayIncome);
+        return Money::{SettingsQueries::getSettingValue('currency')}($todayIncome);
     }
 
     /**
@@ -101,7 +95,7 @@ class CalculateCashService
 
         $yesterdayIncome = $productSum + $salesSum + $financesSum;
 
-        return Money::{$this->settingsService->loadSettingValue('currency')}($yesterdayIncome);
+        return Money::{SettingsQueries::getSettingValue('currency')}($yesterdayIncome);
     }
 
     /**

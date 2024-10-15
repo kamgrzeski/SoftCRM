@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\AdminModel;
 use App\Models\SystemLogsModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Auth\Authenticatable;

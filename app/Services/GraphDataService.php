@@ -49,7 +49,8 @@ class GraphDataService
     /**
      * @return mixed
      */
-    public function itemsCountGraphData() {
+    public function itemsCountGraphData(): mixed
+    {
         return app()->chartjs
             ->name('cashTurnoverGraphData')
             ->type('bar')

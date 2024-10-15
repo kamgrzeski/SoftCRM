@@ -18,7 +18,6 @@ use App\Services\CompaniesService;
 use App\Services\DealsService;
 use App\Services\EmployeesService;
 use App\Services\GraphDataService;
-use App\Services\SettingsService;
 use App\Services\TasksService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
@@ -32,7 +31,6 @@ class DashboardController extends Controller
     private EmployeesService $employeesService;
     private DealsService $dealsService;
     private TasksService $tasksService;
-    private SettingsService $settingsService;
 
     public function __construct()
     {
@@ -44,7 +42,6 @@ class DashboardController extends Controller
         $this->employeesService = new EmployeesService();
         $this->dealsService = new DealsService();
         $this->tasksService = new TasksService();
-        $this->settingsService = new SettingsService();
     }
 
     /**
@@ -62,10 +59,10 @@ class DashboardController extends Controller
             [
                 'tasksGraphData' => $graph->taskGraphData(),
                 'itemsCountGraphData' => $graph->itemsCountGraphData(),
-                'dataWithAllTasks' => $this->tasksService->formatTasks(),
-                'dataWithAllCompanies' => $this->companiesService->loadCompaniesByCreatedAt(),
-                'dataWithAllProducts' => ProductsQueries::getProductsByCreatedAt(),
-                'currency' => $this->settingsService->loadSettingValue(self::CURRENCY)
+                'tasks' => $this->tasksService->formatTasks(),
+                'companies' => $this->companiesService->loadCompaniesByCreatedAt()->take(10),
+                'products' => ProductsQueries::getProductsByCreatedAt()->take(10),
+                'currency' => SettingsQueries::getSettingValue(self::CURRENCY)
             ]
         );
     }
@@ -101,8 +98,12 @@ class DashboardController extends Controller
         Cache::put('completedTasks', $this->tasksService->loadCompletedTasks(), env('CACHE_TIME'));
         Cache::put('uncompletedTasks', $this->tasksService->loadUncompletedTasks(), env('CACHE_TIME'));
 
-        //loading circle
-        Cache::put('loadingCircle', SettingsQueries::getByKey('loading_circle'), env('CACHE_TIME'));
+        // currency
+        Cache::put('currency', SettingsQueries::getSettingValue('currency'), env('CACHE_TIME'));
+
+        // last deploy time and version
+        Cache::put('lastDeployTime', SettingsQueries::getSettingValue('last_deploy_time'), env('CACHE_TIME'));
+        Cache::put('lastDeployVersion', SettingsQueries::getSettingValue('last_deploy_version'), env('CACHE_TIME'));
     }
 
     /**

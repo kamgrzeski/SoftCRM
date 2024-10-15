@@ -8,7 +8,6 @@ use App\Jobs\StoreSystemLogJob;
 use App\Jobs\UpdateSettingsJob;
 use App\Queries\SettingsQueries;
 use App\Queries\SystemLogsQueries;
-use App\Services\SettingsService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -20,18 +19,13 @@ class SettingsController extends Controller
 {
     use DispatchesJobs;
 
-    private SettingsService $settingsService;
-
     /**
      * SettingsController constructor.
      *
-     * @param SettingsService $settingsService
      */
-    public function __construct(SettingsService $settingsService)
+    public function __construct()
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
-
-        $this->settingsService = $settingsService;
     }
 
     /**
