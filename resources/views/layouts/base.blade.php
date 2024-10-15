@@ -15,7 +15,6 @@
 
     <div id="page-wrapper">
         <div id="page-inner">
-            @include('layouts.template.title')
             <div class="row">
                 @yield('content')
             </div>

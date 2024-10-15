@@ -1,10 +1,6 @@
 @extends('layouts.base')
 
-@section('caption', 'Add companies')
-
 @section('title', 'Add companies')
-
-@section('lyric', '')
 
 @section('content')
     @if(count($clients) == 0)

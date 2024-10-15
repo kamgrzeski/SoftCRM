@@ -1,10 +1,6 @@
 @extends('layouts.base')
 
-@section('caption', 'Edit employees')
-
 @section('title', 'Edit employees')
-
-@section('lyric', '')
 
 @section('content')
 
