@@ -1,30 +1,31 @@
-# B2B CRM System in Laravel 11 with PHP [>8.2]
+# SoftCRM System in Laravel 11 with PHP [>8.2]
 <p align="center">
   <img src="https://i.ibb.co/z8ssKdN/Przechwytywanie.jpg">
 </p>
 
-SoftCRM is a database system containing a number of useful functions and solutions to facilitate B2B company management. It uses data analysis about customers' history with a company and to improve business relationships with customers, specifically focusing on customer retention and ultimately driving sales growth.
+SoftCRM is a comprehensive database system designed to streamline B2B company management through a wide range of powerful features and solutions. By leveraging data analysis of customer interactions and history, SoftCRM helps businesses enhance relationships with their clients. Its primary focus is on improving customer retention, fostering stronger connections, and ultimately driving sustainable sales growth. Whether you're managing customer data, tracking sales, or planning strategies, SoftCRM provides the tools to ensure your business runs more efficiently and profitably.
 
 <img src="https://i.imgur.com/6LLw8MX.png">
 
 ## Functionality:
-#### Dependencies:
-- Customer management
-- Employee management
-- Business management
-- Contract management between companies
+#### Core Features:
+- **Customer management**: Efficiently manage customer data, track interactions, and maintain detailed customer profiles to enhance relationships and improve customer retention.
+- **Employee management**: Organize employee information, assign tasks, and monitor performance to optimize workforce productivity and collaboration.
+- **Business management**: Oversee the overall business operations, manage company data, and streamline communication between departments.
+- **Contract management between companies**: Handle contracts with partner companies, track agreement statuses, and ensure compliance with legal requirements.
 
 #### Marketing:
-- Product management
-- Task management for employees
+- **Product management**: Maintain a detailed inventory of products, track availability, and manage pricing to align with market demands.
+- **Task management for employees**: Assign and monitor tasks related to marketing campaigns, ensuring that employees stay on top of their responsibilities.
 
 #### Sales:
-- Finance management
-- Sales management
+- **Finance management**: Keep track of all financial transactions, manage budgets, and ensure that financial resources are used efficiently.
+- **Sales management**: Oversee the entire sales process, from lead generation to closing deals, and track performance metrics to drive growth.
 
 #### Statistics:
-- full statistics from every day, yesterday, week and year
-- number of operations in the system,
+- **Detailed statistics for every day, including yesterday, weekly, and yearly summaries**: Generate comprehensive reports showing key performance indicators (KPIs) to help you analyze trends and make informed business decisions.
+- **Total count of all operations within the system**: Get a complete overview of all activities happening within the system to monitor efficiency and operational output.
+
 
 ####  Keep in mind that this is not the end of the functionality of this system because I am constantly developing it!
 
@@ -63,8 +64,8 @@ password: admin
 
 # Now you should then be able to access SoftCRM easily!
 
-I see that you have come to the end. 
-Do you appreciate my work on <strong>SoftCRM</strong>? Give me a few dollars for beer using Paypal donation!
+I appreciate you taking the time to explore my work on <strong>SoftCRM</strong>. If you found it valuable, consider supporting me with a small donation for a beer via PayPal! Thank you!
+
 <img src="https://i.ibb.co/NmFYNfx/beer-1.png">
 
 
