@@ -5,7 +5,7 @@
 
 SoftCRM is a database system containing a number of useful functions and solutions to facilitate B2B company management. It uses data analysis about customers' history with a company and to improve business relationships with customers, specifically focusing on customer retention and ultimately driving sales growth.
 
-<img src="https://i.ibb.co/xMcZF2V/Przechwytywanie.jpg">
+<img src="https://i.imgur.com/6LLw8MX.png">
 
 ## Functionality:
 #### Dependencies:
