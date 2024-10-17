@@ -67,7 +67,7 @@ class ClientController extends Controller
     public function processRenderUpdateForm(ClientsModel $client): \Illuminate\View\View
     {
         // Return the view for updating the client record.
-        return view('crm.clients.edit')->with(['client' => $this->clientService->loadClientDetails($client)]);
+        return view('crm.clients.update')->with(['client' => $this->clientService->loadClientDetails($client)]);
     }
 
     /**
@@ -116,7 +116,7 @@ class ClientController extends Controller
         $this->dispatchSync(new UpdateClientJob($request->validated(), $client));
 
         // Redirect to the clients page with a success message.
-        return redirect()->back()->with('message_success', $this->getMessage('messages.client_update'));
+        return redirect()->to('clients')->with('message_success', $this->getMessage('messages.client_update'));
     }
 
     /**

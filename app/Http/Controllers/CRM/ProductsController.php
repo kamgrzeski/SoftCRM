@@ -67,7 +67,7 @@ class ProductsController extends Controller
     public function processRenderUpdateForm(ProductsModel $product): \Illuminate\View\View
     {
         // Load the product details and render the update form.
-        return view('crm.products.edit')->with(['product' => $product]);
+        return view('crm.products.update')->with(['product' => $product]);
     }
 
     /**

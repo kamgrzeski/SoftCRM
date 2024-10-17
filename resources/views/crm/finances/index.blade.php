@@ -1,88 +1,106 @@
-@extends('layouts.base')
+<!DOCTYPE html>
+<html lang="pl">
+@include('layouts.head', ['title' => 'Finances lists'])
+<body class="bg-gray-100">
 
-@section('caption', 'List of finances')
+<div class="flex h-screen" x-data="{ sidebarOpen: false }">
+    @include('layouts.sidebar')
 
-@section('title', 'List of finances')
+    <div class="flex-1 flex flex-col">
+        @include('layouts.header')
 
-@section('lyric', '')
+        <main class="flex-1 p-6 overflow-y-auto">
+            <div>
+                @include('layouts.flash-messages')
+            </div>
 
-@section('content')
-    <div class="row">
-        <div class="col-md-12">
-            @include('layouts.template.messages')
-            <a href="{{ route('finances.create.form') }}">
-                <button type="button" class="btn btn-primary btn active">Add finances</button>
-            </a>
-            <br><br>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-code-fork" aria-hidden="true"></i> List of finances
-                </div>
-                <div class="panel-body">
-                    <div class="table">
-                        <table class="table table-striped table-bordered table-hover" id="dataTables-example" data-sortable>
-                            <thead>
-                            <tr>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">Category</th>
-                                <th class="text-center">Type</th>
-                                <th class="text-center">Gross</th>
-                                <th class="text-center">Net</th>
-                                <th class="text-center">Vat</th>
-                                <th class="text-center">Assigned companies</th>
-                                <th class="text-center">Date</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center" style="width:200px">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($finances as $key => $finance)
-                                <tr class="odd gradeX">
-                                    <td class="text-center">{{ $finance->name }}</td>
-                                    <td class="text-center">{{ $finance->category }}</td>
-                                    <td class="text-center">{{ $finance->type }}</td>
-                                    <td>
-                                        <button type="submit" class="btn btn-default" style="background-color: rgba(130,113,243,0.22)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($finance->gross) }}</button>
-                                    </td>
-                                    <td>
-                                        <button type="submit" class="btn btn-default" style="background-color: rgba(113,243,110,0.45)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($finance->net) }}</button>
-                                    </td>
-                                    <td>
-                                        <button type="submit" class="btn btn-default" style="background-color: rgba(217,243,30,0.45)">{{ Cknow\Money\Money::{App\Models\SettingsModel::getSettingValue('currency')}($finance->vat) }}</button>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="{{ route('companies.view', $finance->company->id) }}">{{ $finance->company->name }}</a>
-                                    </td>
-                                    <td class="text-center">{{ $finance->date }}</td>
-                                    <td class="text-center">
-                                            <form method="POST" action="{{ route('finances.set.active', $finance) }}">
-                                                @csrf
-                                                <label class="switch">
-                                                    <input type="checkbox" onchange="this.form.submit()" @if($finance->is_active) checked @endif>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            </form>
-                                    </td>
-                                    <td class="text-right" style="text-align: center">
-                                        <div class="btn-group">
-                                            <a class="btn btn-small btn-primary" href="{{ route('finances.view', $finance) }}">More information</a>
-                                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="{{ route('finances.update.form', $finance) }}">Edit</a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#">Some option</a></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    {!! $finances->render() !!}
-
+            <div class="w-full bg-white shadow-md rounded-lg mb-3">
+                <div class="p-6 flex justify-between items-center">
+                    <p class="text-xl">Finances lists</p>
+                    <a href="{{ route('finances.create.form') }}" class="text-blue-500 hover:text-blue-700">
+                        <button class="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150" type="button">
+                            <i class="fas fa-plus"></i> Add new finance
+                        </button>
+                    </a>
                 </div>
             </div>
-        </div>
+
+            <div class="w-full bg-white shadow-md rounded-lg mb-3">
+                <div class="p-3 flex justify-between items-center">
+                    <table class="min-w-full table-auto border-collapse border border-gray-200">
+                        <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-center border border-gray-300">#</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Name</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Category</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Type</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Gross</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Net</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Vat</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Assigned companies</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Date</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Status</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($finances as $key => $finance)
+                            <tr class="bg-white hover:bg-gray-50">
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $key+1 }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $finance->name }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $finance->category }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $finance->type }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $finance->gross }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $finance->net }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $finance->vat }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">
+                                    <a href="{{ route('clients.view', $finance->company->id) }}">{{ $finance->company->name }}</a>
+                                </td>
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $finance->date }}</td>
+
+                                <td class="px-4 py-2 text-center border border-gray-300">
+                                    <form method="POST" action="{{ route('finances.set.active', $finance) }}">
+                                        @csrf
+                                        <label class="inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" value="" class="sr-only peer"  onchange="this.form.submit()" @if($finance->is_active) checked @endif>
+                                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                        </label>
+                                    </form>
+                                </td>
+                                <td class="px-4 py-2 text-center border border-gray-300">
+                                    <div class="flex justify-center items-center space-x-2">
+                                        <a href="{{ route('finances.view', $finance) }}" class="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">
+                                            More info
+                                        </a>
+
+                                        <a href="{{ route('finances.update.form', $finance) }}" class="bg-yellow-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">
+                                            Edit
+                                        </a>
+
+                                        <form method="POST" action="{{ route('finances.delete', $finance) }}" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="py-2 border-t px-4">
+                    <div class="p-2">
+                        {!! $finances->render() !!}
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        @include('layouts.footer')
     </div>
-@endsection
+</div>
+</body>
+</html>

@@ -64,6 +64,7 @@ Route::group(['prefix' => 'deals'], function () {
     Route::put('update/{deal}', [DealsController::class, 'processUpdateDeal'])->name('deals.update');
     Route::delete('delete/{deal}', [DealsController::class, 'processDeleteDeal'])->name('deals.delete');
     Route::post('set-active/{deal}', [DealsController::class, 'processSetIsActive'])->name('deals.set.active');
+    Route::get('create-deal-term/{deal}', [DealsController::class, 'processRenderTermCreateForm'])->name('deals-terms.create.form');
     Route::post('store-terms/{deal}', [DealsController::class, 'processStoreDealTerms'])->name('deals.terms.store');
     Route::delete('terms/delete/{dealTerm}', [DealsController::class, 'processDeleteDealTerm'])->name('deals.terms.delete');
     Route::post('terms/{dealTerm}/generate-pdf/{deal}', [DealsController::class, 'processGenerateDealTermsInPDF'])->name('deals.terms.generate-pdf');

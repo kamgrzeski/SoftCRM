@@ -15,14 +15,10 @@ class CompaniesQueries
     /**
      * Get all companies.
      *
-     * @param bool $createForm Whether to return companies in a format suitable for form creation.
      * @return \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Collection
      */
-    public static function getAll(bool $createForm = false): \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Collection
+    public static function getAll(): \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Collection
     {
-        if($createForm) {
-            return CompaniesModel::pluck('name', 'id');
-        }
         return CompaniesModel::all()->sortBy('created_at');
     }
 

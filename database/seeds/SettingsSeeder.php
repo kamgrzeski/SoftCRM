@@ -17,7 +17,8 @@ class SettingsSeeder extends Seeder
             [
                 'key' => 'pagination_size',
                 'value' => 5,
-                'description' => 'set pagination size'
+                'description' => 'set pagination size',
+                'created_at' => now(),
             ]
         );
 
@@ -26,7 +27,8 @@ class SettingsSeeder extends Seeder
             [
                 'key' => 'currency',
                 'value' => 'EUR',
-                'description' => 'set currency type'
+                'description' => 'set currency type',
+                'created_at' => now(),
             ]
         );
 
@@ -35,7 +37,8 @@ class SettingsSeeder extends Seeder
             [
                 'key' => 'priority_size',
                 'value' => 3,
-                'description' => 'set priority size'
+                'description' => 'set priority size',
+                'created_at' => now(),
             ]
         );
 
@@ -44,7 +47,8 @@ class SettingsSeeder extends Seeder
             [
                 'key' => 'invoice_tax',
                 'value' => 3,
-                'description' => 'set invoice tax size'
+                'description' => 'set invoice tax size',
+                'created_at' => now(),
             ]
         );
 
@@ -53,7 +57,8 @@ class SettingsSeeder extends Seeder
             [
                 'key' => 'invoice_tax',
                 'value' => 3,
-                'description' => 'set invoice tax size'
+                'description' => 'set invoice tax size',
+                'created_at' => now(),
             ]
         );
 
@@ -62,7 +67,30 @@ class SettingsSeeder extends Seeder
             [
                 'key' => 'loading_circle',
                 'value' => 1,
-                'description' => 'set loading circle'
+                'description' => 'set loading circle',
+                'created_at' => now(),
+            ]
+        );
+
+        // last deploy time
+        DB::table('settings')->insert(
+            [
+                'key' => 'last_deploy_time',
+                'value' => now(),
+                'description' => 'set last deploy time',
+                'is_visible' => false,
+                'created_at' => now(),
+            ]
+        );
+
+        // last deploy version
+        DB::table('settings')->insert(
+            [
+                'key' => 'last_deploy_version',
+                'value' => '1.0.0',
+                'description' => 'set last deploy version',
+                'is_visible' => false,
+                'created_at' => now(),
             ]
         );
     }

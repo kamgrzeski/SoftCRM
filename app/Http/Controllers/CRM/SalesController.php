@@ -72,7 +72,7 @@ class SalesController extends Controller
     public function processRenderUpdateForm(SalesModel $sale): \Illuminate\View\View
     {
         // Load the sale record details and the products data to be used in the form.
-        return view('crm.sales.edit')->with([
+        return view('crm.sales.update')->with([
             'sale' => $sale,
             'products' => ProductsQueries::getAll()
         ]);

@@ -72,7 +72,7 @@ class EmployeesController extends Controller
     public function processRenderUpdateForm(EmployeesModel $employee): \Illuminate\View\View
     {
         // Load the employee record details and the clients data to be used in the form.
-        return view('crm.employees.edit')->with([
+        return view('crm.employees.update')->with([
             'employee' => $employee,
             'clients' => ClientsQueries::getAll()
         ]);

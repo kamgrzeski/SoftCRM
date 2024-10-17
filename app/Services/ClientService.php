@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Models\ClientsModel;
-use App\Models\SettingsModel;
 use App\Queries\ClientsQueries;
+use App\Queries\SettingsQueries;
 use App\Traits\Language;
 use Cknow\Money\Money;
 
@@ -25,7 +25,7 @@ class ClientService
      */
     public function loadClientDetails(ClientsModel $client): ClientsModel
     {
-        $client->formattedBudget = Money::{SettingsModel::getSettingValue('currency')}($client->budget);
+        $client->formattedBudget = Money::{SettingsQueries::getSettingValue('currency')}($client->budget);
 
         return $client;
     }

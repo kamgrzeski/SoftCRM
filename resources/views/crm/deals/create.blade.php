@@ -1,122 +1,105 @@
-@extends('layouts.base')
+<!DOCTYPE html>
+<html lang="pl">
+@include('layouts.head', ['title' => 'Add new deal'])
+<body class="bg-gray-100">
 
-@section('caption', 'Add deals')
+<div class="flex h-screen" x-data="{ sidebarOpen: false }">
+    @include('layouts.sidebar')
 
-@section('title', 'Add deals')
+    <div class="flex-1 flex flex-col">
+        @include('layouts.header')
 
-@section('lyric', 'lorem ipsum')
+        <main class="flex-1 p-6 overflow-y-auto">
+            <div>
+                @include('layouts.flash-messages')
+            </div>
 
-@section('content')
-    @if(count($companies) == 0)
-        <div class="alert alert-danger">
-            <strong>Danger!</strong> There is no company in system. Please create one. <a href="{{ route('companies.create.form') }}">Click here!</a>
-        </div>
-    @endif
-
-    @include('layouts.template.messages')
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    @include('crm.deals.forms.store_deal')
+            <div class="w-full bg-white shadow-md rounded-lg mb-3">
+                <div class="p-6 flex justify-between items-center">
+                    <p class="text-xl">Add new deal</p>
+                    <a href="{{ url()->previous() }}">
+                        <button class="bg-gray-500 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150" type="button">
+                            Back
+                        </button>
+                    </a>
                 </div>
             </div>
-        </div>
+
+            <div class="w-full bg-white shadow-md rounded-lg">
+                <div class="p-6">
+                    <form action="{{ route('deals.store') }}" method="POST">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Name',
+                                    'inputId' => 'name',
+                                    'inputName' => 'name',
+                                    'inputType' => 'text',
+                                    'inputRequired' => true
+                                ])
+
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Start date',
+                                    'inputId' => 'start_time',
+                                    'inputName' => 'start_time',
+                                    'inputType' => 'date',
+                                    'inputValue' => \Carbon\Carbon::now()->format('Y-m-d'),
+                                    'inputRequired' => true
+                                ])
+
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'End date',
+                                    'inputId' => 'end_time',
+                                    'inputName' => 'end_time',
+                                    'inputType' => 'date',
+                                    'inputValue' => \Carbon\Carbon::now()->format('Y-m-d'),
+                                    'inputRequired' => true
+                                ])
+
+                                <div class="mb-4">
+                                    <label for="company_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assign company</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                            <span class="text-gray-500"><i class="fa fa-pencil"></i></span>
+                                        </span>
+                                        <select id="company_id" name="company_id" required
+                                                class="rounded-none rounded-e-lg border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option value="" disabled selected>Select an option</option>
+                                            @foreach ($companies as $company)
+                                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div>
+
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Date',
+                                    'inputId' => 'date',
+                                    'inputName' => 'date',
+                                    'inputType' => 'date',
+                                    'inputRequired' => true
+                                ])
+
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end border-t border-gray-200">
+                            <button type="submit" class="bg-blue-500 mt-3 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Add deal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </main>
+
+        @include('layouts.footer')
     </div>
-        <script>
-            $(document).ready(function () {
-                //create formValidator object
-                //there are a lot of configuration options that need to be passed,
-                //but this makes it extremely flexibility and doesn't make any assumptions
-                var validator = new formValidator({
-                    //this function adds an error message to a form field
-                    addError: function (field, message) {
-                        //get existing error message field
-                        var error_message_field = $('.error_message', field.parent('.input-group'));
+</div>
 
-                        //if the error message field doesn't exist yet, add it
-                        if (!error_message_field.length) {
-                            error_message_field = $('<span/>').addClass('error_message');
-                            field.parent('.input-group').append(error_message_field);
-                        }
-
-                        error_message_field.text(message).show(200);
-                        field.addClass('error');
-                    },
-                    //this removes an error from a form field
-                    removeError: function (field) {
-                        $('.error_message', field.parent('.input-group')).text('').hide();
-                        field.removeClass('error');
-                    },
-                    //this is a final callback after failing to validate one or more fields
-                    //it can be used to display a summary message, scroll to the first error, etc.
-                    onErrors: function (errors, event) {
-                        //errors is an array of objects, each containing a 'field' and 'message' parameter
-                    },
-                    //this defines the actual validation rules
-                    rules: {
-                        //this is a basic non-empty check
-                        'name': {
-                            'field': $('input[name=name]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A name is required.";
-                                }
-                            }
-                        },
-                        'companies_id': {
-                            'field': $('select[name=companies_id]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A companies is required.";
-                                }
-                            }
-                        }
-                    }
-                });
-
-                //now, we attach events
-
-                //this does validation every time a field loses focus
-                $('form').on('blur', 'input,select', function () {
-                    validator.validateField($(this).attr('name'), 'blur');
-                });
-
-                //this clears errors every time a field gains focus
-                $('form').on('focus', 'input,select', function () {
-                    validator.clearError($(this).attr('name'));
-                });
-
-                //this is for the validate links
-                $('.validate_section').click(function () {
-                    var fields = [];
-                    $('input,select', $(this).closest('.section')).each(function () {
-                        fields.push($(this).attr('name'));
-                    });
-
-                    if (validator.validateFields(fields, 'submit')) {
-                        alert('success');
-                    }
-                    return false;
-                });
-                $('.validate_form').click(function () {
-                    if (!validator.validateFields('submit')) {
-                        return false;
-                    }
-                    return true;
-                });
-
-                //this is for the clear links
-                $('.clear_section').click(function () {
-                    var fields = [];
-                    $('input,select', $(this).closest('.section')).each(function () {
-                        fields.push($(this).attr('name'));
-                    });
-
-                    validator.clearErrors(fields);
-                    return false;
-                });
-            });
-        </script>
-@endsection
+</body>
+</html>

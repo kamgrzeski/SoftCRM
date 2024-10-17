@@ -11,7 +11,8 @@ class FinancesModel extends Model
     use SoftDeletes, BelongsToCompany;
 
     protected $fillable = [
-        'companies_id',
+        'name',
+        'company_id',
         'gross',
         'net',
         'vat',

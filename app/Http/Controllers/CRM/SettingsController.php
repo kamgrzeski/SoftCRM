@@ -8,7 +8,6 @@ use App\Jobs\StoreSystemLogJob;
 use App\Jobs\UpdateSettingsJob;
 use App\Queries\SettingsQueries;
 use App\Queries\SystemLogsQueries;
-use App\Services\SettingsService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -20,18 +19,13 @@ class SettingsController extends Controller
 {
     use DispatchesJobs;
 
-    private SettingsService $settingsService;
-
     /**
      * SettingsController constructor.
      *
-     * @param SettingsService $settingsService
      */
-    public function __construct(SettingsService $settingsService)
+    public function __construct()
     {
         $this->middleware(self::MIDDLEWARE_AUTH);
-
-        $this->settingsService = $settingsService;
     }
 
     /**
@@ -64,6 +58,9 @@ class SettingsController extends Controller
 
         // Dispatch the StoreSystemLogJob to store the system log
         $this->dispatchSync(new StoreSystemLogJob('SettingsModel has been changed.', 201, auth()->user()));
+
+        //forgot cache of loading circle
+        cache()->forget('loadingCircle');
 
         // Redirect back with a success message
         return redirect()->back()->with('message_success', $this->getMessage('messages.settings_update'));

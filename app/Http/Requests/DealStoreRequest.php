@@ -27,7 +27,7 @@ class DealStoreRequest extends FormRequest
             'name' => 'required|string',
             'start_time' => 'required',
             'end_time' => 'required',
-            'companies_id' => 'required|integer',
+            'company_id' => 'required|integer',
         ];
     }
 }

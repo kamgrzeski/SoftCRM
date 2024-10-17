@@ -85,7 +85,7 @@ class CompaniesController extends Controller
     public function processRenderUpdateForm(CompaniesModel $company): \Illuminate\View\View
     {
         // Return view with company and clients
-        return view('crm.companies.edit')->with([
+        return view('crm.companies.update')->with([
             'company' => $company,
             'clients' => ClientsQueries::getAll()
         ]);

@@ -26,7 +26,7 @@ class FinanceUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'companies_id' => 'required|integer',
+            'company_id' => 'required|integer',
             'description' => 'required|string',
             'type' => 'required|string',
             'gross' => 'required|string',

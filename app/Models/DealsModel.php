@@ -11,7 +11,7 @@ class DealsModel extends Model
 {
     use SoftDeletes, BelongsToCompany, HasManyDealTerms;
 
-    protected $fillable = ['name', 'companies_id', 'is_active'];
+    protected $fillable = ['name', 'company_id', 'is_active'];
 
     protected $table = 'deals';
     protected $dates = ['deleted_at'];
