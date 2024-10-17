@@ -17,14 +17,9 @@ class EmployeesService
     /**
      * Load all employees, optionally for creating a form.
      *
-     * @param bool $createForm Whether to load employees for creating a form.
      */
-    public function loadEmployees(bool $createForm = false): \Illuminate\Support\Collection
+    public function loadEmployees(): \Illuminate\Support\Collection
     {
-        if($createForm) {
-            return EmployeesModel::pluck('full_name', 'id');
-        }
-
         $employees = EmployeesModel::orderBy('created_at')->get();
 
         foreach($employees as $key => $employee) {

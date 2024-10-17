@@ -67,7 +67,7 @@ class ClientController extends Controller
     public function processRenderUpdateForm(ClientsModel $client): \Illuminate\View\View
     {
         // Return the view for updating the client record.
-        return view('crm.clients.edit')->with(['client' => $this->clientService->loadClientDetails($client)]);
+        return view('crm.clients.update')->with(['client' => $this->clientService->loadClientDetails($client)]);
     }
 
     /**

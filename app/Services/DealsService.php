@@ -40,7 +40,7 @@ class DealsService
             'body' => $dealTerm->body
         ];
 
-        $pdf = PDF::loadView('crm.deals.terms_pdf', $data);
+        $pdf = PDF::loadView('crm.deals.terms.terms_pdf', $data);
 
         return $pdf->download($deal->name . '.pdf');
     }

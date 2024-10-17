@@ -67,9 +67,9 @@ class FinancesController extends Controller
     public function processRenderUpdateForm(FinancesModel $finance)
     {
         // Return the view with the finance record and the companies.
-        return view('crm.finances.edit')->with([
+        return view('crm.finances.update')->with([
             'finance' => $finance,
-            'companies' => CompaniesQueries::getAll(true)
+            'companies' => CompaniesQueries::getAll()
         ]);
     }
 

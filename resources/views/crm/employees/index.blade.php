@@ -1,72 +1,100 @@
-@extends('layouts.base')
+<!DOCTYPE html>
+<html lang="pl">
+@include('layouts.head', ['title' => 'Employee lists'])
+<body class="bg-gray-100">
 
-@section('title', 'List of employees')
+<div class="flex h-screen" x-data="{ sidebarOpen: false }">
+    @include('layouts.sidebar')
 
-@section('content')
-    <div class="row">
-        <div class="col-md-12">
-            @include('layouts.template.messages')
-            <a href="{{ route('employees.create.form') }}">
-                <button type="button" class="btn btn-primary btn active">Add employees</button>
-            </a>
-            <br><br>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-code-fork" aria-hidden="true"></i> List of employees
-                </div>
-                <div class="panel-body">
-                    <div class="table">
-                        <table class="table table-striped table-bordered table-hover" id="dataTables">
-                            <thead>
-                            <tr>
-                                <th class="text-center">Full name</th>
-                                <th class="text-center">Phone</th>
-                                <th class="text-center">Email address</th>
-                                <th class="text-center">Job</th>
-                                <th class="text-center">Assigned client</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center" style="width:200px">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($employees as $key => $employee)
-                                <tr class="odd gradeX">
-                                    <td class="text-center">{{ $employee->full_name }}</td>
-                                    <td class="text-center">{{ $employee->phone }}</td>
-                                    <td class="text-center">{{ $employee->email }}</td>
-                                    <td class="text-center">{{ $employee->job }}</td>
-                                    <td class="text-center"><a
-                                                href="{{ route('clients.view', $employee->client->id) }}">{{ $employee->client->full_name }}</a>
-                                    </td>
-                                    <td class="text-center">
-                                                <form method="POST" action="{{ route('employees.set.active', $employee) }}">
-                                                    @csrf
-                                                    <label class="switch">
-                                                        <input type="checkbox" onchange="this.form.submit()" @if($employee->is_active) checked @endif>
-                                                        <span class="slider"></span>
-                                                    </label>
-                                                </form>
-                                    </td>
-                                    <td class="text-right" style="text-align: center">
-                                        <div class="btn-group">
-                                            <a class="btn btn-small btn-primary" href="{{ route('employees.view', $employee) }}">More information</a>
-                                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="{{ route('employees.update.form', $employee) }}">Edit</a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#">Some option</a></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    {!! $employees->render() !!}
+    <div class="flex-1 flex flex-col">
+        @include('layouts.header')
 
+        <main class="flex-1 p-6 overflow-y-auto">
+            <div>
+                @include('layouts.flash-messages')
+            </div>
+
+            <div class="w-full bg-white shadow-md rounded-lg mb-3">
+                <div class="p-6 flex justify-between items-center">
+                    <p class="text-xl">Employees lists</p>
+                    <a href="{{ route('employees.create.form') }}" class="text-blue-500 hover:text-blue-700">
+                        <button class="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150" type="button">
+                            <i class="fas fa-plus"></i> Add new employee
+                        </button>
+                    </a>
                 </div>
             </div>
-        </div>
+
+            <div class="w-full bg-white shadow-md rounded-lg mb-3">
+                <div class="p-3 flex justify-between items-center">
+                    <table class="min-w-full table-auto border-collapse border border-gray-200">
+                        <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-center border border-gray-300">#</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Full name</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Phone</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Email address</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Job</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Assigned client</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Status</th>
+                            <th class="px-4 py-2 text-center border border-gray-300">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($employees as $key => $employee)
+                            <tr class="bg-white hover:bg-gray-50">
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $key+1 }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $employee->full_name }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $employee->phone }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $employee->email }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">{{ $employee->job }}</td>
+                                <td class="px-4 py-2 text-center border border-gray-300">
+                                    <a href="{{ route('clients.view', $employee->client->id) }}">{{ $employee->client->full_name }}</a>
+                                </td>
+
+                                <td class="px-4 py-2 text-center border border-gray-300">
+                                    <form method="POST" action="{{ route('employees.set.active', $employee) }}">
+                                        @csrf
+                                        <label class="inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" value="" class="sr-only peer"  onchange="this.form.submit()" @if($employee->is_active) checked @endif>
+                                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                        </label>
+                                    </form>
+                                </td>
+                                <td class="px-4 py-2 text-center border border-gray-300">
+                                    <div class="flex justify-center items-center space-x-2">
+                                        <a href="{{ route('employees.view', $employee) }}" class="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">
+                                            More info
+                                        </a>
+
+                                        <a href="{{ route('employees.update.form', $employee) }}" class="bg-yellow-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">
+                                            Edit
+                                        </a>
+
+                                        <form method="POST" action="{{ route('employees.delete', $employee) }}" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="py-2 border-t px-4">
+                    <div class="p-2">
+                        {!! $employees->render() !!}
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        @include('layouts.footer')
     </div>
-@endsection
+</div>
+</body>
+</html>

@@ -87,7 +87,7 @@ class DealsController extends Controller
     public function processRenderUpdateForm(DealsModel $deal): \Illuminate\View\View
     {
         // Load the deal record for editing.
-        return view('crm.deals.edit')->with([
+        return view('crm.deals.update')->with([
             'deal' => $deal,
             'companies' => CompaniesQueries::getAll(),
         ]);
@@ -163,7 +163,7 @@ class DealsController extends Controller
     public function processSetIsActive(DealsModel $deal): \Illuminate\Http\RedirectResponse
     {
         // Update the deal status.
-        $this->dispatchSync(new UpdateDealJob(['is_active' => $deal->is_active], $deal));
+        $this->dispatchSync(new UpdateDealJob(['is_active' => ! $deal->is_active], $deal));
 
         // Log the action.
         $this->dispatchSync(new StoreSystemLogJob('Deals has been enabled with id: ' . $deal->id, 201, auth()->user()));
@@ -189,7 +189,7 @@ class DealsController extends Controller
         $this->dispatchSync(new StoreSystemLogJob('Deals terms has been added.', 201, auth()->user()));
 
         // Redirect back with a success message.
-        return redirect()->back()->with('message_success', $this->getMessage('messages.deal_term_store'));
+        return redirect()->route('deals.view', $deal)->with('message_success', $this->getMessage('messages.deal_term_store'));
     }
 
     /**
@@ -222,5 +222,10 @@ class DealsController extends Controller
 
         // Redirect back with a success message.
         return redirect()->back()->with('message_success', $this->getMessage('messages.deal_term_delete'));
+    }
+
+    public function processRenderTermCreateForm(DealsModel $deal)
+    {
+        return view('crm.deals.terms.create')->with(['deal' => $deal]);
     }
 }

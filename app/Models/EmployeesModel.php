@@ -14,8 +14,7 @@ class EmployeesModel extends Model
     use SoftDeletes, HasManyCompanies, BelongsToDeal, BelongsToClient, HasManyTasks;
 
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'full_name',
         'email',
         'phone',
         'company_id',

@@ -10,6 +10,6 @@ trait HasManySales
 
     public function sales(): HasMany
     {
-        return $this->hasMany(SalesModel::class);
+        return $this->hasMany(SalesModel::class, 'product_id');
     }
 }

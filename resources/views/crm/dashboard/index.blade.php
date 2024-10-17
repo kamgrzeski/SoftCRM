@@ -1,173 +1,142 @@
-@extends('layouts.base')
+<!DOCTYPE html>
+<html lang="pl">
+@include('layouts.head', ['title' => 'Dashboard'])
+<body class="bg-gray-100">
 
-@section('title', 'Welcome in SoftCRM')
+<div class="flex h-screen" x-data="{ sidebarOpen: false }">
+    @include('layouts.sidebar')
 
-@section('caption', 'Welcome in SoftCRM')
+    <div class="flex-1 flex flex-col">
+        @include('layouts.header')
 
-@section('content')
-    <div class="row">
-        <div class="col-md-3 col-sm-12 col-xs-12">
-            <div class="panel panel-primary text-center no-boder bg-color-green">
-                <div class="panel-body boxes">
-                    <i class="fa fa-female fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Clients: {{ cache()->get('countClients') }}
-                        ({{ cache()->get('deactivatedClients') }})
-                    </h3>
-                </div>
-                <a href="{{ route('clients.index') }}" style="text-decoration: none">
-                    <div class="panel-footer back-footer-green boxes-font">
-                        {{ cache()->get('clientsInLatestMonth') }}% Increase in 30 Days
+        <main class="flex-1 p-6 overflow-y-auto">
+            <div>
+                @include('layouts.flash-messages')
+
+                @include('layouts.components.stats')
+
+                @include('crm.dashboard.components.charts')
+
+                <div class="mt-4">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1 bg-white border p-4 text-white">
+                            <div class="text-black p-3 border">
+                                Latest tasks <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10"> {{ cache()->get('countTasks') }}</span>
+                                <span class="float-right">
+                                    Completed: {{ cache()->get('completedTasks') }} | Uncompleted: {{ cache()->get('uncompletedTasks') }}
+                                </span>
+                            </div>
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Duration
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Created at
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 float-right">
+                                        Action
+                                    </th>
+                                </tr>
+                                </thead>
+                                @if(count($tasks) > 0)
+                                    <tbody>
+                                    @foreach ($tasks as $result)
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {{ $result['name'] }}
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                {{ $result['duration'] . ' days' }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ $result['created_at']->diffForHumans() }}
+                                            </td>
+                                            <td class="px-6 py-4 float-right">
+                                                <a href="{{ route('tasks.view', $result['id']) }}" class="text-blue-500 hover:text-blue-700">
+                                                    <button class="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button"
+                                                    >
+                                                        <i class="fas fa-eye"></i> View
+                                                    </button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                @else
+                                    There is no tasks.
+                                @endif
+                            </table>
+
+                            <div class="text-right text-black p-2 border">
+                                <a href="{{ route('tasks.index') }}">More Tasks <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="flex-1 bg-white border p-4 text-white">
+                            <div class="text-black p-3 border">
+                                Latest add products <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10"> {{ cache()->get('countProducts') }}</span>
+                            </div>
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Name
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Count
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Price
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 float-right">
+                                        Action
+                                    </th>
+                                </tr>
+                                </thead>
+                                @if(count($products) > 0)
+                                    <tbody>
+                                    @foreach ($products as $result)
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                {{ $result->name }}
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                {{ $result->count }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ Cknow\Money\Money::{$currency}($result->price) }}
+                                            </td>
+                                            <td class="px-6 py-4 float-right">
+                                                <a href="{{ route('products.view', $result->id) }}" class="text-blue-500 hover:text-blue-700">
+                                                    <button class="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                @else
+                                    There is no products.
+                                @endif
+                            </table>
+
+                            <div class="text-right text-black p-2 border">
+                                <a href="{{ route('tasks.index') }}">More Tasks <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
                     </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-12 col-xs-12">
-            <div class="panel panel-primary text-center no-boder bg-color-blue">
-                <div class="panel-body boxes">
-                    <i class="fa fa-compass fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Companies: {{ cache()->get('countCompanies') }}
-                        ({{ cache()->get('deactivatedCompanies') }})
-                    </h3>
                 </div>
-                <a href="{{ route('companies.index') }}" style="text-decoration: none">
-                    <div class="panel-footer back-footer-blue boxes-font">
-                        {{ cache()->get('companiesInLatestMonth') }}% Increase in 30 Days
-                    </div>
-                </a>
             </div>
-        </div>
-        <div class="col-md-3 col-sm-12 col-xs-12">
-            <div class="panel panel-primary text-center no-boder bg-color-red">
-                <div class="panel-body boxes">
-                    <i class="fa fa fa-users fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Employees: {{ cache()->get('countFinances') }}
-                        ({{ cache()->get('deactivatedEmployees') }})
-                    </h3>
-                </div>
-                <a href="{{ route('employees.index') }}" style="text-decoration: none">
-                    <div class="panel-footer back-footer-red boxes-font">
-                        {{ cache()->get('employeesInLatestMonth') }}% Increase in 30 Days
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-12 col-xs-12">
-            <div class="panel panel-primary text-center no-boder bg-color-brown">
-                <div class="panel-body boxes">
-                    <i class="fa fa-paperclip fa-3x"></i>
-                    <h3 style="padding:8px;font-size:18px">Deals: {{ cache()->get('countDeals') }}
-                        ({{ cache()->get('deactivatedDeals') }})
-                    </h3>
-                </div>
-                <a href="{{ route('deals.index') }}" style="text-decoration: none">
-                    <div class="panel-footer back-footer-brown boxes-font">
-                        {{ cache()->get('dealsInLatestMonth') }}% Increase in 30 Days
-                    </div>
-                </a>
-            </div>
-        </div>
+        </main>
+
+        @include('layouts.footer')
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {!! $tasksGraphData->render() !!}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {!! $itemsCountGraphData->render() !!}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Latest tasks <span class="badge"> {{ cache()->get('countTasks') }}</span></button>
-                    <span style="float: right">Completed: {{ cache()->get('completedTasks') }}
-                        | Uncompleted: {{ cache()->get('uncompletedTasks') }}</span>
-                </div>
-                <div class="panel-body">
-                    <div class="list-group">
-                        @if(count($dataWithAllTasks) > 0)
-                            @foreach ($dataWithAllTasks as $result)
-                                <a href="{{ route('tasks.view', $result['id']) }}" class="list-group-item">
-                                    <span class="badge badge"
-                                          style="background-color: #428bca !important;">{{ $result['created_at']->diffForHumans() }}</span>
-                                    <span class="badge badge"
-                                          style="background-color: #ca4e6e !important;">Duration: {{ $result['duration'] . ' days' }}</span>
-                                    <i class="fa fa-fw fa-comment"></i> {{ $result['name'] }}
-                                </a>
-                            @endforeach
-                        @else
-                            There is no tasks.
-                        @endif
-                    </div>
-                    <div class="text-right">
-                        <a href="{{ route('tasks.index') }}">More Tasks <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Latest add companies <span class="badge"> {{ cache()->get('countCompanies') }}</span>
-                </div>
-                <div class="panel-body">
-                    <div class="list-group">
-                        @if(count($dataWithAllCompanies) > 0)
-                            @foreach ($dataWithAllCompanies as $result)
-                                <a href="{{ route('companies.view', $result->id) }}" class="list-group-item">
-                                    <i class="fa fa-compass"></i> {{ $result->name }}
-                                    <span class="badge badge"
-                                          style="background-color: #ff9800 !important;">Phone: {{ $result->phone }}</span>
-                                </a>
-                            @endforeach
-                        @else
-                            There is no companies.
-                        @endif
-                    </div>
-                    <div class="text-right">
-                        <a href="{{ route('companies.index') }}">More companies <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+</div>
 
-        <div class="col-md-6 col-sm-12 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Latest add products <span class="badge"> {{ cache()->get('countProducts') }}</span>
-                </div>
-                <div class="panel-body">
-                    <div class="list-group">
-                        @if(count($dataWithAllProducts) > 0)
-                            @foreach ($dataWithAllProducts as $result)
-                                <a href="{{ route('products.view', $result->id) }}" class="list-group-item">
-                                    <span class="badge badge"
-                                          style="background-color: #428bca !important;">{{ $result->created_at->diffForHumans() }}</span>
-                                    <span class="badge badge" style="background-color: #8a3a44 !important;">
-                                         {{ $result->count }} qty</span>
-                                    <span class="badge badge" style="background-color: #298a15 !important;">
-                                        {{ Cknow\Money\Money::{$currency}($result->price) }}</span>
-                                    <i class="fa fa-fw fa-product-hunt"></i> {{ $result->name }}
-                                </a>
-                            @endforeach
-                        @else
-                            There is no products.
-                        @endif
-                    </div>
-                    <div class="text-right">
-                        <a href="{{ route('products.index') }}">More products <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-@endsection
+</body>
+</html>

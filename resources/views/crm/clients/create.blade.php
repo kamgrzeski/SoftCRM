@@ -1,203 +1,128 @@
-@extends('layouts.base')
+<!DOCTYPE html>
+<html lang="pl">
+@include('layouts.head', ['title' => 'Add new client'])
+<body class="bg-gray-100">
 
-@section('caption', 'Add client')
+<div class="flex h-screen" x-data="{ sidebarOpen: false }">
+    @include('layouts.sidebar')
 
-@section('title', 'Add client')
+    <div class="flex-1 flex flex-col">
+        @include('layouts.header')
 
-@section('lyric', 'lorem ipsum')
+        <main class="flex-1 p-6 overflow-y-auto">
+            <div>
+                @include('layouts.flash-messages')
+            </div>
 
-@section('content')
-
-    @include('layouts.template.messages')
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    @include('crm.clients.forms.store_client_form')
+            <div class="w-full bg-white shadow-md rounded-lg mb-3">
+                <div class="p-6 flex justify-between items-center">
+                    <p class="text-xl">Add new client</p>
+                    <a href="{{ url()->previous() }}">
+                        <button class="bg-gray-500 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150" type="button">
+                            Back
+                        </button>
+                    </a>
                 </div>
             </div>
-        </div>
 
-        <script>
-            $(document).ready(function () {
-                //create formValidator object
-                //there are a lot of configuration options that need to be passed,
-                //but this makes it extremely flexibility and doesn't make any assumptions
-                var validator = new formValidator({
-                    //this function adds an error message to a form field
-                    addError: function (field, message) {
-                        //get existing error message field
-                        var error_message_field = $('.error_message', field.parent('.input-group'));
+            <div class="w-full bg-white shadow-md rounded-lg">
+                <div class="p-6">
+                    <form action="{{ route('clients.store') }}" method="POST">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Full name',
+                                    'inputId' => 'full-name',
+                                    'inputName' => 'full_name',
+                                    'inputType' => 'text',
+                                    'inputRequired' => true
+                                ])
 
-                        //if the error message field doesn't exist yet, add it
-                        if (!error_message_field.length) {
-                            error_message_field = $('<span/>').addClass('error_message');
-                            field.parent('.input-group').append(error_message_field);
-                        }
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Phone',
+                                    'inputId' => 'phone',
+                                    'inputName' => 'phone',
+                                    'inputType' => 'number',
+                                    'inputRequired' => true
+                                ])
 
-                        error_message_field.text(message).show(200);
-                        field.addClass('error');
-                    },
-                    //this removes an error from a form field
-                    removeError: function (field) {
-                        $('.error_message', field.parent('.input-group')).text('').hide();
-                        field.removeClass('error');
-                    },
-                    //this is a final callback after failing to validate one or more fields
-                    //it can be used to display a summary message, scroll to the first error, etc.
-                    onErrors: function (errors, event) {
-                        //errors is an  of objects, each containing a 'field' and 'message' parameter
-                    },
-                    //this defines the actual validation rules
-                    rules: {
-                        //this is a basic non-empty check
-                        'full_name': {
-                            'field': $('input[name=full_name]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A full name is required.";
-                                }
-                            }
-                        },
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Budget',
+                                    'inputId' => 'budget',
+                                    'inputName' => 'budget',
+                                    'inputType' => 'text',
+                                    'inputRequired' => true
+                                ])
 
-                        //this demonstrates more than one error message
-                        //and handling more than one event
-                        'budget': {
-                            'field': $('input[name=budget]'),
-                            'validate': function (field, event) {
-                                //if the validation is fired from a blur event,
-                                //don't throw any errors if it is empty
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'City',
+                                    'inputId' => 'city',
+                                    'inputName' => 'city',
+                                    'inputType' => 'text',
+                                    'inputRequired' => true
+                                ])
 
-                                if (!field.val()) {
-                                    throw "A budget is required."
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Country',
+                                    'inputId' => 'country',
+                                    'inputName' => 'country',
+                                    'inputType' => 'text',
+                                    'inputRequired' => true
+                                ])
+                            </div>
 
-                                }
-                                ;
+                            <div>
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Email address',
+                                    'inputId' => 'email',
+                                    'inputName' => 'email',
+                                    'inputType' => 'email',
+                                    'inputRequired' => true
+                                ])
 
-                                var phone_pattern = /[0-9]$/i;
-                                if (!phone_pattern.test(field.val())) {
-                                    throw "Please enter only number.";
-                                }
+                                @include('layouts.components.forms.select', [
+                                    'name' => 'Section',
+                                    'inputId' => 'section',
+                                    'inputName' => 'section',
+                                    'inputRequired' => true,
+                                    'options' => [
+                                        (object)['id' => 'transport', 'name' => 'Transport'],
+                                        (object)['id' => 'logistic', 'name' => 'Logistic'],
+                                        (object)['id' => 'finances', 'name' => 'Finances']
+                                    ]
+                                ])
 
-                            }
-                        },
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Location',
+                                    'inputId' => 'location',
+                                    'inputName' => 'location',
+                                    'inputType' => 'text',
+                                    'inputRequired' => true
+                                ])
 
-                        //this demonstrates more than one error message
-                        //and handling more than one event
-                        'phone': {
-                            'field': $('input[name=phone]'),
-                            'validate': function (field, event) {
-                                //if the validation is fired from a blur event,
-                                //don't throw any errors if it is empty
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'ZIP',
+                                    'inputId' => 'zip',
+                                    'inputName' => 'zip',
+                                    'inputType' => 'text',
+                                    'inputRequired' => true
+                                ])
+                            </div>
+                        </div>
 
-                                if (!field.val()) {
-                                    throw "A phone number is required."
+                        <div class="flex justify-end border-t border-gray-200">
+                            <button type="submit" class="bg-blue-500 mt-3 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Add client</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-                                }
-                                ;
+        </main>
 
-                                var phone_pattern = /[0-9]$/i;
-                                if (!phone_pattern.test(field.val())) {
-                                    throw "Please enter a valid phone number.";
-                                }
-
-                            }
-                        },
-
-                        'email': {
-                            'field': $('input[name=email]'),
-                            'validate': function (field, event) {
-                                //if the validation is fired from a blur event,
-                                //don't throw any errors if it is empty
-                                if (event === 'blur' && !field.val()) field.addClass('success');
-
-                                if (!field.val()) throw "A email is required.";
-
-                                var email_pattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-                                if (!email_pattern.test(field.val())) {
-                                    throw "Please enter a valid email.";
-                                }
-                            }
-                        },
-                        'city': {
-                            'field': $('input[name=city]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A city is required.";
-                                }
-                            }
-                        },
-
-                        'country': {
-                            'field': $('input[name=country]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A country is required.";
-                                }
-                            }
-                        },
-                        'location': {
-                            'field': $('input[name=location]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A location is required.";
-                                }
-                            }
-                        },
-                        'zip': {
-                            'field': $('input[name=zip]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A zip is required.";
-                                }
-                            }
-                        }
-                    }
-                });
-
-                //now, we attach events
-
-                //this does validation every time a field loses focus
-                $('form').on('blur', 'input,select', function () {
-                    validator.validateField($(this).attr('name'), 'blur');
-                });
-
-                //this clears errors every time a field gains focus
-                $('form').on('focus', 'input,select', function () {
-                    validator.clearError($(this).attr('name'));
-                });
-
-                //this is for the validate links
-                $('.validate_section').click(function () {
-                    var fields = [];
-                    $('input,select', $(this).closest('.section')).each(function () {
-                        fields.push($(this).attr('name'));
-                    });
-
-                    if (validator.validateFields(fields, 'submit')) {
-                        alert('success');
-                    }
-                    return false;
-                });
-                $('.validate_form').click(function () {
-                    if (!validator.validateFields('submit')) {
-                        return false;
-                    }
-                    return true;
-                });
-
-                //this is for the clear links
-                $('.clear_section').click(function () {
-                    var fields = [];
-                    $('input,select', $(this).closest('.section')).each(function () {
-                        fields.push($(this).attr('name'));
-                    });
-
-                    validator.clearErrors(fields);
-                    return false;
-                });
-            });
-        </script>
+        @include('layouts.footer')
     </div>
-@endsection
+</div>
+
+</body>
+</html>

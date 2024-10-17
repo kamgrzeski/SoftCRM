@@ -1,173 +1,107 @@
-@extends('layouts.base')
+<!DOCTYPE html>
+<html lang="pl">
+@include('layouts.head', ['title' => 'Add new employee'])
+<body class="bg-gray-100">
 
-@section('caption', 'Add empoloyees')
+<div class="flex h-screen" x-data="{ sidebarOpen: false }">
+    @include('layouts.sidebar')
 
-@section('title', 'Add empoloyees')
+    <div class="flex-1 flex flex-col">
+        @include('layouts.header')
 
-@section('lyric', 'lorem ipsum')
+        <main class="flex-1 p-6 overflow-y-auto">
+            <div>
+                @include('layouts.flash-messages')
+            </div>
 
-@section('content')
-    @if(count($clients) == 0)
-        <div class="alert alert-danger">
-            <strong>Danger!</strong> There is no client in system. Please create one. <a href="{{ route('clients.create') }}">Click here!</a>
-        </div>
-    @endif
-
-    @include('layouts.template.messages')
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    @include('crm.employees.forms.store_employee_form')
+            <div class="w-full bg-white shadow-md rounded-lg mb-3">
+                <div class="p-6 flex justify-between items-center">
+                    <p class="text-xl">Add new employee</p>
+                    <a href="{{ url()->previous() }}">
+                        <button class="bg-gray-500 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150" type="button">
+                            Back
+                        </button>
+                    </a>
                 </div>
             </div>
-        </div>
+
+            <div class="w-full bg-white shadow-md rounded-lg">
+                <div class="p-6">
+                    <form action="{{ route('employees.store') }}" method="POST">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Full name',
+                                    'inputId' => 'full_name',
+                                    'inputName' => 'full_name',
+                                    'inputType' => 'text',
+                                    'inputRequired' => true
+                                ])
+
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Phone',
+                                    'inputId' => 'phone',
+                                    'inputName' => 'phone',
+                                    'inputType' => 'text',
+                                    'inputRequired' => true
+                                ])
+
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Email',
+                                    'inputId' => 'email',
+                                    'inputName' => 'email',
+                                    'inputType' => 'email',
+                                    'inputRequired' => true
+                                ])
+
+                                @include('layouts.components.forms.input', [
+                                    'name' => 'Job',
+                                    'inputId' => 'job',
+                                    'inputName' => 'job',
+                                    'inputType' => 'text',
+                                    'inputRequired' => true
+                                ])
+
+                                <div class="mb-4">
+                                    <label for="client_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Assign client</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                            <span class="text-gray-500"><i class="fa fa-pencil"></i></span>
+                                        </span>
+                                        <select id="client_id" name="client_id" required
+                                                class="rounded-none rounded-e-lg border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option value="" disabled selected>Select an option</option>
+                                            @foreach ($clients as $client)
+                                                <option value="{{ $client->id }}">{{ $client->full_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                @include('layouts.components.forms.textarea', [
+                                    'name' => 'Note',
+                                    'inputId' => 'note',
+                                    'inputName' => 'note',
+                                    'inputRequired' => false
+                                ])
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end border-t border-gray-200">
+                            <button type="submit" class="bg-blue-500 mt-3 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Add employee</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </main>
+
+        @include('layouts.footer')
     </div>
-        <script>
-            $(document).ready(function () {
-                //create formValidator object
-                //there are a lot of configuration options that need to be passed,
-                //but this makes it extremely flexibility and doesn't make any assumptions
-                var validator = new formValidator({
-                    //this function adds an error message to a form field
-                    addError: function (field, message) {
-                        //get existing error message field
-                        var error_message_field = $('.error_message', field.parent('.input-group'));
+</div>
 
-                        //if the error message field doesn't exist yet, add it
-                        if (!error_message_field.length) {
-                            error_message_field = $('<span/>').addClass('error_message');
-                            field.parent('.input-group').append(error_message_field);
-                        }
-
-                        error_message_field.text(message).show(200);
-                        field.addClass('error');
-                    },
-                    //this removes an error from a form field
-                    removeError: function (field) {
-                        $('.error_message', field.parent('.input-group')).text('').hide();
-                        field.removeClass('error');
-                    },
-                    //this is a final callback after failing to validate one or more fields
-                    //it can be used to display a summary message, scroll to the first error, etc.
-                    onErrors: function (errors, event) {
-                        //errors is an array of objects, each containing a 'field' and 'message' parameter
-                    },
-                    //this defines the actual validation rules
-                    rules: {
-                        //this is a basic non-empty check
-                        'full_name': {
-                            'field': $('input[name=full_name]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A full name is required.";
-                                }
-                            }
-                        },
-                        'job': {
-                            'field': $('input[name=job]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A job is required.";
-                                }
-                            }
-                        },
-                        'note': {
-                            'field': $('textarea[name=note]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A note is required.";
-                                }
-                            }
-                        },
-                        'client_id': {
-                            'field': $('select[name=client_id]'),
-                            'validate': function (field, event) {
-                                if (!field.val()) {
-                                    throw "A client is required.";
-                                }
-                            }
-                        },
-                        'phone': {
-                            'field': $('input[name=phone]'),
-                            'validate': function (field, event) {
-                                //if the validation is fired from a blur event,
-                                //don't throw any errors if it is empty
-
-                                if (!field.val()) {
-                                    throw "A phone number is required."
-
-                                }
-                                ;
-
-                                var phone_pattern = /[0-9]$/i;
-                                if (!phone_pattern.test(field.val())) {
-                                    throw "Please enter a valid phone number.";
-                                }
-
-                            }
-                        },
-
-                        'email': {
-                            'field': $('input[name=email]'),
-                            'validate': function (field, event) {
-                                //if the validation is fired from a blur event,
-                                //don't throw any errors if it is empty
-                                if (event === 'blur' && !field.val()) field.addClass('success');
-
-                                if (!field.val()) throw "A email is required.";
-
-                                var email_pattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-                                if (!email_pattern.test(field.val())) {
-                                    throw "Please enter a valid email.";
-                                }
-                            }
-                        }
-                    }
-                });
-
-                //now, we attach events
-
-                //this does validation every time a field loses focus
-                $('form').on('blur', 'input,select', function () {
-                    validator.validateField($(this).attr('name'), 'blur');
-                });
-
-                //this clears errors every time a field gains focus
-                $('form').on('focus', 'input,select', function () {
-                    validator.clearError($(this).attr('name'));
-                });
-
-                //this is for the validate links
-                $('.validate_section').click(function () {
-                    var fields = [];
-                    $('input,select', $(this).closest('.section')).each(function () {
-                        fields.push($(this).attr('name'));
-                    });
-
-                    if (validator.validateFields(fields, 'submit')) {
-                        alert('success');
-                    }
-                    return false;
-                });
-                $('.validate_form').click(function () {
-                    if (!validator.validateFields('submit')) {
-                        return false;
-                    }
-                    return true;
-                });
-
-                //this is for the clear links
-                $('.clear_section').click(function () {
-                    var fields = [];
-                    $('input,select', $(this).closest('.section')).each(function () {
-                        fields.push($(this).attr('name'));
-                    });
-
-                    validator.clearErrors(fields);
-                    return false;
-                });
-            });
-        </script>
-@endsection
+</body>
+</html>

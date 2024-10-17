@@ -98,6 +98,10 @@ class DashboardController extends Controller
         Cache::put('completedTasks', $this->tasksService->loadCompletedTasks(), env('CACHE_TIME'));
         Cache::put('uncompletedTasks', $this->tasksService->loadUncompletedTasks(), env('CACHE_TIME'));
 
+
+        //loading circle
+        Cache::put('loadingCircle', SettingsQueries::getSettingValue('loading_circle'), env('CACHE_TIME'));
+
         // currency
         Cache::put('currency', SettingsQueries::getSettingValue('currency'), env('CACHE_TIME'));
 

@@ -42,7 +42,7 @@ class TasksController extends Controller
     public function processRenderCreateForm(): \Illuminate\View\View
     {
         // Load the employees for the task.
-        return view('crm.tasks.create')->with(['employees' => $this->employeesService->loadEmployees(true)]);
+        return view('crm.tasks.create')->with(['employees' => $this->employeesService->loadEmployees()]);
     }
 
     /**
@@ -77,7 +77,7 @@ class TasksController extends Controller
     public function processRenderUpdateForm(TasksModel $task): \Illuminate\View\View
     {
         // Load the task record for editing.
-        return view('crm.tasks.edit')->with([
+        return view('crm.tasks.update')->with([
             'task' => $task,
             'employees' => $this->employeesService->loadEmployees()
         ]);
@@ -153,7 +153,7 @@ class TasksController extends Controller
     public function processTaskSetIsActive(TasksModel $task): \Illuminate\Http\RedirectResponse
     {
         // Update the task status.
-        $this->dispatchSync(new UpdateTaskJob(['is_active' => $task->is_active], $task));
+        $this->dispatchSync(new UpdateTaskJob(['is_active' => ! $task->is_active], $task));
 
         // Log the task status change.
         $this->dispatchSync(new StoreSystemLogJob('Tasks has been enabled with id: ' . $task->id, 201, auth()->user()));

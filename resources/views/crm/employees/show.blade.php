@@ -1,93 +1,97 @@
-@extends('layouts.base')
+<!DOCTYPE html>
+<html lang="pl">
+@include('layouts.head', ['title' => 'Show employee'])
+<body class="bg-gray-100">
 
-@section('title', 'Information about employees')
+<div class="flex h-screen" x-data="{ sidebarOpen: false }">
+    @include('layouts.sidebar')
 
-@section('content')
-    <div class="row">
-        <div class="col-md-12 col-sm-6">
-            @include('layouts.template.messages')
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    More information about: {{ $employee->full_name }}
-                </div>
-                <div class="panel-body">
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#home" data-toggle="tab">Basic information</a>
-                        </li>
-                        <li class="">
-                            <a href="#profile" data-toggle="tab">Tasks <span class="badge badge-warning">{{ $employee->taskCount }}</span></a>
-                        </li>
-                        <div class="text-right">
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteEmployeeModal">
-                                Delete this employee <li class="fa fa-trash-o"></li>
+    <div class="flex-1 flex flex-col">
+        @include('layouts.header')
+
+        <main class="flex-1 p-6 overflow-y-auto">
+            <div>
+                @include('layouts.flash-messages')
+            </div>
+
+            <div class="w-full bg-white shadow-md rounded-lg mb-3">
+                <div class="p-6 flex justify-between items-center">
+                    <p class="text-xl">Employee details: {{ $employee->full_name }}</p>
+                    <a href="{{ url()->previous() }}">
+                        <form method="POST" action="{{ route('employees.delete', $employee) }}" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">
+                                Delete this employee
                             </button>
-                        </div>
+                        </form>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div x-data="{ tab: 'home' }">
+                    <ul class="flex border-b">
+                        <li class="-mb-px mr-1">
+                            <a href="#" @click.prevent="tab = 'home'" :class="{ 'border-grey-500 text-grey-500 border-t border-r border-l rounded-t': tab === 'home' }" class="bg-white inline-block py-2 px-4 text-grey-700">
+                                Basic information
+                            </a>
+                        </li>
                     </ul>
 
-                    <div class="tab-content">
-                        <div class="tab-pane fade active in" id="home">
-                            <table class="table table-striped table-bordered">
+                    <div class="py-6">
+                        <!-- Basic information tab -->
+                        <div x-show="tab === 'home'">
+                            <table class="w-full text-left border border-gray-300">
                                 <tbody class="text-right">
-                                <tr>
-                                    <th>Full name</th>
-                                    <td>{{ $employee->full_name }}</td>
+                                <tr class="border-b">
+                                    <th class="px-4 py-2">Full name</th>
+                                    <td class="px-4 py-2">{{ $employee->full_name }}</td>
                                 </tr>
-                                <tr>
-                                    <th>Phone</th>
-                                    <td>{{ $employee->phone }}</td>
+
+                                <tr class="border-b">
+                                    <th class="px-4 py-2">Phone</th>
+                                    <td class="px-4 py-2">{{ $employee->phone }}</td>
                                 </tr>
-                                <tr>
-                                    <th>Email address</th>
-                                    <td>{{ $employee->email }}</td>
+
+                                <tr class="border-b">
+                                    <th class="px-4 py-2">Email address</th>
+                                    <td class="px-4 py-2">{{ $employee->email }}</td>
                                 </tr>
-                                <tr>
-                                    <th>Job</th>
-                                    <td>{{ $employee->job }}</td>
+
+                                <tr class="border-b">
+                                    <th class="px-4 py-2">Job</th>
+                                    <td class="px-4 py-2">{{ $employee->job }}</td>
                                 </tr>
-                                <tr>
-                                    <th>Note</th>
-                                    <td>{{ $employee->note }}</td>
+
+                                <tr class="border-b">
+                                    <th class="px-4 py-2">Note</th>
+                                    <td class="px-4 py-2">{{ $employee->note }}</td>
                                 </tr>
-                                <tr>
-                                    <th>Assigned client</th>
-                                    <td>
+
+                                <tr class="border-b">
+                                    <th class="px-4 py-2">Assigned client<</th>
+                                    <td class="px-4 py-2">
                                         <a href="{{ route('clients.view', $employee->client->id) }}">{{ $employee->client->full_name }}</a>
                                     </td>
-
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $employee->is_active ? 'Active' : 'Deactivate' }}</td>
+                                    <td class="px-4 py-2">{{ $employee->is_active ? 'Active' : 'Deactivate' }}</td>
                                 </tr>
+
                                 </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane fade" id="profile">
-                            <table class="table table-striped table-bordered table-hover" id="dataTables">
-                                <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                                @foreach($employee->tasks as $tasks)
-                                    <tbody>
-                                    <tr class="odd gradeX">
-                                        <td>{{ $tasks->name }}</td>
-                                        <td>
-                                            <a class="btn btn-small btn-primary" href="{{ route('tasks.view',  $tasks->id) }}">More information</a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                    </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </main>
 
-    @include('crm.employees.modals.delete_employee_modal')
-@endsection
+        @include('layouts.footer')
+    </div>
+</div>
+
+
+</body>
+</html>
