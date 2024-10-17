@@ -3,7 +3,7 @@
   <img src="https://i.ibb.co/z8ssKdN/Przechwytywanie.jpg">
 </p>
 
-SoftCRM is a comprehensive database system designed to streamline B2B company management through a wide range of powerful features and solutions. By leveraging data analysis of customer interactions and history, SoftCRM helps businesses enhance relationships with their clients. Its primary focus is on improving customer retention, fostering stronger connections, and ultimately driving sustainable sales growth. Whether you're managing customer data, tracking sales, or planning strategies, SoftCRM provides the tools to ensure your business runs more efficiently and profitably.
+SoftCRM is a comprehensive database system designed to streamline B2B company management. By analyzing customer interactions and history, it helps businesses enhance client relationships and improve customer retention. With a focus on driving sustainable sales growth, SoftCRM provides essential tools for managing customer data, tracking sales, and planning strategies, ensuring efficient and profitable operations.
 
 # Project Overview
 This repository marks the beginning of an exciting journey, with its first commit made on July 25, 2017. Since then, it has evolved significantly, reflecting countless hours of dedication, hard work, and passion for crafting a valuable tool.
