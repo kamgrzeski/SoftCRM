@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\SettingsModel;
+use App\Models\Setting;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -33,7 +33,7 @@ class UpdateSettingsJob implements ShouldQueue
     public function handle(): void
     {
         foreach($this->validatedData as $key => $value) {
-            SettingsModel::where('key', $key)->update([
+            Setting::where('key', $key)->update([
                     'value' => $value,
                     'updated_at' => now()
             ]);

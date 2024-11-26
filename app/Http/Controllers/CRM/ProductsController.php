@@ -8,9 +8,8 @@ use App\Http\Requests\ProductUpdateRequest;
 use App\Jobs\Product\StoreProductJob;
 use App\Jobs\Product\UpdateProductJob;
 use App\Jobs\StoreSystemLogJob;
-use App\Models\ProductsModel;
-use App\Queries\ProductsQueries;
-use App\Services\ProductsService;
+use App\Models\Product;
+use App\Queries\ProductQueries;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -21,19 +20,6 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 class ProductsController extends Controller
 {
     use DispatchesJobs;
-    private ProductsService $productsService;
-
-    /**
-     * ProductsController constructor.
-     *
-     * @param ProductsService $productsService
-     */
-    public function __construct(ProductsService $productsService)
-    {
-        $this->middleware(self::MIDDLEWARE_AUTH);
-
-        $this->productsService = $productsService;
-    }
 
     /**
      * Render the form for creating a new product record.
@@ -49,10 +35,10 @@ class ProductsController extends Controller
     /**
      * Show the details of a specific product record.
      *
-     * @param ProductsModel $product
+     * @param Product $product
      * @return \Illuminate\View\View
      */
-    public function processShowProductsDetails(ProductsModel $product): \Illuminate\View\View
+    public function processShowProductsDetails(Product $product): \Illuminate\View\View
     {
         // Load the product details and render the show page.
         return view('crm.products.show')->with(['product' => $product]);
@@ -61,13 +47,13 @@ class ProductsController extends Controller
     /**
      * Render the form for updating an existing product record.
      *
-     * @param ProductsModel $product
+     * @param Product $product
      * @return \Illuminate\View\View
      */
-    public function processRenderUpdateForm(ProductsModel $product): \Illuminate\View\View
+    public function processRenderUpdateForm(Product $product): \Illuminate\View\View
     {
         // Load the product details and render the update form.
-        return view('crm.products.update')->with(['product' => $product]);
+        return view('crm.products.update')->with(['product' => $product, 'products' => ProductQueries::getAll()]);
     }
 
     /**
@@ -79,7 +65,7 @@ class ProductsController extends Controller
     {
         // Load the products with pagination.
         return view('crm.products.index')->with([
-            'products' => ProductsQueries::getPaginate()
+            'products' => ProductQueries::getPaginate()
         ]);
     }
 
@@ -106,11 +92,11 @@ class ProductsController extends Controller
      * Update an existing product record.
      *
      * @param ProductUpdateRequest $request
-     * @param ProductsModel $product
+     * @param Product $product
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processUpdateProduct(ProductUpdateRequest $request, ProductsModel $product): \Illuminate\Http\RedirectResponse
+    public function processUpdateProduct(ProductUpdateRequest $request, Product $product): \Illuminate\Http\RedirectResponse
     {
         // Update the product.
         $this->dispatchSync(new UpdateProductJob($request->validated(), $product));
@@ -122,11 +108,11 @@ class ProductsController extends Controller
     /**
      * Delete a product record.
      *
-     * @param ProductsModel $product
+     * @param Product $product
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processDeleteProduct(ProductsModel $product): \Illuminate\Http\RedirectResponse
+    public function processDeleteProduct(Product $product): \Illuminate\Http\RedirectResponse
     {
         // Check if the product has any sales records.
         if ($product->sales()->count() > 0) {
@@ -146,11 +132,11 @@ class ProductsController extends Controller
     /**
      * Set the active status of a product record.
      *
-     * @param ProductsModel $product
+     * @param Product $product
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processProductSetIsActive(ProductsModel $product): \Illuminate\Http\RedirectResponse
+    public function processProductSetIsActive(Product $product): \Illuminate\Http\RedirectResponse
     {
         // Update the product's active status.
         $this->dispatchSync(new UpdateProductJob(['is_active' => $product->is_active], $product));

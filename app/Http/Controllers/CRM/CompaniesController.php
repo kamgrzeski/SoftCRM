@@ -8,11 +8,9 @@ use App\Http\Requests\CompanyUpdateRequest;
 use App\Jobs\Company\StoreCompanyJob;
 use App\Jobs\Company\UpdateCompanyJob;
 use App\Jobs\StoreSystemLogJob;
-use App\Models\CompaniesModel;
-use App\Queries\ClientsQueries;
-use App\Queries\CompaniesQueries;
-use App\Services\CompaniesService;
-use App\Services\DealsService;
+use App\Models\Company;
+use App\Queries\ClientQueries;
+use App\Queries\CompanyQueries;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -23,22 +21,6 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 class CompaniesController extends Controller
 {
     use DispatchesJobs;
-    private CompaniesService $companiesService;
-    private DealsService $dealsService;
-
-    /**
-     * CompaniesController constructor.
-     *
-     * @param CompaniesService $companiesService
-     * @param DealsService $dealsService
-     */
-    public function __construct(CompaniesService $companiesService, DealsService $dealsService)
-    {
-        $this->middleware(self::MIDDLEWARE_AUTH);
-
-        $this->companiesService = $companiesService;
-        $this->dealsService = $dealsService;
-    }
 
     /**
      * Render the form for creating a new company record.
@@ -48,16 +30,16 @@ class CompaniesController extends Controller
     public function processRenderCreateForm(): \Illuminate\View\View
     {
         // Return view with clients.
-        return view('crm.companies.create')->with(['clients' => ClientsQueries::getAll()]);
+        return view('crm.companies.create')->with(['clients' => ClientQueries::getAll()]);
     }
 
     /**
      * Show the details of a specific company record.
      *
-     * @param CompaniesModel $company
+     * @param Company $company
      * @return \Illuminate\View\View
      */
-    public function processViewCompanyDetails(CompaniesModel $company): \Illuminate\View\View
+    public function processViewCompanyDetails(Company $company): \Illuminate\View\View
     {
         // Return view with company details.
         return view('crm.companies.show')->with(['company' => $company]);
@@ -72,22 +54,22 @@ class CompaniesController extends Controller
     {
         // Return view with companies pagination.
         return view('crm.companies.index')->with([
-            'companies' => CompaniesQueries::getPaginate()
+            'companies' => CompanyQueries::getPaginate()
         ]);
     }
 
     /**
      * Render the form for updating an existing company record.
      *
-     * @param CompaniesModel $company
+     * @param Company $company
      * @return \Illuminate\View\View
      */
-    public function processRenderUpdateForm(CompaniesModel $company): \Illuminate\View\View
+    public function processRenderUpdateForm(Company $company): \Illuminate\View\View
     {
         // Return view with company and clients
         return view('crm.companies.update')->with([
             'company' => $company,
-            'clients' => ClientsQueries::getAll()
+            'clients' => ClientQueries::getAll()
         ]);
     }
 
@@ -114,11 +96,11 @@ class CompaniesController extends Controller
      * Update an existing company record.
      *
      * @param CompanyUpdateRequest $request
-     * @param CompaniesModel $company
+     * @param Company $company
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processUpdateCompany(CompanyUpdateRequest $request, CompaniesModel $company): \Illuminate\Http\RedirectResponse
+    public function processUpdateCompany(CompanyUpdateRequest $request, Company $company): \Illuminate\Http\RedirectResponse
     {
         // Update company.
         $this->dispatchSync(new UpdateCompanyJob($request->validated(), $company));
@@ -130,11 +112,11 @@ class CompaniesController extends Controller
     /**
      * Delete a company record.
      *
-     * @param CompaniesModel $company
+     * @param Company $company
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processDeleteCompany(CompaniesModel $company): \Illuminate\Http\RedirectResponse
+    public function processDeleteCompany(Company $company): \Illuminate\Http\RedirectResponse
     {
         // Check if company has deals.
         if ($company->deals()->count() > 0) {
@@ -154,11 +136,11 @@ class CompaniesController extends Controller
     /**
      * Set the active status of a company record.
      *
-     * @param CompaniesModel $company
+     * @param Company $company
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processCompanySetIsActive(CompaniesModel $company): \Illuminate\Http\RedirectResponse
+    public function processCompanySetIsActive(Company $company): \Illuminate\Http\RedirectResponse
     {
         // Update company status.
         $this->dispatchSync(new UpdateCompanyJob(['is_active' => ! $company->is_active], $company));

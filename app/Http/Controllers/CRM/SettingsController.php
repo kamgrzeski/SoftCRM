@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SettingsStoreRequest;
 use App\Jobs\StoreSystemLogJob;
 use App\Jobs\UpdateSettingsJob;
-use App\Queries\SettingsQueries;
-use App\Queries\SystemLogsQueries;
+use App\Queries\SettingQueries;
+use App\Queries\SystemLogQueries;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -20,15 +20,6 @@ class SettingsController extends Controller
     use DispatchesJobs;
 
     /**
-     * SettingsController constructor.
-     *
-     */
-    public function __construct()
-    {
-        $this->middleware(self::MIDDLEWARE_AUTH);
-    }
-
-    /**
      * List all settings and system logs with pagination.
      *
      * @return \Illuminate\View\View
@@ -36,8 +27,8 @@ class SettingsController extends Controller
     public function processListOfSettings(): \Illuminate\View\View
     {
         return view('crm.settings.index')->with([
-            'settings' => SettingsQueries::getAll(),
-            'logs' => SystemLogsQueries::getPaginate()
+            'settings' => SettingQueries::getAll(),
+            'logs' => SystemLogQueries::getPaginate()
         ]);
     }
 

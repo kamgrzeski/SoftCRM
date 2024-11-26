@@ -8,8 +8,8 @@ use App\Http\Requests\ClientUpdateRequest;
 use App\Jobs\Client\StoreClientJob;
 use App\Jobs\Client\UpdateClientJob;
 use App\Jobs\StoreSystemLogJob;
-use App\Models\ClientsModel;
-use App\Queries\ClientsQueries;
+use App\Models\Client;
+use App\Queries\ClientQueries;
 use App\Services\ClientService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -30,8 +30,6 @@ class ClientController extends Controller
      */
     public function __construct(ClientService $clientService)
     {
-        $this->middleware(self::MIDDLEWARE_AUTH);
-
         $this->clientService = $clientService;
     }
 
@@ -49,10 +47,10 @@ class ClientController extends Controller
     /**
      * Show the details of a specific client record.
      *
-     * @param ClientsModel $client
+     * @param Client $client
      * @return \Illuminate\View\View
      */
-    public function processShowClientDetails(ClientsModel $client): \Illuminate\View\View
+    public function processShowClientDetails(Client $client): \Illuminate\View\View
     {
         // Return the view with the client details.
         return view('crm.clients.show')->with(['client' => $this->clientService->loadClientDetails($client)]);
@@ -61,10 +59,10 @@ class ClientController extends Controller
     /**
      * Render the form for updating an existing client record.
      *
-     * @param ClientsModel $client
+     * @param Client $client
      * @return \Illuminate\View\View
      */
-    public function processRenderUpdateForm(ClientsModel $client): \Illuminate\View\View
+    public function processRenderUpdateForm(Client $client): \Illuminate\View\View
     {
         // Return the view for updating the client record.
         return view('crm.clients.update')->with(['client' => $this->clientService->loadClientDetails($client)]);
@@ -79,7 +77,7 @@ class ClientController extends Controller
     {
         // Return the view with the paginated list of clients.
         return view('crm.clients.index')->with([
-            'clients' => ClientsQueries::getPaginate()
+            'clients' => ClientQueries::getPaginate()
         ]);
     }
 
@@ -106,11 +104,11 @@ class ClientController extends Controller
      * Update an existing client record.
      *
      * @param ClientUpdateRequest $request
-     * @param ClientsModel $client
+     * @param Client $client
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processUpdateClient(ClientUpdateRequest $request, ClientsModel $client)
+    public function processUpdateClient(ClientUpdateRequest $request, Client $client)
     {
         // UpdateClientJob is a job that updates the client model.
         $this->dispatchSync(new UpdateClientJob($request->validated(), $client));
@@ -122,11 +120,11 @@ class ClientController extends Controller
     /**
      * Delete a client record.
      *
-     * @param ClientsModel $client
+     * @param Client $client
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processDeleteClient(ClientsModel $client): \Illuminate\Http\RedirectResponse
+    public function processDeleteClient(Client $client): \Illuminate\Http\RedirectResponse
     {
         // Delete the client model.
         $client->delete();
@@ -138,11 +136,11 @@ class ClientController extends Controller
     /**
      * Set the active status of a client record.
      *
-     * @param ClientsModel $client
+     * @param Client $client
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processClientSetIsActive(ClientsModel $client): \Illuminate\Http\RedirectResponse
+    public function processClientSetIsActive(Client $client): \Illuminate\Http\RedirectResponse
     {
         // UpdateClientJob is a job that updates the client model.
         $this->dispatchSync(new UpdateClientJob(['is_active' => ! $client->is_active], $client));

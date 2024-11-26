@@ -8,8 +8,8 @@ use App\Http\Requests\TaskUpdateRequest;
 use App\Jobs\StoreSystemLogJob;
 use App\Jobs\Task\StoreTaskJob;
 use App\Jobs\Task\UpdateTaskJob;
-use App\Models\TasksModel;
-use App\Queries\TasksQueries;
+use App\Models\Task;
+use App\Queries\TaskQueries;
 use App\Services\EmployeesService;
 use Illuminate\Http\RedirectResponse;
 
@@ -29,8 +29,6 @@ class TasksController extends Controller
      */
     public function __construct(EmployeesService $employeesService)
     {
-        $this->middleware(self::MIDDLEWARE_AUTH);
-
         $this->employeesService = $employeesService;
     }
 
@@ -53,16 +51,16 @@ class TasksController extends Controller
     public function processListOfTasks(): \Illuminate\View\View
     {
         // Load the tasks with pagination.
-        return view('crm.tasks.index')->with(['tasks' => TasksQueries::getPaginate()]);
+        return view('crm.tasks.index')->with(['tasks' => TaskQueries::getPaginate()]);
     }
 
     /**
      * Show the details of a specific task record.
      *
-     * @param TasksModel $task
+     * @param Task $task
      * @return \Illuminate\View\View
      */
-    public function processShowTasksDetails(TasksModel $task): \Illuminate\View\View
+    public function processShowTasksDetails(Task $task): \Illuminate\View\View
     {
         // Load the task record.
         return view('crm.tasks.show')->with(['task' => $task]);
@@ -71,10 +69,10 @@ class TasksController extends Controller
     /**
      * Render the form for updating an existing task record.
      *
-     * @param TasksModel $task
+     * @param Task $task
      * @return \Illuminate\View\View
      */
-    public function processRenderUpdateForm(TasksModel $task): \Illuminate\View\View
+    public function processRenderUpdateForm(Task $task): \Illuminate\View\View
     {
         // Load the task record for editing.
         return view('crm.tasks.update')->with([
@@ -106,11 +104,11 @@ class TasksController extends Controller
      * Update an existing task record.
      *
      * @param TaskUpdateRequest $request
-     * @param TasksModel $task
+     * @param Task $task
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processUpdateTask(TaskUpdateRequest $request, TasksModel $task): \Illuminate\Http\RedirectResponse
+    public function processUpdateTask(TaskUpdateRequest $request, Task $task): \Illuminate\Http\RedirectResponse
     {
         // Update task.
         $this->dispatchSync(new UpdateTaskJob($request->validated(), $task));
@@ -122,11 +120,11 @@ class TasksController extends Controller
     /**
      * Delete a task record.
      *
-     * @param TasksModel $task
+     * @param Task $task
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processDeleteTask(TasksModel $task): \Illuminate\Http\RedirectResponse
+    public function processDeleteTask(Task $task): \Illuminate\Http\RedirectResponse
     {
         // Check if the task is completed.
         if (! $task->completed) {
@@ -146,11 +144,11 @@ class TasksController extends Controller
     /**
      * Set the active status of a task record.
      *
-     * @param TasksModel $task
+     * @param Task $task
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processTaskSetIsActive(TasksModel $task): \Illuminate\Http\RedirectResponse
+    public function processTaskSetIsActive(Task $task): \Illuminate\Http\RedirectResponse
     {
         // Update the task status.
         $this->dispatchSync(new UpdateTaskJob(['is_active' => ! $task->is_active], $task));
@@ -165,11 +163,11 @@ class TasksController extends Controller
     /**
      * Set a task record to complete.
      *
-     * @param TasksModel $task
+     * @param Task $task
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function processSetTaskToCompleted(TasksModel $task): \Illuminate\Http\RedirectResponse
+    public function processSetTaskToCompleted(Task $task): \Illuminate\Http\RedirectResponse
     {
         // Update the task to complete.
         $this->dispatchSync(new UpdateTaskJob(['completed' => ! $task->completed], $task));

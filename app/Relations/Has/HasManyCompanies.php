@@ -2,13 +2,13 @@
 
 namespace App\Relations\Has;
 
-use App\Models\CompaniesModel;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasManyCompanies
 {
     public function companies(): HasMany
     {
-        return $this->hasMany(CompaniesModel::class, 'client_id');
+        return $this->hasMany(Company::class, 'client_id');
     }
 }

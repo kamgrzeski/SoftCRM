@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Product;
 
-use App\Models\ProductsModel;
+use App\Models\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,14 +13,14 @@ class UpdateProductJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     private array $validatedData;
-    private ProductsModel $product;
+    private Product $product;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $validatedData, ProductsModel $product)
+    public function __construct(array $validatedData, Product $product)
     {
         $this->validatedData = $validatedData;
         $this->product = $product;

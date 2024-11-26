@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Queries\ClientsQueries;
-use App\Queries\CompaniesQueries;
-use App\Queries\DealsQueries;
-use App\Queries\EmployeesQueries;
-use App\Queries\FinancesQueries;
-use App\Queries\ProductsQueries;
-use App\Queries\SalesQueries;
-use App\Queries\SettingsQueries;
-use App\Queries\SystemLogsQueries;
-use App\Queries\TasksQueries;
+use App\Enums\Settings;
+use App\Queries\ClientQueries;
+use App\Queries\CompanyQueries;
+use App\Queries\DealQueries;
+use App\Queries\EmployeeQueries;
+use App\Queries\FinanceQueries;
+use App\Queries\ProductQueries;
+use App\Queries\SaleQueries;
+use App\Queries\SettingQueries;
+use App\Queries\SystemLogQueries;
+use App\Queries\TaskQueries;
 use App\Services\CalculateCashService;
 use App\Services\ClientService;
 use App\Services\CompaniesService;
@@ -34,8 +35,6 @@ class DashboardController extends Controller
 
     public function __construct()
     {
-        $this->middleware(self::MIDDLEWARE_AUTH);
-
         $this->clientService = new ClientService();
         $this->companiesService = new CompaniesService();
         $this->calculateCashService = new CalculateCashService();
@@ -61,8 +60,8 @@ class DashboardController extends Controller
                 'itemsCountGraphData' => $graph->itemsCountGraphData(),
                 'tasks' => $this->tasksService->formatTasks(),
                 'companies' => $this->companiesService->loadCompaniesByCreatedAt()->take(10),
-                'products' => ProductsQueries::getProductsByCreatedAt()->take(10),
-                'currency' => SettingsQueries::getSettingValue(self::CURRENCY)
+                'products' => ProductQueries::getProductsByCreatedAt()->take(10),
+                'currency' => SettingQueries::getSettingValue(Settings::CURRENCY->value)
             ]
         );
     }
@@ -74,40 +73,39 @@ class DashboardController extends Controller
      */
     private function storeInCacheUsableVariables(): void
     {
-        Cache::put('countClients', ClientsQueries::getCountAll(), env('CACHE_TIME'));
-        Cache::put('deactivatedClients', ClientsQueries::getDeactivated(), env('CACHE_TIME'));
+        Cache::put('countClients', ClientQueries::getCountAll(), env('CACHE_TIME'));
+        Cache::put('deactivatedClients', ClientQueries::getDeactivated(), env('CACHE_TIME'));
         Cache::put('clientsInLatestMonth', $this->clientService->loadClientsInLatestMonth(), env('CACHE_TIME'));
-        Cache::put('countCompanies', CompaniesQueries::countAll(), env('CACHE_TIME'));
-        Cache::put('countEmployees', EmployeesQueries::countAll(), env('CACHE_TIME'));
-        Cache::put('countDeals', DealsQueries::countAll(), env('CACHE_TIME'));
-        Cache::put('countFinances', FinancesQueries::countAll(), env('CACHE_TIME'));
-        Cache::put('countProducts', ProductsQueries::countAll(), env('CACHE_TIME'));
-        Cache::put('countTasks', TasksQueries::countAll(), env('CACHE_TIME'));
-        Cache::put('countSales', SalesQueries::countAll(), env('CACHE_TIME'));
-        Cache::put('deactivatedCompanies', CompaniesQueries::getDeactivated(), env('CACHE_TIME'));
+        Cache::put('countCompanies', CompanyQueries::countAll(), env('CACHE_TIME'));
+        Cache::put('countEmployees', EmployeeQueries::countAll(), env('CACHE_TIME'));
+        Cache::put('countDeals', DealQueries::countAll(), env('CACHE_TIME'));
+        Cache::put('countFinances', FinanceQueries::countAll(), env('CACHE_TIME'));
+        Cache::put('countProducts', ProductQueries::countAll(), env('CACHE_TIME'));
+        Cache::put('countTasks', TaskQueries::countAll(), env('CACHE_TIME'));
+        Cache::put('countSales', SaleQueries::countAll(), env('CACHE_TIME'));
+        Cache::put('deactivatedCompanies', CompanyQueries::getDeactivated(), env('CACHE_TIME'));
         Cache::put('todayIncome', $this->calculateCashService->loadCountTodayIncome(), env('CACHE_TIME'));
         Cache::put('yesterdayIncome', $this->calculateCashService->loadCountYesterdayIncome(), env('CACHE_TIME'));
         Cache::put('cashTurnover', $this->calculateCashService->loadCountCashTurnover(), env('CACHE_TIME'));
         Cache::put('countAllRowsInDb', $this->calculateCashService->loadCountAllRowsInDb(), env('CACHE_TIME'));
-        Cache::put('countSystemLogs', SystemLogsQueries::countAll(), env('CACHE_TIME'));
+        Cache::put('countSystemLogs', SystemLogQueries::countAll(), env('CACHE_TIME'));
         Cache::put('companiesInLatestMonth', $this->companiesService->loadCompaniesInLatestMonth(), env('CACHE_TIME'));
         Cache::put('employeesInLatestMonth', $this->employeesService->loadEmployeesInLatestMonth(), env('CACHE_TIME'));
-        Cache::put('deactivatedEmployees', EmployeesQueries::getDeactivated(), env('CACHE_TIME'));
-        Cache::put('deactivatedDeals', DealsQueries::getDeactivated(), env('CACHE_TIME'));
+        Cache::put('deactivatedEmployees', EmployeeQueries::getDeactivated(), env('CACHE_TIME'));
+        Cache::put('deactivatedDeals', DealQueries::getDeactivated(), env('CACHE_TIME'));
         Cache::put('dealsInLatestMonth', $this->dealsService->loadDealsInLatestMonth(), env('CACHE_TIME'));
         Cache::put('completedTasks', $this->tasksService->loadCompletedTasks(), env('CACHE_TIME'));
         Cache::put('uncompletedTasks', $this->tasksService->loadUncompletedTasks(), env('CACHE_TIME'));
 
-
         //loading circle
-        Cache::put('loadingCircle', SettingsQueries::getSettingValue('loading_circle'), env('CACHE_TIME'));
+        Cache::put('loadingCircle', SettingQueries::getSettingValue('loading_circle'), env('CACHE_TIME'));
 
         // currency
-        Cache::put('currency', SettingsQueries::getSettingValue('currency'), env('CACHE_TIME'));
+        Cache::put('currency', SettingQueries::getSettingValue('currency'), env('CACHE_TIME'));
 
         // last deploy time and version
-        Cache::put('lastDeployTime', SettingsQueries::getSettingValue('last_deploy_time'), env('CACHE_TIME'));
-        Cache::put('lastDeployVersion', SettingsQueries::getSettingValue('last_deploy_version'), env('CACHE_TIME'));
+        Cache::put('lastDeployTime', SettingQueries::getSettingValue('last_deploy_time'), env('CACHE_TIME'));
+        Cache::put('lastDeployVersion', SettingQueries::getSettingValue('last_deploy_version'), env('CACHE_TIME'));
     }
 
     /**

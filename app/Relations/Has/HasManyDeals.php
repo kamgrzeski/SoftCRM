@@ -3,7 +3,7 @@
 namespace App\Relations\Has;
 
 
-use App\Models\DealsModel;
+use App\Models\Deal;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasManyDeals
@@ -13,6 +13,6 @@ trait HasManyDeals
      */
     public function deals(): HasMany
     {
-        return $this->hasMany(DealsModel::class, 'id');
+        return $this->hasMany(Deal::class, 'id');
     }
 }

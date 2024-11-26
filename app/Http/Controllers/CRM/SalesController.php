@@ -8,11 +8,9 @@ use App\Http\Requests\SaleUpdateRequest;
 use App\Jobs\Sale\StoreSaleJob;
 use App\Jobs\Sale\UpdateSaleJob;
 use App\Jobs\StoreSystemLogJob;
-use App\Models\SalesModel;
-use App\Queries\ProductsQueries;
-use App\Queries\SalesQueries;
-use App\Services\ProductsService;
-use App\Services\SalesService;
+use App\Models\Sale;
+use App\Queries\ProductQueries;
+use App\Queries\SaleQueries;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -23,22 +21,6 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 class SalesController extends Controller
 {
     use DispatchesJobs;
-    private SalesService $salesService;
-    private ProductsService $productsService;
-
-    /**
-     * SalesController constructor.
-     *
-     * @param SalesService $salesService
-     * @param ProductsService $productsService
-     */
-    public function __construct(SalesService $salesService, ProductsService $productsService)
-    {
-        $this->middleware(self::MIDDLEWARE_AUTH);
-
-        $this->salesService = $salesService;
-        $this->productsService = $productsService;
-    }
 
     /**
      * Render the form for creating a new sale record.
@@ -48,16 +30,16 @@ class SalesController extends Controller
     public function processRenderCreateForm(): \Illuminate\View\View
     {
         // Load the products data to be used in the form.
-        return view('crm.sales.create')->with(['products' => ProductsQueries::getAll()]);
+        return view('crm.sales.create')->with(['products' => ProductQueries::getAll()]);
     }
 
     /**
      * Show the details of a specific sale record.
      *
-     * @param SalesModel $sale
+     * @param Sale $sale
      * @return \Illuminate\View\View
      */
-    public function processShowSalesDetails(SalesModel $sale): \Illuminate\View\View
+    public function processShowSalesDetails(Sale $sale): \Illuminate\View\View
     {
         // Load the sale record details.
         return view('crm.sales.show')->with(['sale' => $sale]);
@@ -66,15 +48,15 @@ class SalesController extends Controller
     /**
      * Render the form for updating an existing sale record.
      *
-     * @param SalesModel $sale
+     * @param Sale $sale
      * @return \Illuminate\View\View
      */
-    public function processRenderUpdateForm(SalesModel $sale): \Illuminate\View\View
+    public function processRenderUpdateForm(Sale $sale): \Illuminate\View\View
     {
         // Load the sale record details and the products data to be used in the form.
         return view('crm.sales.update')->with([
             'sale' => $sale,
-            'products' => ProductsQueries::getAll()
+            'products' => ProductQueries::getAll()
         ]);
     }
 
@@ -87,7 +69,7 @@ class SalesController extends Controller
     {
         // Load the sale records with pagination.
         return view('crm.sales.index')->with([
-            'sales' => SalesQueries::getPaginate()
+            'sales' => SaleQueries::getPaginate()
         ]);
     }
 
@@ -114,11 +96,11 @@ class SalesController extends Controller
      * Update an existing sale record.
      *
      * @param SaleUpdateRequest $request
-     * @param SalesModel $sale
+     * @param Sale $sale
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processUpdateSale(SaleUpdateRequest $request, SalesModel $sale): \Illuminate\Http\RedirectResponse
+    public function processUpdateSale(SaleUpdateRequest $request, Sale $sale): \Illuminate\Http\RedirectResponse
     {
         // Dispatch the job to update the sale record.
         $this->dispatchSync(new UpdateSaleJob($request->validated(), $sale));
@@ -130,11 +112,11 @@ class SalesController extends Controller
     /**
      * Delete a sale record.
      *
-     * @param SalesModel $sale
+     * @param Sale $sale
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processDeleteSale(SalesModel $sale): \Illuminate\Http\RedirectResponse
+    public function processDeleteSale(Sale $sale): \Illuminate\Http\RedirectResponse
     {
         // Delete the sale record.
         $sale->delete();
@@ -149,11 +131,11 @@ class SalesController extends Controller
     /**
      * Set the active status of a sale record.
      *
-     * @param SalesModel $sale
+     * @param Sale $sale
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processSaleSetIsActive(SalesModel $sale): \Illuminate\Http\RedirectResponse
+    public function processSaleSetIsActive(Sale $sale): \Illuminate\Http\RedirectResponse
     {
         // Dispatch the job to update the sale record.
         $this->dispatchSync(new UpdateSaleJob(['is_active' => ! $sale->is_active], $sale));

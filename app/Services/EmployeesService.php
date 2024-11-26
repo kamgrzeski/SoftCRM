@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\EmployeesModel;
-use App\Queries\EmployeesQueries;
-use App\Queries\TasksQueries;
+use App\Models\Employee;
+use App\Queries\EmployeeQueries;
+use App\Queries\TaskQueries;
 use Illuminate\Support\Arr;
 
 /**
@@ -20,10 +20,10 @@ class EmployeesService
      */
     public function loadEmployees(): \Illuminate\Support\Collection
     {
-        $employees = EmployeesModel::orderBy('created_at')->get();
+        $employees = Employee::orderBy('created_at')->get();
 
         foreach($employees as $key => $employee) {
-            Arr::add($employees[$key], 'taskCount', TasksQueries::getEmployeesTaskCount($employee->id));
+            Arr::add($employees[$key], 'taskCount', TaskQueries::getEmployeesTaskCount($employee->id));
         }
 
         return $employees;
@@ -36,8 +36,8 @@ class EmployeesService
      */
     public function loadEmployeesInLatestMonth(): int
     {
-        $employeesCountInLatestMonth = EmployeesQueries::getEmployeesInLatestMonth();
-        $allEmployees = EmployeesQueries::countAll();
+        $employeesCountInLatestMonth = EmployeeQueries::getEmployeesInLatestMonth();
+        $allEmployees = EmployeeQueries::countAll();
 
         return ($allEmployees / 100) * $employeesCountInLatestMonth;
     }

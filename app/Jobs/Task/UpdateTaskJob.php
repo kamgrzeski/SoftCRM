@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Task;
 
-use App\Models\TasksModel;
+use App\Models\Task;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,7 +13,7 @@ class UpdateTaskJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private TasksModel $task;
+    private Task $task;
     private array $validatedData;
 
     /**
@@ -21,7 +21,7 @@ class UpdateTaskJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(array $validatedData, TasksModel $task)
+    public function __construct(array $validatedData, Task $task)
     {
         $this->validatedData = $validatedData;
         $this->task = $task;

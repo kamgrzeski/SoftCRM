@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\DealsModel;
-use App\Models\DealsTermsModel;
-use App\Queries\DealsQueries;
+use App\Models\Deal;
+use App\Models\DealTerm;
+use App\Queries\DealQueries;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 /**
@@ -21,8 +21,8 @@ class DealsService
      */
     public function loadDealsInLatestMonth(): int
     {
-        $dealsInLatestMonth = DealsQueries::getDealsInLatestMonth();
-        $allDeals = DealsQueries::countAll();
+        $dealsInLatestMonth = DealQueries::getDealsInLatestMonth();
+        $allDeals = DealQueries::countAll();
 
         return ($allDeals / 100) * count($dealsInLatestMonth);
     }
@@ -30,11 +30,11 @@ class DealsService
     /**
      * Generate a PDF of deal terms.
      *
-     * @param DealsTermsModel $dealTerm The deal terms to be included in the PDF.
-     * @param DealsModel $deal The deal associated with the terms.
+     * @param DealTerm $dealTerm The deal terms to be included in the PDF.
+     * @param Deal $deal The deal associated with the terms.
      * @return \Illuminate\Http\Response
      */
-    public function loadGenerateDealTermsInPDF(DealsTermsModel $dealTerm, DealsModel $deal): \Illuminate\Http\Response
+    public function loadGenerateDealTermsInPDF(DealTerm $dealTerm, Deal $deal): \Illuminate\Http\Response
     {
         $data = [
             'body' => $dealTerm->body

@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\AdminModel;
+use App\Models\Administrator;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -17,14 +17,14 @@ class ChangePasswordJob implements ShouldQueue
     private string $oldPassword;
     private string $newPassword;
     private string $confirmNewPassword;
-    private AdminModel $adminModel;
+    private Administrator $adminModel;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $validatedData, AdminModel $adminModel)
+    public function __construct(array $validatedData, Administrator $adminModel)
     {
         $this->oldPassword = $validatedData['old_password'];
         $this->newPassword = $validatedData['new_password'];

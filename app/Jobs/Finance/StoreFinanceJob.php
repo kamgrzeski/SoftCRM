@@ -2,8 +2,8 @@
 
 namespace App\Jobs\Finance;
 
-use App\Models\AdminModel;
-use App\Models\FinancesModel;
+use App\Models\Administrator;
+use App\Models\Finance;
 use App\Services\FinancesService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -16,14 +16,14 @@ class StoreFinanceJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private array $validatedData;
-    private AdminModel $admin;
+    private Administrator $admin;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $validatedData, AdminModel $admin)
+    public function __construct(array $validatedData, Administrator $admin)
     {
         $this->validatedData = $validatedData;
         $this->admin = $admin;
@@ -39,7 +39,7 @@ class StoreFinanceJob implements ShouldQueue
         $financesHelper = new FinancesService();
         $dataToInsert = $financesHelper->loadCalculateNetAndVatByGivenGross($this->validatedData['gross']);
 
-        $model = new FinancesModel();
+        $model = new Finance();
 
         foreach ($this->validatedData as $key => $value) {
             $model->$key = $value;

@@ -2,7 +2,7 @@
 
 namespace App\Relations\Belongs;
 
-use App\Models\ProductsModel;
+use App\Models\Product;
 
 trait BelongsToProduct
 {
@@ -11,6 +11,6 @@ trait BelongsToProduct
      */
     public function product()
     {
-        return $this->belongsTo(ProductsModel::class, 'product_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

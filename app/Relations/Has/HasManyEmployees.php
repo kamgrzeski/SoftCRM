@@ -3,7 +3,7 @@
 namespace App\Relations\Has;
 
 
-use App\Models\EmployeesModel;
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasManyEmployees
@@ -13,6 +13,6 @@ trait HasManyEmployees
      */
     public function employees(): HasMany
     {
-        return $this->hasMany(EmployeesModel::class, 'client_id');
+        return $this->hasMany(Employee::class, 'client_id');
     }
 }

@@ -31,9 +31,9 @@ Route::get('password/reset', [AuthController::class, 'renderChangePasswordView']
 Route::post('password/reset/process', [AuthController::class, 'processChangePassword'])->name('password.reset.process');
 
 Route::get('/', [DashboardController::class, 'index'])->name('home');
-Route::get('/reload-info', [DashboardController::class, 'processReloadInformation'])->name('reload.info');
+Route::get('/reload-info', [DashboardController::class, 'processReloadInformation'])->name('reload.info')->middleware('auth');
 
-Route::group(['prefix' => 'clients'], function () {
+Route::group(['prefix' => 'clients', 'middleware' => 'auth'], function () {
     Route::get('/', [ClientController::class, 'processListOfClients'])->name('clients.index');
     Route::get('create', [ClientController::class, 'processRenderCreateForm'])->name('clients.create.form');
     Route::get('update/{client}', [ClientController::class, 'processRenderUpdateForm'])->name('clients.update.form');
@@ -44,7 +44,7 @@ Route::group(['prefix' => 'clients'], function () {
     Route::post('set-active/{client}', [ClientController::class, 'processClientSetIsActive'])->name('clients.set.active');
 });
 
-Route::group(['prefix' => 'companies'], function () {
+Route::group(['prefix' => 'companies', 'middleware' => 'auth'], function () {
     Route::get('/', [CompaniesController::class, 'processListOfCompanies'])->name('companies.index');
     Route::get('create', [CompaniesController::class, 'processRenderCreateForm'])->name('companies.create.form');
     Route::get('update/{company}', [CompaniesController::class, 'processRenderUpdateForm'])->name('companies.update.form');
@@ -55,7 +55,7 @@ Route::group(['prefix' => 'companies'], function () {
     Route::post('set-active/{company}', [CompaniesController::class, 'processCompanySetIsActive'])->name('companies.set.active');
 });
 
-Route::group(['prefix' => 'deals'], function () {
+Route::group(['prefix' => 'deals', 'middleware' => 'auth'], function () {
     Route::get('/', [DealsController::class, 'processListOfDeals'])->name('deals.index');
     Route::get('create', [DealsController::class, 'processRenderCreateForm'])->name('deals.create.form');
     Route::get('update/{deal}', [DealsController::class, 'processRenderUpdateForm'])->name('deals.update.form');
@@ -70,7 +70,7 @@ Route::group(['prefix' => 'deals'], function () {
     Route::post('terms/{dealTerm}/generate-pdf/{deal}', [DealsController::class, 'processGenerateDealTermsInPDF'])->name('deals.terms.generate-pdf');
 });
 
-Route::group(['prefix' => 'employees'], function () {
+Route::group(['prefix' => 'employees', 'middleware' => 'auth'], function () {
     Route::get('/', [EmployeesController::class, 'processListOfEmployees'])->name('employees.index');
     Route::get('create', [EmployeesController::class, 'processRenderCreateForm'])->name('employees.create.form');
     Route::get('update/{employee}', [EmployeesController::class, 'processRenderUpdateForm'])->name('employees.update.form');
@@ -81,7 +81,7 @@ Route::group(['prefix' => 'employees'], function () {
     Route::post('set-active/{employee}', [EmployeesController::class, 'processEmployeeSetIsActive'])->name('employees.set.active');
 });
 
-Route::group(['prefix' => 'tasks'], function () {
+Route::group(['prefix' => 'tasks', 'middleware' => 'auth'], function () {
     Route::get('/', [TasksController::class, 'processListOfTasks'])->name('tasks.index');
     Route::get('create', [TasksController::class, 'processRenderCreateForm'])->name('tasks.create.form');
     Route::get('update/{task}', [TasksController::class, 'processRenderUpdateForm'])->name('tasks.update.form');
@@ -93,7 +93,7 @@ Route::group(['prefix' => 'tasks'], function () {
     Route::patch('completed/{task}', [TasksController::class, 'processSetTaskToCompleted'])->name('tasks.complete');
 });
 
-Route::group(['prefix' => 'sales'], function () {
+Route::group(['prefix' => 'sales', 'middleware' => 'auth'], function () {
     Route::get('/', [SalesController::class, 'processListOfSales'])->name('sales.index');
     Route::get('create', [SalesController::class, 'processRenderCreateForm'])->name('sales.create.form');
     Route::get('update/{sale}', [SalesController::class, 'processRenderUpdateForm'])->name('sales.update.form');
@@ -105,7 +105,7 @@ Route::group(['prefix' => 'sales'], function () {
 
 });
 
-Route::group(['prefix' => 'products'], function () {
+Route::group(['prefix' => 'products', 'middleware' => 'auth'], function () {
     Route::get('/', [ProductsController::class, 'processListOfProducts'])->name('products.index');
     Route::get('create', [ProductsController::class, 'processRenderCreateForm'])->name('products.create.form');
     Route::get('update/{product}', [ProductsController::class, 'processRenderUpdateForm'])->name('products.update.form');
@@ -116,7 +116,7 @@ Route::group(['prefix' => 'products'], function () {
     Route::post('set-active/{product}', [ProductsController::class, 'processProductSetIsActive'])->name('products.set.active');
 });
 
-Route::group(['prefix' => 'finances'], function () {
+Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function () {
     Route::get('/', [FinancesController::class, 'processListOfFinances'])->name('finances.index');
     Route::get('create', [FinancesController::class, 'processRenderCreateForm'])->name('finances.create.form');
     Route::get('update/{finance}', [FinancesController::class, 'processRenderUpdateForm'])->name('finances.update.form');
@@ -127,7 +127,7 @@ Route::group(['prefix' => 'finances'], function () {
     Route::post('set-active/{finance}', [FinancesController::class, 'processFinanceSetIsActive'])->name('finances.set.active');
 });
 
-Route::group(['prefix' => 'settings'], function () {
+Route::group(['prefix' => 'settings', 'middleware' => 'auth'], function () {
     Route::get('/', [SettingsController::class, 'processListOfSettings'])->name('settings.index');
     Route::put('update', [SettingsController::class, 'processUpdateSettings'])->name('settings.update');
 });
