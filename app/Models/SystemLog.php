@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SystemLogsModel extends Model
+class SystemLog extends Model
 {
-    protected $table = 'systemlogs';
+    use HasFactory;
 
     public string $ip = '66.249.69.115'; // googlebot
 

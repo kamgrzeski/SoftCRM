@@ -1,7 +1,10 @@
 <?php
 
+namespace Database\Seeders;
+
+use App\Enums\RoleType;
+use App\Models\Administrator;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AdminAccSeeder extends Seeder
@@ -13,13 +16,11 @@ class AdminAccSeeder extends Seeder
      */
     public function run()
     {
-        $admin = [
+        Administrator::factory()->create([
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('admin'),
-            'role_type' => 2 // admin
-            ];
-
-        DB::table('admins')->insert($admin);
+            'role_type' => RoleType::ADMIN_TYPE
+        ]);
     }
 }
