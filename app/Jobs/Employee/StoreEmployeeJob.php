@@ -2,8 +2,8 @@
 
 namespace App\Jobs\Employee;
 
-use App\Models\AdminModel;
-use App\Models\EmployeesModel;
+use App\Models\Administrator;
+use App\Models\Employee;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,14 +15,14 @@ class StoreEmployeeJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private array $validatedData;
-    private AdminModel $admin;
+    private Administrator $admin;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $validatedData, AdminModel $admin)
+    public function __construct(array $validatedData, Administrator $admin)
     {
         $this->validatedData = $validatedData;
         $this->admin = $admin;
@@ -35,7 +35,7 @@ class StoreEmployeeJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $model = new EmployeesModel();
+        $model = new Employee();
 
         foreach ($this->validatedData as $key => $value) {
             $model->$key = $value;

@@ -2,15 +2,15 @@
 
 namespace App\Queries;
 
-use App\Models\ProductsModel;
-use App\Models\SettingsModel;
+use App\Models\Product;
+use App\Models\Setting;
 
 /**
  * Class ProductsQueries
  *
  * Query class for handling operations related to the ProductsModel.
  */
-class ProductsQueries
+class ProductQueries
 {
     /**
      * Get the count of all products.
@@ -19,7 +19,7 @@ class ProductsQueries
      */
     public static function countAll()
     {
-        return ProductsModel::count();
+        return Product::count();
     }
 
     /**
@@ -29,7 +29,7 @@ class ProductsQueries
      */
     public static function getProductsByCreatedAt(): \Illuminate\Database\Eloquent\Collection
     {
-        return ProductsModel::orderBy('created_at', 'desc')->get();
+        return Product::orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -39,8 +39,8 @@ class ProductsQueries
      */
     public static function getPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return ProductsModel::orderByDesc('id')
-            ->paginate(SettingsModel::where('key', 'pagination_size')
+        return Product::orderByDesc('id')
+            ->paginate(Setting::where('key', 'pagination_size')
                 ->get()->last()->value);
     }
 
@@ -51,6 +51,6 @@ class ProductsQueries
      */
     public static function getAll(): \Illuminate\Database\Eloquent\Collection
     {
-        return ProductsModel::all();
+        return Product::all();
     }
 }

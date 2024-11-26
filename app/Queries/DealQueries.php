@@ -2,15 +2,15 @@
 
 namespace App\Queries;
 
-use App\Models\DealsModel;
-use App\Models\SettingsModel;
+use App\Models\Deal;
+use App\Models\Setting;
 
 /**
  * Class DealsQueries
  *
  * Query class for handling operations related to the DealsModel.
  */
-class DealsQueries
+class DealQueries
 {
     /**
      * Get all deals created in the latest month.
@@ -19,7 +19,7 @@ class DealsQueries
      */
     public static function getDealsInLatestMonth(): \Illuminate\Database\Eloquent\Collection
     {
-        return DealsModel::where('created_at', '>=', now()->subMonth())->get();
+        return Deal::where('created_at', '>=', now()->subMonth())->get();
     }
 
     /**
@@ -29,7 +29,7 @@ class DealsQueries
      */
     public static function countAll(): int
     {
-        return DealsModel::all()->count();
+        return Deal::all()->count();
     }
 
     /**
@@ -39,7 +39,7 @@ class DealsQueries
      */
     public static function getDeactivated(): int
     {
-        return DealsModel::where('is_active', '=', 0)->count();
+        return Deal::where('is_active', '=', 0)->count();
     }
 
     /**
@@ -49,8 +49,8 @@ class DealsQueries
      */
     public static function getPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return DealsModel::orderByDesc('id')
-            ->paginate(SettingsModel::where('key', 'pagination_size')
+        return Deal::orderByDesc('id')
+            ->paginate(Setting::where('key', 'pagination_size')
                 ->get()->last()->value);
     }
 }

@@ -10,10 +10,10 @@ use App\Jobs\Deal\StoreDealJob;
 use App\Jobs\Deal\StoreDealTermJob;
 use App\Jobs\Deal\UpdateDealJob;
 use App\Jobs\StoreSystemLogJob;
-use App\Models\DealsModel;
-use App\Models\DealsTermsModel;
-use App\Queries\CompaniesQueries;
-use App\Queries\DealsQueries;
+use App\Models\Deal;
+use App\Models\DealTerm;
+use App\Queries\CompanyQueries;
+use App\Queries\DealQueries;
 use App\Services\DealsService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -34,8 +34,6 @@ class DealsController extends Controller
      */
     public function __construct(DealsService $dealsService)
     {
-        $this->middleware(self::MIDDLEWARE_AUTH);
-
         $this->dealsService = $dealsService;
     }
 
@@ -47,21 +45,21 @@ class DealsController extends Controller
     public function processRenderCreateForm(): \Illuminate\View\View
     {
         // Load the companies for the dropdown.
-        return view('crm.deals.create')->with(['companies' => CompaniesQueries::getAll()]);
+        return view('crm.deals.create')->with(['companies' => CompanyQueries::getAll()]);
     }
 
     /**
      * Show the details of a specific deal record.
      *
-     * @param DealsModel $deal
+     * @param Deal $deal
      * @return \Illuminate\View\View
      */
-    public function processShowDealsDetails(DealsModel $deal): \Illuminate\View\View
+    public function processShowDealsDetails(Deal $deal): \Illuminate\View\View
     {
         // Load the deal record details.
         return view('crm.deals.show')->with([
             'deal' => $deal,
-            'companies' => CompaniesQueries::getAll()
+            'companies' => CompanyQueries::getAll()
         ]);
     }
 
@@ -74,22 +72,22 @@ class DealsController extends Controller
     {
         // Load the deal records with pagination.
         return view('crm.deals.index')->with([
-            'deals' => DealsQueries::getPaginate()
+            'deals' => DealQueries::getPaginate()
         ]);
     }
 
     /**
      * Render the form for updating an existing deal record.
      *
-     * @param DealsModel $deal
+     * @param Deal $deal
      * @return \Illuminate\View\View
      */
-    public function processRenderUpdateForm(DealsModel $deal): \Illuminate\View\View
+    public function processRenderUpdateForm(Deal $deal): \Illuminate\View\View
     {
         // Load the deal record for editing.
         return view('crm.deals.update')->with([
             'deal' => $deal,
-            'companies' => CompaniesQueries::getAll(),
+            'companies' => CompanyQueries::getAll(),
         ]);
     }
 
@@ -116,11 +114,11 @@ class DealsController extends Controller
      * Update an existing deal record.
      *
      * @param DealUpdateRequest $request
-     * @param DealsModel $deal
+     * @param Deal $deal
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processUpdateDeal(DealUpdateRequest $request, DealsModel $deal)
+    public function processUpdateDeal(DealUpdateRequest $request, Deal $deal)
     {
         // Update the deal record.
         $this->dispatchSync(new UpdateDealJob($request->validated(), $deal));
@@ -132,11 +130,11 @@ class DealsController extends Controller
     /**
      * Delete a deal record.
      *
-     * @param DealsModel $deal
+     * @param Deal $deal
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processDeleteDeal(DealsModel $deal): \Illuminate\Http\RedirectResponse
+    public function processDeleteDeal(Deal $deal): \Illuminate\Http\RedirectResponse
     {
         // Check if the deal has any deal terms.
         if ($deal->dealTerms()->count() > 0) {
@@ -156,11 +154,11 @@ class DealsController extends Controller
     /**
      * Set the active status of a deal record.
      *
-     * @param DealsModel $deal
+     * @param Deal $deal
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processSetIsActive(DealsModel $deal): \Illuminate\Http\RedirectResponse
+    public function processSetIsActive(Deal $deal): \Illuminate\Http\RedirectResponse
     {
         // Update the deal status.
         $this->dispatchSync(new UpdateDealJob(['is_active' => ! $deal->is_active], $deal));
@@ -176,11 +174,11 @@ class DealsController extends Controller
      * Store new deal terms.
      *
      * @param StoreDealTermRequest $request
-     * @param DealsModel $deal
+     * @param Deal $deal
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processStoreDealTerms(StoreDealTermRequest $request, DealsModel $deal): \Illuminate\Http\RedirectResponse
+    public function processStoreDealTerms(StoreDealTermRequest $request, Deal $deal): \Illuminate\Http\RedirectResponse
     {
         // Store the deal terms.
         $this->dispatchSync(new StoreDealTermJob($request->validated(), $deal));
@@ -195,11 +193,11 @@ class DealsController extends Controller
     /**
      * Generate deal terms in PDF format.
      *
-     * @param DealsTermsModel $dealTerm
-     * @param DealsModel $deal
+     * @param DealTerm $dealTerm
+     * @param Deal $deal
      * @return mixed
      */
-    public function processGenerateDealTermsInPDF(DealsTermsModel $dealTerm, DealsModel $deal): mixed
+    public function processGenerateDealTermsInPDF(DealTerm $dealTerm, Deal $deal): mixed
     {
         // Load the deal terms in PDF format.
         return $this->dealsService->loadGenerateDealTermsInPDF($dealTerm, $deal);
@@ -208,11 +206,11 @@ class DealsController extends Controller
     /**
      * Delete a deal term record.
      *
-     * @param DealsTermsModel $dealTerm
+     * @param DealTerm $dealTerm
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processDeleteDealTerm(DealsTermsModel $dealTerm): \Illuminate\Http\RedirectResponse
+    public function processDeleteDealTerm(DealTerm $dealTerm): \Illuminate\Http\RedirectResponse
     {
         // Check if the deal term has been used in any deal
         $dealTerm->delete();
@@ -224,7 +222,7 @@ class DealsController extends Controller
         return redirect()->back()->with('message_success', $this->getMessage('messages.deal_term_delete'));
     }
 
-    public function processRenderTermCreateForm(DealsModel $deal)
+    public function processRenderTermCreateForm(Deal $deal)
     {
         return view('crm.deals.terms.create')->with(['deal' => $deal]);
     }

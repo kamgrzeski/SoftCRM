@@ -21,7 +21,8 @@
                         <form method="POST" action="{{ route('employees.delete', $finance) }}" class="inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">
+                            <button type="submit"
+                                    class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">
                                 Delete this finance
                             </button>
                         </form>
@@ -33,7 +34,9 @@
                 <div x-data="{ tab: 'home' }">
                     <ul class="flex border-b">
                         <li class="-mb-px mr-1">
-                            <a href="#" @click.prevent="tab = 'home'" :class="{ 'border-grey-500 text-grey-500 border-t border-r border-l rounded-t': tab === 'home' }" class="bg-white inline-block py-2 px-4 text-grey-700">
+                            <a href="#" @click.prevent="tab = 'home'"
+                               :class="{ 'border-grey-500 text-grey-500 border-t border-r border-l rounded-t': tab === 'home' }"
+                               class="bg-white inline-block py-2 px-4 text-grey-700">
                                 Basic information
                             </a>
                         </li>
@@ -67,8 +70,9 @@
                                 <tr class="border-b">
                                     <th class="px-4 py-2">Gross</th>
                                     <td class="px-4 py-2">
-                                        <button type="submit" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-4 border border-gray-400 rounded shadow">
-                                            {{ Cknow\Money\Money::{\App\Queries\SettingsQueries::getSettingValue('currency')}($finance->gross) }}
+                                        <button type="submit"
+                                                class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-4 border border-gray-400 rounded shadow">
+                                            {{ Cknow\Money\Money::{\App\Queries\SettingQueries::getSettingValue('currency')}($finance->gross) }}
                                         </button>
                                     </td>
                                 </tr>
@@ -76,8 +80,9 @@
                                 <tr class="border-b">
                                     <th class="px-4 py-2">Net</th>
                                     <td class="px-4 py-2">
-                                        <button type="submit" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-4 border border-gray-400 rounded shadow">
-                                            {{ Cknow\Money\Money::{\App\Queries\SettingsQueries::getSettingValue('currency')}($finance->net) }}
+                                        <button type="submit"
+                                                class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-4 border border-gray-400 rounded shadow">
+                                            {{ Cknow\Money\Money::{\App\Queries\SettingQueries::getSettingValue('currency')}($finance->net) }}
                                         </button>
                                     </td>
                                 </tr>
@@ -85,8 +90,9 @@
                                 <tr class="border-b">
                                     <th class="px-4 py-2">Vat</th>
                                     <td class="px-4 py-2">
-                                        <button type="submit" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-4 border border-gray-400 rounded shadow">
-                                            {{ Cknow\Money\Money::{\App\Queries\SettingsQueries::getSettingValue('currency')}($finance->vat) }}
+                                        <button type="submit"
+                                                class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-4 border border-gray-400 rounded shadow">
+                                            {{ Cknow\Money\Money::{\App\Queries\SettingQueries::getSettingValue('currency')}($finance->vat) }}
                                         </button>
                                     </td>
                                 </tr>

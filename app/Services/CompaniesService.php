@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Queries\CompaniesQueries;
+use App\Queries\CompanyQueries;
 
 /**
  * Class CompaniesService
@@ -18,7 +18,7 @@ class CompaniesService
      */
     public function loadCompaniesByCreatedAt(): \Illuminate\Support\Collection
     {
-        return CompaniesQueries::getCompaniesSortedByCreatedAt();
+        return CompanyQueries::getCompaniesSortedByCreatedAt();
     }
 
     /**
@@ -28,8 +28,8 @@ class CompaniesService
      */
     public function loadCompaniesInLatestMonth(): float
     {
-        $companiesCount = CompaniesQueries::getCompaniesInLatestMonth();
-        $allCompanies = CompaniesQueries::countAll();
+        $companiesCount = CompanyQueries::getCompaniesInLatestMonth();
+        $allCompanies = CompanyQueries::countAll();
 
         return ($allCompanies / 100) * $companiesCount;
     }

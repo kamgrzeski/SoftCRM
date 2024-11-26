@@ -2,7 +2,7 @@
 
 namespace App\Relations\Belongs;
 
-use App\Models\EmployeesModel;
+use App\Models\Employee;
 
 trait BelongsToEmployee
 {
@@ -11,6 +11,6 @@ trait BelongsToEmployee
      */
     public function employee()
     {
-        return $this->belongsTo(EmployeesModel::class);
+        return $this->belongsTo(Employee::class);
     }
 }

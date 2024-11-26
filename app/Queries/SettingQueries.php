@@ -2,14 +2,14 @@
 
 namespace App\Queries;
 
-use App\Models\SettingsModel;
+use App\Models\Setting;
 
 /**
  * Class SettingsQueries
  *
  * Query class for handling operations related to the SettingsModel.
  */
-class SettingsQueries
+class SettingQueries
 {
     /**
      * Get all settings.
@@ -18,16 +18,11 @@ class SettingsQueries
      */
     public static function getAll(): \Illuminate\Database\Eloquent\Collection
     {
-        return SettingsModel::all();
-    }
-
-    public static function getByKey(string $key)
-    {
-        return SettingsModel::where('key', $key)->get()->last();
+        return Setting::all();
     }
 
     public static function getSettingValue(string $key)
     {
-        return SettingsModel::where('key', $key)->get()->last()->value;
+        return Setting::where('key', $key)->get()->last()->value;
     }
 }

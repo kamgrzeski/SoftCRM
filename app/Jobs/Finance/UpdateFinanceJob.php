@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Finance;
 
-use App\Models\FinancesModel;
+use App\Models\Finance;
 use App\Services\FinancesService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,14 +15,14 @@ class UpdateFinanceJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private array $validatedData;
-    private FinancesModel $finance;
+    private Finance $finance;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $validatedData, FinancesModel $finance)
+    public function __construct(array $validatedData, Finance $finance)
     {
         $this->validatedData = $validatedData;
         $this->finance = $finance;

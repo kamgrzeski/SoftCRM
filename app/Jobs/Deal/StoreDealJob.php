@@ -2,8 +2,8 @@
 
 namespace App\Jobs\Deal;
 
-use App\Models\AdminModel;
-use App\Models\DealsModel;
+use App\Models\Administrator;
+use App\Models\Deal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -16,14 +16,14 @@ class StoreDealJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private array $validatedData;
-    private AdminModel $admin;
+    private Administrator $admin;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $validatedData, AdminModel $admin)
+    public function __construct(array $validatedData, Administrator $admin)
     {
         $this->validatedData = $validatedData;
         $this->admin = $admin;
@@ -36,7 +36,7 @@ class StoreDealJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $model = new DealsModel();
+        $model = new Deal();
 
         foreach ($this->validatedData as $key => $value) {
             $model->$key = $value;

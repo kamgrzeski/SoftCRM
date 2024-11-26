@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\ClientsModel;
-use App\Queries\ClientsQueries;
-use App\Queries\SettingsQueries;
+use App\Models\Client;
+use App\Queries\ClientQueries;
+use App\Queries\SettingQueries;
 use App\Traits\Language;
 use Cknow\Money\Money;
 
@@ -20,12 +20,12 @@ class ClientService
     /**
      * Load details of a specific client.
      *
-     * @param ClientsModel $client
-     * @return ClientsModel
+     * @param Client $client
+     * @return Client
      */
-    public function loadClientDetails(ClientsModel $client): ClientsModel
+    public function loadClientDetails(Client $client): Client
     {
-        $client->formattedBudget = Money::{SettingsQueries::getSettingValue('currency')}($client->budget);
+        $client->formattedBudget = Money::{SettingQueries::getSettingValue('currency')}($client->budget);
 
         return $client;
     }
@@ -37,9 +37,9 @@ class ClientService
      */
     public function loadClientsInLatestMonth(): float
     {
-        $clientsCountInLatestMonth = ClientsQueries::getCountAllInLatestMonth();
+        $clientsCountInLatestMonth = ClientQueries::getCountAllInLatestMonth();
 
-        $allClientCount = ClientsQueries::getCountAll();
+        $allClientCount = ClientQueries::getCountAll();
 
         return ($allClientCount / 100) * $clientsCountInLatestMonth;
     }

@@ -2,7 +2,7 @@
 
 namespace App\Relations\Has;
 
-use App\Models\TasksModel;
+use App\Models\Task;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasManyTasks
@@ -10,6 +10,6 @@ trait HasManyTasks
 
     public function tasks(): HasMany
     {
-        return $this->hasMany(TasksModel::class, 'employee_id');
+        return $this->hasMany(Task::class, 'employee_id');
     }
 }

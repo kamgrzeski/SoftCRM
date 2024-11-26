@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Queries\DealsQueries;
-use App\Queries\FinancesQueries;
-use App\Queries\ProductsQueries;
-use App\Queries\SalesQueries;
+use App\Queries\DealQueries;
+use App\Queries\FinanceQueries;
+use App\Queries\ProductQueries;
+use App\Queries\SaleQueries;
 
 class GraphDataService
 {
@@ -59,22 +59,22 @@ class GraphDataService
                 [
                     "label" => "Products",
                     'backgroundColor' => ['rgba(227, 67, 51, 1)', 'rgba(54, 162, 235, 0.2)'],
-                    'data' => [ProductsQueries::countAll()]
+                    'data' => [ProductQueries::countAll()]
                 ],
                 [
                     "label" => "Sales",
                     'backgroundColor' => ['rgba(228, 115, 45, 1)', 'rgba(54, 162, 235, 0.3)'],
-                    'data' => [SalesQueries::countAll()]
+                    'data' => [SaleQueries::countAll()]
                 ],
                 [
                     "label" => "Finances",
                     'backgroundColor' => ['rgba(249, 195, 100, 1)', 'rgba(54, 162, 235, 0.3)'],
-                    'data' => [FinancesQueries::countAll()]
+                    'data' => [FinanceQueries::countAll()]
                 ],
                 [
                     "label" => "Deal",
                     'backgroundColor' => ['rgba(92, 141, 93, 1)', 'rgba(54, 162, 235, 0.3)'],
-                    'data' => [DealsQueries::countAll()]
+                    'data' => [DealQueries::countAll()]
                 ]
             ])
             ->options([]);

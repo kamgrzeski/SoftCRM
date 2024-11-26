@@ -2,15 +2,15 @@
 
 namespace App\Queries;
 
-use App\Models\FinancesModel;
-use App\Models\SettingsModel;
+use App\Models\Finance;
+use App\Models\Setting;
 
 /**
  * Class FinancesQueries
  *
  * Query class for handling operations related to the FinancesModel.
  */
-class FinancesQueries
+class FinanceQueries
 {
     /**
      * Get the count of all finance records.
@@ -19,7 +19,7 @@ class FinancesQueries
      */
     public static function countAll(): int
     {
-        return FinancesModel::count();
+        return Finance::count();
     }
 
     /**
@@ -29,8 +29,8 @@ class FinancesQueries
      */
     public static function getPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return FinancesModel::orderByDesc('id')
-            ->paginate(SettingsModel::where('key', 'pagination_size')
+        return Finance::orderByDesc('id')
+            ->paginate(Setting::where('key', 'pagination_size')
                 ->get()->last()->value);
     }
 }

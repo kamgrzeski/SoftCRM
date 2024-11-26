@@ -2,15 +2,15 @@
 
 namespace App\Queries;
 
-use App\Models\SettingsModel;
-use App\Models\SystemLogsModel;
+use App\Models\Setting;
+use App\Models\SystemLog;
 
 /**
  * Class SystemLogsQueries
  *
  * Query class for handling operations related to the SystemLogsModel.
  */
-class SystemLogsQueries
+class SystemLogQueries
 {
     /**
      * Get the count of all system logs.
@@ -19,7 +19,7 @@ class SystemLogsQueries
      */
     public static function countAll(): int
     {
-        return SystemLogsModel::count();
+        return SystemLog::count();
     }
 
     /**
@@ -29,7 +29,7 @@ class SystemLogsQueries
      */
     public static function getAll(): \Illuminate\Database\Eloquent\Collection
     {
-        return SystemLogsModel::all();
+        return SystemLog::all();
     }
 
     /**
@@ -39,7 +39,7 @@ class SystemLogsQueries
      */
     public static function getPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return SystemLogsModel::paginate(SettingsModel::where('key', 'pagination_size')
+        return SystemLog::paginate(Setting::where('key', 'pagination_size')
             ->get()->last()->value);
     }
 }

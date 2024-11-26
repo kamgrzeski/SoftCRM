@@ -2,7 +2,7 @@
 
 namespace App\Relations\Has;
 
-use App\Models\SalesModel;
+use App\Models\Sale;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasManySales
@@ -10,6 +10,6 @@ trait HasManySales
 
     public function sales(): HasMany
     {
-        return $this->hasMany(SalesModel::class, 'product_id');
+        return $this->hasMany(Sale::class, 'product_id');
     }
 }

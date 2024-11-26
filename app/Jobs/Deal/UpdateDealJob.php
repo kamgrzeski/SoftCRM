@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Deal;
 
-use App\Models\DealsModel;
+use App\Models\Deal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,14 +13,14 @@ class UpdateDealJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     private array $validatedData;
-    private DealsModel $deal;
+    private Deal $deal;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $validatedData, DealsModel $deal)
+    public function __construct(array $validatedData, Deal $deal)
     {
         $this->validatedData = $validatedData;
         $this->deal = $deal;

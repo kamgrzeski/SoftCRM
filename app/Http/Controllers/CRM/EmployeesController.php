@@ -7,9 +7,9 @@ use App\Http\Requests\EmployeeUpdateRequest;
 use App\Jobs\Employee\StoreEmployeeJob;
 use App\Jobs\Employee\UpdateEmployeeJob;
 use App\Jobs\StoreSystemLogJob;
-use App\Models\EmployeesModel;
-use App\Queries\ClientsQueries;
-use App\Queries\EmployeesQueries;
+use App\Models\Employee;
+use App\Queries\ClientQueries;
+use App\Queries\EmployeeQueries;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -22,11 +22,6 @@ class EmployeesController extends Controller
 {
     use DispatchesJobs;
 
-    public function __construct()
-    {
-        $this->middleware(self::MIDDLEWARE_AUTH);
-    }
-
     /**
      * Render the form for creating a new employee record.
      *
@@ -35,16 +30,16 @@ class EmployeesController extends Controller
     public function processRenderCreateForm(): \Illuminate\View\View
     {
         // Load the clients data to be used in the form.
-        return view('crm.employees.create')->with(['clients' => ClientsQueries::getAll()]);
+        return view('crm.employees.create')->with(['clients' => ClientQueries::getAll()]);
     }
 
     /**
      * Show the details of a specific employee record.
      *
-     * @param EmployeesModel $employee
+     * @param Employee $employee
      * @return \Illuminate\View\View
      */
-    public function processShowEmployeeDetails(EmployeesModel $employee): \Illuminate\View\View
+    public function processShowEmployeeDetails(Employee $employee): \Illuminate\View\View
     {
         // Load the employee record details.
         return view('crm.employees.show')->with(['employee' => $employee]);
@@ -59,22 +54,22 @@ class EmployeesController extends Controller
     {
         // Load the employee records and render the list page.
         return view('crm.employees.index')->with([
-            'employees' => EmployeesQueries::getPaginate()
+            'employees' => EmployeeQueries::getPaginate()
         ]);
     }
 
     /**
      * Render the form for updating an existing employee record.
      *
-     * @param EmployeesModel $employee
+     * @param Employee $employee
      * @return \Illuminate\View\View
      */
-    public function processRenderUpdateForm(EmployeesModel $employee): \Illuminate\View\View
+    public function processRenderUpdateForm(Employee $employee): \Illuminate\View\View
     {
         // Load the employee record details and the clients data to be used in the form.
         return view('crm.employees.update')->with([
             'employee' => $employee,
-            'clients' => ClientsQueries::getAll()
+            'clients' => ClientQueries::getAll()
         ]);
     }
 
@@ -101,11 +96,11 @@ class EmployeesController extends Controller
      * Update an existing employee record.
      *
      * @param EmployeeUpdateRequest $request
-     * @param EmployeesModel $employee
+     * @param Employee $employee
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processUpdateEmployee(EmployeeUpdateRequest $request, EmployeesModel $employee): \Illuminate\Http\RedirectResponse
+    public function processUpdateEmployee(EmployeeUpdateRequest $request, Employee $employee): \Illuminate\Http\RedirectResponse
     {
         // Dispatch the job to update the employee record.
         $this->dispatchSync(new UpdateEmployeeJob($request->validated(), $employee));
@@ -117,11 +112,11 @@ class EmployeesController extends Controller
     /**
      * Delete an employee record.
      *
-     * @param EmployeesModel $employee
+     * @param Employee $employee
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processDeleteEmployee(EmployeesModel $employee): \Illuminate\Http\RedirectResponse
+    public function processDeleteEmployee(Employee $employee): \Illuminate\Http\RedirectResponse
     {
         // Check if the employee has any tasks assigned.
         if ($employee->tasks()->count() > 0) {
@@ -141,11 +136,11 @@ class EmployeesController extends Controller
     /**
      * Set the active status of an employee record.
      *
-     * @param EmployeesModel $employee
+     * @param Employee $employee
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processEmployeeSetIsActive(EmployeesModel $employee): \Illuminate\Http\RedirectResponse
+    public function processEmployeeSetIsActive(Employee $employee): \Illuminate\Http\RedirectResponse
     {
         // Dispatch the job to update the employee record.
         $this->dispatchSync(new UpdateEmployeeJob(['is_active' => ! $employee->is_active], $employee));

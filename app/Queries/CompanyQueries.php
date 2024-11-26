@@ -2,15 +2,15 @@
 
 namespace App\Queries;
 
-use App\Models\CompaniesModel;
-use App\Models\SettingsModel;
+use App\Models\Company;
+use App\Models\Setting;
 
 /**
  * Class CompaniesQueries
  *
  * Query class for handling operations related to the CompaniesModel.
  */
-class CompaniesQueries
+class CompanyQueries
 {
     /**
      * Get all companies.
@@ -19,7 +19,7 @@ class CompaniesQueries
      */
     public static function getAll(): \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Collection
     {
-        return CompaniesModel::all()->sortBy('created_at');
+        return Company::all()->sortBy('created_at');
     }
 
     /**
@@ -29,8 +29,8 @@ class CompaniesQueries
      */
     public static function getPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return CompaniesModel::orderByDesc('id')
-            ->paginate(SettingsModel::where('key', 'pagination_size')
+        return Company::orderByDesc('id')
+            ->paginate(Setting::where('key', 'pagination_size')
                 ->get()->last()->value);
     }
 
@@ -41,7 +41,7 @@ class CompaniesQueries
      */
     public static function getDeactivated(): int
     {
-        return CompaniesModel::where('is_active', '=', 0)->count();
+        return Company::where('is_active', '=', 0)->count();
     }
 
     /**
@@ -51,7 +51,7 @@ class CompaniesQueries
      */
     public static function getCompaniesSortedByCreatedAt(): \Illuminate\Support\Collection
     {
-        return CompaniesModel::all()->sortBy('created_at', 0, true)->slice(0, 5);
+        return Company::all()->sortBy('created_at', 0, true)->slice(0, 5);
     }
 
     /**
@@ -61,7 +61,7 @@ class CompaniesQueries
      */
     public static function countAll(): int
     {
-        return CompaniesModel::all()->count();
+        return Company::all()->count();
     }
 
     /**
@@ -71,6 +71,6 @@ class CompaniesQueries
      */
     public static function getCompaniesInLatestMonth(): int
     {
-        return CompaniesModel::where('created_at', '>=', now()->subMonth())->count();
+        return Company::where('created_at', '>=', now()->subMonth())->count();
     }
 }

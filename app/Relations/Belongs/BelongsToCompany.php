@@ -3,7 +3,7 @@
 namespace App\Relations\Belongs;
 
 
-use App\Models\CompaniesModel;
+use App\Models\Company;
 
 trait BelongsToCompany
 {
@@ -12,6 +12,6 @@ trait BelongsToCompany
      */
     public function company()
     {
-        return $this->belongsTo(CompaniesModel::class);
+        return $this->belongsTo(Company::class);
     }
 }

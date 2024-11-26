@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\FinancesModel;
-use App\Models\ProductsModel;
-use App\Models\SalesModel;
-use App\Models\TasksModel;
-use App\Queries\SettingsQueries;
+use App\Models\Finance;
+use App\Models\Product;
+use App\Models\Sale;
+use App\Models\Task;
+use App\Queries\SettingQueries;
 use Carbon\Carbon;
 use Cknow\Money\Money;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +18,9 @@ class CalculateCashService
      */
     public function loadCountCashTurnover(): mixed
     {
-        $products = ProductsModel::all();
-        $sales = SalesModel::all();
-        $finances = FinancesModel::all();
+        $products = Product::all();
+        $sales = Sale::all();
+        $finances = Finance::all();
 
         $productSum = 0;
         $salesSum = 0;
@@ -40,7 +40,7 @@ class CalculateCashService
 
         $officialSum = $productSum + $salesSum + $financesSum;
 
-        return Money::{SettingsQueries::getSettingValue('currency')}($officialSum);
+        return Money::{SettingQueries::getSettingValue('currency')}($officialSum);
     }
 
     /**
@@ -48,9 +48,9 @@ class CalculateCashService
      */
     public function loadCountTodayIncome(): mixed
     {
-        $products = ProductsModel::whereDate('created_at', Carbon::today())->get();
-        $sales = SalesModel::whereDate('created_at', Carbon::today())->get();
-        $finances = FinancesModel::whereDate('created_at', Carbon::today())->get();
+        $products = Product::whereDate('created_at', Carbon::today())->get();
+        $sales = Sale::whereDate('created_at', Carbon::today())->get();
+        $finances = Finance::whereDate('created_at', Carbon::today())->get();
         $productSum = 0;
         $salesSum = 0;
         $financesSum = 0;
@@ -68,7 +68,7 @@ class CalculateCashService
 
         $todayIncome = $productSum + $salesSum + $financesSum;
 
-        return Money::{SettingsQueries::getSettingValue('currency')}($todayIncome);
+        return Money::{SettingQueries::getSettingValue('currency')}($todayIncome);
     }
 
     /**
@@ -76,9 +76,9 @@ class CalculateCashService
      */
     public function loadCountYesterdayIncome(): mixed
     {
-        $products = ProductsModel::whereDate('created_at', Carbon::yesterday())->get();
-        $sales = SalesModel::whereDate('created_at', Carbon::yesterday())->get();
-        $finances = FinancesModel::whereDate('created_at', Carbon::yesterday())->get();
+        $products = Product::whereDate('created_at', Carbon::yesterday())->get();
+        $sales = Sale::whereDate('created_at', Carbon::yesterday())->get();
+        $finances = Finance::whereDate('created_at', Carbon::yesterday())->get();
         $salesSum = 0;
         $productSum = 0;
         $financesSum = 0;
@@ -95,7 +95,7 @@ class CalculateCashService
 
         $yesterdayIncome = $productSum + $salesSum + $financesSum;
 
-        return Money::{SettingsQueries::getSettingValue('currency')}($yesterdayIncome);
+        return Money::{SettingQueries::getSettingValue('currency')}($yesterdayIncome);
     }
 
     /**
@@ -124,7 +124,7 @@ class CalculateCashService
         }
 
         if($isCompleted) {
-            $posts = TasksModel::where( 'created_at', '>=', $dates->keys()->first() )->where('completed', '=', 1)
+            $posts = Task::where( 'created_at', '>=', $dates->keys()->first() )->where('completed', '=', 1)
                 ->groupBy( 'date' )
                 ->orderBy( 'date' )
                 ->get( [
@@ -133,7 +133,7 @@ class CalculateCashService
                 ] )
                 ->pluck( 'count', 'date' );
         } else {
-            $posts = TasksModel::where( 'created_at', '>=', $dates->keys()->first() )
+            $posts = Task::where( 'created_at', '>=', $dates->keys()->first() )
                 ->groupBy( 'date' )
                 ->orderBy( 'date' )
                 ->get( [

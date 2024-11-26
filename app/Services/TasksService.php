@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Queries\TasksQueries;
+use App\Queries\TaskQueries;
 
 /**
  * Class TasksService
@@ -18,8 +18,8 @@ class TasksService
      */
     public function loadCompletedTasks(): string
     {
-        $countCompletedTasks = TasksQueries::getCountCompleted();
-        $countAllTasks = TasksQueries::countAll();
+        $countCompletedTasks = TaskQueries::getCountCompleted();
+        $countAllTasks = TaskQueries::countAll();
 
         $percentage = round(($countCompletedTasks / $countAllTasks) * 100);
 
@@ -33,8 +33,8 @@ class TasksService
      */
     public function loadUncompletedTasks(): string
     {
-        $uncompletedTasksCount = TasksQueries::getAllUncompletedTasks();
-        $countAllTasks = TasksQueries::countAll();
+        $uncompletedTasksCount = TaskQueries::getAllUncompletedTasks();
+        $countAllTasks = TaskQueries::countAll();
 
         $percentage = round(($uncompletedTasksCount / $countAllTasks) * 100);
 
@@ -48,7 +48,7 @@ class TasksService
      */
     public function formatTasks(): array
     {
-        $tasks = TasksQueries::getAllForFormat();
+        $tasks = TaskQueries::getAllForFormat();
 
         $arrayWithFormattedTasks = [];
 

@@ -8,9 +8,9 @@ use App\Http\Requests\FinanceUpdateRequest;
 use App\Jobs\Finance\StoreFinanceJob;
 use App\Jobs\Finance\UpdateFinanceJob;
 use App\Jobs\StoreSystemLogJob;
-use App\Models\FinancesModel;
-use App\Queries\CompaniesQueries;
-use App\Queries\FinancesQueries;
+use App\Models\Finance;
+use App\Queries\CompanyQueries;
+use App\Queries\FinanceQueries;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
 /**
@@ -30,16 +30,16 @@ class FinancesController extends Controller
     public function processRenderCreateForm()
     {
         // Return the view with the companies.
-        return view('crm.finances.create')->with(['companies' => CompaniesQueries::getAll(true)]);
+        return view('crm.finances.create')->with(['companies' => CompanyQueries::getAll(true)]);
     }
 
     /**
      * Show the details of a specific finance record.
      *
-     * @param FinancesModel $finance
+     * @param Finance $finance
      * @return \Illuminate\View\View
      */
-    public function processShowFinancesDetails(FinancesModel $finance)
+    public function processShowFinancesDetails(Finance $finance)
     {
         // Return the view with the finance record.
         return view('crm.finances.show')->with(['finance' => $finance]);
@@ -54,22 +54,22 @@ class FinancesController extends Controller
     {
         // Return the view with the finances and the pagination.
         return view('crm.finances.index')->with([
-            'finances' => FinancesQueries::getPaginate()
+            'finances' => FinanceQueries::getPaginate()
         ]);
     }
 
     /**
      * Render the form for updating an existing finance record.
      *
-     * @param FinancesModel $finance
+     * @param Finance $finance
      * @return \Illuminate\View\View
      */
-    public function processRenderUpdateForm(FinancesModel $finance)
+    public function processRenderUpdateForm(Finance $finance)
     {
         // Return the view with the finance record and the companies.
         return view('crm.finances.update')->with([
             'finance' => $finance,
-            'companies' => CompaniesQueries::getAll()
+            'companies' => CompanyQueries::getAll()
         ]);
     }
 
@@ -96,11 +96,11 @@ class FinancesController extends Controller
      * Update an existing finance record.
      *
      * @param FinanceUpdateRequest $request
-     * @param FinancesModel $finance
+     * @param Finance $finance
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processUpdateFinance(FinanceUpdateRequest $request, FinancesModel $finance)
+    public function processUpdateFinance(FinanceUpdateRequest $request, Finance $finance)
     {
         // UpdateFinanceJob is a job that updates the finance model.
         $this->dispatchSync(new UpdateFinanceJob($request->validated(), $finance));
@@ -112,11 +112,11 @@ class FinancesController extends Controller
     /**
      * Delete a finance record.
      *
-     * @param FinancesModel $finance
+     * @param Finance $finance
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processDeleteFinance(FinancesModel $finance)
+    public function processDeleteFinance(Finance $finance)
     {
         // Check if the finance record has companies.
         $finance->delete();
@@ -131,11 +131,11 @@ class FinancesController extends Controller
     /**
      * Set the active status of a finance record.
      *
-     * @param FinancesModel $finance
+     * @param Finance $finance
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function processFinanceSetIsActive(FinancesModel $finance)
+    public function processFinanceSetIsActive(Finance $finance)
     {
         // UpdateFinanceJob is a job that updates the finance model.
         $this->dispatchSync(new UpdateFinanceJob(['is_active' => ! $finance->is_active], $finance));

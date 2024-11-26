@@ -2,15 +2,15 @@
 
 namespace App\Queries;
 
-use App\Models\ClientsModel;
-use App\Models\SettingsModel;
+use App\Models\Client;
+use App\Models\Setting;
 
 /**
  * Class ClientsQueries
  *
  * Query class for handling operations related to the ClientsModel.
  */
-class ClientsQueries
+class ClientQueries
 {
     /**
      * Get all clients.
@@ -19,7 +19,7 @@ class ClientsQueries
      */
     public static function getAll(): \Illuminate\Database\Eloquent\Collection
     {
-        return ClientsModel::all();
+        return Client::all();
     }
 
     /**
@@ -29,8 +29,8 @@ class ClientsQueries
      */
     public static function getPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return ClientsModel::orderByDesc('id')
-            ->paginate(SettingsModel::where('key', 'pagination_size')
+        return Client::orderByDesc('id')
+            ->paginate(Setting::where('key', 'pagination_size')
                 ->get()->last()->value);
     }
 
@@ -41,7 +41,7 @@ class ClientsQueries
      */
     public static function getDeactivated(): int
     {
-        return ClientsModel::where('is_active', '=', 0)->count();
+        return Client::where('is_active', '=', 0)->count();
     }
 
     /**
@@ -51,7 +51,7 @@ class ClientsQueries
      */
     public static function getCountAll(): int
     {
-        return ClientsModel::all()->count();
+        return Client::all()->count();
     }
 
     /**
@@ -61,6 +61,6 @@ class ClientsQueries
      */
     public static function getCountAllInLatestMonth(): int
     {
-        return ClientsModel::where('created_at', '>=', now()->subMonth())->count();
+        return Client::where('created_at', '>=', now()->subMonth())->count();
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Relations\Has;
 
 
-use App\Models\EmployeesModel;
-use App\Models\FinancesModel;
+use App\Models\Employee;
+use App\Models\Finance;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasManyFinances
@@ -14,6 +14,6 @@ trait HasManyFinances
      */
     public function finances(): HasMany
     {
-        return $this->hasMany(FinancesModel::class);
+        return $this->hasMany(Finance::class);
     }
 }

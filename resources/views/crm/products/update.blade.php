@@ -16,7 +16,7 @@
 
             <div class="w-full bg-white shadow-md rounded-lg mb-3">
                 <div class="p-6 flex justify-between items-center">
-                    <p class="text-xl">Update sale: {{ $sale->name }}</p>
+                    <p class="text-xl">Update sale: {{ $product->name }}</p>
                     <a href="{{ url()->previous() }}">
                         <button class="bg-gray-500 text-white font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150" type="button">
                             Back
@@ -36,7 +36,7 @@
                                     'inputId' => 'name',
                                     'inputName' => 'name',
                                     'inputType' => 'text',
-                                    'inputValue' => $sale->name,
+                                    'inputValue' => $product->name,
                                     'inputRequired' => true
                                 ])
 
@@ -50,7 +50,7 @@
                                                 class="rounded-none rounded-e-lg border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                             <option value="" disabled selected>Select an option</option>
                                             @foreach ($products as $product)
-                                                <option value="{{ $product->id }}" @if($sale->product->id == $product->id) selected @endif>{{ $product->name }}</option>
+                                                <option value="{{ $product->id }}" @if($product->product?->id == $product->id) selected @endif>{{ $product->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -61,7 +61,7 @@
                                     'inputId' => 'quantity',
                                     'inputName' => 'quantity',
                                     'inputType' => 'text',
-                                    'inputValue' => $sale->quantity,
+                                    'inputValue' => $product->quantity,
                                     'inputRequired' => true
                                 ])
                             </div>
@@ -72,7 +72,7 @@
                                     'inputId' => 'date_of_payment',
                                     'inputName' => 'date_of_payment',
                                     'inputType' => 'date',
-                                    'inputValue' => \Carbon\Carbon::parse($sale->date_of_payment)->format('Y-m-d'),
+                                    'inputValue' => \Carbon\Carbon::parse($product->date_of_payment)->format('Y-m-d'),
                                     'inputRequired' => true
                                 ])
 
@@ -81,7 +81,7 @@
                                     'inputId' => 'price',
                                     'inputName' => 'price',
                                     'inputType' => 'text',
-                                    'inputValue' => $sale->price,
+                                    'inputValue' => $product->price,
                                     'inputRequired' => true
                                 ])
                             </div>

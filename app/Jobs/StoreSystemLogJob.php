@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\SystemLogsModel;
+use App\Models\SystemLog;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -39,7 +39,7 @@ class StoreSystemLogJob implements ShouldQueue
     {
         $userInformation = $this->authUser->getUserInformation();
 
-        $model = new SystemLogsModel();
+        $model = new SystemLog();
 
         $model->admin_id = $this->authUser->id;
         $model->actions = $this->actions;

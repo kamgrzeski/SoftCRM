@@ -2,8 +2,8 @@
 
 namespace App\Queries;
 
-use App\Models\SettingsModel;
-use App\Models\TasksModel;
+use App\Models\Setting;
+use App\Models\Task;
 use Illuminate\Support\Collection;
 
 /**
@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
  *
  * Query class for handling operations related to the TasksModel.
  */
-class TasksQueries
+class TaskQueries
 {
     /**
      * Get paginated list of tasks.
@@ -20,8 +20,8 @@ class TasksQueries
      */
     public static function getPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return TasksModel::orderByDesc('id')
-            ->paginate(SettingsModel::where('key', 'pagination_size')
+        return Task::orderByDesc('id')
+            ->paginate(Setting::where('key', 'pagination_size')
                 ->get()->last()->value);
     }
 
@@ -32,7 +32,7 @@ class TasksQueries
      */
     public static function countAll(): int
     {
-        return TasksModel::count();
+        return Task::count();
     }
 
     /**
@@ -42,7 +42,7 @@ class TasksQueries
      */
     public static function getCountCompleted(): int
     {
-        return TasksModel::where('completed', '=', 1)
+        return Task::where('completed', '=', 1)
             ->count();
     }
 
@@ -53,7 +53,7 @@ class TasksQueries
      */
     public static function getAllUncompletedTasks(): int
     {
-        return TasksModel::where('completed', '=', 0)
+        return Task::where('completed', '=', 0)
             ->count();
     }
 
@@ -65,7 +65,7 @@ class TasksQueries
      */
     public static function getEmployeesTaskCount(mixed $id): int
     {
-        return TasksModel::where('employee_id', $id)->get()->count();
+        return Task::where('employee_id', $id)->get()->count();
     }
 
     /**
@@ -75,6 +75,6 @@ class TasksQueries
      */
     public static function getAllForFormat(): \Illuminate\Support\Collection
     {
-        return TasksModel::all()->sortBy('created_at', 0, true)->slice(0, 5);
+        return Task::all()->sortBy('created_at', 0, true)->slice(0, 5);
     }
 }

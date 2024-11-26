@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Company;
 
-use App\Models\CompaniesModel;
+use App\Models\Company;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,14 +15,14 @@ class UpdateCompanyJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private array $validatedData;
-    private CompaniesModel $company;
+    private Company $company;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $validatedData, CompaniesModel $company)
+    public function __construct(array $validatedData, Company $company)
     {
         $this->validatedData = $validatedData;
         $this->company = $company;

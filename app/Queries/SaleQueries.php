@@ -2,15 +2,15 @@
 
 namespace App\Queries;
 
-use App\Models\SalesModel;
-use App\Models\SettingsModel;
+use App\Models\Sale;
+use App\Models\Setting;
 
 /**
  * Class SalesQueries
  *
  * Query class for handling operations related to the SalesModel.
  */
-class SalesQueries
+class SaleQueries
 {
     /**
      * Get the count of all sales.
@@ -19,7 +19,7 @@ class SalesQueries
      */
     public static function countAll(): int
     {
-        return SalesModel::count();
+        return Sale::count();
     }
 
     /**
@@ -29,7 +29,7 @@ class SalesQueries
      */
     public static function getSalesSortedByCreatedAt(): \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Collection
     {
-        return SalesModel::all()->sortBy('created_at');
+        return Sale::all()->sortBy('created_at');
     }
 
     /**
@@ -39,8 +39,8 @@ class SalesQueries
      */
     public static function getPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return SalesModel::orderByDesc('id')
-            ->paginate(SettingsModel::where('key', 'pagination_size')
+        return Sale::orderByDesc('id')
+            ->paginate(Setting::where('key', 'pagination_size')
                 ->get()->last()->value);
     }
 }

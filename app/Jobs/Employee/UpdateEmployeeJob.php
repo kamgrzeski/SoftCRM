@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Employee;
 
-use App\Models\EmployeesModel;
+use App\Models\Employee;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,14 +13,14 @@ class UpdateEmployeeJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     private array $validatedData;
-    private EmployeesModel $employee;
+    private Employee $employee;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $validatedData, EmployeesModel $employee)
+    public function __construct(array $validatedData, Employee $employee)
     {
         $this->validatedData = $validatedData;
         $this->employee = $employee;

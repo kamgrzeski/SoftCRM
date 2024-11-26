@@ -2,15 +2,15 @@
 
 namespace App\Queries;
 
-use App\Models\EmployeesModel;
-use App\Models\SettingsModel;
+use App\Models\Employee;
+use App\Models\Setting;
 
 /**
  * Class EmployeesQueries
  *
  * Query class for handling operations related to the EmployeesModel.
  */
-class EmployeesQueries
+class EmployeeQueries
 {
     /**
      * Get the count of all deactivated employees.
@@ -19,7 +19,7 @@ class EmployeesQueries
      */
     public static function getDeactivated(): int
     {
-        return EmployeesModel::where('is_active', '=', 0)->count();
+        return Employee::where('is_active', '=', 0)->count();
     }
 
     /**
@@ -29,7 +29,7 @@ class EmployeesQueries
      */
     public static function getEmployeesInLatestMonth(): float
     {
-        return EmployeesModel::where('created_at', '>=', now()->subMonth())->count();
+        return Employee::where('created_at', '>=', now()->subMonth())->count();
     }
 
     /**
@@ -39,7 +39,7 @@ class EmployeesQueries
      */
     public static function countAll(): int
     {
-        return EmployeesModel::all()->count();
+        return Employee::all()->count();
     }
 
     /**
@@ -49,8 +49,8 @@ class EmployeesQueries
      */
     public static function getPaginate(): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return EmployeesModel::orderByDesc('id')
-            ->paginate(SettingsModel::where('key', 'pagination_size')
+        return Employee::orderByDesc('id')
+            ->paginate(Setting::where('key', 'pagination_size')
                 ->get()->last()->value);
     }
 }

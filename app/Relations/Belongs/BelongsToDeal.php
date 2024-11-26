@@ -2,7 +2,7 @@
 
 namespace App\Relations\Belongs;
 
-use App\Models\DealsModel;
+use App\Models\Deal;
 
 trait BelongsToDeal
 {
@@ -11,6 +11,6 @@ trait BelongsToDeal
      */
     public function deal()
     {
-        return $this->belongsTo(DealsModel::class);
+        return $this->belongsTo(Deal::class);
     }
 }

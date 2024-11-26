@@ -2,7 +2,7 @@
 
 namespace App\Relations\Belongs;
 
-use App\Models\ClientsModel;
+use App\Models\Client;
 
 trait BelongsToClient
 {
@@ -11,6 +11,6 @@ trait BelongsToClient
      */
     public function client()
     {
-        return $this->belongsTo(ClientsModel::class);
+        return $this->belongsTo(Client::class);
     }
 }
