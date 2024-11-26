@@ -12,16 +12,6 @@ use App\Queries\CompanyQueries;
 class CompaniesService
 {
     /**
-     * Load companies sorted by creation date.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function loadCompaniesByCreatedAt(): \Illuminate\Support\Collection
-    {
-        return CompanyQueries::getCompaniesSortedByCreatedAt();
-    }
-
-    /**
      * Load the list of companies added in the latest month.
      *
      * @return float
@@ -31,6 +21,6 @@ class CompaniesService
         $companiesCount = CompanyQueries::getCompaniesInLatestMonth();
         $allCompanies = CompanyQueries::countAll();
 
-        return ($allCompanies / 100) * $companiesCount;
+        return ($companiesCount / $allCompanies) * 100;
     }
 }

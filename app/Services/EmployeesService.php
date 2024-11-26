@@ -22,8 +22,8 @@ class EmployeesService
     {
         $employees = Employee::orderBy('created_at')->get();
 
-        foreach($employees as $key => $employee) {
-            Arr::add($employees[$key], 'taskCount', TaskQueries::getEmployeesTaskCount($employee->id));
+        foreach ($employees as $employee) {
+            Arr::add($employee, 'taskCount', TaskQueries::getEmployeesTaskCount($employee->id));
         }
 
         return $employees;
@@ -39,6 +39,6 @@ class EmployeesService
         $employeesCountInLatestMonth = EmployeeQueries::getEmployeesInLatestMonth();
         $allEmployees = EmployeeQueries::countAll();
 
-        return ($allEmployees / 100) * $employeesCountInLatestMonth;
+        return (int) (($employeesCountInLatestMonth / $allEmployees) * 100);
     }
 }

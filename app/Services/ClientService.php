@@ -38,9 +38,8 @@ class ClientService
     public function loadClientsInLatestMonth(): float
     {
         $clientsCountInLatestMonth = ClientQueries::getCountAllInLatestMonth();
-
         $allClientCount = ClientQueries::getCountAll();
 
-        return ($allClientCount / 100) * $clientsCountInLatestMonth;
+        return ($clientsCountInLatestMonth / $allClientCount) * 100;
     }
 }

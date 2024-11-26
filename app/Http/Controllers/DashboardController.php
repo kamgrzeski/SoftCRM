@@ -58,8 +58,8 @@ class DashboardController extends Controller
             [
                 'tasksGraphData' => $graph->taskGraphData(),
                 'itemsCountGraphData' => $graph->itemsCountGraphData(),
-                'tasks' => $this->tasksService->formatTasks(),
-                'companies' => $this->companiesService->loadCompaniesByCreatedAt()->take(10),
+                'tasks' => TaskQueries::formatTasks(),
+                'companies' => CompanyQueries::getCompaniesSortedByCreatedAt()->take(10),
                 'products' => ProductQueries::getProductsByCreatedAt()->take(10),
                 'currency' => SettingQueries::getSettingValue(Settings::CURRENCY->value)
             ]

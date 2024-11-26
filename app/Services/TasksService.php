@@ -21,9 +21,13 @@ class TasksService
         $countCompletedTasks = TaskQueries::getCountCompleted();
         $countAllTasks = TaskQueries::countAll();
 
+        if ($countAllTasks === 0) {
+            return '0 (0%)';
+        }
+
         $percentage = round(($countCompletedTasks / $countAllTasks) * 100);
 
-        return $countCompletedTasks . ' (' . $percentage .  '%)';
+        return "{$countCompletedTasks} ({$percentage}%)";
     }
 
     /**
@@ -36,34 +40,12 @@ class TasksService
         $uncompletedTasksCount = TaskQueries::getAllUncompletedTasks();
         $countAllTasks = TaskQueries::countAll();
 
-        $percentage = round(($uncompletedTasksCount / $countAllTasks) * 100);
-
-        return $uncompletedTasksCount . ' (' . $percentage .  '%)';
-    }
-
-    /**
-     * Format tasks for display.
-     *
-     * @return array
-     */
-    public function formatTasks(): array
-    {
-        $tasks = TaskQueries::getAllForFormat();
-
-        $arrayWithFormattedTasks = [];
-
-        foreach ($tasks as $key => $task) {
-            $nameTask = substr($task->name, 0, 70);
-            $nameTask .= '[..]';
-
-            $arrayWithFormattedTasks[$key] = [
-                'id' => $task->id,
-                'name' => $nameTask,
-                'duration' => $task->duration,
-                'created_at' => $task->created_at
-            ];
+        if ($countAllTasks === 0) {
+            return '0 (0%)';
         }
 
-        return $arrayWithFormattedTasks;
+        $percentage = round(($uncompletedTasksCount / $countAllTasks) * 100);
+
+        return "{$uncompletedTasksCount} ({$percentage}%)";
     }
 }

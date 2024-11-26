@@ -24,7 +24,7 @@ class DealsService
         $dealsInLatestMonth = DealQueries::getDealsInLatestMonth();
         $allDeals = DealQueries::countAll();
 
-        return ($allDeals / 100) * count($dealsInLatestMonth);
+        return (int) (($dealsInLatestMonth->count() / $allDeals) * 100);
     }
 
     /**
@@ -36,12 +36,9 @@ class DealsService
      */
     public function loadGenerateDealTermsInPDF(DealTerm $dealTerm, Deal $deal): \Illuminate\Http\Response
     {
-        $data = [
-            'body' => $dealTerm->body
-        ];
+        $data = ['body' => $dealTerm->body];
 
-        $pdf = PDF::loadView('crm.deals.terms.terms_pdf', $data);
-
-        return $pdf->download($deal->name . '.pdf');
+        return PDF::loadView('crm.deals.terms.terms_pdf', $data)
+            ->download($deal->name . '.pdf');
     }
 }

@@ -18,25 +18,15 @@ class CalculateCashService
      */
     public function loadCountCashTurnover(): mixed
     {
-        $products = Product::all();
-        $sales = Sale::all();
-        $finances = Finance::all();
+        $productSum = Product::sum(function ($product) {
+            return $product->price * $product->count;
+        });
 
-        $productSum = 0;
-        $salesSum = 0;
-        $financesSum = 0;
+        $salesSum = Sale::sum(function ($sale) {
+            return $sale->price * $sale->quantity;
+        });
 
-        foreach($products as $product) {
-            $productSum += $product->price * $product->count;
-        }
-
-        foreach($finances as $finance) {
-            $financesSum += $finance->net;
-        }
-
-        foreach($sales as $sale) {
-            $salesSum += $sale->price * $sale->quantity;
-        }
+        $financesSum = Finance::sum('net');
 
         $officialSum = $productSum + $salesSum + $financesSum;
 
@@ -48,23 +38,17 @@ class CalculateCashService
      */
     public function loadCountTodayIncome(): mixed
     {
-        $products = Product::whereDate('created_at', Carbon::today())->get();
-        $sales = Sale::whereDate('created_at', Carbon::today())->get();
-        $finances = Finance::whereDate('created_at', Carbon::today())->get();
-        $productSum = 0;
-        $salesSum = 0;
-        $financesSum = 0;
+        $productSum = Product::whereDate('created_at', Carbon::today())
+            ->sum(function ($product) {
+                return $product->price * $product->count;
+            });
 
-        foreach($products as $product) {
-            $productSum += $product->price * $product->count;
-        }
+        $salesSum = Sale::whereDate('created_at', Carbon::today())
+            ->sum(function ($sale) {
+                return $sale->price * $sale->quantity;
+            });
 
-        foreach($sales as $sale) {
-            $salesSum += $sale->price * $sale->quantity;
-        }
-        foreach($finances as $finance) {
-            $financesSum += $finance->net;
-        }
+        $financesSum = Finance::whereDate('created_at', Carbon::today())->sum('net');
 
         $todayIncome = $productSum + $salesSum + $financesSum;
 
@@ -76,22 +60,17 @@ class CalculateCashService
      */
     public function loadCountYesterdayIncome(): mixed
     {
-        $products = Product::whereDate('created_at', Carbon::yesterday())->get();
-        $sales = Sale::whereDate('created_at', Carbon::yesterday())->get();
-        $finances = Finance::whereDate('created_at', Carbon::yesterday())->get();
-        $salesSum = 0;
-        $productSum = 0;
-        $financesSum = 0;
+        $productSum = Product::whereDate('created_at', Carbon::yesterday())
+            ->sum(function ($product) {
+                return $product->price * $product->count;
+            });
 
-        foreach($products as $product) {
-            $productSum += $product->price * $product->count;
-            foreach($sales as $sale) {
-                $salesSum += $product->price * $sale->quantity;
-            }
-            foreach($finances as $finance) {
-                $financesSum += $finance->net;
-            }
-        }
+        $salesSum = Sale::whereDate('created_at', Carbon::yesterday())
+            ->sum(function ($sale) {
+                return $sale->price * $sale->quantity;
+            });
+
+        $financesSum = Finance::whereDate('created_at', Carbon::yesterday())->sum('net');
 
         $yesterdayIncome = $productSum + $salesSum + $financesSum;
 
@@ -105,46 +84,40 @@ class CalculateCashService
     {
         $counter = 0;
         $tables = DB::select('SHOW TABLES');
-
         $databaseName = DB::connection()->getDatabaseName();
 
         foreach ($tables as $table) {
-            $counter += DB::table($table->{'Tables_in_' . $databaseName})->count();
+            $tableName = $table->{'Tables_in_' . $databaseName};
+            $counter += DB::table($tableName)->count();
         }
 
         return $counter;
     }
 
-    public function loadTaskEveryMonth($isCompleted) {
-
+    public function loadTaskEveryMonth(bool $isCompleted): array
+    {
         $dates = collect();
-        foreach( range( -6, 0 ) AS $i ) {
-            $date = Carbon::now()->addDays( $i )->format( 'Y-m-d' );
-            $dates->put( $date, 0);
+        foreach (range(-6, 0) as $i) {
+            $date = Carbon::now()->addDays($i)->format('Y-m-d');
+            $dates->put($date, 0);
         }
 
-        if($isCompleted) {
-            $posts = Task::where( 'created_at', '>=', $dates->keys()->first() )->where('completed', '=', 1)
-                ->groupBy( 'date' )
-                ->orderBy( 'date' )
-                ->get( [
-                    DB::raw( 'DATE( created_at ) as date' ),
-                    DB::raw( 'COUNT( * ) as "count"' )
-                ] )
-                ->pluck( 'count', 'date' );
-        } else {
-            $posts = Task::where( 'created_at', '>=', $dates->keys()->first() )
-                ->groupBy( 'date' )
-                ->orderBy( 'date' )
-                ->get( [
-                    DB::raw( 'DATE( created_at ) as date' ),
-                    DB::raw( 'COUNT( * ) as "count"' )
-                ] )
-                ->pluck( 'count', 'date' );
+        $query = Task::where('created_at', '>=', $dates->keys()->first())
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy('created_at');
+
+        if ($isCompleted) {
+            $query->where('completed', 1);
         }
 
-        $dates = $dates->merge($posts)->toArray();
+        $posts = $query->get([
+            DB::raw('DATE(created_at) as date'),
+            DB::raw('COUNT(*) as "count"')
+        ])->pluck('count', 'date');
 
-        return array_values($dates);
+        // Merge posts data with the default zeroed dates
+        $dates = $dates->merge($posts);
+
+        return $dates->values()->toArray();
     }
 }

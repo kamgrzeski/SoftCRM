@@ -5,6 +5,7 @@ namespace App\Queries;
 use App\Models\Setting;
 use App\Models\Task;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * Class TasksQueries
@@ -76,5 +77,23 @@ class TaskQueries
     public static function getAllForFormat(): \Illuminate\Support\Collection
     {
         return Task::all()->sortBy('created_at', 0, true)->slice(0, 5);
+    }
+
+    /**
+     * Format tasks for display.
+     *
+     * @return array
+     */
+    public static function formatTasks(): array
+    {
+        return Task::get()->map(function ($task) {
+            $nameTask = Str::limit($task->name, 70);
+            return [
+                'id' => $task->id,
+                'name' => $nameTask,
+                'duration' => $task->duration,
+                'created_at' => $task->created_at,
+            ];
+        })->toArray();
     }
 }
