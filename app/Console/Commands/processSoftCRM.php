@@ -59,7 +59,7 @@ class processSoftCRM extends Command
         $this->info('===============================================================');
         $this->info('Everything looks perfect! Now you can start use SoftCRM!');
         $this->info('If you have any question please contact with me by email: kamil.grzechulskii@gmail.com');
-
-        $this->dispatchSync(new StoreSystemLogJob('First usage of process-softcrm command', 200, 1));
+        $user = \App\Models\Administrator::find(1);
+        $this->dispatchSync(new StoreSystemLogJob('First usage of process-softcrm command', 200, $user));
     }
 }

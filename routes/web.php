@@ -30,7 +30,7 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('password/reset', [AuthController::class, 'renderChangePasswordView'])->name('password.reset');
 Route::post('password/reset/process', [AuthController::class, 'processChangePassword'])->name('password.reset.process');
 
-Route::get('/', [DashboardController::class, 'index'])->name('home');
+Route::get('/', [DashboardController::class, 'index'])->name('home')->middleware('auth');
 Route::get('/reload-info', [DashboardController::class, 'processReloadInformation'])->name('reload.info')->middleware('auth');
 
 Route::group(['prefix' => 'clients', 'middleware' => 'auth'], function () {
